@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.inceptrafay.family_expense_tracker">
    <application
-        android:label="family_expense_tracker"
+        android:label="Family Expense Tracker"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
