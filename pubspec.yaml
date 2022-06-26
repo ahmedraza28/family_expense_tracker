@@ -1,5 +1,6 @@
 name: family_expense_tracker
-description: A budgeting, expense tracking and bill reminding app that allows shared control of budgetbooks
+description: A budgeting, expense tracking and bill reminding app that allows
+  shared control of budgetbooks
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -16,7 +17,9 @@ dependencies:
   cached_network_image: ^3.2.1
   carousel_slider: ^4.1.1
   clock: ^1.1.0
+  cloud_firestore: ^3.1.18
   cupertino_icons: ^1.0.4
+  firebase_auth: ^3.3.20
   firebase_core: ^1.17.0
   firebase_storage: ^10.2.16
   flutter:

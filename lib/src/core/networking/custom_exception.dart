@@ -3,27 +3,6 @@ import 'package:flutter/foundation.dart';
 
 /// An enum that holds names for our custom exceptions.
 enum _ExceptionType {
-  /// The exception for an expired bearer token.
-  TokenExpiredException,
-
-  /// The exception for a prematurely cancelled request.
-  CancelException,
-
-  /// The exception for a failed connection attempt.
-  ConnectTimeoutException,
-
-  /// The exception for failing to send a request.
-  SendTimeoutException,
-
-  /// The exception for failing to receive a response.
-  ReceiveTimeoutException,
-
-  /// The exception for no internet connectivity.
-  SocketException,
-
-  /// A better name for the socket exception.
-  FetchDataException,
-
   /// The exception for an incorrect parameter in a request/response.
   FormatException,
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 // Services
+import '../../features/auth/models/user_model.codegen.dart';
 import 'key_value_storage_base.dart';
 
 // Helpers
@@ -27,11 +28,11 @@ class KeyValueStorageService {
   }
 
   /// Returns last authenticated user
-  // StudentModel? getAuthUser() {
-  //   final user = _keyValueStorage.getCommon<String>(_authUserKey);
-  //   if (user == null) return null;
-  //   return StudentModel.fromJson(jsonDecode(user) as JSON);
-  // }
+  UserModel? getAuthUser() {
+    final user = _keyValueStorage.getCommon<String>(_authUserKey);
+    if (user == null) return null;
+    return UserModel.fromJson(jsonDecode(user) as JSON);
+  }
 
   /// Returns last authentication token
   Future<String> getAuthToken() async {
