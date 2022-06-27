@@ -1,16 +1,17 @@
 // ignore_for_file: constant_identifier_names
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 /// An enum that holds names for our custom exceptions.
 enum _ExceptionType {
+  /// The exception type for an error from one of the firebase services
+  FirebaseException,
+
   /// The exception for an incorrect parameter in a request/response.
   FormatException,
 
   /// The exception for an unknown type of failure.
   UnrecognizedException,
-
-  /// The exception for an unknown exception from the api.
-  ApiException,
 
   /// The exception for any parsing failure encountered during
   /// serialization/deserialization of a request.
@@ -20,88 +21,50 @@ enum _ExceptionType {
 class CustomException implements Exception {
   final String name, message;
   final String? code;
-  final int? statusCode;
   final _ExceptionType exceptionType;
 
   CustomException({
     this.code,
-    int? statusCode,
     required this.message,
-    this.exceptionType = _ExceptionType.ApiException,
-  })  : statusCode = statusCode ?? 500,
-        name = exceptionType.name;
+    this.exceptionType = _ExceptionType.UnrecognizedException,
+  }) : name = exceptionType.name;
 
-  factory CustomException.fromDioException(Exception error) {
+  factory CustomException.fromOtherException(Exception error) {
     try {
-      //   if (error is DioError) {
-      //     switch (error.type) {
-      //       case DioErrorType.cancel:
-      //         return CustomException(
-      //           exceptionType: _ExceptionType.CancelException,
-      //           statusCode: error.response?.statusCode,
-      //           message: 'Request cancelled prematurely',
-      //         );
-      //       case DioErrorType.connectTimeout:
-      //         return CustomException(
-      //           exceptionType: _ExceptionType.ConnectTimeoutException,
-      //           statusCode: error.response?.statusCode,
-      //           message: 'Connection not established',
-      //         );
-      //       case DioErrorType.sendTimeout:
-      //         return CustomException(
-      //           exceptionType: _ExceptionType.SendTimeoutException,
-      //           statusCode: error.response?.statusCode,
-      //           message: 'Failed to send',
-      //         );
-      //       case DioErrorType.receiveTimeout:
-      //         return CustomException(
-      //           exceptionType: _ExceptionType.ReceiveTimeoutException,
-      //           statusCode: error.response?.statusCode,
-      //           message: 'Failed to receive',
-      //         );
-      //       case DioErrorType.response:
-      //       case DioErrorType.other:
-      //         if (error.message.contains(_ExceptionType.SocketException.name)) {
-      //           return CustomException(
-      //             exceptionType: _ExceptionType.FetchDataException,
-      //             statusCode: error.response?.statusCode,
-      //             message: 'No internet connectivity',
-      //           );
-      //         }
-      //         if (error.response?.data['headers']['code'] == null) {
-      //           return CustomException(
-      //             exceptionType: _ExceptionType.UnrecognizedException,
-      //             statusCode: error.response?.statusCode,
-      //             message: error.response?.statusMessage ?? 'Unknown',
-      //           );
-      //         }
-      //         final name = error.response?.data['headers']['code'] as String;
-      //         final message =
-      //             error.response?.data['headers']['message'] as String;
-      //         if (name == _ExceptionType.TokenExpiredException.name) {
-      //           return CustomException(
-      //             exceptionType: _ExceptionType.TokenExpiredException,
-      //             code: name,
-      //             statusCode: error.response?.statusCode,
-      //             message: message,
-      //           );
-      //         }
-      //         return CustomException(
-      //           message: message,
-      //           code: name,
-      //           statusCode: error.response?.statusCode,
-      //         );
-      //     }
-      //   } else {
-      //     return CustomException(
-      //       exceptionType: _ExceptionType.UnrecognizedException,
-      //       message: 'Error unrecognized',
-      //     );
-      //   }
-      return CustomException(
-        exceptionType: _ExceptionType.UnrecognizedException,
-        message: 'Error unrecognized',
-      );
+      if (error is FirebaseAuthException) {
+        switch (error.code) {
+          case 'weak-password':
+            return CustomException(
+              exceptionType: _ExceptionType.FirebaseException,
+              code: error.code,
+              message: 'The provided password is too weak',
+            );
+          case 'email-already-in-use':
+            return CustomException(
+              exceptionType: _ExceptionType.FirebaseException,
+              code: error.code,
+              message: 'The account already exists for that email.',
+            );
+          case 'invalid-email':
+            return CustomException(
+              exceptionType: _ExceptionType.FirebaseException,
+              code: error.code,
+              message: 'The provided email is not valid.',
+            );
+          case 'operation-not-allowed':
+            return CustomException(
+              exceptionType: _ExceptionType.FirebaseException,
+              code: error.code,
+              message: 'This authentication method is disabled.',
+            );
+        }
+      } else if (error is FirebaseException){
+        return CustomException(
+          exceptionType: _ExceptionType.FirebaseException,
+          code: error.code,
+          message: error.message ?? 'Firebase error',
+        );
+      }
     } on FormatException catch (e) {
       return CustomException(
         exceptionType: _ExceptionType.FormatException,
@@ -109,10 +72,12 @@ class CustomException implements Exception {
       );
     } on Exception catch (_) {
       return CustomException(
-        exceptionType: _ExceptionType.UnrecognizedException,
         message: 'Error unrecognized',
       );
     }
+    return CustomException(
+      message: 'Error unrecognized',
+    );
   }
 
   factory CustomException.fromParsingException(Exception error) {

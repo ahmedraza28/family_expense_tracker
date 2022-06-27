@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../helpers/typedefs.dart';
 
 class FirestoreService {
-  const FirestoreService();
+  final FirebaseFirestore _firestoreDb;
+
+  const FirestoreService(this._firestoreDb);
 
   /// Sets the data for the document/collection existing
   /// at the provided path.
@@ -14,7 +16,7 @@ class FirestoreService {
     required Map<String, dynamic> data,
     bool merge = false,
   }) async {
-    final reference = FirebaseFirestore.instance.doc(path);
+    final reference = _firestoreDb.doc(path);
     debugPrint(path);
     await reference.set(data, SetOptions(merge: merge));
   }
@@ -22,7 +24,7 @@ class FirestoreService {
   /// Checks if the document/collection exists
   /// at the provided path.
   Future<bool> checkDocument({required String path}) async {
-    final reference = FirebaseFirestore.instance.doc(path);
+    final reference = _firestoreDb.doc(path);
     final snapshot = await reference.get();
     debugPrint('$path exists: ${snapshot.exists}');
     return snapshot.exists;
@@ -31,7 +33,7 @@ class FirestoreService {
   /// Deletes the document/collection existing at the
   /// provided path.
   Future<void> deleteData({required String path}) async {
-    final reference = FirebaseFirestore.instance.doc(path);
+    final reference = _firestoreDb.doc(path);
     debugPrint('delete: $path');
     await reference.delete();
   }
@@ -45,7 +47,7 @@ class FirestoreService {
   }) async {
     debugPrint(path);
 
-    final docRef = FirebaseFirestore.instance.doc(path);
+    final docRef = _firestoreDb.doc(path);
 
     await docRef.update(changes);
   }
@@ -59,9 +61,9 @@ class FirestoreService {
     required Map<String, dynamic> changes,
     QueryBuilder queryBuilder,
   }) async {
-    final batchUpdate = FirebaseFirestore.instance.batch();
+    final batchUpdate = _firestoreDb.batch();
     debugPrint(path);
-    Query<JSON> query = FirebaseFirestore.instance.collection(path);
+    Query<JSON> query = _firestoreDb.collection(path);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -82,7 +84,7 @@ class FirestoreService {
     QueryBuilder queryBuilder,
     Sorter<T> sort,
   }) {
-    Query<JSON> query = FirebaseFirestore.instance.collection(path);
+    Query<JSON> query = _firestoreDb.collection(path);
     if (queryBuilder != null) {
       query = queryBuilder(query)!;
     }
@@ -105,7 +107,7 @@ class FirestoreService {
     required String path,
     required SnapshotBuilder<T> builder,
   }) {
-    final reference = FirebaseFirestore.instance.doc(path);
+    final reference = _firestoreDb.doc(path);
     final snapshots = reference.snapshots();
     return snapshots.map((snapshot) => builder(snapshot.data(), snapshot.id));
   }
