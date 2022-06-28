@@ -42,7 +42,7 @@ class AuthController extends StateNotifier<FutureState<bool?>> {
     });
   }
 
-  Future<void> login() async {
+  Future<void> loginWithGoogle() async {
     state = const FutureState.loading();
 
     state = await FutureState.makeGuardedRequest(() async {

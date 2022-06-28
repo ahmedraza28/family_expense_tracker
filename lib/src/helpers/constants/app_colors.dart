@@ -23,14 +23,14 @@ class AppColors {
   ];
 
   /// The main purplish color used for theming the app.
-  static const Color primaryColor = Color.fromARGB(255, 135, 0, 224);
+  static const Color primaryColor = Color.fromARGB(255, 0, 71, 224);
 
   /// The color value for orange color in the app.
-  static const Color lightPrimaryColor = Color.fromARGB(250, 186, 67, 255);
+  static const Color lightPrimaryColor = Color.fromARGB(248, 67, 136, 255);
 
   /// The secondary yellowish color used for contrasting
   /// the primary purple in the app.
-  static const Color secondaryColor = Color.fromARGB(255, 255, 199, 44);
+  static const Color secondaryColor = Color.fromARGB(255, 255, 214, 64);
 
   /// The tertiary blackish color used for contrasting
   /// the secondary yellow in the app.
