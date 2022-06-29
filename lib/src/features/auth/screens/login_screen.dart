@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// Providers
-import '../../../helpers/constants/app_assets.dart';
+// Controllers
 import '../controllers/auth_controller.dart';
 
 // States
 import '../../shared/states/future_state.codegen.dart';
 
 // Helpers
+import '../../../helpers/constants/app_assets.dart';
 import '../../../helpers/constants/app_colors.dart';
 import '../../../helpers/constants/app_styles.dart';
 import '../../../helpers/constants/app_typography.dart';
