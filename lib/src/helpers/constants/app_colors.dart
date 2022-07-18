@@ -69,11 +69,6 @@ class AppColors {
   /// The color value for light grey borders in the app.
   static const Color lightOutlineColor = Color.fromARGB(255, 224, 224, 224);
 
-  /// The red [LinearGradient] for buttons in the app.
-  static const Gradient buttonGradientRed = LinearGradient(
-    colors: [primaryColor, redColor],
-  );
-
   /// The orange [LinearGradient] for buttons in the app.
   static const Gradient buttonGradientPurple = LinearGradient(
     colors: [lightPrimaryColor, primaryColor],

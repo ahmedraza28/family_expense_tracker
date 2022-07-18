@@ -12,10 +12,12 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth;
+  final GoogleSignIn _googleSignIn;
 
   AuthRepository({
     required FirebaseAuth firebaseAuth,
-  }) : _firebaseAuth = firebaseAuth;
+  })  : _firebaseAuth = firebaseAuth,
+        _googleSignIn = GoogleSignIn();
 
   Future<UserCredential> login({
     required AuthCredential authCredential,
@@ -23,18 +25,21 @@ class AuthRepository {
     return _firebaseAuth.signInWithCredential(authCredential);
   }
 
-  Future<OAuthCredential> createGoogleCredentials() async {
+  Future<OAuthCredential?> createGoogleCredentials() async {
     // Trigger the authentication flow
-    final googleUser = await GoogleSignIn().signIn();
+    final googleUser = await _googleSignIn.signIn();
 
     // Obtain the auth details from the request
     final googleAuth = await googleUser?.authentication;
 
     // Create a new credential
-    return GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+    if (googleAuth != null) {
+      return GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+    }
+    return null;
   }
 
   Future<UserCredential> signUp({
@@ -48,6 +53,7 @@ class AuthRepository {
   }
 
   Future<void> signOut() async {
-    return _firebaseAuth.signOut();
+    await _firebaseAuth.signOut();
+    await _googleSignIn.signOut();
   }
 }

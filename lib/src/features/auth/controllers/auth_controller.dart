@@ -47,8 +47,9 @@ class AuthController extends StateNotifier<FutureState<bool?>> {
 
     state = await FutureState.makeGuardedRequest(() async {
       final credential = await _authRepository.createGoogleCredentials();
-      await _authRepository.login(authCredential: credential);
+      if (credential == null) return false;
 
+      await _authRepository.login(authCredential: credential);
       return true;
     });
   }

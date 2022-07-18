@@ -42,6 +42,9 @@ class Insets {
   /// [SizedBox] of height **15**.
   static const gapH15 = SizedBox(height: 15);
 
+  /// Returns a [SizedBox] of custom `height`
+  static SizedBox gapH(double height) => SizedBox(height: height);
+
   /// [SizedBox] of height **15**.
   static const gapW15 = SizedBox(width: 15);
 
@@ -62,6 +65,9 @@ class Insets {
 
   /// [SizedBox] of height **30**.
   static const gapW30 = SizedBox(width: 30);
+
+  /// Returns a [SizedBox] of custom `width`
+  static SizedBox gapW(double width) => SizedBox(width: width);
 
   /// [Spacer] for adding infinite gaps, as much as the constraints
   /// allow.

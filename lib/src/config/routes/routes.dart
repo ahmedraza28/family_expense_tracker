@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 // Screens
 
 // Helpers
+import '../../features/auth/screens/auth_widget_builder.dart';
+import '../../features/auth/screens/login_screen.dart';
 import '../../helpers/typedefs.dart';
 
 /// A utility class that holds screen names for named navigation.
@@ -13,13 +15,10 @@ class Routes {
   const Routes._();
 
   /// The route to be loaded when app launches
-  static const String initialRoute = AppStartupScreenRoute;
+  static const String initialRoute = AuthWidgetBuilderRoute;
 
   /// The route to be loaded in case of unrecognized route name
   static const String fallbackRoute = NotFoundScreenRoute;
-
-  /// The name of the route for app startup screen
-  static const String AppStartupScreenRoute = '/app-startup-screen';
 
   // The name for the auth widget screen
   static const String AuthWidgetBuilderRoute = '/auth-widget-builder';
@@ -82,6 +81,8 @@ class Routes {
       '/add-edit-teacher-review-screen';
 
   static final Map<String, RouteBuilder> _routesMap = {
+    LoginScreenRoute: (_) => const LoginScreen(),
+    AuthWidgetBuilderRoute: (_) => const AuthWidgetBuilder(),
     NotFoundScreenRoute: (_) => const SizedBox.shrink(),
     ForgotPasswordScreenRoute: (_) => const SizedBox.shrink(),
     ChangePasswordScreenRoute: (_) => const SizedBox.shrink(),

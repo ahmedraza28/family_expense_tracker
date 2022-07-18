@@ -29,16 +29,10 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void onData(bool? isAuthenticated) {
-      if (isAuthenticated != null && isAuthenticated) {
-        AppRouter.popUntilRoot();
-      }
-    }
 
     ref.listen<FutureState<bool?>>(
       authControllerProvider,
       (_, authState) => authState.whenOrNull(
-        data: onData,
         failed: (reason) => CustomDialog.showAlertDialog(
           context: context,
           reason: reason,
@@ -53,35 +47,40 @@ class LoginScreen extends HookConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Insets.gapH30,
+
             SvgPicture.asset(
               AppAssets.savingsPoster,
               height: 300,
-              fit: BoxFit.cover,
+              fit: BoxFit.fitWidth,
             ),
 
-            Insets.gapH30,
+            Insets.gapH10,
 
             // Logo
             Text(
               'Family Expense Tracker',
               style: AppTypography.primary.heading34.copyWith(
-                fontSize: 50,
+                fontSize: 45,
               ),
             ),
 
-            Insets.gapH30,
+            Insets.gapH20,
 
-            Text(
-              'Save your money with\nconscious spending',
-              style: AppTypography.primary.body16,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Save your money with\nconscious spending',
+                style: AppTypography.primary.title18,
+              ),
             ),
 
-            Insets.gapH30,
+            Insets.expand,
 
             // Login Button
             CustomTextButton.gradient(
               width: double.infinity,
-              gradient: AppColors.buttonGradientRed,
+              gradient: AppColors.buttonGradientPurple,
               onPressed: () {
                 ref.read(authControllerProvider.notifier).loginWithGoogle();
               },
@@ -105,6 +104,8 @@ class LoginScreen extends HookConsumerWidget {
                 ),
               ),
             ),
+
+            Insets.bottomInsetsLow,
           ],
         ),
       ),
