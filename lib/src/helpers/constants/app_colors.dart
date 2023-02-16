@@ -70,13 +70,18 @@ class AppColors {
   static const Color lightOutlineColor = Color.fromARGB(255, 224, 224, 224);
 
   /// The orange [LinearGradient] for buttons in the app.
-  static const Gradient buttonGradientPurple = LinearGradient(
+  static const Gradient buttonGradientPrimary = LinearGradient(
     colors: [lightPrimaryColor, primaryColor],
   );
 
-  /// The orange [LinearGradient] for disabled buttons in the app.
+  /// The grey [LinearGradient] for disabled buttons in the app.
   static const Gradient buttonGradientGrey = LinearGradient(
     colors: [lightSkeletonColor, darkSkeletonColor],
+  );
+
+  /// The reddish-orange [LinearGradient] for danger buttons in the app.
+  static const Gradient buttonGradientDanger = LinearGradient(
+    colors: [Colors.redAccent, Colors.red],
   );
 
   /// The white [LinearGradient] for fading movies carousel in the app.

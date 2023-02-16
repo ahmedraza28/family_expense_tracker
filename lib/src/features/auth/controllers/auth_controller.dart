@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
-import '../../all_providers.dart';
+import '../../../core/core.dart';
 
 // Repositories
 import '../repositories/auth_repository.dart';
 
 // States
-import '../../shared/states/future_state.codegen.dart';
+import '../../../global/states/states.dart';
 
 final currentUserProvider = StreamProvider<User?>(
   (ref) => ref.watch(firebaseAuthProvider).authStateChanges(),

@@ -2,16 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Routers
-import 'src/config/routes/app_router.dart';
-import 'src/config/routes/routes.dart';
+import 'src/config/routing/routing.dart';
 
 // Helpers
-import 'src/helpers/constants/app_colors.dart';
-import 'src/helpers/constants/app_themes.dart';
+import 'src/helpers/constants/constants.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

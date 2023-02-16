@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:math';
 
 import 'package:another_flushbar/flushbar.dart';
@@ -52,6 +54,21 @@ class AppUtils {
     return TimeOfDay.fromDateTime(dateTime);
   }
 
+  /// A utility method to convert a [TimeOfDay] object
+  /// to a JSON API accepted 24hr time string
+  static String timeToJson(TimeOfDay time) {
+    String addLeadingZeroIfNeeded(int value) {
+      if (value < 10) {
+        return '0$value';
+      }
+      return value.toString();
+    }
+
+    final hourLabel = addLeadingZeroIfNeeded(time.hour);
+    final minuteLabel = addLeadingZeroIfNeeded(time.minute);
+    return '$hourLabel:$minuteLabel';
+  }
+
   /// A utility method to convert any instance to null
   static T? toNull<T>(Object? _) => null;
 
@@ -60,20 +77,26 @@ class AppUtils {
     return list?.whereType<int>().toList();
   }
 
+  /// A utility method to clean spaces from input
+  static String cleanWhitespace(String input) {
+    return input.replaceAll(' ', '');
+  }
+
   /// Helper method to show toast message
   static void showFlushBar({
     required BuildContext context,
     required String message,
     IconData? icon = Icons.error_rounded,
-    double? iconSize = 28,
+    double? iconSize = 26,
     Color? iconColor = Colors.redAccent,
   }) {
     Flushbar<void>(
       message: message,
       messageSize: 15,
       messageColor: AppColors.textWhite80Color,
-      borderRadius: Corners.rounded9,
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      animationDuration: Durations.slow,
+      borderRadius: Corners.rounded(9),
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 85),
       padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
       backgroundColor: const Color.fromARGB(218, 48, 48, 48),
       boxShadows: Shadows.universal,
@@ -84,7 +107,7 @@ class AppUtils {
       ),
       shouldIconPulse: false,
       dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(milliseconds: 1300),
     ).show(context);
   }
 }
@@ -102,10 +125,11 @@ class Regexes {
   );
 
   /// The regular expression for validating contacts in the app.
-  static RegExp contactRegex = RegExp(r'^(03|3)\d{9}$');
+  static RegExp contactRegex = RegExp(r'^(4|[6-8])\d{7}$');
 
-  /// The regular expression for validating erps in the app.
-  static RegExp erpRegex = RegExp(r'^[1-9]{1}\d{4}$');
+  /// The regular expression for validating ids in the app.
+  static RegExp idRegex =
+      RegExp(r'^([1-9]\d{8}|[1-9]\d{11})$');
 
   /// The regular expression for validating names in the app.
   static RegExp nameRegex = RegExp(r'^[a-z A-Z]+$');
@@ -115,16 +139,15 @@ class Regexes {
 
   /// The regular expression for validating credit card numbers in the app.
   static RegExp creditCardNumberRegex =
-      RegExp(r'^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$');
+      RegExp(r'^(?:4[0-9]{12}(?:[0-9]{3})?|(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$');
 
   /// The regular expression for validating credit card CVV in the app.
   static RegExp creditCardCVVRegex = RegExp(r'^[0-9]{3}$');
 
   /// The regular expression for validating credit card expiry in the app.
-  static RegExp creditCardExpiryRegex =
-      RegExp(r'(0[1-9]|10|11|12)/20[0-9]{2}$');
+  static RegExp creditCardExpiryRegex = RegExp(r'(0[1-9]|10|11|12)/[0-9]{2}$');
 
-  /// The regular expression for validating credit card expiry in the app.
+  /// The regular expression for validating otp in the app.
   static final RegExp otpDigitRegex = RegExp(r'^[0-9]{1}$');
 }
 
@@ -141,5 +164,6 @@ class Durations {
   static const normal = Duration(milliseconds: 300);
   static const medium = Duration(milliseconds: 500);
   static const slow = Duration(milliseconds: 700);
-  static const slower = Duration(milliseconds: 1000);
+  static const slower = Duration(milliseconds: 850);
+  static const slowest = Duration(milliseconds: 1000);
 }

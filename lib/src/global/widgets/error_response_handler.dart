@@ -1,0 +1,76 @@
+import 'package:flutter/material.dart';
+
+//Services
+import '../../core/networking/custom_exception.dart';
+
+//Widgets
+import 'custom_error_widget.dart';
+
+class ErrorResponseHandler extends StatelessWidget {
+  final Object error;
+  final StackTrace? stackTrace;
+  final VoidCallback? onError;
+  final VoidCallback? retryCallback;
+
+  const ErrorResponseHandler({
+    required this.retryCallback,
+    required this.error,
+    required this.stackTrace,
+    super.key,
+    this.onError,
+  });
+
+  const factory ErrorResponseHandler.builder({
+    required Object error,
+    required StackTrace? stackTrace,
+    required Widget Function(CustomException) builder,
+    Key? key,
+    VoidCallback? onError,
+  }) = _ErrorResponseHandlerWithBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    if (error is CustomException) {
+      final isDark =
+          Theme.of(context).colorScheme.brightness == Brightness.dark;
+      return isDark
+          ? CustomErrorWidget.dark(
+              error: error as CustomException,
+              retryCallback: retryCallback!,
+              height: MediaQuery.of(context).size.height * 0.5,
+            )
+          : CustomErrorWidget.light(
+              error: error as CustomException,
+              retryCallback: retryCallback!,
+              height: MediaQuery.of(context).size.height * 0.5,
+            );
+    }
+    onError?.call();
+    debugPrint(error.toString());
+    debugPrint(stackTrace?.toString());
+    return const SizedBox.shrink();
+  }
+}
+
+class _ErrorResponseHandlerWithBuilder extends ErrorResponseHandler {
+  final Widget Function(CustomException) builder;
+
+  const _ErrorResponseHandlerWithBuilder({
+    required super.error,
+    required super.stackTrace,
+    required this.builder,
+    super.key,
+    super.onError,
+  }) : super(
+          retryCallback: null,
+        );
+
+  @override
+  Widget build(BuildContext context) {
+    if (error is CustomException) return builder(error as CustomException);
+    onError?.call();
+    debugPrint(error.toString());
+    debugPrint(stackTrace?.toString());
+    return const SizedBox.shrink();
+  }
+}

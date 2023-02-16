@@ -2,14 +2,8 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// Models
-
-// Providers
-
 // Helpers
-import '../../../helpers/constants/app_utils.dart';
-import '../../../helpers/constants/app_colors.dart';
-import '../../../helpers/constants/app_styles.dart';
+import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../widgets/add_book_fab.dart';
@@ -31,8 +25,8 @@ class BooksScreen extends ConsumerWidget {
         transitionType: ContainerTransitionType.fadeThrough,
         closedColor: AppColors.primaryColor,
         middleColor: AppColors.lightPrimaryColor,
-        closedShape: const RoundedRectangleBorder(
-          borderRadius: Corners.rounded50,
+        closedShape: RoundedRectangleBorder(
+          borderRadius: Corners.rounded(50),
         ),
         tappable: false,
         transitionDuration: Durations.medium,

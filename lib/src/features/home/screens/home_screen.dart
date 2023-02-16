@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
-import '../../../helpers/constants/app_colors.dart';
-import '../../../helpers/constants/app_styles.dart';
-import '../../../helpers/constants/app_typography.dart';
-
-// Routes
-import '../../../config/routes/app_router.dart';
+import '../../../helpers/constants/constants.dart';
 
 // Controllers
 import '../../auth/controllers/auth_controller.dart';
+
+// Widgets
+import '../../../global/widgets/widgets.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -45,12 +43,10 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 20),
 
             // Welcome
-            Text(
+            CustomText.heading(
               'Welcome',
-              style: AppTypography.primary.heading34.copyWith(
-                color: AppColors.primaryColor,
-                fontSize: 45,
-              ),
+              color: AppColors.primaryColor,
+              fontSize: 45,
             ),
 
             const SizedBox(height: 50),
@@ -80,55 +76,46 @@ class UserProfileDetails extends HookConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Full Name Label
-        Text(
+        const CustomText(
           'Full Name',
-          style: AppTypography.primary.heading22.copyWith(
-            color: AppColors.primaryColor,
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-          ),
+          fontSize: 26,
+          fontWeight: FontWeight.bold,
+          color: AppColors.primaryColor,
         ),
 
         // Full Name
-        Text(
+        CustomText.title(
           currentUser.displayName!,
-          style: AppTypography.primary.title18,
         ),
 
         Insets.expand,
 
         // Email Label
-        Text(
+        const CustomText(
           'Email',
-          style: AppTypography.primary.heading22.copyWith(
-            color: AppColors.primaryColor,
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-          ),
+          fontSize: 26,
+          fontWeight: FontWeight.bold,
+          color: AppColors.primaryColor,
         ),
 
         // Email Data
-        Text(
+        CustomText.title(
           currentUser.email!,
-          style: AppTypography.primary.title18,
         ),
 
         Insets.expand,
 
         // Phone Number Label
-        Text(
+        const CustomText(
           'Phone Number',
-          style: AppTypography.primary.heading22.copyWith(
-            color: AppColors.primaryColor,
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-          ),
+          color: AppColors.primaryColor,
+          fontSize: 26,
+          fontWeight: FontWeight.bold,
         ),
 
         // Phone Number Data
-        Text(
+        CustomText.title(
           currentUser.phoneNumber ?? 'Not Added',
-          style: AppTypography.primary.title18,
         ),
 
         Insets.expand,

@@ -14,8 +14,8 @@ class AddBookFab extends ConsumerWidget {
   final VoidCallback onPressed;
 
   const AddBookFab({
-    super.key,
     required this.onPressed,
+    super.key,
   });
 
   @override

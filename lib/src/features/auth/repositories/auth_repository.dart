@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+
 // Providers
-import '../../all_providers.dart';
+import '../../../core/core.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final firebaseAuth = ref.watch(firebaseAuthProvider);

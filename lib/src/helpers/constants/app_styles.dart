@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// A utility class that holds all the icon sizes used throughout
-/// the entire app.
-///
-/// This class has no constructor and all variables are `static`.
-@immutable
-class IconSizes {
-  const IconSizes._();
-
-  static const double sm19 = 19;
-  static const double med22 = 22;
-  static const double lg27 = 27;
-}
-
 /// A utility class that holds all the gaps and insets used
 /// throughout the entire app by things such as padding, sizedbox etc.
 ///
@@ -69,6 +56,9 @@ class Insets {
   /// Returns a [SizedBox] of custom `width`
   static SizedBox gapW(double width) => SizedBox(width: width);
 
+  /// Returns a [SizedBox] of no size
+  static const SizedBox shrink = SizedBox.shrink();
+
   /// [Spacer] for adding infinite gaps, as much as the constraints
   /// allow.
   static const expand = Spacer();
@@ -94,6 +84,9 @@ class Insets {
 class Corners {
   const Corners._();
 
+  /// [BorderRadius] not rounded on any corner
+  static const BorderRadius none = BorderRadius.zero;
+
   /// [BorderRadius] rounded on all corners by **4**
   static const BorderRadius rounded4 = BorderRadius.all(Radius.circular(4));
 
@@ -112,8 +105,9 @@ class Corners {
   /// [BorderRadius] rounded on all corners by **20**
   static const BorderRadius rounded20 = BorderRadius.all(Radius.circular(20));
 
-  /// [BorderRadius] rounded on all corners by **50**
-  static const BorderRadius rounded50 = BorderRadius.all(Radius.circular(50));
+  /// [BorderRadius] rounded on all corners by `radius`
+  static BorderRadius rounded(double radius) =>
+      BorderRadius.all(Radius.circular(radius));
 }
 
 /// A utility class that holds all the shadows used throughout
@@ -128,6 +122,14 @@ class Shadows {
     BoxShadow(
       color: Color.fromRGBO(51, 51, 51, 0.15),
       blurRadius: 10,
+    ),
+  ];
+
+  static const List<BoxShadow> universalDark = [
+    BoxShadow(
+      color: Color.fromARGB(36, 24, 24, 24),
+      blurRadius: 10,
+      spreadRadius: 1,
     ),
   ];
 

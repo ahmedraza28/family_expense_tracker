@@ -4,21 +4,19 @@ import 'package:flutter/material.dart';
 import '../models/book_model.codegen.dart';
 
 // Helpers
-import '../../../helpers/constants/app_colors.dart';
-import '../../../helpers/constants/app_styles.dart';
-import '../../../helpers/constants/app_typography.dart';
+import '../../../helpers/constants/constants.dart';
 
 // Widgets
-import '../../shared/widgets/custom_text_button.dart';
+import '../../../global/widgets/widgets.dart';
 
 class BookListItem extends StatelessWidget {
   final BookModel? book;
   final VoidCallback onTap;
 
   const BookListItem({
+    required this.onTap,
     super.key,
     this.book,
-    required this.onTap,
   });
 
   @override
@@ -42,11 +40,8 @@ class BookListItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Timetable Number
-                Text(
+                CustomText.title(
                   'Book Name',
-                  style: AppTypography.primary.title18.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
                 ),
 
                 // Arrow
@@ -85,13 +80,11 @@ class BookListItem extends StatelessWidget {
               height: 35,
               width: 100,
               onPressed: () {},
-              gradient: AppColors.buttonGradientPurple,
+              gradient: AppColors.buttonGradientPrimary,
               child: Center(
-                child: Text(
+                child: CustomText.subtitle(
                   'Add Members',
-                  style: AppTypography.secondary.subtitle13.copyWith(
-                    color: Colors.white,
-                  ),
+                  color: Colors.white,
                 ),
               ),
             )

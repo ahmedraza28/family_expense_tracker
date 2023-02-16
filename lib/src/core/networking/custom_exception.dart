@@ -19,13 +19,14 @@ enum _ExceptionType {
 }
 
 class CustomException implements Exception {
-  final String name, message;
+  final String name;
+  final String message;
   final String? code;
   final _ExceptionType exceptionType;
 
   CustomException({
-    this.code,
     required this.message,
+    this.code,
     this.exceptionType = _ExceptionType.UnrecognizedException,
   }) : name = exceptionType.name;
 

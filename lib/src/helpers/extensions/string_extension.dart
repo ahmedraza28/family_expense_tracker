@@ -2,8 +2,7 @@
 
 import 'package:path/path.dart' as p;
 
-// Helpers
-import '../constants/app_utils.dart' show Regexes;
+import '../constants/app_utils.dart';
 
 /// A utility with extensions for strings.
 extension StringExt on String {
@@ -16,8 +15,8 @@ extension StringExt on String {
   /// An extension for validating String is a contact.
   bool get isValidContact => Regexes.contactRegex.hasMatch(this);
 
-  /// An extension for validating String is a contact.
-  bool get isValidErp => Regexes.erpRegex.hasMatch(this);
+  /// An extension for validating String is an identification number.
+  bool get isValidIdentification => Regexes.idRegex.hasMatch(this);
 
   /// An extension for validating String is a zipcode.
   bool get isValidZipCode => Regexes.zipCodeRegex.hasMatch(this);

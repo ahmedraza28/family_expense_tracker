@@ -1,8 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
 import '../../helpers/typedefs.dart';
+
+final firestoreDatabaseProvider = Provider<FirebaseFirestore>(
+  (ref) => FirebaseFirestore.instance,
+);
+
+final firebaseAuthProvider = Provider<FirebaseAuth>(
+  (ref) => FirebaseAuth.instance,
+);
+
+final firestoreServiceProvider = Provider<FirestoreService>(
+  (ref) {
+    final firestoreDb = ref.watch(firestoreDatabaseProvider);
+    return FirestoreService(firestoreDb);
+  },
+);
 
 class FirestoreService {
   final FirebaseFirestore _firestoreDb;

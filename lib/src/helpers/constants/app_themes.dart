@@ -25,6 +25,7 @@ class AppThemes {
   ///
   /// * textButtonTheme: [TextButtonTheme] without the default padding,
   static final mainTheme = ThemeData(
+    brightness: Brightness.dark,
     primaryColor: AppColors.primaryColor,
     colorScheme: const ColorScheme.light().copyWith(
       primary: AppColors.primaryColor,
@@ -41,19 +42,45 @@ class AppThemes {
       onError: AppColors.textWhite80Color,
     ),
     scaffoldBackgroundColor: AppColors.backgroundColor,
-    fontFamily: AppTypography.primary.fontFamily,
-    textTheme: AppTypography.primary.textTheme,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white,
+      showUnselectedLabels: true,
+      unselectedLabelStyle: TextStyle(
+        color: AppColors.textWhite80Color,
+        fontSize: 14,
+      ),
+      selectedLabelStyle: TextStyle(
+        color: AppColors.textWhite80Color,
+        fontSize: 14,
+      ),
+      backgroundColor: AppColors.backgroundColor,
+    ),
+    fontFamily: AppTypography.primaryFontFamily,
+    textTheme: AppTypography.primary,
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
     ),
+    inputDecorationTheme: const InputDecorationTheme(
+      fillColor: AppColors.fieldFillColor,
+    ),
+    chipTheme: const ChipThemeData(
+      backgroundColor: AppColors.fieldFillColor,
+      selectedColor: AppColors.primaryColor,
+      labelStyle: TextStyle(
+        fontSize: 13,
+        color: AppColors.textBlackColor,
+      ),
+    ),
     appBarTheme: AppBarTheme(
       centerTitle: true,
       elevation: 0,
       backgroundColor: AppColors.lightBackgroundColor,
-      titleTextStyle: AppTypography.primary.heading22,
+      titleTextStyle: AppTypography.primary.displayMedium,
       iconTheme: const IconThemeData(color: Colors.black),
     ),
     iconTheme: const IconThemeData(color: AppColors.textLightGreyColor),
