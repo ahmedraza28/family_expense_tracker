@@ -19,14 +19,13 @@ final currentUserProvider = StreamProvider<User?>(
 
 @Riverpod(keepAlive: true)
 class AuthController extends _$AuthController {
-  final AuthRepository _authRepository;
+  late final AuthRepository _authRepository;
 
   @override
-  FutureOr<UserCredential?> build() => null;
-
-  AuthController({
-    required AuthRepository authRepository,
-  }) : _authRepository = authRepository;
+  FutureOr<UserCredential?> build() {
+    _authRepository = ref.read(authRepositoryProvider);
+    return null;
+  }
 
   Future<void> register({
     required String email,
