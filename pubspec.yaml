@@ -2,7 +2,7 @@ name: family_expense_tracker
 description: A budgeting, expense tracking and bill reminding app that allows
   shared control of budgetbooks
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
 
@@ -10,6 +10,9 @@ environment:
   sdk: ">=2.19.2 <3.0.0"
 
 dependencies:
+  animated_custom_dropdown: ^1.4.0
+  animations: ^2.0.7
+  another_flushbar: ^1.12.29
   cached_network_image: ^3.2.3
   clock: ^1.1.1
   cloud_firestore: ^4.4.0
@@ -33,6 +36,7 @@ dependencies:
   image_picker: ^0.8.6+1
   intl: ^0.17.0
   json_annotation: ^4.8.0
+  lottie: ^2.2.0
   path: ^1.8.2
   path_provider: ^2.0.12
   riverpod_annotation: ^1.2.1

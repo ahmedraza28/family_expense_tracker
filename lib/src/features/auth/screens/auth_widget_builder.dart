@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Controllers
-import '../controllers/auth_controller.dart';
+import '../controllers/auth_controller.codegen.dart';
 
 // Screens
 import '../../home/screens/home_screen.dart';

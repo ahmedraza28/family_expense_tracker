@@ -1,14 +1,12 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Controllers
-import '../controllers/auth_controller.dart';
-
-// States
-import '../../../global/states/states.dart';
+import '../controllers/auth_controller.codegen.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
@@ -21,12 +19,12 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<FutureState<bool?>>(
+    ref.listen<AsyncValue<UserCredential?>>(
       authControllerProvider,
       (_, authState) => authState.whenOrNull(
-        failed: (reason) => CustomDialog.showAlertDialog(
+        error: (reason, st) => CustomDialog.showAlertDialog(
           context: context,
-          reason: reason,
+          reason: reason as String,
           dialogTitle: 'Login Failed',
         ),
       ),

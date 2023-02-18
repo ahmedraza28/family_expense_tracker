@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Helpers
-import '../../../helpers/constants/app_styles.dart';
+import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import 'book_list_item.dart';

@@ -4,11 +4,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
-// Controllers
-import '../../auth/controllers/auth_controller.dart';
-
 // Widgets
 import '../../../global/widgets/widgets.dart';
+
+// Features
+import '../../auth/auth.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});

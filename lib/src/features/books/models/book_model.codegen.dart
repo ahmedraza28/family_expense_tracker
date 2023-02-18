@@ -6,8 +6,8 @@ import 'package:flutter/foundation.dart';
 // Helpers
 import '../../../helpers/typedefs.dart';
 
-// Models
-import '../../auth/models/user_model.codegen.dart';
+// Features
+import '../../auth/auth.dart';
 
 part 'book_model.codegen.freezed.dart';
 part 'book_model.codegen.g.dart';

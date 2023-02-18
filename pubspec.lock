@@ -34,7 +34,7 @@ packages:
     source: hosted
     version: "0.11.2"
   animated_custom_dropdown:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: animated_custom_dropdown
       sha256: a1ce14dd584dc73891da4c29047bc41a7520781d58c9169ccf7b0e1516f531bf
@@ -42,7 +42,7 @@ packages:
     source: hosted
     version: "1.4.0"
   animations:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: animations
       sha256: fe8a6bdca435f718bb1dc8a11661b2c22504c6da40ef934cee8327ed77934164
@@ -50,7 +50,7 @@ packages:
     source: hosted
     version: "2.0.7"
   another_flushbar:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: another_flushbar
       sha256: fa09f8a4ca582c417669b7b1d0e85ce65bd074d80bb0dcbb1302ad1b22bdc3ef
@@ -762,7 +762,7 @@ packages:
     source: hosted
     version: "1.1.1"
   lottie:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: lottie
       sha256: "49bbc544e44bf0c734ccda29b182e3516a12f5021ea98b206cf31a168b0f97da"

@@ -1,30 +1,27 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
 import '../../helpers/typedefs.dart';
 
-final firestoreDatabaseProvider = Provider<FirebaseFirestore>(
-  (ref) => FirebaseFirestore.instance,
-);
+part 'firestore_service.codegen.g.dart';
 
 final firebaseAuthProvider = Provider<FirebaseAuth>(
   (ref) => FirebaseAuth.instance,
 );
 
-final firestoreServiceProvider = Provider<FirestoreService>(
-  (ref) {
-    final firestoreDb = ref.watch(firestoreDatabaseProvider);
-    return FirestoreService(firestoreDb);
-  },
-);
+/// A provider used to access instance of this service
+@Riverpod(keepAlive: true)
+FirestoreService firestoreService(FirestoreServiceRef ref) {
+  return const FirestoreService();
+}
 
 class FirestoreService {
-  final FirebaseFirestore _firestoreDb;
+  static final FirebaseFirestore _firestoreDb = FirebaseFirestore.instance;
 
-  const FirestoreService(this._firestoreDb);
+  const FirestoreService();
 
   /// Sets the data for the document/collection existing
   /// at the provided path.

@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "UniPal-Frontend",
+            "name": "Family Expense Tracker",
             "request": "launch",
             "type": "dart",
             "args": [
@@ -13,7 +13,7 @@
             ]
         },
         {
-            "name": "UniPal-Frontend (profile mode)",
+            "name": "Family Expense Tracker (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
@@ -22,7 +22,7 @@
             ]
         },
         {
-            "name": "UniPal-Frontend (release mode)",
+            "name": "Family Expense Tracker (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",

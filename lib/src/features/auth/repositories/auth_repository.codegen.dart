@@ -1,24 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+part 'auth_repository.codegen.g.dart';
 
-// Providers
-import '../../../core/core.dart';
-
-final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  final firebaseAuth = ref.watch(firebaseAuthProvider);
-  return AuthRepository(firebaseAuth: firebaseAuth);
-});
+/// A provider used to access instance of this service
+@Riverpod(keepAlive: true)
+AuthRepository authRepository(AuthRepositoryRef ref) {
+  return const AuthRepository();
+  // return MockAuthRepository();
+}
 
 class AuthRepository {
-  final FirebaseAuth _firebaseAuth;
-  final GoogleSignIn _googleSignIn;
+  static final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  static final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  AuthRepository({
-    required FirebaseAuth firebaseAuth,
-  })  : _firebaseAuth = firebaseAuth,
-        _googleSignIn = GoogleSignIn();
+  const AuthRepository();
 
   Future<UserCredential> login({
     required AuthCredential authCredential,

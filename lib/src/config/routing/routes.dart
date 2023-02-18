@@ -1,11 +1,10 @@
 // ignore_for_file: constant_identifier_names
 import 'package:flutter/material.dart';
 
-// Screens
+// Features
+import '../../features/auth/auth.dart';
 
 // Helpers
-import '../../features/auth/screens/auth_widget_builder.dart';
-import '../../features/auth/screens/login_screen.dart';
 import '../../helpers/typedefs.dart';
 
 /// A utility class that holds screen names for named navigation.
@@ -44,51 +43,12 @@ class Routes {
   /// The name of the route for change password screen.
   static const String ChangePasswordScreenRoute = '/change-password-screen';
 
-  /// The name of the route for posts feed screen.
-  static const String PostsFeedScreenRoute = '/posts-feed-screen';
-
-  /// The name of the route for adding or editing a post screen.
-  static const String AddEditPostScreenRoute = '/add-edit-post-screen';
-
-  /// The name of the route for activities feed screen.
-  static const String ActivitiesFeedScreenRoute = '/activities-feed-screen';
-
-  /// The name of the route for adding or editing an activity screen.
-  static const String AddEditActivityScreenRoute = '/add-edit-activity-screen';
-
-  /// The name of the route for student finder screen.
-  static const String StudentFinderScreenRoute = '/student-finder-screen';
-
-  /// The name of the route for student profile screen.
-  static const String ProfileScreenRoute = '/profile-screen';
-
-  /// The name of the route for user preferences screen.
-  static const String UpdatePreferencesScreenRoute =
-      '/update-preferences-screen';
-
-  /// The name of the route for my sent/received friend requests screen.
-  static const String MyFriendRequestsScreenRoute =
-      '/my-friend-requests-screen';
-
-  /// The name of the route for timetable schedule generator screen.
-  static const String SchedulerScreenRoute = '/scheduler-screen';
-
-  /// The name of the route for my/students' timetables screen.
-  static const String TimetablesScreenRoute = '/timetables-screen';
-
-  /// The name of the route for timetable details screen.
-  static const String AddEditTeacherReviewScreenRoute =
-      '/add-edit-teacher-review-screen';
-
   static final Map<String, RouteBuilder> _routesMap = {
     LoginScreenRoute: (_) => const LoginScreen(),
     AuthWidgetBuilderRoute: (_) => const AuthWidgetBuilder(),
     NotFoundScreenRoute: (_) => const SizedBox.shrink(),
     ForgotPasswordScreenRoute: (_) => const SizedBox.shrink(),
     ChangePasswordScreenRoute: (_) => const SizedBox.shrink(),
-    AddEditActivityScreenRoute: (_) => const SizedBox.shrink(),
-    TimetablesScreenRoute: (_) => const SizedBox.shrink(),
-    AddEditTeacherReviewScreenRoute: (_) => const SizedBox.shrink(),
   };
 
   static RouteBuilder getRoute(String? routeName) {
