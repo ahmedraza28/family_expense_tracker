@@ -5,16 +5,23 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 // Helpers
 import '../../../helpers/extensions/extensions.dart';
 
-// Providers
+// Core
 import '../../../core/core.dart';
+
+// Models
+import '../models/user_model.codegen.dart';
 
 // Repositories
 import '../repositories/auth_repository.codegen.dart';
 
 part 'auth_controller.codegen.g.dart';
 
-final currentUserProvider = StreamProvider<User?>(
-  (ref) => ref.watch(firebaseAuthProvider).authStateChanges(),
+final currentUserProvider = StreamProvider<UserModel?>(
+  (ref) => ref.watch(firebaseAuthProvider).authStateChanges().map(
+    (event) {
+      return UserModel.fromFirebaseUser(event!);
+    },
+  ),
 );
 
 @Riverpod(keepAlive: true)

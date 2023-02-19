@@ -85,7 +85,7 @@ class UserProfileDetails extends HookConsumerWidget {
 
         // Full Name
         CustomText.title(
-          currentUser.displayName!,
+          currentUser.displayName,
         ),
 
         Insets.expand,
@@ -100,22 +100,7 @@ class UserProfileDetails extends HookConsumerWidget {
 
         // Email Data
         CustomText.title(
-          currentUser.email!,
-        ),
-
-        Insets.expand,
-
-        // Phone Number Label
-        const CustomText(
-          'Phone Number',
-          color: AppColors.primaryColor,
-          fontSize: 26,
-          fontWeight: FontWeight.bold,
-        ),
-
-        // Phone Number Data
-        CustomText.title(
-          currentUser.phoneNumber ?? 'Not Added',
+          currentUser.email,
         ),
 
         Insets.expand,

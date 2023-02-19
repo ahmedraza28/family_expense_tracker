@@ -115,6 +115,29 @@ class FirestoreService {
     });
   }
 
+  /// Returns a future of collection mapped to a list of type T,
+  /// existing at the provided path and filtered using the queryBuilder.
+  Future<List<T>> collectionFuture<T>({
+    required String path,
+    required SnapshotBuilder<T> builder,
+    QueryBuilder queryBuilder,
+    Sorter<T> sort,
+  }) async {
+    Query<JSON> query = _firestoreDb.collection(path);
+    if (queryBuilder != null) {
+      query = queryBuilder(query)!;
+    }
+    final snapshot = await query.get();
+    final result = snapshot.docs
+        .map((snapshot) => builder(snapshot.data(), snapshot.id))
+        .where((value) => value != null)
+        .toList();
+    if (sort != null) {
+      result.sort(sort);
+    }
+    return result;
+  }
+
   /// Returns a stream of document mapped to a list of type T,
   /// existing at the provided path.
   Stream<T> documentStream<T>({
