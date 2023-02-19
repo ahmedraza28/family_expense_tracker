@@ -25,7 +25,6 @@ class AppThemes {
   ///
   /// * textButtonTheme: [TextButtonTheme] without the default padding,
   static final mainTheme = ThemeData(
-    brightness: Brightness.dark,
     primaryColor: AppColors.primaryColor,
     colorScheme: const ColorScheme.light().copyWith(
       primary: AppColors.primaryColor,

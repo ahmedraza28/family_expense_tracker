@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,7 +13,7 @@ class AppTypography {
 
   /// Font shades based on platform
   static final _typography = Typography.material2018(
-    platform: Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android,
+    platform: (!kIsWeb && Platform.isIOS) ? TargetPlatform.iOS : TargetPlatform.android,
   );
 
   /// Base TextTheme for the Poppins Font.

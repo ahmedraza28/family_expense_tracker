@@ -35,7 +35,7 @@ class AppBootstrapper {
     await KeyValueStorageBase.init();
 
     // For preparing to read application directory paths
-    await PathProviderService.init();
+    if(!kIsWeb) await PathProviderService.init();
 
     // For prettyifying console debug messages
     debugPrint = _prettifyDebugPrint;
