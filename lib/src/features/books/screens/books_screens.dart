@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
+import '../../../global/widgets/widgets.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
@@ -16,7 +17,10 @@ class BooksScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Books'),
+        title: const CustomText(
+          'Your Books',
+          fontSize: 20,
+        ),
       ),
       body: const BooksList(),
       floatingActionButton: OpenContainer(

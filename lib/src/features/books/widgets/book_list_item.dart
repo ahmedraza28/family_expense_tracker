@@ -35,18 +35,18 @@ class BookListItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title and Arrow
+            // Title and Edit
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Timetable Number
+                // Book Name
                 CustomText.title(
                   'Book Name',
                 ),
 
-                // Arrow
+                // Edit pencil
                 const Icon(
-                  Icons.arrow_forward_rounded,
+                  Icons.edit,
                   size: 25,
                 )
               ],
@@ -54,38 +54,104 @@ class BookListItem extends StatelessWidget {
 
             Insets.gapH15,
 
-            // Description
-            const Text(
-              'Description',
-              style: TextStyle(
-                fontSize: 14,
-              ),
+            // Balance
+            const CustomText(
+              'Balance',
+              fontSize: 16,
             ),
 
             Insets.gapH5,
 
-            // Creator
-            const Text(
-              'Created By',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.textLightGreyColor,
-              ),
+            // Balance Amount
+            CustomText.body(
+              'Rs100,000',
+              fontWeight: FontWeight.bold,
             ),
 
             Insets.expand,
 
-            // Set Active Button
-            CustomTextButton.gradient(
-              height: 35,
-              width: 100,
-              onPressed: () {},
-              gradient: AppColors.buttonGradientPrimary,
-              child: Center(
-                child: CustomText.subtitle(
-                  'Add Members',
-                  color: Colors.white,
+            // Members Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Members Avatars
+                Stack(
+                  children: const [
+
+                    // Avatar 1
+                    Positioned(
+                      left: 0,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: AppColors.primaryColor,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Avatar 2
+                    Positioned(
+                      left: 8,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: AppColors.primaryColor,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Avatar 3
+                    Positioned(
+                      left: 16,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: AppColors.primaryColor,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+
+                CustomTextButton.gradient(
+                  height: 35,
+                  width: 100,
+                  onPressed: () {},
+                  gradient: AppColors.buttonGradientPrimary,
+                  child: Center(
+                    child: CustomText.subtitle(
+                      'Manage',
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            Insets.gapH15,
+
+            // View Book
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Icon(
+                Icons.adaptive.arrow_forward_rounded,
+                color: AppColors.primaryColor,
+                size: 25,
               ),
             )
           ],

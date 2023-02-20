@@ -32,26 +32,25 @@ class AddBookFab extends ConsumerWidget {
     // final hangoutFuture = ref.watch(profileHangoutProvider);
     return SizedBox(
       height: 55,
-      width: 125,
+      width: 135,
       child: FloatingActionButton.extended(
         elevation: 0,
         backgroundColor: AppColors.primaryColor,
         onPressed: onPressed,
         label: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Hangout Icon
-            Image.asset(
-              AppAssets.maleStudent,
-              height: 20,
-              width: 20,
+          children: const [
+            // Add icon
+            Icon(
+              Icons.add,
+              color: Colors.white,
             ),
 
             Insets.gapW10,
 
             // Label
-            const Text(
-              'Create',
+            Text(
+              'Create New',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.white,
