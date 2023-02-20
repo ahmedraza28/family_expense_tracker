@@ -31,67 +31,71 @@ class LoginScreen extends HookConsumerWidget {
     );
     return Scaffold(
       backgroundColor: AppColors.lightBackgroundColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Insets.gapH30,
-
-            SvgPicture.asset(
-              AppAssets.savingsPoster,
-              height: 300,
-              fit: BoxFit.fitWidth,
-            ),
-
-            Insets.gapH10,
-
-            // Logo
-            const CustomText(
-              'Family Expense Tracker',
-              maxLines: 2,
-              fontSize: 45,
-            ),
-
-            Insets.gapH20,
-
-            Align(
-              alignment: Alignment.centerLeft,
-              child: CustomText.title(
-                'Save your money with\nconscious spending',
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Insets.gapH30,
+      
+              SvgPicture.asset(
+                AppAssets.savingsPoster,
+                height: 300,
+                fit: BoxFit.fitWidth,
               ),
-            ),
-
-            Insets.expand,
-
-            // Login Button
-            CustomTextButton.gradient(
-              width: double.infinity,
-              gradient: AppColors.buttonGradientPrimary,
-              onPressed: () {
-                ref.read(authControllerProvider.notifier).loginWithGoogle();
-              },
-              child: Consumer(
-                builder: (context, ref, child) {
-                  final state = ref.watch(authControllerProvider);
-                  return state.maybeWhen(
-                    loading: () => const CustomCircularLoader(
+      
+              Insets.gapH20,
+      
+              // Logo
+              const CustomText(
+                'Family Expense Tracker',
+                maxLines: 2,
+                fontSize: 45,
+                fontWeight: FontWeight.bold,
+              ),
+      
+              Insets.gapH20,
+      
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: CustomText(
+                  'Save your money with\nconscious spending',
+                  fontSize: 22,
+                ),
+              ),
+      
+              Insets.expand,
+      
+              // Login Button
+              CustomTextButton.gradient(
+                width: double.infinity,
+                gradient: AppColors.buttonGradientPrimary,
+                onPressed: () {
+                  ref.read(authControllerProvider.notifier).loginWithGoogle();
+                },
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    final state = ref.watch(authControllerProvider);
+                    return state.maybeWhen(
+                      loading: () => const CustomCircularLoader(
+                        color: Colors.white,
+                      ),
+                      orElse: () => child!,
+                    );
+                  },
+                  child: const Center(
+                    child: CustomText(
+                      'GOOGLE SIGN IN',
                       color: Colors.white,
                     ),
-                    orElse: () => child!,
-                  );
-                },
-                child: const Center(
-                  child: CustomText(
-                    'GOOGLE SIGN IN',
-                    color: Colors.white,
                   ),
                 ),
               ),
-            ),
-
-            Insets.bottomInsetsLow,
-          ],
+      
+              Insets.bottomInsetsLow,
+            ],
+          ),
         ),
       ),
     );

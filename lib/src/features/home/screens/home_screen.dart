@@ -4,6 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
+// Routing
+import '../../../config/routing/routing.dart';
+
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
@@ -49,18 +52,172 @@ class HomeScreen extends ConsumerWidget {
               fontSize: 45,
             ),
 
-            const SizedBox(height: 50),
+            Insets.gapH20,
 
             // User Details
-            const Flexible(
-              child: SizedBox(
-                width: double.infinity,
-                child: UserProfileDetails(),
-              ),
+            const UserProfileDetails(),
+
+            Insets.gapH30,
+
+            // Screens list
+            const Expanded(
+              child: ScreensList(),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class ScreensList extends StatelessWidget {
+  const ScreensList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        // Books
+        ListTile(
+          tileColor: Colors.black12,
+          shape: const RoundedRectangleBorder(
+            borderRadius: Corners.rounded15,
+          ),
+          onTap: () {
+            Navigator.of(context).pushNamed(Routes.BooksScreenRoute);
+          },
+          leading: const Icon(
+            Icons.book,
+            color: AppColors.primaryColor,
+            size: 40,
+          ),
+          title: const CustomText(
+            'Books',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryColor,
+          ),
+          subtitle: const CustomText(
+            'View your books',
+            fontSize: 16,
+          ),
+        ),
+
+        Insets.gapH20,
+
+        // Wallets
+        ListTile(
+          tileColor: Colors.black12,
+          shape: const RoundedRectangleBorder(
+            borderRadius: Corners.rounded15,
+          ),
+          onTap: () {
+            Navigator.of(context).pushNamed(Routes.WalletsScreenRoute);
+          },
+          leading: const Icon(
+            Icons.account_balance_wallet,
+            color: AppColors.primaryColor,
+            size: 40,
+          ),
+          title: const CustomText(
+            'Wallets',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryColor,
+          ),
+          subtitle: const CustomText(
+            'View your wallets',
+            fontSize: 16,
+          ),
+        ),
+
+        Insets.gapH20,
+
+        // Transactions
+        ListTile(
+          tileColor: Colors.black12,
+          shape: const RoundedRectangleBorder(
+            borderRadius: Corners.rounded15,
+          ),
+          onTap: () {
+            Navigator.of(context).pushNamed(Routes.TransactionsScreenRoute);
+          },
+          leading: const Icon(
+            Icons.money,
+            color: AppColors.primaryColor,
+            size: 40,
+          ),
+          title: const CustomText(
+            'Transactions',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryColor,
+          ),
+          subtitle: const CustomText(
+            'View your transactions',
+            fontSize: 16,
+          ),
+        ),
+
+        Insets.gapH20,
+
+        // Categories
+        ListTile(
+          tileColor: Colors.black12,
+          shape: const RoundedRectangleBorder(
+            borderRadius: Corners.rounded15,
+          ),
+          onTap: () {
+            Navigator.of(context).pushNamed(Routes.CategoriesScreenRoute);
+          },
+          leading: const Icon(
+            Icons.category,
+            color: AppColors.primaryColor,
+            size: 40,
+          ),
+          title: const CustomText(
+            'Categories',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryColor,
+          ),
+          subtitle: const CustomText(
+            'View your categories',
+            fontSize: 16,
+          ),
+        ),
+
+        Insets.gapH20,
+
+        // Budgets
+        ListTile(
+          tileColor: Colors.black12,
+          shape: const RoundedRectangleBorder(
+            borderRadius: Corners.rounded15,
+          ),
+          onTap: () {
+            Navigator.of(context).pushNamed(Routes.BudgetsScreenRoute);
+          },
+          leading: const Icon(
+            Icons.money_off,
+            color: AppColors.primaryColor,
+            size: 40,
+          ),
+          title: const CustomText(
+            'Budgets',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryColor,
+          ),
+          subtitle: const CustomText(
+            'View your budgets',
+            fontSize: 16,
+          ),
+        ),
+
+        Insets.gapH20,
+      ],
     );
   }
 }
@@ -73,12 +230,11 @@ class UserProfileDetails extends HookConsumerWidget {
     final currentUser = ref.watch(currentUserProvider).value!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Full Name Label
         const CustomText(
           'Full Name',
-          fontSize: 26,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
           color: AppColors.primaryColor,
         ),
@@ -88,12 +244,12 @@ class UserProfileDetails extends HookConsumerWidget {
           currentUser.displayName,
         ),
 
-        Insets.expand,
+        Insets.gapH20,
 
         // Email Label
         const CustomText(
           'Email',
-          fontSize: 26,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
           color: AppColors.primaryColor,
         ),
@@ -102,8 +258,6 @@ class UserProfileDetails extends HookConsumerWidget {
         CustomText.title(
           currentUser.email,
         ),
-
-        Insets.expand,
       ],
     );
   }
