@@ -47,8 +47,9 @@ class LoginScreen extends HookConsumerWidget {
             Insets.gapH10,
 
             // Logo
-            CustomText.heading(
+            const CustomText(
               'Family Expense Tracker',
+              maxLines: 2,
               fontSize: 45,
             ),
 
