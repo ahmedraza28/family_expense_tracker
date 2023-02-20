@@ -85,7 +85,7 @@ class ScreensList extends StatelessWidget {
             borderRadius: Corners.rounded15,
           ),
           onTap: () {
-            Navigator.of(context).pushNamed(Routes.BooksScreenRoute);
+            AppRouter.pushNamed(Routes.BooksScreenRoute);
           },
           leading: const Icon(
             Icons.book,
@@ -113,7 +113,7 @@ class ScreensList extends StatelessWidget {
             borderRadius: Corners.rounded15,
           ),
           onTap: () {
-            Navigator.of(context).pushNamed(Routes.WalletsScreenRoute);
+            AppRouter.pushNamed(Routes.WalletsScreenRoute);
           },
           leading: const Icon(
             Icons.account_balance_wallet,
@@ -141,7 +141,7 @@ class ScreensList extends StatelessWidget {
             borderRadius: Corners.rounded15,
           ),
           onTap: () {
-            Navigator.of(context).pushNamed(Routes.TransactionsScreenRoute);
+            AppRouter.pushNamed(Routes.TransactionsScreenRoute);
           },
           leading: const Icon(
             Icons.money,
@@ -169,7 +169,7 @@ class ScreensList extends StatelessWidget {
             borderRadius: Corners.rounded15,
           ),
           onTap: () {
-            Navigator.of(context).pushNamed(Routes.CategoriesScreenRoute);
+            AppRouter.pushNamed(Routes.CategoriesScreenRoute);
           },
           leading: const Icon(
             Icons.category,
@@ -197,7 +197,7 @@ class ScreensList extends StatelessWidget {
             borderRadius: Corners.rounded15,
           ),
           onTap: () {
-            Navigator.of(context).pushNamed(Routes.BudgetsScreenRoute);
+            AppRouter.pushNamed(Routes.BudgetsScreenRoute);
           },
           leading: const Icon(
             Icons.money_off,

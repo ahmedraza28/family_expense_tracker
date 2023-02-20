@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 // Models
 import '../models/book_model.codegen.dart';
 
+// Routing
+import '../../../config/routing/routing.dart';
+
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
@@ -24,9 +27,7 @@ class BookListItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 170,
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         decoration: const BoxDecoration(
           borderRadius: Corners.rounded15,
           color: Colors.white,
@@ -36,124 +37,140 @@ class BookListItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title and Edit
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Book Name
-                CustomText.title(
-                  'Book Name',
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Book Name
+                  CustomText.title(
+                    'Book Name',
+                    fontSize: 20,
+                  ),
 
-                // Edit pencil
-                const Icon(
-                  Icons.edit,
-                  size: 25,
-                )
-              ],
-            ),
-
-            Insets.gapH15,
-
-            // Balance
-            const CustomText(
-              'Balance',
-              fontSize: 16,
-            ),
-
-            Insets.gapH5,
-
-            // Balance Amount
-            CustomText.body(
-              'Rs100,000',
-              fontWeight: FontWeight.bold,
-            ),
-
-            Insets.expand,
-
-            // Members Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Members Avatars
-                Stack(
-                  children: const [
-
-                    // Avatar 1
-                    Positioned(
-                      left: 0,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 15,
-                          backgroundColor: AppColors.primaryColor,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                          ),
-                        ),
+                  // Edit button
+                  CustomTextButton.gradient(
+                    height: 35,
+                    width: 55,
+                    onPressed: () {},
+                    gradient: AppColors.buttonGradientPrimary,
+                    child: Center(
+                      child: CustomText.subtitle(
+                        'Edit',
+                        color: Colors.white,
                       ),
-                    ),
-
-                    // Avatar 2
-                    Positioned(
-                      left: 8,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 15,
-                          backgroundColor: AppColors.primaryColor,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    // Avatar 3
-                    Positioned(
-                      left: 16,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 15,
-                          backgroundColor: AppColors.primaryColor,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                CustomTextButton.gradient(
-                  height: 35,
-                  width: 100,
-                  onPressed: () {},
-                  gradient: AppColors.buttonGradientPrimary,
-                  child: Center(
-                    child: CustomText.subtitle(
-                      'Manage',
-                      color: Colors.white,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
 
-            Insets.gapH15,
+            const Divider(color: Colors.black, height: 0),
 
-            // View Book
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Icon(
-                Icons.adaptive.arrow_forward_rounded,
-                color: AppColors.primaryColor,
-                size: 25,
+            // Details
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Balance Amount
+                  LabeledWidget(
+                    label: 'Balance',
+                    child: CustomText.body(
+                      'Rs100,000',
+                    ),
+                  ),
+
+                  Insets.gapH15,
+
+                  // Members Row
+                  LabeledWidget(
+                    label: 'Members',
+                    child: SizedBox(
+                      height: 36,
+                      child: Row(
+                        children: [
+                          // Members Avatars
+                          Expanded(
+                            child: Stack(
+                              fit: StackFit.passthrough,
+                              children: [
+                                // Avatar 1
+                                Positioned(
+                                  left: 0,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 18,
+                                    child: CircleAvatar(
+                                      radius: 16,
+                                      backgroundColor: AppColors.primaries[0],
+                                      child: const Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                // Avatar 2
+                                Positioned(
+                                  left: 20,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 18,
+                                    child: CircleAvatar(
+                                      radius: 16,
+                                      backgroundColor: AppColors.primaries[1],
+                                      child: const Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                // Avatar 3
+                                Positioned(
+                                  left: 40,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 18,
+                                    child: CircleAvatar(
+                                      radius: 16,
+                                      backgroundColor: AppColors.primaries[2],
+                                      child: const Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          Insets.gapW15,
+
+                          // Edit users
+                          InkWell(
+                            onTap: () {
+                              AppRouter.pushNamed(
+                                Routes.ManageBookAccessScreenRoute,
+                              );
+                            },
+                            child: const Icon(
+                              Icons.edit,
+                              size: 25,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),

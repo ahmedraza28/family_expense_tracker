@@ -32,7 +32,7 @@ class AddBookFab extends ConsumerWidget {
     // final hangoutFuture = ref.watch(profileHangoutProvider);
     return SizedBox(
       height: 55,
-      width: 135,
+      width: 140,
       child: FloatingActionButton.extended(
         elevation: 0,
         backgroundColor: AppColors.primaryColor,
@@ -46,7 +46,7 @@ class AddBookFab extends ConsumerWidget {
               color: Colors.white,
             ),
 
-            Insets.gapW10,
+            Insets.gapW5,
 
             // Label
             Text(
