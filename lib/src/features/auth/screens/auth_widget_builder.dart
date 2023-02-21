@@ -15,8 +15,8 @@ class AuthWidgetBuilder extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(currentUserProvider);
     return authState.maybeWhen(
-      data: (user) => user != null ? const HomeScreen() : const LoginScreen(),
-      orElse: () => const LoginScreen(),
+      data: (user) => user != null ? const HomeScreen() : const HomeScreen(),
+      orElse: () => const HomeScreen(),
     );
   }
 }

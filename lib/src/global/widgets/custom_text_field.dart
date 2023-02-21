@@ -88,7 +88,7 @@ class CustomTextField extends StatefulWidget {
     ),
     this.inputStyle = const TextStyle(
       fontSize: 16,
-      color: AppColors.textWhite80Color,
+      color: AppColors.textBlackColor,
     ),
     this.contentPadding = const EdgeInsets.fromLTRB(12, 13, 1, 16),
   });

@@ -55,7 +55,7 @@ class HomeScreen extends ConsumerWidget {
             Insets.gapH20,
 
             // User Details
-            const UserProfileDetails(),
+            // const UserProfileDetails(),
 
             Insets.gapH30,
 

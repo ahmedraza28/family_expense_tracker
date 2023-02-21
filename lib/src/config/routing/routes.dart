@@ -84,7 +84,7 @@ class Routes {
     NotFoundScreenRoute: (_) => const SizedBox.shrink(),
     HomeScreenRoute: (_) => const HomeScreen(),
     BooksScreenRoute: (_) => const BooksScreen(),
-    AddEditBookScreenRoute: (_) => const SizedBox.shrink(),
+    AddEditBookScreenRoute: (_) => const AddEditBookScreen(),
     CategoriesScreenRoute: (_) => const SizedBox.shrink(),
     AddEditCategoryScreenRoute: (_) => const SizedBox.shrink(),
     WalletsScreenRoute: (_) => const SizedBox.shrink(),

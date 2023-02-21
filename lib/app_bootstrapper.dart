@@ -41,9 +41,11 @@ class AppBootstrapper {
     debugPrint = _prettifyDebugPrint;
 
     // Initialize firebase SDK
-    await Firebase.initializeApp(
+    if(defaultTargetPlatform != TargetPlatform.windows) {
+      await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    }
 
     // For preparing the error monitoring SDK and loading
     // up the `runApp` method in a guarded zone

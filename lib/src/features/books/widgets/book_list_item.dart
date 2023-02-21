@@ -38,7 +38,7 @@ class BookListItem extends StatelessWidget {
           children: [
             // Title and Edit
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              padding: const EdgeInsets.fromLTRB(15, 15, 15, 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -50,9 +50,13 @@ class BookListItem extends StatelessWidget {
 
                   // Edit button
                   CustomTextButton.gradient(
-                    height: 35,
+                    height: 30,
                     width: 55,
-                    onPressed: () {},
+                    onPressed: () {
+                      AppRouter.pushNamed(
+                        Routes.AddEditBookScreenRoute,
+                      );
+                    },
                     gradient: AppColors.buttonGradientPrimary,
                     child: Center(
                       child: CustomText.subtitle(
@@ -69,7 +73,7 @@ class BookListItem extends StatelessWidget {
 
             // Details
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -81,7 +85,7 @@ class BookListItem extends StatelessWidget {
                     ),
                   ),
 
-                  Insets.gapH15,
+                  Insets.gapH10,
 
                   // Members Row
                   LabeledWidget(
@@ -91,9 +95,9 @@ class BookListItem extends StatelessWidget {
                       child: Row(
                         children: [
                           // Members Avatars
-                          Expanded(
+                          SizedBox(
+                            width: 80,
                             child: Stack(
-                              fit: StackFit.passthrough,
                               children: [
                                 // Avatar 1
                                 Positioned(
@@ -149,7 +153,7 @@ class BookListItem extends StatelessWidget {
                             ),
                           ),
 
-                          Insets.gapW15,
+                          Insets.gapW5,
 
                           // Edit users
                           InkWell(
@@ -158,9 +162,9 @@ class BookListItem extends StatelessWidget {
                                 Routes.ManageBookAccessScreenRoute,
                               );
                             },
-                            child: const Icon(
-                              Icons.edit,
-                              size: 25,
+                            child: const CustomText(
+                              'Manage Access',
+                              fontSize: 13,
                               color: AppColors.primaryColor,
                             ),
                           ),
