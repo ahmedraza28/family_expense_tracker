@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
-import '../../../global/widgets/widgets.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
+import '../../../global/widgets/widgets.dart';
 import '../widgets/add_book_fab.dart';
 import '../widgets/books_list.dart';
+import 'add_edit_book_screen.dart';
 
 class BooksScreen extends ConsumerWidget {
   const BooksScreen({super.key});
@@ -37,7 +38,7 @@ class BooksScreen extends ConsumerWidget {
         closedBuilder: (ctx, openFunction) => AddBookFab(
           onPressed: openFunction,
         ),
-        openBuilder: (ctx, closeFunction) => const SizedBox.shrink(),
+        openBuilder: (ctx, closeFunction) => const AddEditBookScreen(),
       ),
     );
   }
