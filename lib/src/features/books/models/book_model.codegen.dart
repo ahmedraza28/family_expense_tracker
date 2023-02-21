@@ -17,6 +17,7 @@ class BookModel with _$BookModel {
   const factory BookModel({
     required int id,
     required String name,
+    required String imageUrl,
     required String description,
     required UserModel createdBy,
   }) = _BookModel;

@@ -157,7 +157,6 @@ class _CustomDropdownSheetState<T> extends State<CustomDropdownSheet<T>> {
                 CustomTextField(
                   controller: searchController,
                   onChanged: (_) => _onSearchChanged(),
-                  fillColor: Colors.white,
                   border: const BorderSide(
                     color: AppColors.textLightGreyColor,
                   ),

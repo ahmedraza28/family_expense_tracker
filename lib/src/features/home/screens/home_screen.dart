@@ -80,7 +80,7 @@ class ScreensList extends StatelessWidget {
       children: [
         // Books
         ListTile(
-          tileColor: Colors.black12,
+          tileColor: Colors.white,
           shape: const RoundedRectangleBorder(
             borderRadius: Corners.rounded15,
           ),
@@ -108,7 +108,7 @@ class ScreensList extends StatelessWidget {
 
         // Wallets
         ListTile(
-          tileColor: Colors.black12,
+          tileColor: Colors.white,
           shape: const RoundedRectangleBorder(
             borderRadius: Corners.rounded15,
           ),
@@ -136,7 +136,7 @@ class ScreensList extends StatelessWidget {
 
         // Transactions
         ListTile(
-          tileColor: Colors.black12,
+          tileColor: Colors.white,
           shape: const RoundedRectangleBorder(
             borderRadius: Corners.rounded15,
           ),
@@ -164,7 +164,7 @@ class ScreensList extends StatelessWidget {
 
         // Categories
         ListTile(
-          tileColor: Colors.black12,
+          tileColor: Colors.white,
           shape: const RoundedRectangleBorder(
             borderRadius: Corners.rounded15,
           ),
@@ -192,7 +192,7 @@ class ScreensList extends StatelessWidget {
 
         // Budgets
         ListTile(
-          tileColor: Colors.black12,
+          tileColor: Colors.white,
           shape: const RoundedRectangleBorder(
             borderRadius: Corners.rounded15,
           ),

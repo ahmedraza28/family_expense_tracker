@@ -27,7 +27,13 @@ class CategoryListItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: ListTile(
-        tileColor: AppColors.textLightGreyColor,
+        dense: true,
+        horizontalTitleGap: 0,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal:15,
+          vertical: 5,
+        ),
+        tileColor: Colors.white,
         shape: const RoundedRectangleBorder(
           borderRadius: Corners.rounded15,
         ),
@@ -35,20 +41,18 @@ class CategoryListItem extends StatelessWidget {
           Icons.category_rounded,
           color: AppColors.textLightGreyColor,
         ),
-        trailing: IconButton(
-          onPressed: () {
+        trailing: InkWell(
+          onTap: () {
             AppRouter.pushNamed(Routes.AddEditCategoryScreenRoute);
           },
-          icon: const Icon(
+          child: const Icon(
             Icons.edit_rounded,
+            size: 20,
             color: AppColors.primaryColor,
           ),
         ),
-        title: const CustomText(
+        title: CustomText.body(
           'Category Name',
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: AppColors.textBlackColor,
         ),
       ),
     );

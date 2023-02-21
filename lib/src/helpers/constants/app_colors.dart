@@ -49,7 +49,7 @@ class AppColors {
   static const Color surfaceColor = Color.fromARGB(255, 253, 253, 253);
 
   /// The light greyish color used for filling fields of the app.
-  static const Color fieldFillColor = Color.fromARGB(255, 235, 235, 235);
+  static const Color fieldFillColor = Color.fromARGB(255, 255, 255, 255);
 
   /// The color value for red color in the app.
   static const Color redColor = Color(0xFFed0000);

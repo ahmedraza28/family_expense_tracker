@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 
 // Features
 import '../../features/auth/auth.dart';
+import '../../features/books/books.dart';
+import '../../features/categories/categories.dart';
+import '../../features/home/home.dart';
 
 // Helpers
-import '../../features/books/books.dart';
-import '../../features/home/home.dart';
 import '../../helpers/typedefs.dart';
 
 /// A utility class that holds screen names for named navigation.
@@ -85,8 +86,8 @@ class Routes {
     HomeScreenRoute: (_) => const HomeScreen(),
     BooksScreenRoute: (_) => const BooksScreen(),
     AddEditBookScreenRoute: (_) => const AddEditBookScreen(),
-    CategoriesScreenRoute: (_) => const SizedBox.shrink(),
-    AddEditCategoryScreenRoute: (_) => const SizedBox.shrink(),
+    CategoriesScreenRoute: (_) => const CategoriesScreen(),
+    AddEditCategoryScreenRoute: (_) => const AddEditCategoryScreen(),
     WalletsScreenRoute: (_) => const SizedBox.shrink(),
     AddEditWalletScreenRoute: (_) => const SizedBox.shrink(),
     BalanceTransferScreenRoute: (_) => const SizedBox.shrink(),

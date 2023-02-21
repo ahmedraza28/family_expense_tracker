@@ -17,6 +17,7 @@ class CategoryModel with _$CategoryModel {
   const factory CategoryModel({
     required int id,
     required String name,
+    required String imageUrl,
     required CategoryType categoryType,
   }) = _CategoryModel;
 
