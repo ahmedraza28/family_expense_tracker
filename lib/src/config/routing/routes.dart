@@ -6,6 +6,7 @@ import '../../features/auth/auth.dart';
 import '../../features/books/books.dart';
 import '../../features/categories/categories.dart';
 import '../../features/home/home.dart';
+import '../../features/wallets/wallets.dart';
 
 // Helpers
 import '../../helpers/typedefs.dart';
@@ -88,8 +89,8 @@ class Routes {
     AddEditBookScreenRoute: (_) => const AddEditBookScreen(),
     CategoriesScreenRoute: (_) => const CategoriesScreen(),
     AddEditCategoryScreenRoute: (_) => const AddEditCategoryScreen(),
-    WalletsScreenRoute: (_) => const SizedBox.shrink(),
-    AddEditWalletScreenRoute: (_) => const SizedBox.shrink(),
+    WalletsScreenRoute: (_) => const WalletsScreen(),
+    AddEditWalletScreenRoute: (_) => const AddEditWalletScreen(),
     BalanceTransferScreenRoute: (_) => const SizedBox.shrink(),
     TransactionsScreenRoute: (_) => const SizedBox.shrink(),
     AddEditTransactionScreenRoute: (_) => const SizedBox.shrink(),

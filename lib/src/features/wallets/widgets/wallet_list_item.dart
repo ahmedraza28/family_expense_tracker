@@ -30,16 +30,17 @@ class WalletListItem extends StatelessWidget {
         dense: true,
         horizontalTitleGap: 0,
         contentPadding: const EdgeInsets.symmetric(
-          horizontal:15,
+          horizontal: 15,
           vertical: 5,
         ),
         tileColor: Colors.white,
         shape: const RoundedRectangleBorder(
           borderRadius: Corners.rounded15,
         ),
-        leading: const Icon(
+        leading: Icon(
           Icons.wallet_rounded,
-          color: AppColors.textLightGreyColor,
+          size: 27,
+          color: AppUtils.getRandomColor(),
         ),
         trailing: InkWell(
           onTap: () {
@@ -48,10 +49,13 @@ class WalletListItem extends StatelessWidget {
           child: const Icon(
             Icons.edit_rounded,
             size: 20,
-            color: AppColors.primaryColor,
+            color: AppColors.textGreyColor,
           ),
         ),
-        subtitle: CustomText.subtitle('${wallet!.balance}'),
+        subtitle: CustomText.subtitle(
+          '${wallet!.balance}',
+          color: AppColors.textLightGreyColor,
+        ),
         title: CustomText.body(
           'Wallet Name',
         ),

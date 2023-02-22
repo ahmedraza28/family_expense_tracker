@@ -14,7 +14,32 @@ class WalletsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wallets = <WalletModel>[];
+    const wallets = [
+      WalletModel(
+        id: 1,
+        name: 'Wallet 1',
+        imageUrl: 'https://picsum.photos/200/300',
+        balance: 200000,
+      ),
+      WalletModel(
+        id: 2,
+        name: 'Wallet 2',
+        imageUrl: 'https://picsum.photos/200/300',
+        balance: 200000,
+      ),
+      WalletModel(
+        id: 3,
+        name: 'Wallet 3',
+        imageUrl: 'https://picsum.photos/200/300',
+        balance: 200000,
+      ),
+      WalletModel(
+        id: 4,
+        name: 'Wallet 4',
+        imageUrl: 'https://picsum.photos/200/300',
+        balance: 200000,
+      ),
+    ];
     return ListView.separated(
       itemCount: wallets.length,
       physics: const BouncingScrollPhysics(

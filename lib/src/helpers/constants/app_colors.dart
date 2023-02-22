@@ -9,11 +9,9 @@ class AppColors {
 
   static const List<Color> primaries = [
     Color.fromARGB(249, 195, 91, 255),
-    Color.fromARGB(255, 202, 108, 0),
     Color.fromARGB(255, 255, 39, 39),
     Color.fromARGB(255, 255, 132, 17),
     Color.fromARGB(255, 255, 180, 180),
-    Color.fromARGB(255, 43, 206, 255),
     Color.fromARGB(255, 194, 255, 27),
     Color.fromARGB(255, 0, 248, 0),
     Colors.tealAccent,

@@ -26,15 +26,20 @@ class WalletsScreen extends ConsumerWidget {
           ),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(50),
-            child: CustomTextButton.gradient(
-              width: 200,
-              onPressed: () {},
-              gradient: AppColors.buttonGradientPrimary,
-              child: const Center(
-                child: CustomText(
-                  'Transfer Balance',
-                  color: Colors.white,
-                  fontSize: 16,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: CustomTextButton.outlined(
+                height: 35,
+                width: 200,
+                onPressed: () {},
+                border: Border.all(
+                  color: AppColors.primaryColor,
+                ),
+                child: const Center(
+                  child: CustomText(
+                    'Transfer Balance',
+                    color: AppColors.primaryColor,
+                  ),
                 ),
               ),
             ),
