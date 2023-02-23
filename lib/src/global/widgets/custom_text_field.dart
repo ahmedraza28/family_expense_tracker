@@ -39,6 +39,7 @@ class CustomTextField extends StatefulWidget {
   final Color fillColor;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
+  final String? initialValue;
   final String? Function(String? value)? validator;
   final List<TextInputFormatter>? inputFormatters;
 
@@ -50,6 +51,7 @@ class CustomTextField extends StatefulWidget {
     this.floatingText,
     this.floatingStyle,
     this.onSaved,
+    this.initialValue,
     this.onChanged,
     this.prefix,
     this.suffix,
@@ -186,6 +188,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           width: widget.width,
           child: TextFormField(
             controller: widget.controller,
+            initialValue: widget.initialValue,
             textAlign: widget.textAlign,
             textAlignVertical: widget.textAlignVertical,
             autofocus: widget.autofocus,

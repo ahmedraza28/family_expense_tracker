@@ -53,6 +53,9 @@ class Routes {
   /// The name of the route for add/edit wallet screen.
   static const String AddEditWalletScreenRoute = '/add-edit-wallet-screen';
 
+  /// The name of the route for calculator screen.
+  static const String CalculatorScreenRoute = '/calculator-screen';
+
   /// The name of the route for balance transfer screen.
   static const String BalanceTransferScreenRoute = '/balance-transfer-screen';
 

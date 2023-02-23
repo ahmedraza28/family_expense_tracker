@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
 
 // Helpers
+import '../../../global/formatters/formatters.dart';
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/form_validator.dart';
 
@@ -96,9 +96,10 @@ class AddEditWalletScreen extends HookConsumerWidget {
                 controller: walletBalanceController,
                 floatingText: 'Balance',
                 inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
+                  DecimalTextInputFormatter(decimalDigits: 1),
                 ],
-                keyboardType: TextInputType.number,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 textInputAction: TextInputAction.done,
               ),
 
