@@ -49,7 +49,6 @@ class CustomTextField extends StatefulWidget {
     this.width,
     this.maxLength,
     this.floatingText,
-    this.floatingStyle,
     this.onSaved,
     this.initialValue,
     this.onChanged,
@@ -91,6 +90,10 @@ class CustomTextField extends StatefulWidget {
     this.inputStyle = const TextStyle(
       fontSize: 16,
       color: AppColors.textBlackColor,
+    ),
+    this.floatingStyle = const TextStyle(
+      fontSize: 14,
+      color: AppColors.textBlueGreyColor,
     ),
     this.contentPadding = const EdgeInsets.fromLTRB(12, 13, 1, 16),
   });

@@ -122,7 +122,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
 
   @override
   void dispose() {
-    widget.dateNotifier.removeListener((){});
+    widget.dateNotifier.removeListener(() {});
     super.dispose();
   }
 
@@ -185,7 +185,6 @@ class CustomDatePickerStyle {
   final String initialDateString;
 
   const CustomDatePickerStyle({
-    this.floatingTextStyle,
     this.icon = const Icon(
       Icons.calendar_month_rounded,
       color: AppColors.primaryColor,
@@ -194,6 +193,10 @@ class CustomDatePickerStyle {
     this.displayTextStyle = const TextStyle(
       fontSize: 16,
       color: AppColors.textGreyColor,
+    ),
+    this.floatingTextStyle = const TextStyle(
+      fontSize: 14,
+      color: AppColors.textBlueGreyColor,
     ),
     this.displayFieldColor = AppColors.fieldFillColor,
     this.initialDateString = 'Select a date',

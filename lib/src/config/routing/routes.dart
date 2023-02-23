@@ -7,6 +7,7 @@ import '../../features/books/books.dart';
 import '../../features/categories/categories.dart';
 import '../../features/home/home.dart';
 import '../../features/wallets/wallets.dart';
+import '../../global/screens/screens.dart';
 
 // Helpers
 import '../../helpers/typedefs.dart';
@@ -86,7 +87,7 @@ class Routes {
   static final Map<String, RouteBuilder> _routesMap = {
     LoginScreenRoute: (_) => const LoginScreen(),
     AuthWidgetBuilderRoute: (_) => const AuthWidgetBuilder(),
-    NotFoundScreenRoute: (_) => const SizedBox.shrink(),
+    NotFoundScreenRoute: (_) => const NotFoundScreen(),
     HomeScreenRoute: (_) => const HomeScreen(),
     BooksScreenRoute: (_) => const BooksScreen(),
     AddEditBookScreenRoute: (_) => const AddEditBookScreen(),
@@ -94,15 +95,15 @@ class Routes {
     AddEditCategoryScreenRoute: (_) => const AddEditCategoryScreen(),
     WalletsScreenRoute: (_) => const WalletsScreen(),
     AddEditWalletScreenRoute: (_) => const AddEditWalletScreen(),
-    BalanceTransferScreenRoute: (_) => const SizedBox.shrink(),
-    TransactionsScreenRoute: (_) => const SizedBox.shrink(),
-    AddEditTransactionScreenRoute: (_) => const SizedBox.shrink(),
-    BudgetsScreenRoute: (_) => const SizedBox.shrink(),
-    AddEditBudgetScreenRoute: (_) => const SizedBox.shrink(),
-    ManageBookAccessScreenRoute: (_) => const SizedBox.shrink(),
-    AboutScreenRoute: (_) => const SizedBox.shrink(),
-    InsightsScreenRoute: (_) => const SizedBox.shrink(),
-    QrScannerScreenRoute: (_) => const SizedBox.shrink(),
+    BalanceTransferScreenRoute: (_) => const BalanceTransferScreen(),
+    // TransactionsScreenRoute: (_) => const SizedBox.shrink(),
+    // AddEditTransactionScreenRoute: (_) => const SizedBox.shrink(),
+    // BudgetsScreenRoute: (_) => const SizedBox.shrink(),
+    // AddEditBudgetScreenRoute: (_) => const SizedBox.shrink(),
+    // ManageBookAccessScreenRoute: (_) => const SizedBox.shrink(),
+    // AboutScreenRoute: (_) => const SizedBox.shrink(),
+    // InsightsScreenRoute: (_) => const SizedBox.shrink(),
+    // QrScannerScreenRoute: (_) => const SizedBox.shrink(),
   };
 
   static RouteBuilder getRoute(String? routeName) {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../helpers/constants/app_colors.dart';
+
 enum LabelPosition {
   start,
   end;
@@ -36,7 +38,7 @@ class LabeledWidget extends StatelessWidget {
     this.useDarkerLabel = false,
     this.labelStyle = const TextStyle(
       fontSize: 14,
-      color: Color.fromRGBO(171, 180, 185, 1),
+      color: AppColors.textBlueGreyColor,
     ),
   });
 

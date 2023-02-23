@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
+import '../../../config/routing/routing.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
@@ -31,7 +32,9 @@ class WalletsScreen extends ConsumerWidget {
               child: CustomTextButton.outlined(
                 height: 35,
                 width: 200,
-                onPressed: () {},
+                onPressed: () {
+                  AppRouter.pushNamed(Routes.BalanceTransferScreenRoute);
+                },
                 border: Border.all(
                   color: AppColors.primaryColor,
                 ),

@@ -17,8 +17,8 @@ import '../models/wallet_model.codegen.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-class TransferBalanceScreen extends HookConsumerWidget {
-  const TransferBalanceScreen({super.key});
+class BalanceTransferScreen extends HookConsumerWidget {
+  const BalanceTransferScreen({super.key});
 
   // void saveForm(
   //   WidgetRef ref, {

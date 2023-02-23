@@ -11,7 +11,7 @@ class AppColors {
     Color.fromARGB(249, 195, 91, 255),
     Color.fromARGB(255, 255, 39, 39),
     Color.fromARGB(255, 255, 132, 17),
-    Color.fromARGB(255, 255, 180, 180),
+    Color.fromARGB(255, 0, 48, 223),
     Color.fromARGB(255, 194, 255, 27),
     Color.fromARGB(255, 0, 248, 0),
     Colors.tealAccent,
@@ -40,11 +40,11 @@ class AppColors {
 
   /// The darker greyish color used for background surfaces
   /// of the app like behind scrolling screens or scaffolds etc.
-  static const Color backgroundColor = Color.fromARGB(255, 240, 240, 240);
+  static const Color backgroundColor = Color.fromARGB(255, 241, 241, 241);
 
   /// The light greyish color used for container/card surfaces
   /// of the app.
-  static const Color surfaceColor = Color.fromARGB(255, 253, 253, 253);
+  static const Color surfaceColor = Color.fromARGB(255, 237, 237, 237);
 
   /// The light greyish color used for filling fields of the app.
   static const Color fieldFillColor = Color.fromARGB(255, 255, 255, 255);
@@ -110,9 +110,6 @@ class AppColors {
   /// The color value for dark grey buttons in the app.
   static const Color buttonGreyColor = Color(0xFF1c1c1c);
 
-  /// The color value for light grey scaffold in the app.
-  static const Color scaffoldGreyColor = Color(0xFF2b2b2b);
-
   /// The color value for grey text in the app.
   static const Color textGreyColor = Color.fromARGB(255, 122, 122, 122);
 
@@ -124,6 +121,9 @@ class AppColors {
 
   /// The color value for white text in the app.
   static const Color textWhite80Color = Color(0xFFf2f2f2);
+
+  /// The color value for blue grey text in the app.
+  static const Color textBlueGreyColor = Color.fromRGBO(171, 180, 185, 1);
 
   /// The color value for dark grey [CustomDialog] in the app.
   static const Color barrierColor = Colors.black87;

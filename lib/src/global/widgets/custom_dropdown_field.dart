@@ -78,6 +78,9 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
   /// The height of the display field.
   final double height;
 
+  /// The background color of the dropdown sheet.
+  final Color backgroundColor;
+
   _CustomDropdownFieldSheet({
     required this.itemsSheet,
     required this.selectedItemBuilder,
@@ -92,6 +95,7 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
       color: AppColors.textGreyColor,
     ),
     this.displayFieldColor = AppColors.fieldFillColor,
+    this.backgroundColor = AppColors.surfaceColor,
     this.height = 47,
     this.hintText = 'Select a value',
     this.padding = const EdgeInsets.only(left: 20, right: 15),
@@ -106,6 +110,7 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
               top: Radius.circular(15),
             ),
           ),
+          backgroundColor: backgroundColor,
           context: context,
           builder: (context) {
             return itemsSheet;

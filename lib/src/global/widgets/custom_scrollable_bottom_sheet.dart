@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../helpers/constants/app_colors.dart';
-
 /// A scrollable rounded bottom sheet with a pre-designed header
 class CustomScrollableBottomSheet extends StatelessWidget {
   /// This gives the bottom sheet title.
@@ -93,7 +91,6 @@ class CustomScrollableBottomSheet extends StatelessWidget {
                         titleText ?? 'Title',
                         style: const TextStyle(
                           fontSize: 20,
-                          color: AppColors.textWhite80Color,
                         ),
                       ),
 
