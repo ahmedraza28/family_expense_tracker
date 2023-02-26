@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 // Features
 import '../../features/auth/auth.dart';
 import '../../features/books/books.dart';
+import '../../features/calculator/calculator.dart';
 import '../../features/categories/categories.dart';
 import '../../features/home/home.dart';
 import '../../features/wallets/wallets.dart';
+
+// Screens
 import '../../global/screens/screens.dart';
 
 // Helpers
@@ -96,6 +99,7 @@ class Routes {
     WalletsScreenRoute: (_) => const WalletsScreen(),
     AddEditWalletScreenRoute: (_) => const AddEditWalletScreen(),
     BalanceTransferScreenRoute: (_) => const BalanceTransferScreen(),
+    CalculatorScreenRoute: (_) => const CalculatorScreen(),
     // TransactionsScreenRoute: (_) => const SizedBox.shrink(),
     // AddEditTransactionScreenRoute: (_) => const SizedBox.shrink(),
     // BudgetsScreenRoute: (_) => const SizedBox.shrink(),
