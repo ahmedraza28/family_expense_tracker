@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
+
+// Enums
+import '../enums/calc_button_enum.dart';
+
+// Providers
+import '../providers/calculator_provider.codegen.dart';
 
 // Routing
 import '../../../config/routing/routing.dart';
@@ -27,15 +34,15 @@ class CalculatorScreen extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: const [
-          // OutPut Section - Result
+          // Output Section
           SizedBox(
             height: 185,
-            child: OutputSection(),
+            child: NumberResult(),
           ),
 
-          // Input Section - Enter Numbers
+          // Input Section
           Expanded(
-            child: InputSection(),
+            child: InputButtons(),
           ),
         ],
       ),
@@ -43,41 +50,34 @@ class CalculatorScreen extends StatelessWidget {
   }
 }
 
-class InputSection extends StatelessWidget {
-  const InputSection({super.key});
+class InputButtons extends ConsumerWidget {
+  const InputButtons({super.key});
 
-  static const List<String> buttons = [
-    'C',
-    'DEL',
-    '%',
-    '/',
-    '9',
-    '8',
-    '7',
-    'x',
-    '6',
-    '5',
-    '4',
-    '-',
-    '3',
-    '2',
-    '1',
-    '+',
-    '0',
-    '.',
-    'ANS',
-    '=',
+  static const List<CalcButton> buttons = [
+    CalcButton.CLEAR,
+    CalcButton.DELETE,
+    CalcButton.PERCENT,
+    CalcButton.DIVIDE,
+    CalcButton.SEVEN,
+    CalcButton.EIGHT,
+    CalcButton.NINE,
+    CalcButton.MULTIPLY,
+    CalcButton.FOUR,
+    CalcButton.FIVE,
+    CalcButton.SIX,
+    CalcButton.SUBTRACT,
+    CalcButton.ONE,
+    CalcButton.TWO,
+    CalcButton.THREE,
+    CalcButton.ADD,
+    CalcButton.ANS,
+    CalcButton.ZERO,
+    CalcButton.DECIMAL,
+    CalcButton.EQUAL,
   ];
 
-  bool isOperator(String y) {
-    if (y == '%' || y == '/' || y == 'x' || y == '-' || y == '+' || y == '=') {
-      return true;
-    }
-    return false;
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: const BoxDecoration(
@@ -102,56 +102,51 @@ class InputSection extends StatelessWidget {
                 crossAxisCount: 4,
               ),
               itemBuilder: (contex, index) {
-                switch (index) {
-                  case 0:
-                    return CalculatorButton(
-                      buttonTapped: () {},
-                      color: ButtonColors.btnBlueBgColor,
-                      textColor: AppColors.textWhite80Color,
-                      text: buttons[index],
-                    );
+                final button = buttons[index];
 
-                  case 1:
-                    return CalculatorButton(
-                      buttonTapped: () {},
-                      color: ButtonColors.btnBlueBgColor,
-                      textColor: AppColors.textWhite80Color,
-                      text: buttons[index],
-                    );
-
-                  case 19:
-                    return CalculatorButton(
-                      buttonTapped: () {},
-                      color: ButtonColors.btnBlueBgColor,
-                      textColor: AppColors.textWhite80Color,
-                      text: buttons[index],
-                    );
-
-                  default:
-                    return CalculatorButton(
-                      buttonTapped: () {},
-                      fontSize: isOperator(buttons[index]) ? 21 : 19,
-                      color: isOperator(buttons[index])
-                          ? ButtonColors.btnDarkBgColor
-                          : ButtonColors.btnBgColor,
-                      textColor: isOperator(buttons[index])
-                          ? ButtonColors.operatorColor
-                          : AppColors.textBlackColor,
-                      text: buttons[index],
-                    );
+                if (button.isAction) {
+                  return CalculatorButton(
+                    text: button.label,
+                    color: ButtonColors.btnBlueBgColor,
+                    textColor: AppColors.textWhite80Color,
+                    buttonTapped: () {
+                      if (button == CalcButton.CLEAR) {
+                        ref.read(numberInputProvider.notifier).clear();
+                      } else if (button == CalcButton.DELETE) {
+                        ref.read(numberInputProvider.notifier).delete();
+                      } else if (button == CalcButton.EQUAL) {
+                        ref.read(numberInputProvider.notifier).equal();
+                      } else if (button == CalcButton.ANS) {
+                        ref.read(numberInputProvider.notifier).ans();
+                      }
+                    },
+                  );
                 }
+                return CalculatorButton(
+                  text: button.label,
+                  fontSize: button.isOperator ? 21 : 19,
+                  color: button.isOperator
+                      ? ButtonColors.btnDarkBgColor
+                      : ButtonColors.btnBgColor,
+                  textColor: button.isOperator
+                      ? ButtonColors.operatorColor
+                      : AppColors.textBlackColor,
+                  buttonTapped: () {
+                    ref
+                        .read(numberInputProvider.notifier)
+                        .onBtnTapped(button.label);
+                  },
+                );
               },
             ),
           ),
 
           // Save Button
-          CustomTextButton.gradient(
+          const CustomTextButton.gradient(
             width: double.infinity,
-            onPressed: () {
-              AppRouter.pop(100);
-            },
+            onPressed: AppRouter.pop,
             gradient: AppColors.buttonGradientPrimary,
-            child: const Center(
+            child: Center(
               child: CustomText(
                 'Save',
                 color: Colors.white,
@@ -165,8 +160,8 @@ class InputSection extends StatelessWidget {
   }
 }
 
-class OutputSection extends StatelessWidget {
-  const OutputSection({
+class NumberResult extends StatelessWidget {
+  const NumberResult({
     super.key,
   });
 

@@ -34,6 +34,7 @@ dependencies:
   intl: ^0.17.0
   json_annotation: ^4.8.0
   lottie: ^2.2.0
+  math_expressions: ^2.3.1
   path: ^1.8.2
   path_provider: ^2.0.12
   riverpod_annotation: ^1.2.1
