@@ -6,7 +6,7 @@ part 'calculator_provider.codegen.g.dart';
 
 final numberResultProvider = StateProvider.autoDispose<double>((ref) => 0);
 
-final expressionHistoryProvider = StateProvider.autoDispose<List<String>>(
+final calculationHistoryProvider = StateProvider.autoDispose<List<String>>(
   (ref) => [],
 );
 
@@ -54,7 +54,7 @@ class NumberInput extends _$NumberInput {
 
     // update expression history
     ref
-        .read(expressionHistoryProvider.notifier)
+        .read(calculationHistoryProvider.notifier)
         .update((prevState) => prevState = [state, ...prevState]);
   }
 }

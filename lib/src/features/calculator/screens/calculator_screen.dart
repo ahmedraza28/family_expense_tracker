@@ -15,6 +15,7 @@ import '../../../config/routing/routing.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import '../widgets/calculation_history_dialog.dart';
 import '../widgets/calculator_button.dart';
 
 /// Dark Colors
@@ -29,9 +30,38 @@ class ButtonColors {
 class CalculatorScreen extends StatelessWidget {
   const CalculatorScreen({super.key});
 
+  void showHistoryDialog(BuildContext context) {
+    showGeneralDialog(
+      barrierColor: AppColors.barrierColorLight,
+      transitionDuration: const Duration(milliseconds: 400),
+      barrierDismissible: true,
+      barrierLabel: '',
+      context: context,
+      transitionBuilder: (context, a1, a2, dialog) {
+        final curveValue =
+            (1 - Curves.linearToEaseOut.transform(a1.value)) * 200;
+        return Transform(
+          transform: Matrix4.translationValues(curveValue, 0, 0),
+          child: Opacity(opacity: a1.value, child: dialog),
+        );
+      },
+      pageBuilder: (_, __, ___) => const CalculationHistoryDialog(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const CustomText('Calculator'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history_rounded),
+            onPressed: () => showHistoryDialog(context),
+          ),
+        ],
+      ),
       body: Column(
         children: const [
           // Output Section
