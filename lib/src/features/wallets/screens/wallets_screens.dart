@@ -33,7 +33,7 @@ class WalletsScreen extends ConsumerWidget {
                 height: 35,
                 width: 200,
                 onPressed: () {
-                  AppRouter.pushNamed(Routes.BalanceTransferScreenRoute);
+                  AppRouter.pushNamed(Routes.AddEditBalanceTransferScreenRoute);
                 },
                 border: Border.all(
                   color: AppColors.primaryColor,

@@ -27,6 +27,9 @@ class CalculationHistoryDialog extends StatelessWidget {
             // Grey Container
             Expanded(
               child: Material(
+                shape: RoundedRectangleBorder(
+                  borderRadius: Corners.rounded20,
+                ),
                 color: AppColors.surfaceColor,
                 child: HistoryList(),
               ),

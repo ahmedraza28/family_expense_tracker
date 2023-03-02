@@ -61,7 +61,7 @@ class Routes {
   static const String CalculatorScreenRoute = '/calculator-screen';
 
   /// The name of the route for balance transfer screen.
-  static const String BalanceTransferScreenRoute = '/balance-transfer-screen';
+  static const String AddEditBalanceTransferScreenRoute = '/balance-transfer-screen';
 
   /// The name of the route for transactions screen.
   static const String TransactionsScreenRoute = '/transactions-screen';
@@ -98,7 +98,7 @@ class Routes {
     AddEditCategoryScreenRoute: (_) => const AddEditCategoryScreen(),
     WalletsScreenRoute: (_) => const WalletsScreen(),
     AddEditWalletScreenRoute: (_) => const AddEditWalletScreen(),
-    BalanceTransferScreenRoute: (_) => const BalanceTransferScreen(),
+    AddEditBalanceTransferScreenRoute: (_) => const AddEditBalanceTransferScreen(),
     CalculatorScreenRoute: (_) => const CalculatorScreen(),
     // TransactionsScreenRoute: (_) => const SizedBox.shrink(),
     // AddEditTransactionScreenRoute: (_) => const SizedBox.shrink(),

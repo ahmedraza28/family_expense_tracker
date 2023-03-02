@@ -29,7 +29,7 @@ class CalculatorButton extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: color,
-          borderRadius: Corners.rounded(25),
+          borderRadius: Corners.rounded(0),
         ),
         child: Center(
           child: CustomText(

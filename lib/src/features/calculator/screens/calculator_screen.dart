@@ -65,13 +65,13 @@ class CalculatorScreen extends StatelessWidget {
       body: Column(
         children: const [
           // Output Section
-          SizedBox(
-            height: 185,
+          Expanded(
             child: NumberResult(),
           ),
 
           // Input Section
-          Expanded(
+          SizedBox(
+            height: 382,
             child: InputButtons(),
           ),
         ],
@@ -108,8 +108,7 @@ class InputButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      padding: const EdgeInsets.all(12),
+    return DecoratedBox(
       decoration: const BoxDecoration(
         color: ButtonColors.sheetBgColor,
         boxShadow: Shadows.universalDark,
@@ -118,73 +117,55 @@ class InputButtons extends ConsumerWidget {
           topRight: Radius.circular(30),
         ),
       ),
-      child: Column(
-        children: [
-          // Buttons
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: buttons.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                crossAxisCount: 4,
-              ),
-              itemBuilder: (contex, index) {
-                final button = buttons[index];
+      child: GridView.builder(
+        padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: buttons.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: 1.15,
+          crossAxisCount: 4,
+        ),
+        itemBuilder: (contex, index) {
+          final button = buttons[index];
 
-                if (button.isAction) {
-                  return CalculatorButton(
-                    text: button.label,
-                    color: ButtonColors.btnBlueBgColor,
-                    textColor: AppColors.textWhite80Color,
-                    buttonTapped: () {
-                      if (button == CalcButton.CLEAR) {
-                        ref.read(numberInputProvider.notifier).clear();
-                      } else if (button == CalcButton.DELETE) {
-                        ref.read(numberInputProvider.notifier).delete();
-                      } else if (button == CalcButton.EQUAL) {
-                        ref.read(numberInputProvider.notifier).equal();
-                      } else if (button == CalcButton.ANS) {
-                        ref.read(numberInputProvider.notifier).ans();
-                      }
-                    },
-                  );
+          if (button.isAction) {
+            return CalculatorButton(
+              text: button.label,
+              color: ButtonColors.btnBlueBgColor,
+              textColor: AppColors.textWhite80Color,
+              buttonTapped: () {
+                if (button == CalcButton.CLEAR) {
+                  ref.read(numberInputProvider.notifier).clear();
+                } else if (button == CalcButton.DELETE) {
+                  ref.read(numberInputProvider.notifier).delete();
+                } else if (button == CalcButton.EQUAL) {
+                  final result = ref.read(numberResultProvider).toString();
+                  final input = ref.read(numberInputProvider);
+                  if (input == result) {
+                    AppRouter.pop();
+                  } else {
+                    ref.read(numberInputProvider.notifier).equal();
+                  }
+                } else if (button == CalcButton.ANS) {
+                  ref.read(numberInputProvider.notifier).ans();
                 }
-                return CalculatorButton(
-                  text: button.label,
-                  fontSize: button.isOperator ? 21 : 19,
-                  color: button.isOperator
-                      ? ButtonColors.btnDarkBgColor
-                      : ButtonColors.btnBgColor,
-                  textColor: button.isOperator
-                      ? ButtonColors.operatorColor
-                      : AppColors.textBlackColor,
-                  buttonTapped: () {
-                    ref
-                        .read(numberInputProvider.notifier)
-                        .onBtnTapped(button.label);
-                  },
-                );
               },
-            ),
-          ),
-
-          // Save Button
-          const CustomTextButton.gradient(
-            width: double.infinity,
-            onPressed: AppRouter.pop,
-            gradient: AppColors.buttonGradientPrimary,
-            child: Center(
-              child: CustomText(
-                'Save',
-                color: Colors.white,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ],
+            );
+          }
+          return CalculatorButton(
+            text: button.label,
+            fontSize: button.isOperator ? 21 : 19,
+            color: button.isOperator
+                ? ButtonColors.btnDarkBgColor
+                : ButtonColors.btnBgColor,
+            textColor: button.isOperator
+                ? ButtonColors.operatorColor
+                : AppColors.textBlackColor,
+            buttonTapped: () {
+              ref.read(numberInputProvider.notifier).onBtnTapped(button.label);
+            },
+          );
+        },
       ),
     );
   }
@@ -203,29 +184,36 @@ class NumberResult extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           // Input Text
-          Container(
-            alignment: Alignment.centerRight,
-            child: const Text(
-              'Input Here',
-              style: TextStyle(
-                color: AppColors.textBlackColor,
-                fontSize: 25,
-              ),
-            ),
+          Consumer(
+            builder: (_, ref, __) {
+              final input = ref.watch(numberInputProvider);
+              return Container(
+                alignment: Alignment.centerRight,
+                child: CustomText(
+                  input,
+                  color: AppColors.textBlackColor,
+                  fontSize: 25,
+                ),
+              );
+            },
           ),
 
           Insets.gapH10,
 
           // Output Section
-          Container(
-            alignment: Alignment.bottomRight,
-            child: const Text(
-              'Output Here',
-              style: TextStyle(
-                color: AppColors.textBlackColor,
-                fontSize: 32,
-              ),
-            ),
+          Consumer(
+            builder: (_, ref, __) {
+              final output = ref.watch(numberResultProvider);
+              return Container(
+                alignment: Alignment.bottomRight,
+                child: CustomText(
+                  '$output',
+                  color: AppColors.textGreyColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32,
+                ),
+              );
+            },
           ),
         ],
       ),

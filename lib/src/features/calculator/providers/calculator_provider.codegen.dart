@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'calculator_provider.codegen.g.dart';
 
-final numberResultProvider = StateProvider.autoDispose<double>((ref) => 0);
+final numberResultProvider = StateProvider.autoDispose<String>((ref) => '0');
 
 final calculationHistoryProvider = StateProvider.autoDispose<List<String>>(
   (ref) => [],
@@ -16,12 +16,16 @@ class NumberInput extends _$NumberInput {
   String build() => '0';
 
   void onBtnTapped(String button) {
-    state += button;
+    if (state == '0') {
+      state = button;
+    } else {
+      state += button;
+    }
   }
 
   void clear() {
     state = '0';
-    ref.read(numberResultProvider.notifier).state = 0;
+    ref.read(numberResultProvider.notifier).state = '0';
   }
 
   void delete() {
@@ -30,7 +34,7 @@ class NumberInput extends _$NumberInput {
 
   void ans() {
     final result = ref.read(numberResultProvider);
-    state += result.toString();
+    state += result;
   }
 
   void equal() {
@@ -41,16 +45,10 @@ class NumberInput extends _$NumberInput {
       ContextModel(),
     ) as double;
 
-    if (eval == ref.read(numberResultProvider)) {
-      return;
-    } else if (eval == double.infinity) {
-      state = '0';
-    } else {
-      state = eval.toString();
-    }
+    state = eval.toString();
 
     // update output
-    ref.read(numberResultProvider.notifier).state = eval;
+    ref.read(numberResultProvider.notifier).state = state;
 
     // update expression history
     ref

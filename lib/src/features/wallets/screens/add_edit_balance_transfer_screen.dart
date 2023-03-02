@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 // Providers
+import '../../calculator/calculator.dart';
 
 // Routing
 import '../../../config/routing/routing.dart';
@@ -12,54 +13,64 @@ import '../../../config/routing/routing.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Models
+import '../models/balance_transfer_model.codegen.dart';
 import '../models/wallet_model.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-class BalanceTransferScreen extends HookConsumerWidget {
-  const BalanceTransferScreen({super.key});
+class AddEditBalanceTransferScreen extends HookConsumerWidget {
+  final BalanceTransferModel? balanceTransfer;
 
-  // void saveForm(
-  //   WidgetRef ref, {
-  //   required int gradYear,
-  //   required CurrencyModel currencyId,
-  //   required CampusModel campusId,
-  // }) {
-  //   if (formKey.currentState!.validate()) {
-  //     formKey.currentState!.save();
-  //     ref.read(registerFormProvider.notifier).saveUniversityDetails(
-  //           gradYear: gradYear,
-  //           programId: programId,
-  //           campusId: campusId,
-  //         );
-  //   }
-  // }
+  const AddEditBalanceTransferScreen({
+    super.key,
+    this.balanceTransfer,
+  });
+
+  void save(
+    WidgetRef ref, {
+    required double amount,
+    required WalletModel srcWallet,
+    required DateTime date,
+    required WalletModel destWallet,
+    String? note,
+  }) {
+    if (balanceTransfer == null) {
+      // ref.read(balanceTransferProvider.notifier).create(
+      //   amount: amount,
+      //   srcWallet: srcWallet,
+      //   date: date,
+      //   destWallet: destWallet,
+      //   note: note,
+      // );
+    } else {
+      // ref.read(balanceTransferProvider.notifier).edit(
+      //   amount: amount,
+      //   srcWallet: srcWallet,
+      //   date: date,
+      //   destWallet: destWallet,
+      //   note: note,
+      // );
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final savedFormData = ref.watch(
-    //   registerFormProvider.notifier
-    //       .select((value) => value.savedUniversityDetails),
-    // );
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final amountController = useTextEditingController(
-        // text: savedFormData?.amount ?? '',
-        );
+      text: balanceTransfer?.amount.toString() ?? '',
+    );
     final noteController = useTextEditingController(
-        // text: savedFormData?.amount ?? '',
-        );
+      text: balanceTransfer?.note ?? '',
+    );
     final dateController = useValueNotifier<DateTime?>(
-      null,
-      // savedFormData?.birthday,
+      balanceTransfer?.date,
     );
     final srcWalletController = useValueNotifier<WalletModel?>(
-      null,
-      // savedFormData?.srcWallet,
+      balanceTransfer?.srcWallet,
     );
     final destWalletController = useValueNotifier<WalletModel?>(
-      null,
-      // savedFormData?.destWallet,
+      balanceTransfer?.destWallet,
     );
 
     return Scaffold(
@@ -100,10 +111,10 @@ class BalanceTransferScreen extends HookConsumerWidget {
               // Amount
               GestureDetector(
                 onTap: () async {
-                  final amount = await AppRouter.pushNamed(
+                  await AppRouter.pushNamed(
                     Routes.CalculatorScreenRoute,
-                  ) as double;
-                  amountController.text = amount.toString();
+                  );
+                  amountController.text = ref.read(numberResultProvider);
                 },
                 child: CustomTextField(
                   controller: amountController,
@@ -219,12 +230,17 @@ class BalanceTransferScreen extends HookConsumerWidget {
               CustomTextButton.gradient(
                 width: double.infinity,
                 onPressed: () {
-                  // saveForm(
-                  //   ref,
-                  //   gradYear: gradYearController.value!,
-                  //   programId: programIdController.value!,
-                  //   campusId: campusIdController.value!,
-                  // );
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    save(
+                      ref,
+                      amount: double.parse(amountController.text),
+                      srcWallet: srcWalletController.value!,
+                      date: dateController.value!,
+                      destWallet: destWalletController.value!,
+                      note: noteController.text,
+                    );
+                  }
                 },
                 gradient: AppColors.buttonGradientPrimary,
                 child: const Center(
