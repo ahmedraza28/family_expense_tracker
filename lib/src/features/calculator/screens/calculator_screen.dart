@@ -139,7 +139,7 @@ class InputButtons extends ConsumerWidget {
                 } else if (button == CalcButton.DELETE) {
                   ref.read(numberInputProvider.notifier).delete();
                 } else if (button == CalcButton.EQUAL) {
-                  final result = ref.read(numberResultProvider).toString();
+                  final result = ref.read(numberResultProvider);
                   final input = ref.read(numberInputProvider);
                   if (input == result) {
                     AppRouter.pop();
@@ -207,7 +207,7 @@ class NumberResult extends StatelessWidget {
               return Container(
                 alignment: Alignment.bottomRight,
                 child: CustomText(
-                  '$output',
+                  output,
                   color: AppColors.textGreyColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 32,
