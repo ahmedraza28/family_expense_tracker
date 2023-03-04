@@ -1,4 +1,5 @@
 export 'models/book_model.codegen.dart';
+export 'providers/books_provider.dart';
 export 'repositories/books_repository.codegen.dart';
 export 'screens/add_edit_book_screen.dart';
 export 'screens/books_screens.dart';

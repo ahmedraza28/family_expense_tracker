@@ -61,25 +61,25 @@ class MockCategoriesRepository implements CategoriesRepository {
         id: 1,
         name: 'Category 1',
         imageUrl: 'https://picsum.photos/200/300',
-        categoryType: CategoryType.income,
+        type: CategoryType.income,
       ),
       CategoryModel(
         id: 2,
         name: 'Category 2',
         imageUrl: 'https://picsum.photos/200/300',
-        categoryType: CategoryType.expense,
+        type: CategoryType.expense,
       ),
       CategoryModel(
         id: 3,
         name: 'Category 3',
         imageUrl: 'https://picsum.photos/200/300',
-        categoryType: CategoryType.expense,
+        type: CategoryType.expense,
       ),
       CategoryModel(
         id: 4,
         name: 'Category 4',
         imageUrl: 'https://picsum.photos/200/300',
-        categoryType: CategoryType.income,
+        type: CategoryType.income,
       ),
     ]);
   }

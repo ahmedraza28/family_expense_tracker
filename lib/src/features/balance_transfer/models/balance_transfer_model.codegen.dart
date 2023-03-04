@@ -5,7 +5,10 @@ import 'package:flutter/foundation.dart';
 
 // Helpers
 import '../../../helpers/typedefs.dart';
-import 'wallet_model.codegen.dart';
+
+// Features
+import '../../transactions/transactions.dart';
+import '../../wallets/wallets.dart';
 
 part 'balance_transfer_model.codegen.freezed.dart';
 part 'balance_transfer_model.codegen.g.dart';
@@ -16,10 +19,11 @@ class BalanceTransferModel with _$BalanceTransferModel {
     required int id,
     required double amount,
     required DateTime date,
-    required WalletModel srcWallet,
-    required WalletModel destWallet,
+    @JsonKey(toJson: toWalletId) required WalletModel srcWallet,
+    @JsonKey(toJson: toWalletId) required WalletModel destWallet,
     String? note,
   }) = _BalanceTransferModel;
 
-  factory BalanceTransferModel.fromJson(JSON json) => _$BalanceTransferModelFromJson(json);
+  factory BalanceTransferModel.fromJson(JSON json) =>
+      _$BalanceTransferModelFromJson(json);
 }

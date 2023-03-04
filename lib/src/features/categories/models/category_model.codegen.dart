@@ -18,7 +18,7 @@ class CategoryModel with _$CategoryModel {
     required int id,
     required String name,
     required String imageUrl,
-    required CategoryType categoryType,
+    required CategoryType type,
   }) = _CategoryModel;
 
   factory CategoryModel.fromJson(JSON json) => _$CategoryModelFromJson(json);

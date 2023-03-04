@@ -3,80 +3,79 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-// Providers
-import '../../calculator/calculator.dart';
-
 // Routing
 import '../../../config/routing/routing.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
-// Models
-import '../models/balance_transfer_model.codegen.dart';
-import '../models/wallet_model.codegen.dart';
-
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-class AddEditBalanceTransferScreen extends HookConsumerWidget {
-  final BalanceTransferModel? balanceTransfer;
+// Providers
+import '../providers/transactions_provider.codegen.dart';
 
-  const AddEditBalanceTransferScreen({
-    super.key,
-    this.balanceTransfer,
-  });
+// Features
+import '../../calculator/calculator.dart';
+import '../../categories/categories.dart';
+import '../../wallets/wallets.dart';
+
+class AddEditTransactionScreen extends HookConsumerWidget {
+  const AddEditTransactionScreen({super.key});
 
   void save(
     WidgetRef ref, {
     required double amount,
-    required WalletModel srcWallet,
+    required WalletModel wallet,
     required DateTime date,
-    required WalletModel destWallet,
-    String? note,
+    required CategoryModel category,
+    String? description,
   }) {
-    if (balanceTransfer == null) {
-      // ref.read(balanceTransferProvider.notifier).create(
-      //   amount: amount,
-      //   srcWallet: srcWallet,
-      //   date: date,
-      //   destWallet: destWallet,
-      //   note: note,
-      // );
+    final selectedTransaction = ref.read(currentTransactionProvider);
+    if (selectedTransaction == null) {
+      ref.read(transactionsProvider).addTransaction(
+            amount: amount,
+            wallet: wallet,
+            date: date,
+            category: category,
+            description: description,
+          );
     } else {
-      // ref.read(balanceTransferProvider.notifier).edit(
-      //   amount: amount,
-      //   srcWallet: srcWallet,
-      //   date: date,
-      //   destWallet: destWallet,
-      //   note: note,
-      // );
+      final transaction = selectedTransaction.copyWith(
+        amount: amount,
+        wallet: wallet,
+        date: date,
+        category: category,
+        description: description,
+      );
+      ref.read(transactionsProvider).updateTransaction(transaction);
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final transaction = ref.watch(currentTransactionProvider);
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final amountController = useTextEditingController(
-      text: balanceTransfer?.amount.toString() ?? '',
+      text: transaction?.amount.toString() ?? '',
     );
-    final noteController = useTextEditingController(
-      text: balanceTransfer?.note ?? '',
+    final descriptionController = useTextEditingController(
+      text: transaction?.description ?? '',
     );
     final dateController = useValueNotifier<DateTime?>(
-      balanceTransfer?.date,
+      transaction?.date,
     );
-    final srcWalletController = useValueNotifier<WalletModel?>(
-      balanceTransfer?.srcWallet,
+    final walletController = useValueNotifier<WalletModel?>(
+      transaction?.wallet,
     );
-    final destWalletController = useValueNotifier<WalletModel?>(
-      balanceTransfer?.destWallet,
+    final categoryController = useValueNotifier<CategoryModel?>(
+      transaction?.category,
     );
 
     return Scaffold(
       appBar: AppBar(
         title: const CustomText(
-          'Add a new category',
+          'Add a new transaction',
           fontSize: 20,
         ),
         actions: [
@@ -125,51 +124,37 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
-              // Source Wallet
-              LabeledWidget(
-                label: 'Source Wallet',
-                child: CustomDropdownField<WalletModel>.sheet(
-                  controller: srcWalletController,
-                  selectedItemBuilder: (item) => CustomText.body(item.name),
-                  hintText: 'Transfer from',
-                  itemsSheet: CustomDropdownSheet(
-                    items: const [
-                      WalletModel(
-                        id: 1,
-                        name: 'Wallet 1',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 1000,
+              // Category
+              Consumer(
+                builder: (context, ref, _) {
+                  final categories = ref.watch(bookCategoriesProvider);
+                  return LabeledWidget(
+                    label: 'Category',
+                    child: CustomDropdownField<CategoryModel>.sheet(
+                      controller: categoryController,
+                      selectedItemBuilder: (item) => CustomText.body(item.name),
+                      hintText: 'Select category',
+                      itemsSheet: CustomDropdownSheet(
+                        items: categories.valueOrNull ?? [],
+                        bottomSheetTitle: 'Categories',
+                        itemBuilder: (_, item) => DropdownSheetItem(
+                          label: item.name,
+                        ),
                       ),
-                      WalletModel(
-                        id: 2,
-                        name: 'Wallet 2',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 2000,
-                      ),
-                      WalletModel(
-                        id: 3,
-                        name: 'Wallet 3',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 3000,
-                      ),
-                    ],
-                    bottomSheetTitle: 'Wallets',
-                    itemBuilder: (_, item) => DropdownSheetItem(
-                      label: item.name,
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
 
               Insets.gapH20,
 
-              // Destination Wallet
+              // Wallet
               LabeledWidget(
-                label: 'Destination Wallet',
+                label: 'Wallet',
                 child: CustomDropdownField<WalletModel>.sheet(
-                  controller: destWalletController,
+                  controller: walletController,
                   selectedItemBuilder: (item) => CustomText.body(item.name),
-                  hintText: 'Transfer to',
+                  hintText: 'Spend from',
                   itemsSheet: CustomDropdownSheet(
                     items: const [
                       WalletModel(
@@ -218,7 +203,7 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
 
               // Note
               CustomTextField(
-                controller: noteController,
+                controller: descriptionController,
                 floatingText: 'Note',
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
@@ -235,10 +220,10 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
                     save(
                       ref,
                       amount: double.parse(amountController.text),
-                      srcWallet: srcWalletController.value!,
+                      wallet: walletController.value!,
                       date: dateController.value!,
-                      destWallet: destWalletController.value!,
-                      note: noteController.text,
+                      category: categoryController.value!,
+                      description: descriptionController.text,
                     );
                   }
                 },

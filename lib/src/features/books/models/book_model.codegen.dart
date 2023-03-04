@@ -20,6 +20,8 @@ class BookModel with _$BookModel {
     required String imageUrl,
     required String description,
     required UserModel createdBy,
+    required double totalIncome,
+    required double totalExpense,
   }) = _BookModel;
 
   factory BookModel.fromJson(JSON json) => _$BookModelFromJson(json);

@@ -2,6 +2,7 @@
 
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 // Helpers
 import '../../helpers/constants/app_colors.dart';
@@ -29,9 +30,9 @@ abstract class CustomDropdownField<T> extends StatelessWidget {
   }) = _CustomDropdownFieldSheet;
 
   const factory CustomDropdownField.animated({
-    required void Function(T?) onSelected,
-    required TextEditingController controller,
+    required ValueNotifier<T?> controller,
     required Map<String, T> items,
+    void Function(T?)? onSelected,
     Key? key,
     String? hintText,
     TextStyle? hintStyle,
@@ -148,23 +149,44 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
 }
 
 class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
+  /// The initial hint set for the field.
   final String? hintText;
+
+  /// The [TextStyle] used for displaying hint text in the field.
   final TextStyle? hintStyle;
+
+  /// The [TextStyle] used for displaying selected value in the field.
   final TextStyle? selectedStyle;
+
+  /// The [TextStyle] used for displaying list items in the dropdown.
   final TextStyle? listItemStyle;
+
+  /// The [Color] used for filling background of the field.
   final Color fillColor;
+
+  /// The [BorderRadius] used for rounding the corners of the field.
   final BorderRadius borderRadius;
-  final void Function(T?) onSelected;
-  final TextEditingController controller;
+
+  /// The callback used to passback selected value to the parent.
+  final void Function(T?)? onSelected;
+
+  /// The items to be displayed in the dropdown.
   final Map<String, T> items;
+
+  /// The flag used to enable/disable search in the dropdown.
   final bool enableSearch;
+
+  /// The icon to display at the end of the field.
   final Widget fieldSuffixIcon;
 
+  /// The notifier used to store and passback selected values to the parent.
+  final ValueNotifier<T?> controller;
+
   const _CustomDropdownFieldAnimated({
-    required this.onSelected,
     required this.controller,
     required this.items,
     super.key,
+    this.onSelected,
     this.hintText,
     this.listItemStyle,
     this.hintStyle = const TextStyle(
@@ -184,18 +206,18 @@ class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
     this.enableSearch = false,
   });
 
-  void onChanged(String label) {
-    onSelected.call(items[label]);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final textController = useTextEditingController();
     final searchItems = <String>[hintText ?? 'Select value', ...items.keys];
     return enableSearch
         ? CustomDropdown.search(
-            controller: controller,
+            controller: textController,
             items: searchItems,
-            onChanged: onChanged,
+            onChanged: (label) {
+              textController.text = label == hintText ? '' : label;
+              onSelected?.call(items[label]);
+            },
             hintText: hintText,
             hintStyle: hintStyle,
             selectedStyle: selectedStyle,
@@ -205,9 +227,12 @@ class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
             fieldSuffixIcon: fieldSuffixIcon,
           )
         : CustomDropdown(
-            controller: controller,
+            controller: textController,
             items: searchItems,
-            onChanged: onChanged,
+            onChanged: (label) {
+              textController.text = label == hintText ? '' : label;
+              onSelected?.call(items[label]);
+            },
             hintText: hintText,
             hintStyle: hintStyle,
             selectedStyle: selectedStyle,

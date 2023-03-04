@@ -37,7 +37,7 @@ class AddEditBookScreen extends HookConsumerWidget {
     //       .select((value) => value.savedUniversityDetails),
     // );
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    final currencyController = useTextEditingController();
+    final currencyController = useValueNotifier<String>('');
     final bookNameController = useTextEditingController();
 
     return Scaffold(
@@ -80,14 +80,11 @@ class AddEditBookScreen extends HookConsumerWidget {
               LabeledWidget(
                 label: 'Currency',
                 useDarkerLabel: true,
-                child: CustomDropdownField<int>.animated(
+                child: CustomDropdownField<String>.animated(
                   controller: currencyController,
                   hintText: 'Pick a currency',
                   items: {
-                    for (var e in <String>['AED', 'PKR', 'USD']) e: e.length
-                  },
-                  onSelected: (currency) {
-                    // ref.read(currencyFilterProvider.notifier).state = currency;
+                    for (var e in <String>['AED', 'PKR', 'USD']) e: e
                   },
                 ),
               ),

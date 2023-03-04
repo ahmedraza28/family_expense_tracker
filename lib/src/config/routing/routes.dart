@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Features
 import '../../features/auth/auth.dart';
+import '../../features/balance_transfer/balance_transfer.dart';
 import '../../features/books/books.dart';
 import '../../features/calculator/calculator.dart';
 import '../../features/categories/categories.dart';
