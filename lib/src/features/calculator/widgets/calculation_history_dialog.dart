@@ -105,7 +105,7 @@ class _HistoryListItem extends ConsumerWidget {
       ),
       trailing: InkWell(
         onTap: () {
-          ref.read(numberInputProvider.notifier).state = expression;
+          ref.read(numberInputProvider.notifier).replace(expression);
           AppRouter.pop();
         },
         child: const CustomText(

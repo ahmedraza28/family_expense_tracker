@@ -1,3 +1,5 @@
+// ignore_for_file: use_setters_to_change_properties
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -21,6 +23,10 @@ class NumberInput extends _$NumberInput {
     } else {
       state += button;
     }
+  }
+
+  void replace(String expression){
+    state = expression;
   }
 
   void clear() {
