@@ -38,6 +38,7 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.0.12
   riverpod_annotation: ^2.0.0
+  riverpod_lint: ^1.1.2
   sentry_flutter: ^6.20.1
   shared_preferences: ^2.0.17
   time: ^2.1.3
