@@ -3,6 +3,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 // Core
 import '../../../core/core.dart';
 
+// Helpers
+import '../../../helpers/typedefs.dart';
+
 // Models
 import '../models/wallet_model.codegen.dart';
 
@@ -30,21 +33,22 @@ class WalletsRepository {
 
   Future<void> addWallet({
     required int bookId,
-    required WalletModel wallet,
+    required JSON body,
   }) {
     return _firestoreService.setData(
       path: 'books/$bookId/wallets',
-      data: wallet.toJson(),
+      data: body,
     );
   }
 
   Future<void> updateWallet({
     required int bookId,
-    required WalletModel wallet,
+    required int walletId,
+    required JSON changes,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/wallets/${wallet.id}',
-      data: wallet.toJson(),
+      path: 'books/$bookId/wallets/$walletId',
+      data: changes,
       merge: true,
     );
   }
@@ -84,13 +88,14 @@ class MockWalletsRepository implements WalletsRepository {
   @override
   Future<void> addWallet({
     required int bookId,
-    required WalletModel wallet,
+    required JSON body,
   }) async {}
 
   @override
   Future<void> updateWallet({
     required int bookId,
-    required WalletModel wallet,
+    required int walletId,
+    required JSON changes,
   }) async {}
   
   @override

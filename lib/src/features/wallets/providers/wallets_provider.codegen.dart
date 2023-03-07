@@ -1,4 +1,7 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+// Helpers
+import '../../../helpers/typedefs.dart';
 
 // Models
 import '../models/wallet_model.codegen.dart';
@@ -9,12 +12,64 @@ import '../repositories/wallets_repository.codegen.dart';
 // Features
 import '../../books/books.dart';
 
-// part 'wallets_provider.codegen.g.dart';
+part 'wallets_provider.codegen.g.dart';
 
-/// Fetches a stream of [WalletModel]s
-final bookWalletsProvider = StreamProvider<List<WalletModel>>(
+final selectedWalletProvider = Provider<WalletModel?>((ref) {
+  return null;
+});
+
+final walletsStreamProvider = StreamProvider<List<WalletModel>>(
   (ref) {
-    final bookId = ref.watch(selectedBookProvider)!.id!;
-    return ref.watch(walletsRepositoryProvider).getBookWallets(bookId: bookId);
+    final wallets = ref.watch(walletsProvider);
+    return wallets.getAllWallets();
   },
 );
+
+/// A provider used to access instance of this service
+@Riverpod(keepAlive: true)
+WalletsProvider wallets(WalletsRef ref) {
+  final walletsRepository = ref.watch(walletsRepositoryProvider);
+  final bookId = ref.watch(selectedBookProvider)!.id!;
+  return WalletsProvider(walletsRepository, bookId: bookId);
+}
+
+class WalletsProvider {
+  final int bookId;
+  final WalletsRepository _walletsRepository;
+
+  WalletsProvider(
+    this._walletsRepository, {
+    required this.bookId,
+  });
+
+  Stream<List<WalletModel>> getAllWallets([JSON? queryParams]) {
+    return _walletsRepository.getBookWallets(bookId: bookId);
+  }
+
+  void addWallet({
+    required String name,
+    required String imageUrl,
+    required double balance,
+    String? description,
+  }) {
+    final wallet = WalletModel(
+      id: null,
+      name: name,
+      imageUrl: imageUrl,
+      balance: balance,
+      description: description,
+    );
+    _walletsRepository.addWallet(
+      bookId: bookId,
+      body: wallet.toJson(),
+    );
+  }
+
+  void updateWallet(WalletModel wallet) {
+    _walletsRepository.updateWallet(
+      bookId: bookId,
+      walletId: wallet.id!,
+      changes: wallet.toJson(),
+    );
+  }
+}
