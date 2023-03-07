@@ -9,6 +9,7 @@ import '../../../helpers/typedefs.dart';
 
 // Features
 import '../../auth/auth.dart';
+import '../../wallets/wallets.dart';
 
 part 'book_model.codegen.freezed.dart';
 part 'book_model.codegen.g.dart';
@@ -20,6 +21,7 @@ class BookModel with _$BookModel {
     required String name,
     required String imageUrl,
     required String description,
+    @JsonKey(toJson: toCurrencyId) required CurrencyModel currency,
     required UserModel createdBy,
     required double totalIncome,
     required double totalExpense,

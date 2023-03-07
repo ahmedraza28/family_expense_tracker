@@ -4,9 +4,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
+import '../models/currency_model.codegen.dart';
 import '../models/wallet_model.codegen.dart';
 
 // Repositories
+import '../repositories/currencies_repository.codegen.dart';
 import '../repositories/wallets_repository.codegen.dart';
 
 // Features
@@ -24,6 +26,11 @@ final walletsStreamProvider = StreamProvider<List<WalletModel>>(
     return wallets.getAllWallets();
   },
 );
+
+@Riverpod(keepAlive: true)
+Stream<List<CurrencyModel>> currenciesStream(CurrenciesStreamRef ref){
+  return ref.watch(currenciesRepositoryProvider).getAllCurrencies();
+}
 
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)
@@ -50,11 +57,13 @@ class WalletsProvider {
     required String name,
     required String imageUrl,
     required double balance,
+    required CurrencyModel currency,
     String? description,
   }) {
     final wallet = WalletModel(
       id: null,
       name: name,
+      currency: currency,
       imageUrl: imageUrl,
       balance: balance,
       description: description,

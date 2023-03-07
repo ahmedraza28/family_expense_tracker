@@ -7,6 +7,7 @@ import '../../../core/core.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
+import '../models/currency_model.codegen.dart';
 import '../models/wallet_model.codegen.dart';
 
 part 'wallets_repository.codegen.g.dart';
@@ -63,24 +64,28 @@ class MockWalletsRepository implements WalletsRepository {
         name: 'Wallet 1',
         imageUrl: 'https://picsum.photos/200/300',
         balance: 200000,
+        currency: CurrencyModel(name: 'USD', symbol: r'$'),
       ),
       WalletModel(
         id: 2,
         name: 'Wallet 2',
         imageUrl: 'https://picsum.photos/200/300',
         balance: 200000,
+        currency: CurrencyModel(name: 'USD', symbol: r'$'),
       ),
       WalletModel(
         id: 3,
         name: 'Wallet 3',
         imageUrl: 'https://picsum.photos/200/300',
         balance: 200000,
+        currency: CurrencyModel(name: 'USD', symbol: r'$'),
       ),
       WalletModel(
         id: 4,
         name: 'Wallet 4',
         imageUrl: 'https://picsum.photos/200/300',
         balance: 200000,
+        currency: CurrencyModel(name: 'USD', symbol: r'$'),
       ),
     ]);
   }

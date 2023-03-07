@@ -3,47 +3,44 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
+import '../providers/books_provider.codegen.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/form_validator.dart';
 
+// Models
+import '../models/book_model.codegen.dart';
+
+// Features
+import '../../auth/auth.dart';
+import '../../wallets/wallets.dart';
+
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
 class AddEditBookScreen extends HookConsumerWidget {
-  const AddEditBookScreen({super.key});
+  final BookModel? book;
 
-  // void saveForm(
-  //   WidgetRef ref, {
-  //   required int gradYear,
-  //   required CurrencyModel currencyId,
-  //   required CampusModel campusId,
-  // }) {
-  //   if (formKey.currentState!.validate()) {
-  //     formKey.currentState!.save();
-  //     ref.read(registerFormProvider.notifier).saveUniversityDetails(
-  //           gradYear: gradYear,
-  //           programId: programId,
-  //           campusId: campusId,
-  //         );
-  //   }
-  // }
+  const AddEditBookScreen({
+    super.key,
+    this.book,
+  });
+
+  static const _defaultCurrency = CurrencyModel(name: 'PKR', symbol: 'Rs');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final savedFormData = ref.watch(
-    //   registerFormProvider.notifier
-    //       .select((value) => value.savedUniversityDetails),
-    // );
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    final currencyController = useValueNotifier<String>('');
-    final bookNameController = useTextEditingController();
+    final currencyController = useValueNotifier<CurrencyModel>(
+      book?.currency ?? _defaultCurrency,
+    );
+    final bookNameController = useTextEditingController(text: book?.name ?? '');
 
     return Scaffold(
       appBar: AppBar(
-        title: const CustomText(
-          'Add a new book',
+        title: CustomText(
+          book == null ? 'Add a new book' : 'Edit book',
           fontSize: 20,
         ),
       ),
@@ -57,7 +54,7 @@ class AddEditBookScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               const CustomText(
-                'Create a book in which you will record income and expenses',
+                'Add details for a book in which you will record income and expenses',
                 fontSize: 16,
                 maxLines: 2,
                 fontWeight: FontWeight.bold,
@@ -77,16 +74,20 @@ class AddEditBookScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Currency Dropdown
-              LabeledWidget(
-                label: 'Currency',
-                useDarkerLabel: true,
-                child: CustomDropdownField<String>.animated(
-                  controller: currencyController,
-                  hintText: 'Pick a currency',
-                  items: {
-                    for (var e in <String>['AED', 'PKR', 'USD']) e: e
-                  },
-                ),
+              Consumer(
+                builder: (_, ref, __) {
+                  final currencies =
+                      ref.watch(currenciesStreamProvider).valueOrNull ?? [];
+                  return LabeledWidget(
+                    label: 'Currency',
+                    useDarkerLabel: true,
+                    child: CustomDropdownField<CurrencyModel>.animated(
+                      controller: currencyController,
+                      hintText: 'Pick a currency',
+                      items: {for (var e in currencies) e.name: e},
+                    ),
+                  );
+                },
               ),
 
               Insets.expand,
@@ -95,12 +96,24 @@ class AddEditBookScreen extends HookConsumerWidget {
               CustomTextButton.gradient(
                 width: double.infinity,
                 onPressed: () {
-                  // saveForm(
-                  //   ref,
-                  //   gradYear: gradYearController.value!,
-                  //   programId: programIdController.value!,
-                  //   campusId: campusIdController.value!,
-                  // );
+                  if (book == null) {
+                    final currentUser = ref.read(currentUserProvider).value!;
+                    ref.read(booksProvider).addBook(
+                          name: bookNameController.text,
+                          imageUrl: '',
+                          currency: currencyController.value,
+                          totalIncome: 0,
+                          totalExpense: 0,
+                          createdBy: currentUser,
+                        );
+                  } else {
+                    ref.read(booksProvider).updateBook(
+                          book!.copyWith(
+                            name: bookNameController.text,
+                            currency: currencyController.value,
+                          ),
+                        );
+                  }
                 },
                 gradient: AppColors.buttonGradientPrimary,
                 child: const Center(

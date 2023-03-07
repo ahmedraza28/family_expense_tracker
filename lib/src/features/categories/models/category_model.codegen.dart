@@ -13,6 +13,8 @@ import '../enums/category_type_enum.dart';
 part 'category_model.codegen.freezed.dart';
 part 'category_model.codegen.g.dart';
 
+int toCategoryId(CategoryModel category) => category.id!;
+
 @freezed
 class CategoryModel with _$CategoryModel {
   const factory CategoryModel({

@@ -128,77 +128,49 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Source Wallet
-              LabeledWidget(
-                label: 'Source Wallet',
-                child: CustomDropdownField<WalletModel>.sheet(
-                  controller: srcWalletController,
-                  selectedItemBuilder: (item) => CustomText.body(item.name),
-                  hintText: 'Transfer from',
-                  itemsSheet: CustomDropdownSheet(
-                    items: const [
-                      WalletModel(
-                        id: 1,
-                        name: 'Wallet 1',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 1000,
+              Consumer(
+                builder: (_, ref, __) {
+                  final walletsStream = ref.watch(walletsStreamProvider);
+                  return LabeledWidget(
+                    label: 'Source Wallet',
+                    child: CustomDropdownField<WalletModel>.sheet(
+                      controller: srcWalletController,
+                      selectedItemBuilder: (item) => CustomText.body(item.name),
+                      hintText: 'Transfer from',
+                      itemsSheet: CustomDropdownSheet(
+                        items: walletsStream.valueOrNull ?? [],
+                        bottomSheetTitle: 'Wallets',
+                        itemBuilder: (_, item) => DropdownSheetItem(
+                          label: item.name,
+                        ),
                       ),
-                      WalletModel(
-                        id: 2,
-                        name: 'Wallet 2',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 2000,
-                      ),
-                      WalletModel(
-                        id: 3,
-                        name: 'Wallet 3',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 3000,
-                      ),
-                    ],
-                    bottomSheetTitle: 'Wallets',
-                    itemBuilder: (_, item) => DropdownSheetItem(
-                      label: item.name,
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
 
               Insets.gapH20,
 
               // Destination Wallet
-              LabeledWidget(
-                label: 'Destination Wallet',
-                child: CustomDropdownField<WalletModel>.sheet(
-                  controller: destWalletController,
-                  selectedItemBuilder: (item) => CustomText.body(item.name),
-                  hintText: 'Transfer to',
-                  itemsSheet: CustomDropdownSheet(
-                    items: const [
-                      WalletModel(
-                        id: 1,
-                        name: 'Wallet 1',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 1000,
+              Consumer(
+                builder: (_, ref, __) {
+                  final walletsStream = ref.watch(walletsStreamProvider);
+                  return LabeledWidget(
+                    label: 'Destination Wallet',
+                    child: CustomDropdownField<WalletModel>.sheet(
+                      controller: destWalletController,
+                      selectedItemBuilder: (item) => CustomText.body(item.name),
+                      hintText: 'Transfer to',
+                      itemsSheet: CustomDropdownSheet(
+                        items: walletsStream.valueOrNull ?? [],
+                        bottomSheetTitle: 'Wallets',
+                        itemBuilder: (_, item) => DropdownSheetItem(
+                          label: item.name,
+                        ),
                       ),
-                      WalletModel(
-                        id: 2,
-                        name: 'Wallet 2',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 2000,
-                      ),
-                      WalletModel(
-                        id: 3,
-                        name: 'Wallet 3',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 3000,
-                      ),
-                    ],
-                    bottomSheetTitle: 'Wallets',
-                    itemBuilder: (_, item) => DropdownSheetItem(
-                      label: item.name,
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
 
               Insets.gapH20,

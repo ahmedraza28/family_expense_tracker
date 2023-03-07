@@ -7,8 +7,13 @@ import 'package:flutter/foundation.dart';
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/typedefs.dart';
 
+// Models
+import 'currency_model.codegen.dart';
+
 part 'wallet_model.codegen.freezed.dart';
 part 'wallet_model.codegen.g.dart';
+
+int toWalletId(WalletModel wallet) => wallet.id!;
 
 @freezed
 class WalletModel with _$WalletModel {
@@ -17,6 +22,7 @@ class WalletModel with _$WalletModel {
     required String name,
     required String imageUrl,
     required double balance,
+    @JsonKey(toJson: toCurrencyId) required CurrencyModel currency,
     String? description,
   }) = _WalletModel;
 

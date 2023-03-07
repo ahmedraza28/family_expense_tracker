@@ -14,9 +14,6 @@ import '../../wallets/wallets.dart';
 part 'transaction_model.codegen.freezed.dart';
 part 'transaction_model.codegen.g.dart';
 
-int toCategoryId(CategoryModel category) => category.id!;
-int toWalletId(WalletModel wallet) => wallet.id!;
-
 @freezed
 class TransactionModel with _$TransactionModel {
   const factory TransactionModel({

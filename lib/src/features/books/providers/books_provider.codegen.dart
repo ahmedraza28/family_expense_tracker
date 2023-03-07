@@ -1,6 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-
 // Helpers
 import '../../../helpers/typedefs.dart';
 
@@ -11,6 +10,7 @@ import '../models/book_model.codegen.dart';
 import '../repositories/books_repository.codegen.dart';
 
 // Features
+import '../../wallets/wallets.dart';
 import '../../auth/auth.dart';
 
 part 'books_provider.codegen.g.dart';
@@ -46,12 +46,14 @@ class BooksProvider {
     required double totalIncome,
     required double totalExpense,
     required UserModel createdBy,
+    required CurrencyModel currency,
     String? description,
   }) {
     final book = BookModel(
       id: null,
       name: name,
       imageUrl: imageUrl,
+      currency: currency,
       description: description ?? '',
       createdBy: createdBy,
       totalIncome: totalIncome,
