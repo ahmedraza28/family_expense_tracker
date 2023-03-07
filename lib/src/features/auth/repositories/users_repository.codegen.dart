@@ -52,7 +52,7 @@ class UsersRepository {
     );
 
     await for (final bookIds in bookIdsStream) {
-      yield* _booksRepository.getBooks(bookIds);
+      yield* _booksRepository.getBooks(bookIds: bookIds);
     }
   }
 }

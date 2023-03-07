@@ -3,6 +3,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 // Core
 import '../../../core/core.dart';
 
+// Helpers
+import '../../../helpers/typedefs.dart';
+
 // Enums
 import '../enums/category_type_enum.dart';
 
@@ -33,21 +36,22 @@ class CategoriesRepository {
 
   Future<void> addCategory({
     required int bookId,
-    required CategoryModel category,
+    required JSON body,
   }) {
     return _firestoreService.setData(
       path: 'books/$bookId/categories',
-      data: category.toJson(),
+      data: body,
     );
   }
 
   Future<void> updateCategory({
     required int bookId,
-    required CategoryModel category,
+    required int categoryId,
+    required JSON changes,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/categories/${category.id}',
-      data: category.toJson(),
+      path: 'books/$bookId/categories/$categoryId',
+      data: changes,
       merge: true,
     );
   }
@@ -87,13 +91,14 @@ class MockCategoriesRepository implements CategoriesRepository {
   @override
   Future<void> addCategory({
     required int bookId,
-    required CategoryModel category,
+    required JSON body,
   }) async {}
 
   @override
   Future<void> updateCategory({
     required int bookId,
-    required CategoryModel category,
+    required int categoryId,
+    required JSON changes,
   }) async {}
   
   @override

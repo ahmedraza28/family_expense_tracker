@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
 // Helpers
+import '../../../helpers/constants/constants.dart';
 import '../../../helpers/typedefs.dart';
 
 // Features
@@ -15,7 +16,7 @@ part 'category_model.codegen.g.dart';
 @freezed
 class CategoryModel with _$CategoryModel {
   const factory CategoryModel({
-    required int id,
+    @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
     required String name,
     required String imageUrl,
     required CategoryType type,

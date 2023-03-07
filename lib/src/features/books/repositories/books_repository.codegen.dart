@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/core.dart';
 
 // Models
+import '../../../helpers/typedefs.dart';
 import '../models/book_model.codegen.dart';
 
 // Features
@@ -34,7 +35,7 @@ class BooksRepository {
   })  : _firestoreService = firestoreService,
         _usersRepository = usersRepository;
 
-  Stream<List<BookModel>> getBooks([List<int>? bookIds]) {
+  Stream<List<BookModel>> getBooks({List<int>? bookIds}) {
     return _firestoreService.collectionStream<BookModel>(
       path: 'books',
       queryBuilder: bookIds != null
@@ -54,5 +55,25 @@ class BooksRepository {
     await for (final memberIds in memberIdsStream) {
       yield* _usersRepository.getUsers(memberIds);
     }
+  }
+
+  Future<void> addBook({
+    required JSON body,
+  }) {
+    return _firestoreService.setData(
+      path: 'books',
+      data: body,
+    );
+  }
+
+  Future<void> updateBook({
+    required int bookId,
+    required JSON changes,
+  }) {
+    return _firestoreService.setData(
+      path: 'books/$bookId',
+      data: changes,
+      merge: true,
+    );
   }
 }

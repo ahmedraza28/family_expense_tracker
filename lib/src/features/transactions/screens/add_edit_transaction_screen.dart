@@ -127,7 +127,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               // Category
               Consumer(
                 builder: (context, ref, _) {
-                  final categories = ref.watch(bookCategoriesProvider);
+                  final categoriesStream = ref.watch(categoriesStreamProvider);
                   return LabeledWidget(
                     label: 'Category',
                     child: CustomDropdownField<CategoryModel>.sheet(
@@ -135,7 +135,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
                       selectedItemBuilder: (item) => CustomText.body(item.name),
                       hintText: 'Select category',
                       itemsSheet: CustomDropdownSheet(
-                        items: categories.valueOrNull ?? [],
+                        items: categoriesStream.valueOrNull ?? [],
                         bottomSheetTitle: 'Categories',
                         itemBuilder: (_, item) => DropdownSheetItem(
                           label: item.name,

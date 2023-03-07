@@ -52,10 +52,10 @@ Stream<List<TransactionModel>> filteredTransactions(
 /// A provider used to access list of searched expenses
 @riverpod
 Stream<List<TransactionModel>> searchedTransactions(
-  SearchedTransactionsRef ref,
-) {
+  SearchedTransactionsRef ref, {
+  required Stream<List<TransactionModel>> filteredTransactions,
+}) {
   final searchTerm = ref.watch(searchFilterProvider).toLowerCase();
-  final filteredTransactions = ref.watch(filteredTransactionsProvider);
   if (searchTerm.isEmpty) {
     return filteredTransactions;
   }

@@ -14,7 +14,7 @@ import '../../books/books.dart';
 /// Fetches a stream of [WalletModel]s
 final bookWalletsProvider = StreamProvider<List<WalletModel>>(
   (ref) {
-    final bookId = ref.watch(selectedBookProvider)!.id;
+    final bookId = ref.watch(selectedBookProvider)!.id!;
     return ref.watch(walletsRepositoryProvider).getBookWallets(bookId: bookId);
   },
 );

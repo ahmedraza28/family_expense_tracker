@@ -102,7 +102,7 @@ class FiltersListView extends HookConsumerWidget {
         // Category Dropdown Filter
         Consumer(
           builder: (context, ref, _) {
-            final categories = ref.watch(bookCategoriesProvider);
+            final categoriesStream = ref.watch(categoriesStreamProvider);
             return LabeledWidget(
               label: 'Category',
               child: CustomDropdownField<CategoryModel>.sheet(
@@ -110,7 +110,7 @@ class FiltersListView extends HookConsumerWidget {
                 selectedItemBuilder: (item) => CustomText.body(item.name),
                 hintText: 'Select category',
                 itemsSheet: CustomDropdownSheet(
-                  items: categories.valueOrNull ?? [],
+                  items: categoriesStream.valueOrNull ?? [],
                   bottomSheetTitle: 'Categories',
                   itemBuilder: (_, item) => DropdownSheetItem(
                     label: item.name,

@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
 // Helpers
+import '../../../helpers/constants/constants.dart';
 import '../../../helpers/typedefs.dart';
 
 // Features
@@ -15,7 +16,7 @@ part 'book_model.codegen.g.dart';
 @freezed
 class BookModel with _$BookModel {
   const factory BookModel({
-    required int id,
+    @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
     required String name,
     required String imageUrl,
     required String description,
