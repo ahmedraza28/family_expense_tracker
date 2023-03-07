@@ -74,8 +74,8 @@ class AddEditTransactionScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const CustomText(
-          'Add a new transaction',
+        title: CustomText(
+          transaction != null ? 'Edit transaction' : 'Add a new transaction',
           fontSize: 20,
         ),
         actions: [
@@ -99,7 +99,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               const CustomText(
-                'Create a balance transfer to another wallet',
+                'Add details about a transaction',
                 fontSize: 16,
                 maxLines: 2,
                 fontWeight: FontWeight.bold,
@@ -149,39 +149,25 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Wallet
-              LabeledWidget(
-                label: 'Wallet',
-                child: CustomDropdownField<WalletModel>.sheet(
-                  controller: walletController,
-                  selectedItemBuilder: (item) => CustomText.body(item.name),
-                  hintText: 'Spend from',
-                  itemsSheet: CustomDropdownSheet(
-                    items: const [
-                      WalletModel(
-                        id: 1,
-                        name: 'Wallet 1',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 1000,
+              Consumer(
+                builder: (_, ref, __) {
+                  final walletsStream = ref.watch(walletsStreamProvider);
+                  return LabeledWidget(
+                    label: 'Wallet',
+                    child: CustomDropdownField<WalletModel>.sheet(
+                      controller: walletController,
+                      selectedItemBuilder: (item) => CustomText.body(item.name),
+                      hintText: 'Spend from',
+                      itemsSheet: CustomDropdownSheet(
+                        items: walletsStream.valueOrNull ?? [],
+                        bottomSheetTitle: 'Wallets',
+                        itemBuilder: (_, item) => DropdownSheetItem(
+                          label: item.name,
+                        ),
                       ),
-                      WalletModel(
-                        id: 2,
-                        name: 'Wallet 2',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 2000,
-                      ),
-                      WalletModel(
-                        id: 3,
-                        name: 'Wallet 3',
-                        imageUrl: 'https://picsum.photos/200',
-                        balance: 3000,
-                      ),
-                    ],
-                    bottomSheetTitle: 'Wallets',
-                    itemBuilder: (_, item) => DropdownSheetItem(
-                      label: item.name,
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
 
               Insets.gapH20,
