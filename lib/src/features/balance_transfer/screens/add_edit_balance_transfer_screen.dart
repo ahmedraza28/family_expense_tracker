@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 // Providers
-import '../../calculator/calculator.dart';
+import '../providers/balance_transfer_provider.dart';
 
 // Routing
 import '../../../config/routing/routing.dart';
@@ -12,53 +12,20 @@ import '../../../config/routing/routing.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
-// Models
-import '../models/balance_transfer_model.codegen.dart';
-
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
 // Features
+import '../../calculator/calculator.dart';
 import '../../wallets/wallets.dart';
 
 class AddEditBalanceTransferScreen extends HookConsumerWidget {
-  final BalanceTransferModel? balanceTransfer;
-
-  const AddEditBalanceTransferScreen({
-    super.key,
-    this.balanceTransfer,
-  });
-
-  void save(
-    WidgetRef ref, {
-    required double amount,
-    required WalletModel srcWallet,
-    required DateTime date,
-    required WalletModel destWallet,
-    String? note,
-  }) {
-    if (balanceTransfer == null) {
-      // ref.read(balanceTransferProvider.notifier).create(
-      //   amount: amount,
-      //   srcWallet: srcWallet,
-      //   date: date,
-      //   destWallet: destWallet,
-      //   note: note,
-      // );
-    } else {
-      // ref.read(balanceTransferProvider.notifier).edit(
-      //   amount: amount,
-      //   srcWallet: srcWallet,
-      //   date: date,
-      //   destWallet: destWallet,
-      //   note: note,
-      // );
-    }
-  }
+  const AddEditBalanceTransferScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
+    final balanceTransfer = ref.watch(editBalanceTransferProvider);
     final amountController = useTextEditingController(
       text: balanceTransfer?.amount.toString() ?? '',
     );
@@ -74,6 +41,29 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
     final destWalletController = useValueNotifier<WalletModel?>(
       balanceTransfer?.destWallet,
     );
+
+    void onSave() {
+      if (!formKey.currentState!.validate()) return;
+      formKey.currentState!.save();
+      if (balanceTransfer == null) {
+        // ref.read(balanceTransferProvider).create(
+        //       amount: double.parse(amountController.text),
+        //       srcWallet: srcWalletController.value!,
+        //       date: dateController.value!,
+        //       destWallet: destWalletController.value!,
+        //       note: noteController.text,
+        //     );
+      } else {
+        final newTransfer = balanceTransfer.copyWith(
+          amount: double.parse(amountController.text),
+          srcWallet: srcWalletController.value!,
+          date: dateController.value!,
+          destWallet: destWalletController.value!,
+          note: noteController.text,
+        );
+        // ref.read(balanceTransferProvider).updateBalanceTransfer(newTransfer);
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -203,19 +193,7 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
               // Confirm Details Button
               CustomTextButton.gradient(
                 width: double.infinity,
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    formKey.currentState!.save();
-                    save(
-                      ref,
-                      amount: double.parse(amountController.text),
-                      srcWallet: srcWalletController.value!,
-                      date: dateController.value!,
-                      destWallet: destWalletController.value!,
-                      note: noteController.text,
-                    );
-                  }
-                },
+                onPressed: onSave,
                 gradient: AppColors.buttonGradientPrimary,
                 child: const Center(
                   child: CustomText(
