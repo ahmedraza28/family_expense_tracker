@@ -17,7 +17,7 @@ import '../../books/books.dart';
 
 part 'transactions_provider.codegen.g.dart';
 
-final currentTransactionProvider =
+final editTransactionProvider =
     StateProvider.autoDispose<TransactionModel?>((_) => null);
 
 final transactionsFutureProvider =
@@ -26,6 +26,11 @@ final transactionsFutureProvider =
     return ref.watch(transactionsProvider).getAllTransactions();
   },
 );
+
+@riverpod
+Stream<List<TransactionModel>> transactionsStream(TransactionsStreamRef ref) {
+  return ref.watch(transactionsProvider).getAllTransactions();
+}
 
 /// A provider used to access instance of this service
 @riverpod

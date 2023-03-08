@@ -1,3 +1,4 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
@@ -20,6 +21,10 @@ final selectedWalletProvider = Provider<WalletModel?>((ref) {
   return null;
 });
 
+final editWalletProvider = StateProvider.autoDispose<WalletModel?>((ref) {
+  return null;
+});
+
 final walletsStreamProvider = StreamProvider<List<WalletModel>>(
   (ref) {
     final wallets = ref.watch(walletsProvider);
@@ -31,6 +36,8 @@ final walletsStreamProvider = StreamProvider<List<WalletModel>>(
 Stream<List<CurrencyModel>> currenciesStream(CurrenciesStreamRef ref){
   return ref.watch(currenciesRepositoryProvider).getAllCurrencies();
 }
+
+const defaultCurrency = CurrencyModel(name: 'PKR', symbol: 'Rs');
 
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)

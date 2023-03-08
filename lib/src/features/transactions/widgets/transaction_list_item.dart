@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
 import '../models/transaction_model.codegen.dart';
@@ -6,31 +7,34 @@ import '../models/transaction_model.codegen.dart';
 // Routing
 import '../../../config/routing/routing.dart';
 
+// Providers
+import '../providers/transactions_provider.codegen.dart';
+
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-class TransactionListItem extends StatelessWidget {
-  final TransactionModel? transaction;
+class TransactionListItem extends ConsumerWidget {
+  final TransactionModel transaction;
   final VoidCallback onTap;
 
   const TransactionListItem({
     required this.onTap,
+    required this.transaction,
     super.key,
-    this.transaction,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: onTap,
       child: ListTile(
         dense: true,
         horizontalTitleGap: 0,
         contentPadding: const EdgeInsets.symmetric(
-          horizontal:15,
+          horizontal: 15,
           vertical: 5,
         ),
         tileColor: Colors.white,
@@ -38,11 +42,14 @@ class TransactionListItem extends StatelessWidget {
           borderRadius: Corners.rounded15,
         ),
         leading: const Icon(
-          Icons.category_rounded,
+          Icons.money,
           color: AppColors.textLightGreyColor,
         ),
         trailing: InkWell(
           onTap: () {
+            ref
+                .read(editTransactionProvider.notifier)
+                .update((state) => transaction);
             AppRouter.pushNamed(Routes.AddEditCategoryScreenRoute);
           },
           child: const Icon(
@@ -52,7 +59,10 @@ class TransactionListItem extends StatelessWidget {
           ),
         ),
         title: CustomText.body(
-          'Category Name',
+          transaction.category.name,
+        ),
+        subtitle: CustomText.subtitle(
+          transaction.description ?? '',
         ),
       ),
     );

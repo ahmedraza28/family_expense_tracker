@@ -35,7 +35,7 @@ class CategoriesScreen extends ConsumerWidget {
             ],
           ),
         ),
-        body: const CategoryTypesTabs(),
+        body: const CategoryTypesTabViews(),
         floatingActionButton: OpenContainer(
           openElevation: 0,
           closedElevation: 5,

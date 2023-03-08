@@ -1,7 +1,5 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-// Helpers
-import '../../../helpers/typedefs.dart';
 
 // Models
 import '../models/category_model.codegen.dart';
@@ -17,16 +15,18 @@ import '../../books/books.dart';
 
 part 'categories_provider.codegen.g.dart';
 
-final selectedCategoryProvider = Provider<CategoryModel?>((ref) {
+final editCategoryProvider = StateProvider.autoDispose<CategoryModel?>((ref) {
   return null;
 });
 
-final categoriesStreamProvider = StreamProvider<List<CategoryModel>>(
-  (ref) {
-    final categories = ref.watch(categoriesProvider);
-    return categories.getAllCategories();
-  },
-);
+@Riverpod(keepAlive: true)
+Stream<List<CategoryModel>> categoriesStream(
+  CategoriesStreamRef ref,
+  CategoryType type,
+) {
+  final categories = ref.watch(categoriesProvider);
+  return categories.getAllCategories(type);
+}
 
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)
@@ -45,15 +45,17 @@ class CategoriesProvider {
     required this.bookId,
   });
 
-  Stream<List<CategoryModel>> getAllCategories([JSON? queryParams]) {
-    return _categoriesRepository.getBookCategories(bookId: bookId);
+  Stream<List<CategoryModel>> getAllCategories(CategoryType type) {
+    return _categoriesRepository.getBookCategories(
+      bookId: bookId,
+      categoryType: type.name,
+    );
   }
 
   void addCategory({
     required String name,
     required String imageUrl,
     required CategoryType type,
-    String? description,
   }) {
     final category = CategoryModel(
       id: null,
@@ -63,6 +65,7 @@ class CategoriesProvider {
     );
     _categoriesRepository.addCategory(
       bookId: bookId,
+      categoryType: type.name,
       body: category.toJson(),
     );
   }
@@ -71,6 +74,7 @@ class CategoriesProvider {
     _categoriesRepository.updateCategory(
       bookId: bookId,
       categoryId: category.id!,
+      categoryType: category.type.name,
       changes: category.toJson(),
     );
   }

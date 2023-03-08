@@ -27,19 +27,23 @@ class CategoriesRepository {
 
   const CategoriesRepository(this._firestoreService);
 
-  Stream<List<CategoryModel>> getBookCategories({required int bookId}) {
+  Stream<List<CategoryModel>> getBookCategories({
+    required int bookId,
+    required String categoryType,
+  }) {
     return _firestoreService.collectionStream<CategoryModel>(
-      path: 'books/$bookId/categories',
+      path: 'books/$bookId/categories/$categoryType',
       builder: (json, docId) => CategoryModel.fromJson(json!),
     );
   }
 
   Future<void> addCategory({
     required int bookId,
+    required String categoryType,
     required JSON body,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/categories',
+      path: 'books/$bookId/categories/$categoryType',
       data: body,
     );
   }
@@ -47,10 +51,11 @@ class CategoriesRepository {
   Future<void> updateCategory({
     required int bookId,
     required int categoryId,
+    required String categoryType,
     required JSON changes,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/categories/$categoryId',
+      path: 'books/$bookId/categories/$categoryType/$categoryId',
       data: changes,
       merge: true,
     );
@@ -59,8 +64,11 @@ class CategoriesRepository {
 
 class MockCategoriesRepository implements CategoriesRepository {
   @override
-  Stream<List<CategoryModel>> getBookCategories({required int bookId}) {
-    return Stream.value(const [
+  Stream<List<CategoryModel>> getBookCategories({
+    required int bookId,
+    required String categoryType,
+  }) {
+    const list = [
       CategoryModel(
         id: 1,
         name: 'Category 1',
@@ -85,12 +93,16 @@ class MockCategoriesRepository implements CategoriesRepository {
         imageUrl: 'https://picsum.photos/200/300',
         type: CategoryType.income,
       ),
-    ]);
+    ];
+    return Stream.value(
+      list.where((element) => element.type.name == categoryType).toList(),
+    );
   }
 
   @override
   Future<void> addCategory({
     required int bookId,
+    required String categoryType,
     required JSON body,
   }) async {}
 
@@ -98,9 +110,10 @@ class MockCategoriesRepository implements CategoriesRepository {
   Future<void> updateCategory({
     required int bookId,
     required int categoryId,
+    required String categoryType,
     required JSON changes,
   }) async {}
-  
+
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();
 }

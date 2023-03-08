@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
 import '../models/wallet_model.codegen.dart';
+
+// Providers
+import '../providers/wallets_provider.codegen.dart';
 
 // Routing
 import '../../../config/routing/routing.dart';
@@ -12,18 +16,18 @@ import '../../../helpers/constants/constants.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-class WalletListItem extends StatelessWidget {
-  final WalletModel? wallet;
+class WalletListItem extends ConsumerWidget {
+  final WalletModel wallet;
   final VoidCallback onTap;
 
   const WalletListItem({
     required this.onTap,
+    required this.wallet,
     super.key,
-    this.wallet,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: onTap,
       child: ListTile(
@@ -44,6 +48,7 @@ class WalletListItem extends StatelessWidget {
         ),
         trailing: InkWell(
           onTap: () {
+            ref.read(editWalletProvider.notifier).update((state) => wallet);
             AppRouter.pushNamed(Routes.AddEditWalletScreenRoute);
           },
           child: const Icon(
@@ -53,7 +58,7 @@ class WalletListItem extends StatelessWidget {
           ),
         ),
         subtitle: CustomText.subtitle(
-          '${wallet!.balance}',
+          '${wallet.balance}',
           color: AppColors.textLightGreyColor,
         ),
         title: CustomText.body(

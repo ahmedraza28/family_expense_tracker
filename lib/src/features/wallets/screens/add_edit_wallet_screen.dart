@@ -3,11 +3,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
+import '../providers/wallets_provider.codegen.dart';
 
 // Helpers
 import '../../../global/formatters/formatters.dart';
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/form_validator.dart';
+
+// Models
+import '../models/currency_model.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
@@ -15,40 +19,45 @@ import '../../../global/widgets/widgets.dart';
 class AddEditWalletScreen extends HookConsumerWidget {
   const AddEditWalletScreen({super.key});
 
-  // void saveForm(
-  //   WidgetRef ref, {
-  //   required int gradYear,
-  //   required CurrencyModel currencyId,
-  //   required CampusModel campusId,
-  // }) {
-  //   if (formKey.currentState!.validate()) {
-  //     formKey.currentState!.save();
-  //     ref.read(registerFormProvider.notifier).saveUniversityDetails(
-  //           gradYear: gradYear,
-  //           programId: programId,
-  //           campusId: campusId,
-  //         );
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final savedFormData = ref.watch(
-    //   registerFormProvider.notifier
-    //       .select((value) => value.savedUniversityDetails),
-    // );
     final formKey = useMemoized(GlobalKey<FormState>.new);
+    final wallet = ref.watch(editWalletProvider);
     final walletNameController = useTextEditingController(
-        // text: savedFormData?.walletName ?? '',
-        );
+      text: wallet?.name ?? '',
+    );
     final walletBalanceController = useTextEditingController(
-        // text: savedFormData?.walletBalance ?? '',
+      text: wallet?.balance.toString() ?? '',
+    );
+    final currencyController = useValueNotifier<CurrencyModel>(
+      wallet?.currency ?? defaultCurrency,
+    );
+
+    void onSave() {
+      if (!formKey.currentState!.validate()) return;
+      formKey.currentState!.save();
+      if (wallet == null) {
+        ref.read(walletsProvider).addWallet(
+              name: walletNameController.text,
+              currency: currencyController.value,
+              imageUrl: '',
+              balance: double.parse(walletBalanceController.text),
+            );
+      } else {
+        final newWallet = wallet.copyWith(
+          name: walletNameController.text,
+          currency: currencyController.value,
+          imageUrl: '',
+          balance: double.parse(walletBalanceController.text),
         );
+        ref.read(walletsProvider).updateWallet(newWallet);
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: const CustomText(
-          'Add a new wallet',
+        title: CustomText(
+          wallet != null ? 'Edit a wallet' : 'Add a new wallet',
           fontSize: 20,
         ),
         actions: [
@@ -103,19 +112,31 @@ class AddEditWalletScreen extends HookConsumerWidget {
                 textInputAction: TextInputAction.done,
               ),
 
+              Insets.gapH20,
+
+              // Currency Dropdown
+              Consumer(
+                builder: (_, ref, __) {
+                  final currencies =
+                      ref.watch(currenciesStreamProvider).valueOrNull ?? [];
+                  return LabeledWidget(
+                    label: 'Currency',
+                    useDarkerLabel: true,
+                    child: CustomDropdownField<CurrencyModel>.animated(
+                      controller: currencyController,
+                      hintText: 'Pick a currency',
+                      items: {for (var e in currencies) e.name: e},
+                    ),
+                  );
+                },
+              ),
+
               Insets.expand,
 
               // Confirm Details Button
               CustomTextButton.gradient(
                 width: double.infinity,
-                onPressed: () {
-                  // saveForm(
-                  //   ref,
-                  //   gradYear: gradYearController.value!,
-                  //   programId: programIdController.value!,
-                  //   campusId: campusIdController.value!,
-                  // );
-                },
+                onPressed: onSave,
                 gradient: AppColors.buttonGradientPrimary,
                 child: const Center(
                   child: CustomText(

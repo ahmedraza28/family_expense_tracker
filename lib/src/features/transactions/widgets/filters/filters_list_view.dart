@@ -27,11 +27,16 @@ class FiltersListView extends HookConsumerWidget {
     final monthFilterController = useValueNotifier<int?>(null);
     final yearFilterController = useValueNotifier<int?>(null);
     final categoryFilterController = useValueNotifier<CategoryModel?>(null);
+    final categoryTypeController =
+        useValueNotifier<CategoryType>(CategoryType.income);
 
     useEffect(
       () {
         monthFilterController.value = ref.read(expenseMonthFilterProvider);
         yearFilterController.value = ref.read(expenseYearFilterProvider);
+        categoryFilterController.value = ref.read(categoryFilterProvider);
+        categoryTypeController.value = categoryFilterController.value?.type ??
+            categoryTypeController.value;
         return null;
       },
       [],
@@ -99,10 +104,23 @@ class FiltersListView extends HookConsumerWidget {
 
         Insets.gapH20,
 
+        // Category Type
+        LabeledWidget(
+          label: 'Category Type',
+          useDarkerLabel: true,
+          child: CategoryTypeSelectionCards(
+            controller: categoryTypeController,
+          ),
+        ),
+
+        Insets.gapH20,
+
         // Category Dropdown Filter
         Consumer(
           builder: (context, ref, _) {
-            final categoriesStream = ref.watch(categoriesStreamProvider);
+            final categoriesStream = ref.watch(
+              categoriesStreamProvider(categoryTypeController.value),
+            );
             return LabeledWidget(
               label: 'Category',
               child: CustomDropdownField<CategoryModel>.sheet(

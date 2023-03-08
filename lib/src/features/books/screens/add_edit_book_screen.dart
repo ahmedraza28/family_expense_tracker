@@ -9,9 +9,6 @@ import '../providers/books_provider.codegen.dart';
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/form_validator.dart';
 
-// Models
-import '../models/book_model.codegen.dart';
-
 // Features
 import '../../auth/auth.dart';
 import '../../wallets/wallets.dart';
@@ -20,22 +17,39 @@ import '../../wallets/wallets.dart';
 import '../../../global/widgets/widgets.dart';
 
 class AddEditBookScreen extends HookConsumerWidget {
-  final BookModel? book;
-
-  const AddEditBookScreen({
-    super.key,
-    this.book,
-  });
-
-  static const _defaultCurrency = CurrencyModel(name: 'PKR', symbol: 'Rs');
+  const AddEditBookScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
+    final book = ref.watch(editBookProvider);
     final currencyController = useValueNotifier<CurrencyModel>(
-      book?.currency ?? _defaultCurrency,
+      book?.currency ?? defaultCurrency,
     );
     final bookNameController = useTextEditingController(text: book?.name ?? '');
+
+    void saveBook() {
+      if (!formKey.currentState!.validate()) return;
+      formKey.currentState!.save();
+      if (book == null) {
+        final currentUser = ref.read(currentUserProvider).value!;
+        ref.read(booksProvider).addBook(
+              name: bookNameController.text,
+              imageUrl: '',
+              currency: currencyController.value,
+              totalIncome: 0,
+              totalExpense: 0,
+              createdBy: currentUser,
+            );
+      } else {
+        ref.read(booksProvider).updateBook(
+              book.copyWith(
+                name: bookNameController.text,
+                currency: currencyController.value,
+              ),
+            );
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -95,26 +109,7 @@ class AddEditBookScreen extends HookConsumerWidget {
               // Confirm Details Button
               CustomTextButton.gradient(
                 width: double.infinity,
-                onPressed: () {
-                  if (book == null) {
-                    final currentUser = ref.read(currentUserProvider).value!;
-                    ref.read(booksProvider).addBook(
-                          name: bookNameController.text,
-                          imageUrl: '',
-                          currency: currencyController.value,
-                          totalIncome: 0,
-                          totalExpense: 0,
-                          createdBy: currentUser,
-                        );
-                  } else {
-                    ref.read(booksProvider).updateBook(
-                          book!.copyWith(
-                            name: bookNameController.text,
-                            currency: currencyController.value,
-                          ),
-                        );
-                  }
-                },
+                onPressed: saveBook,
                 gradient: AppColors.buttonGradientPrimary,
                 child: const Center(
                   child: CustomText(

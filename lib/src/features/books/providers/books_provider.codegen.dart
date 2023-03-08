@@ -1,3 +1,4 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
@@ -18,6 +19,15 @@ part 'books_provider.codegen.g.dart';
 final selectedBookProvider = Provider<BookModel?>((ref) {
   return null;
 });
+
+final editBookProvider = StateProvider.autoDispose<BookModel?>((ref) {
+  return null;
+});
+
+@riverpod
+Stream<List<BookModel>> booksStream(BooksStreamRef ref) {
+  return ref.watch(booksProvider).getAllBooks();
+}
 
 /// A provider used to access instance of this service
 @riverpod

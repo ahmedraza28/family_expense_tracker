@@ -23,38 +23,9 @@ import '../../wallets/wallets.dart';
 class AddEditTransactionScreen extends HookConsumerWidget {
   const AddEditTransactionScreen({super.key});
 
-  void save(
-    WidgetRef ref, {
-    required double amount,
-    required WalletModel wallet,
-    required DateTime date,
-    required CategoryModel category,
-    String? description,
-  }) {
-    final selectedTransaction = ref.read(currentTransactionProvider);
-    if (selectedTransaction == null) {
-      ref.read(transactionsProvider).addTransaction(
-            amount: amount,
-            wallet: wallet,
-            date: date,
-            category: category,
-            description: description,
-          );
-    } else {
-      final transaction = selectedTransaction.copyWith(
-        amount: amount,
-        wallet: wallet,
-        date: date,
-        category: category,
-        description: description,
-      );
-      ref.read(transactionsProvider).updateTransaction(transaction);
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transaction = ref.watch(currentTransactionProvider);
+    final transaction = ref.watch(editTransactionProvider);
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final amountController = useTextEditingController(
       text: transaction?.amount.toString() ?? '',
@@ -71,6 +42,32 @@ class AddEditTransactionScreen extends HookConsumerWidget {
     final categoryController = useValueNotifier<CategoryModel?>(
       transaction?.category,
     );
+    final typeController = useValueNotifier<CategoryType>(
+      categoryController.value?.type ?? CategoryType.income,
+    );
+
+    void onSave() {
+      if (!formKey.currentState!.validate()) return;
+      formKey.currentState!.save();
+      if (transaction == null) {
+        ref.read(transactionsProvider).addTransaction(
+              amount: double.parse(amountController.text),
+              wallet: walletController.value!,
+              date: dateController.value!,
+              category: categoryController.value!,
+              description: descriptionController.text,
+            );
+      } else {
+        final newTransaction = transaction.copyWith(
+          amount: double.parse(amountController.text),
+          wallet: walletController.value!,
+          date: dateController.value!,
+          category: categoryController.value!,
+          description: descriptionController.text,
+        );
+        ref.read(transactionsProvider).updateTransaction(newTransaction);
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -124,10 +121,23 @@ class AddEditTransactionScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
+              // Category Type
+              LabeledWidget(
+                label: 'Category Type',
+                useDarkerLabel: true,
+                child: CategoryTypeSelectionCards(
+                  controller: typeController,
+                ),
+              ),
+
+              Insets.gapH20,
+
               // Category
               Consumer(
                 builder: (context, ref, _) {
-                  final categoriesStream = ref.watch(categoriesStreamProvider);
+                  final categoriesStream = ref.watch(
+                    categoriesStreamProvider(typeController.value),
+                  );
                   return LabeledWidget(
                     label: 'Category',
                     child: CustomDropdownField<CategoryModel>.sheet(
@@ -200,19 +210,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               // Confirm Details Button
               CustomTextButton.gradient(
                 width: double.infinity,
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    formKey.currentState!.save();
-                    save(
-                      ref,
-                      amount: double.parse(amountController.text),
-                      wallet: walletController.value!,
-                      date: dateController.value!,
-                      category: categoryController.value!,
-                      description: descriptionController.text,
-                    );
-                  }
-                },
+                onPressed: onSave,
                 gradient: AppColors.buttonGradientPrimary,
                 child: const Center(
                   child: CustomText(

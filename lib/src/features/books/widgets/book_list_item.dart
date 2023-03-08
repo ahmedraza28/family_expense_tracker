@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
 import '../models/book_model.codegen.dart';
@@ -11,19 +12,20 @@ import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import '../providers/books_provider.codegen.dart';
 
-class BookListItem extends StatelessWidget {
-  final BookModel? book;
+class BookListItem extends ConsumerWidget {
+  final BookModel book;
   final VoidCallback onTap;
 
   const BookListItem({
     required this.onTap,
+    required this.book,
     super.key,
-    this.book,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -53,6 +55,9 @@ class BookListItem extends StatelessWidget {
                     height: 30,
                     width: 55,
                     onPressed: () {
+                      ref
+                          .read(editBookProvider.notifier)
+                          .update((state) => book);
                       AppRouter.pushNamed(
                         Routes.AddEditBookScreenRoute,
                       );

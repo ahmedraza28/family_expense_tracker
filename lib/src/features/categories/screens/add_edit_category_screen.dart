@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// Providers
-
 // Helpers
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/form_validator.dart';
 
 // Enums
 import '../enums/category_type_enum.dart';
+
+// Providers
+import '../providers/categories_provider.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
@@ -18,36 +19,35 @@ import '../widgets/category_type_selection_cards.dart';
 class AddEditCategoryScreen extends HookConsumerWidget {
   const AddEditCategoryScreen({super.key});
 
-  // void saveForm(
-  //   WidgetRef ref, {
-  //   required int gradYear,
-  //   required CurrencyModel currencyId,
-  //   required CampusModel campusId,
-  // }) {
-  //   if (formKey.currentState!.validate()) {
-  //     formKey.currentState!.save();
-  //     ref.read(registerFormProvider.notifier).saveUniversityDetails(
-  //           gradYear: gradYear,
-  //           programId: programId,
-  //           campusId: campusId,
-  //         );
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final savedFormData = ref.watch(
-    //   registerFormProvider.notifier
-    //       .select((value) => value.savedUniversityDetails),
-    // );
+    final category = ref.watch(editCategoryProvider);
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final categoryNameController = useTextEditingController(
-        // text: savedFormData?.categoryName ?? '',
-        );
-    final typeController = useValueNotifier<CategoryType>(
-      // savedFormData != null ? savedFormData.categoryType : CategoryType.income,
-      CategoryType.income,
+      text: category?.name ?? '',
     );
+    final typeController = useValueNotifier<CategoryType>(
+      category?.type ?? CategoryType.income,
+    );
+
+    void onSave() {
+      if (!formKey.currentState!.validate()) return;
+      formKey.currentState!.save();
+      if (category == null) {
+        ref.read(categoriesProvider).addCategory(
+              name: categoryNameController.text,
+              type: typeController.value,
+              imageUrl: '',
+            );
+      } else {
+        final newCategory = category.copyWith(
+          name: categoryNameController.text,
+          type: typeController.value,
+          imageUrl: '',
+        );
+        ref.read(categoriesProvider).updateCategory(newCategory);
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -109,14 +109,7 @@ class AddEditCategoryScreen extends HookConsumerWidget {
               // Confirm Details Button
               CustomTextButton.gradient(
                 width: double.infinity,
-                onPressed: () {
-                  // saveForm(
-                  //   ref,
-                  //   gradYear: gradYearController.value!,
-                  //   programId: programIdController.value!,
-                  //   campusId: campusIdController.value!,
-                  // );
-                },
+                onPressed: onSave,
                 gradient: AppColors.buttonGradientPrimary,
                 child: const Center(
                   child: CustomText(

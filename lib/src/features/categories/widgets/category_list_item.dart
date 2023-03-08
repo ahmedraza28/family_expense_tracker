@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
 import '../models/category_model.codegen.dart';
@@ -9,21 +10,24 @@ import '../../../config/routing/routing.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
+// Providers
+import '../providers/categories_provider.codegen.dart';
+
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-class CategoryListItem extends StatelessWidget {
-  final CategoryModel? category;
+class CategoryListItem extends ConsumerWidget {
+  final CategoryModel category;
   final VoidCallback onTap;
 
   const CategoryListItem({
     required this.onTap,
+    required this.category,
     super.key,
-    this.category,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: onTap,
       child: ListTile(
@@ -43,6 +47,7 @@ class CategoryListItem extends StatelessWidget {
         ),
         trailing: InkWell(
           onTap: () {
+            ref.read(editCategoryProvider.notifier).update((state) => category);
             AppRouter.pushNamed(Routes.AddEditCategoryScreenRoute);
           },
           child: const Icon(

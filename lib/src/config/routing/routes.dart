@@ -8,6 +8,7 @@ import '../../features/books/books.dart';
 import '../../features/calculator/calculator.dart';
 import '../../features/categories/categories.dart';
 import '../../features/home/home.dart';
+import '../../features/transactions/transactions.dart';
 import '../../features/wallets/wallets.dart';
 
 // Screens
@@ -101,8 +102,8 @@ class Routes {
     AddEditWalletScreenRoute: (_) => const AddEditWalletScreen(),
     AddEditBalanceTransferScreenRoute: (_) => const AddEditBalanceTransferScreen(),
     CalculatorScreenRoute: (_) => const CalculatorScreen(),
-    // TransactionsScreenRoute: (_) => const SizedBox.shrink(),
-    // AddEditTransactionScreenRoute: (_) => const SizedBox.shrink(),
+    TransactionsScreenRoute: (_) => const TransactionsScreen(),
+    AddEditTransactionScreenRoute: (_) => const AddEditTransactionScreen(),
     // BudgetsScreenRoute: (_) => const SizedBox.shrink(),
     // AddEditBudgetScreenRoute: (_) => const SizedBox.shrink(),
     // ManageBookAccessScreenRoute: (_) => const SizedBox.shrink(),
