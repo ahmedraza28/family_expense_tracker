@@ -28,7 +28,6 @@ class WalletsList extends ConsumerWidget {
         itemBuilder: (_, i) {
           return WalletListItem(
             wallet: wallets[i],
-            onTap: () {},
           );
         },
       ),

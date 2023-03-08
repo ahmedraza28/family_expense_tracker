@@ -14,13 +14,15 @@ part 'balance_transfer_model.codegen.freezed.dart';
 part 'balance_transfer_model.codegen.g.dart';
 
 @freezed
-class BalanceTransferModel with _$BalanceTransferModel {
+class BalanceTransferModel extends TransactionModel
+    with _$BalanceTransferModel {
   const factory BalanceTransferModel({
     required int id,
     required double amount,
     required DateTime date,
     @JsonKey(toJson: toWalletId) required WalletModel srcWallet,
     @JsonKey(toJson: toWalletId) required WalletModel destWallet,
+    @Default(TransactionType.balanceTransfer) TransactionType type,
     String? note,
   }) = _BalanceTransferModel;
 

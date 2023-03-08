@@ -7,19 +7,19 @@ import '../models/book_model.codegen.dart';
 // Routing
 import '../../../config/routing/routing.dart';
 
+// Providers
+import '../providers/books_provider.codegen.dart';
+
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
-import '../providers/books_provider.codegen.dart';
 
 class BookListItem extends ConsumerWidget {
   final BookModel book;
-  final VoidCallback onTap;
 
   const BookListItem({
-    required this.onTap,
     required this.book,
     super.key,
   });
@@ -27,7 +27,9 @@ class BookListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: (){
+        ref.read(selectedBookProvider.notifier).update((state) => book);
+      },
       child: Container(
         width: double.infinity,
         decoration: const BoxDecoration(

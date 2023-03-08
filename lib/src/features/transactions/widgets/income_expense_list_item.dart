@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
-import '../models/wallet_model.codegen.dart';
-
-// Providers
-import '../providers/wallets_provider.codegen.dart';
+import '../models/income_expense_model.codegen.dart';
 
 // Routing
 import '../../../config/routing/routing.dart';
+
+// Providers
+import '../providers/transactions_provider.codegen.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
@@ -16,11 +16,11 @@ import '../../../helpers/constants/constants.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-class WalletListItem extends ConsumerWidget {
-  final WalletModel wallet;
+class IncomeExpenseListItem extends ConsumerWidget {
+  final IncomeExpenseModel transaction;
 
-  const WalletListItem({
-    required this.wallet,
+  const IncomeExpenseListItem({
+    required this.transaction,
     super.key,
   });
 
@@ -37,28 +37,28 @@ class WalletListItem extends ConsumerWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: Corners.rounded15,
       ),
-      leading: Icon(
-        Icons.wallet_rounded,
-        size: 27,
-        color: AppUtils.getRandomColor(),
+      leading: const Icon(
+        Icons.money,
+        color: AppColors.textLightGreyColor,
       ),
       trailing: InkWell(
         onTap: () {
-          ref.read(editWalletProvider.notifier).update((state) => wallet);
-          AppRouter.pushNamed(Routes.AddEditWalletScreenRoute);
+          ref
+              .read(editTransactionProvider.notifier)
+              .update((state) => transaction);
+          AppRouter.pushNamed(Routes.AddEditTransactionScreenRoute);
         },
         child: const Icon(
           Icons.edit_rounded,
           size: 20,
-          color: AppColors.textGreyColor,
+          color: AppColors.primaryColor,
         ),
       ),
-      subtitle: CustomText.subtitle(
-        '${wallet.balance}',
-        color: AppColors.textLightGreyColor,
-      ),
       title: CustomText.body(
-        'Wallet Name',
+        transaction.category.name,
+      ),
+      subtitle: CustomText.subtitle(
+        transaction.description ?? '',
       ),
     );
   }

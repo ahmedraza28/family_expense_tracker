@@ -5,7 +5,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
-import '../models/transaction_model.codegen.dart';
+import '../models/income_expense_model.codegen.dart';
+import '../models/transaction_model.dart';
 
 // Repositories
 import '../repositories/transactions_repository.codegen.dart';
@@ -18,14 +19,7 @@ import '../../books/books.dart';
 part 'transactions_provider.codegen.g.dart';
 
 final editTransactionProvider =
-    StateProvider.autoDispose<TransactionModel?>((_) => null);
-
-final transactionsFutureProvider =
-    StreamProvider.autoDispose<List<TransactionModel>>(
-  (ref) {
-    return ref.watch(transactionsProvider).getAllTransactions();
-  },
-);
+    StateProvider.autoDispose<IncomeExpenseModel?>((_) => null);
 
 @riverpod
 Stream<List<TransactionModel>> transactionsStream(TransactionsStreamRef ref) {
@@ -62,7 +56,7 @@ class TransactionsProvider {
     required CategoryModel category,
     String? description,
   }) {
-    final transaction = TransactionModel(
+    final transaction = IncomeExpenseModel(
       id: null,
       amount: amount,
       wallet: wallet,
@@ -75,7 +69,7 @@ class TransactionsProvider {
         .addTransaction(bookId: bookId, body: transaction.toJson());
   }
 
-  void updateTransaction(TransactionModel transaction) {
+  void updateTransaction(IncomeExpenseModel transaction) {
     _ref.read(transactionsRepositoryProvider).updateTransaction(
           bookId: bookId,
           transactionId: transaction.id!,

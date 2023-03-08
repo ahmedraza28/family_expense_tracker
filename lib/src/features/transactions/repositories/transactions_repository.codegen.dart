@@ -7,7 +7,7 @@ import '../../../core/core.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
-import '../models/transaction_model.codegen.dart';
+import '../models/transaction_model.dart';
 
 part 'transactions_repository.codegen.g.dart';
 

@@ -9,7 +9,7 @@ import '../providers/transactions_provider.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
-import 'transaction_list_item.dart';
+import 'income_expense_list_item.dart';
 
 class TransactionsList extends ConsumerWidget {
   const TransactionsList({super.key});
@@ -26,9 +26,8 @@ class TransactionsList extends ConsumerWidget {
         separatorBuilder: (_, __) => Insets.gapH10,
         padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
         itemBuilder: (_, i) {
-          return TransactionListItem(
+          return IncomeExpenseListItem(
             transaction: transactions[i],
-            onTap: () {},
           );
         },
       ),

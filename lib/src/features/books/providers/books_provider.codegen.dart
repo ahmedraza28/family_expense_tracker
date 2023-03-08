@@ -16,7 +16,7 @@ import '../../auth/auth.dart';
 
 part 'books_provider.codegen.g.dart';
 
-final selectedBookProvider = Provider<BookModel?>((ref) {
+final selectedBookProvider = StateProvider<BookModel?>((ref) {
   return null;
 });
 

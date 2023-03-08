@@ -34,7 +34,6 @@ class CategoriesList extends ConsumerWidget {
         itemBuilder: (_, i) {
           return CategoryListItem(
             category: categories[i],
-            onTap: () {},
           );
         },
       ),

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
-import '../models/wallet_model.codegen.dart';
-
-// Providers
-import '../providers/wallets_provider.codegen.dart';
+import '../models/balance_transfer_model.codegen.dart';
 
 // Routing
 import '../../../config/routing/routing.dart';
+
+// Providers
+import '../providers/balance_transfer_provider.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
@@ -16,11 +16,11 @@ import '../../../helpers/constants/constants.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-class WalletListItem extends ConsumerWidget {
-  final WalletModel wallet;
+class BalanceTransferListItem extends ConsumerWidget {
+  final BalanceTransferModel balanceTransfer;
 
-  const WalletListItem({
-    required this.wallet,
+  const BalanceTransferListItem({
+    required this.balanceTransfer,
     super.key,
   });
 
@@ -37,28 +37,28 @@ class WalletListItem extends ConsumerWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: Corners.rounded15,
       ),
-      leading: Icon(
-        Icons.wallet_rounded,
-        size: 27,
-        color: AppUtils.getRandomColor(),
+      leading: const Icon(
+        Icons.swap_horiz_rounded,
+        color: AppColors.textLightGreyColor,
       ),
       trailing: InkWell(
         onTap: () {
-          ref.read(editWalletProvider.notifier).update((state) => wallet);
-          AppRouter.pushNamed(Routes.AddEditWalletScreenRoute);
+          ref
+              .read(editBalanceTransferProvider.notifier)
+              .update((state) => balanceTransfer);
+          AppRouter.pushNamed(Routes.AddEditBalanceTransferScreenRoute);
         },
         child: const Icon(
           Icons.edit_rounded,
           size: 20,
-          color: AppColors.textGreyColor,
+          color: AppColors.primaryColor,
         ),
       ),
-      subtitle: CustomText.subtitle(
-        '${wallet.balance}',
-        color: AppColors.textLightGreyColor,
-      ),
       title: CustomText.body(
-        'Wallet Name',
+        '${balanceTransfer.srcWallet.name} -> ${balanceTransfer.destWallet.name}',
+      ),
+      subtitle: CustomText.subtitle(
+        '${balanceTransfer.amount}',
       ),
     );
   }

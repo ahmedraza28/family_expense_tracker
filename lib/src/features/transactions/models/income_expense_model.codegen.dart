@@ -7,24 +7,31 @@ import 'package:flutter/foundation.dart';
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/typedefs.dart';
 
+// Enums
+import '../enums/transaction_type_enum.dart';
+
+// Models
+import 'transaction_model.dart';
+
 // Features
 import '../../categories/categories.dart';
 import '../../wallets/wallets.dart';
 
-part 'transaction_model.codegen.freezed.dart';
-part 'transaction_model.codegen.g.dart';
+part 'income_expense_model.codegen.freezed.dart';
+part 'income_expense_model.codegen.g.dart';
 
 @freezed
-class TransactionModel with _$TransactionModel {
-  const factory TransactionModel({
+class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
+  const factory IncomeExpenseModel({
     @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
     required double amount,
     @JsonKey(toJson: toWalletId) required WalletModel wallet,
     @JsonKey(toJson: toCategoryId) required CategoryModel category,
     required DateTime date,
+    @Default(TransactionType.incomeExpense) TransactionType type,
     String? description,
-  }) = _TransactionModel;
+  }) = _IncomeExpenseModel;
 
-  factory TransactionModel.fromJson(JSON json) =>
-      _$TransactionModelFromJson(json);
+  factory IncomeExpenseModel.fromJson(JSON json) =>
+      _$IncomeExpenseModelFromJson(json);
 }

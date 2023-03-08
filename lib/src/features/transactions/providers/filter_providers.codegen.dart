@@ -5,7 +5,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
-import '../models/transaction_model.codegen.dart';
+import '../models/income_expense_model.codegen.dart';
+import '../models/transaction_model.dart';
 
 // Providers
 import 'transactions_provider.codegen.dart';
@@ -62,8 +63,9 @@ Stream<List<TransactionModel>> searchedTransactions(
   return filteredTransactions.map(
     (transactionsList) => transactionsList
         .where(
-          (trans) =>
-              trans.description?.toLowerCase().contains(searchTerm) ?? false,
+          (trans) => false,
+          // TODO: Implement a search method on transaction
+              // trans.description?.toLowerCase().contains(searchTerm) ?? false,
         )
         .toList(),
   );

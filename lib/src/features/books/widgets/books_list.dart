@@ -28,7 +28,6 @@ class BooksList extends ConsumerWidget {
         itemBuilder: (_, i) {
           return BookListItem(
             book: books[i],
-            onTap: () {},
           );
         },
       ),
