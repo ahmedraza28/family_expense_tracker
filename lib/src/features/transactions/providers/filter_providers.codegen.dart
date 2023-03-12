@@ -63,9 +63,7 @@ Stream<List<TransactionModel>> searchedTransactions(
   return filteredTransactions.map(
     (transactionsList) => transactionsList
         .where(
-          (trans) => false,
-          // TODO: Implement a search method on transaction
-              // trans.description?.toLowerCase().contains(searchTerm) ?? false,
+          (trans) => trans.search(searchTerm),
         )
         .toList(),
   );

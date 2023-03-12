@@ -22,10 +22,19 @@ class BalanceTransferModel extends TransactionModel
     required DateTime date,
     @JsonKey(toJson: toWalletId) required WalletModel srcWallet,
     @JsonKey(toJson: toWalletId) required WalletModel destWallet,
-    @Default(TransactionType.balanceTransfer) TransactionType type,
     String? note,
   }) = _BalanceTransferModel;
 
+  const BalanceTransferModel._();
+
   factory BalanceTransferModel.fromJson(JSON json) =>
       _$BalanceTransferModelFromJson(json);
+
+  @override
+  bool search(String searchTerm) {
+    return note?.toLowerCase().contains(searchTerm) ?? false;
+  }
+
+  @override
+  bool get isBalanceTransfer => true;
 }

@@ -4,12 +4,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
+// Models
+import '../models/income_expense_model.codegen.dart';
+
 // Providers
 import '../providers/transactions_provider.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import 'income_expense_list_item.dart';
+
+// Features
+import '../../balance_transfer/balance_transfer.dart';
 
 class TransactionsList extends ConsumerWidget {
   const TransactionsList({super.key});
@@ -26,9 +32,15 @@ class TransactionsList extends ConsumerWidget {
         separatorBuilder: (_, __) => Insets.gapH10,
         padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
         itemBuilder: (_, i) {
-          return IncomeExpenseListItem(
-            transaction: transactions[i],
-          );
+          final trans = transactions[i];
+
+          return trans.isBalanceTransfer
+              ? BalanceTransferListItem(
+                  balanceTransfer: trans as BalanceTransferModel,
+                )
+              : IncomeExpenseListItem(
+                  transaction: trans as IncomeExpenseModel,
+                );
         },
       ),
       orElse: () => const CustomCircularLoader(),

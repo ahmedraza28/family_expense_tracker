@@ -7,9 +7,6 @@ import 'package:flutter/foundation.dart';
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/typedefs.dart';
 
-// Enums
-import '../enums/transaction_type_enum.dart';
-
 // Models
 import 'transaction_model.dart';
 
@@ -28,10 +25,19 @@ class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
     @JsonKey(toJson: toWalletId) required WalletModel wallet,
     @JsonKey(toJson: toCategoryId) required CategoryModel category,
     required DateTime date,
-    @Default(TransactionType.incomeExpense) TransactionType type,
     String? description,
   }) = _IncomeExpenseModel;
 
+  const IncomeExpenseModel._();
+
   factory IncomeExpenseModel.fromJson(JSON json) =>
       _$IncomeExpenseModelFromJson(json);
+
+  @override
+  bool search(String searchTerm) {
+    return description?.toLowerCase().contains(searchTerm) ?? false;
+  }
+
+  @override
+  bool get isBalanceTransfer => false;
 }
