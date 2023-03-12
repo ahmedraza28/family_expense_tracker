@@ -26,7 +26,8 @@ final editBookProvider = StateProvider.autoDispose<BookModel?>((ref) {
 
 @riverpod
 Stream<List<BookModel>> booksStream(BooksStreamRef ref) {
-  return ref.watch(booksProvider).getAllBooks();
+  final currentUser = ref.watch(currentUserProvider).valueOrNull!;
+  return ref.watch(booksProvider).getUserBooks(currentUser.uid);
 }
 
 /// A provider used to access instance of this service
@@ -46,8 +47,8 @@ class BooksProvider {
   }
 
   /// Retrive book members
-  Stream<List<UserModel>> getBookMembers(String bookId) {
-    return _booksRepository.getBookMembers(bookId);
+  Stream<List<BookModel>> getUserBooks(String memberId) {
+    return _booksRepository.getUserBooks(memberId);
   }
 
   void addBook({

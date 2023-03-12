@@ -18,7 +18,6 @@ part 'books_repository.codegen.g.dart';
 @Riverpod(keepAlive: true)
 BooksRepository booksRepository(BooksRepositoryRef ref) {
   final firestoreService = ref.read(firestoreServiceProvider);
-  final usersRepository = ref.read(usersRepositoryProvider);
   // return BooksRepository(
   //   firestoreService: firestoreService,
   //   usersRepository: usersRepository,
@@ -28,13 +27,10 @@ BooksRepository booksRepository(BooksRepositoryRef ref) {
 
 class BooksRepository {
   final FirestoreService _firestoreService;
-  final UsersRepository _usersRepository;
 
   const BooksRepository({
     required FirestoreService firestoreService,
-    required UsersRepository usersRepository,
-  })  : _firestoreService = firestoreService,
-        _usersRepository = usersRepository;
+  }) : _firestoreService = firestoreService;
 
   Stream<List<BookModel>> getBooks({List<int>? bookIds}) {
     return _firestoreService.collectionStream<BookModel>(
@@ -46,15 +42,15 @@ class BooksRepository {
     );
   }
 
-  Stream<List<UserModel>> getBookMembers(String bookId) async* {
-    final memberIdsStream = _firestoreService.collectionStream<int>(
+  Stream<List<BookModel>> getUserBooks(String memberId) async* {
+    final bookIdsStream = _firestoreService.collectionStream<int>(
       path: 'book_members',
-      queryBuilder: (query) => query.where('bookId', isEqualTo: bookId),
-      builder: (json, docId) => json!['memberId'] as int,
+      queryBuilder: (query) => query.where('memberId', isEqualTo: memberId),
+      builder: (json, docId) => json!['bookId'] as int,
     );
 
-    await for (final memberIds in memberIdsStream) {
-      yield* _usersRepository.getUsers(memberIds);
+    await for (final bookIds in bookIdsStream) {
+      yield* getBooks(bookIds: bookIds);
     }
   }
 
@@ -86,6 +82,7 @@ class MockBooksRepository implements BooksRepository {
     email: 'a.rafaysaleem@gmail.com',
     profilePictureUrl: '',
   );
+  
   @override
   Stream<List<BookModel>> getBooks({List<int>? bookIds}) {
     return Stream.value(const [
@@ -116,15 +113,33 @@ class MockBooksRepository implements BooksRepository {
   FirestoreService get _firestoreService => throw UnimplementedError();
 
   @override
-  UsersRepository get _usersRepository => throw UnimplementedError();
-
-  @override
-  Future<void> addBook({required JSON body}) {
-    throw UnimplementedError();
+  Stream<List<BookModel>> getUserBooks(String memberId) {
+    return Stream.value(const [
+      BookModel(
+        id: 1,
+        name: 'Book 1',
+        description: 'Book 1 description',
+        imageUrl: '',
+        currency: defaultCurrency,
+        createdBy: _user,
+        totalIncome: 0,
+        totalExpense: 0,
+      ),
+      BookModel(
+        id: 2,
+        name: 'Book 2',
+        description: 'Book 2 description',
+        imageUrl: '',
+        currency: defaultCurrency,
+        createdBy: _user,
+        totalIncome: 0,
+        totalExpense: 0,
+      ),
+    ]);
   }
 
   @override
-  Stream<List<UserModel>> getBookMembers(String bookId) {
+  Future<void> addBook({required JSON body}) {
     throw UnimplementedError();
   }
 

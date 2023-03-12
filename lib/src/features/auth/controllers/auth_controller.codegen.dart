@@ -16,11 +16,19 @@ import '../repositories/auth_repository.codegen.dart';
 part 'auth_controller.codegen.g.dart';
 
 final currentUserProvider = StreamProvider<UserModel?>(
-  (ref) => ref.watch(firebaseAuthProvider).authStateChanges().map(
-    (event) {
-      return UserModel.fromFirebaseUser(event!);
-    },
-  ),
+  (ref) {
+    return Stream.value(
+      const UserModel(
+        uid: '1',
+        displayName: 'Abdur Rafay',
+        email: 'a.rafaysaleem@gmail.com',
+        profilePictureUrl: '',
+      ),
+    );
+    // return ref.watch(firebaseAuthProvider).authStateChanges().map(
+    //       (event) => UserModel.fromFirebaseUser(event!),
+    //     );
+  },
 );
 
 @Riverpod(keepAlive: true)
