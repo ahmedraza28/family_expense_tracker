@@ -6,6 +6,7 @@ import '../../../core/core.dart';
 
 // Models
 import '../../../helpers/typedefs.dart';
+import '../../wallets/wallets.dart';
 import '../models/book_model.codegen.dart';
 
 // Features
@@ -18,11 +19,11 @@ part 'books_repository.codegen.g.dart';
 BooksRepository booksRepository(BooksRepositoryRef ref) {
   final firestoreService = ref.read(firestoreServiceProvider);
   final usersRepository = ref.read(usersRepositoryProvider);
-  return BooksRepository(
-    firestoreService: firestoreService,
-    usersRepository: usersRepository,
-  );
-  // return MockBooksRepository();
+  // return BooksRepository(
+  //   firestoreService: firestoreService,
+  //   usersRepository: usersRepository,
+  // );
+  return MockBooksRepository();
 }
 
 class BooksRepository {
@@ -75,5 +76,60 @@ class BooksRepository {
       data: changes,
       merge: true,
     );
+  }
+}
+
+class MockBooksRepository implements BooksRepository {
+  static const _user = UserModel(
+    uid: '1',
+    displayName: 'Abdur Rafay',
+    email: 'a.rafaysaleem@gmail.com',
+    profilePictureUrl: '',
+  );
+  @override
+  Stream<List<BookModel>> getBooks({List<int>? bookIds}) {
+    return Stream.value(const [
+      BookModel(
+        id: 1,
+        name: 'Book 1',
+        description: 'Book 1 description',
+        imageUrl: '',
+        currency: defaultCurrency,
+        createdBy: _user,
+        totalIncome: 0,
+        totalExpense: 0,
+      ),
+      BookModel(
+        id: 2,
+        name: 'Book 2',
+        description: 'Book 2 description',
+        imageUrl: '',
+        currency: defaultCurrency,
+        createdBy: _user,
+        totalIncome: 0,
+        totalExpense: 0,
+      ),
+    ]);
+  }
+
+  @override
+  FirestoreService get _firestoreService => throw UnimplementedError();
+
+  @override
+  UsersRepository get _usersRepository => throw UnimplementedError();
+
+  @override
+  Future<void> addBook({required JSON body}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<List<UserModel>> getBookMembers(String bookId) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateBook({required int bookId, required JSON changes}) {
+    throw UnimplementedError();
   }
 }
