@@ -29,6 +29,7 @@ class BookListItem extends ConsumerWidget {
     return GestureDetector(
       onTap: (){
         ref.read(selectedBookProvider.notifier).update((state) => book);
+        AppRouter.pop();
       },
       child: Container(
         width: double.infinity,

@@ -93,10 +93,10 @@ class MockTransactionsRepository implements TransactionsRepository {
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
         'amount': 300,
-        'description': 'Transport',
         'date': '${date.year}-${date.month}-${date.day}',
-        'wallet': wallet,
-        'category': category,
+        'note': 'Ghar kharcha',
+        'src_wallet': wallet,
+        'dest_wallet': wallet,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 4,
