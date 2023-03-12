@@ -5,7 +5,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
-import '../models/income_expense_model.codegen.dart';
 import '../models/transaction_model.dart';
 
 // Providers
