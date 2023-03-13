@@ -7,14 +7,12 @@ import '../models/balance_transfer_model.codegen.dart';
 // Routing
 import '../../../config/routing/routing.dart';
 
-// Providers
-import '../providers/balance_transfer_provider.dart';
-
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import '../screens/add_edit_balance_transfer_screen.dart';
 
 class BalanceTransferListItem extends ConsumerWidget {
   final BalanceTransferModel balanceTransfer;
@@ -42,12 +40,9 @@ class BalanceTransferListItem extends ConsumerWidget {
         color: AppColors.textLightGreyColor,
       ),
       trailing: InkWell(
-        onTap: () {
-          ref
-              .read(editBalanceTransferProvider.notifier)
-              .update((state) => balanceTransfer);
-          AppRouter.pushNamed(Routes.AddEditBalanceTransferScreenRoute);
-        },
+        onTap: () => AppRouter.push(
+          AddEditBalanceTransferScreen(balanceTransfer: balanceTransfer),
+        ),
         child: const Icon(
           Icons.edit_rounded,
           size: 20,

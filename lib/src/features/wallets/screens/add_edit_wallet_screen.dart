@@ -11,18 +11,23 @@ import '../../../helpers/constants/constants.dart';
 import '../../../helpers/form_validator.dart';
 
 // Models
+import '../models/wallet_model.codegen.dart';
 import '../models/currency_model.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
 class AddEditWalletScreen extends HookConsumerWidget {
-  const AddEditWalletScreen({super.key});
+  final WalletModel? wallet;
+
+  const AddEditWalletScreen({
+    super.key,
+    this.wallet,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    final wallet = ref.watch(editWalletProvider);
     final walletNameController = useTextEditingController(
       text: wallet?.name ?? '',
     );
@@ -44,7 +49,7 @@ class AddEditWalletScreen extends HookConsumerWidget {
               balance: double.parse(walletBalanceController.text),
             );
       } else {
-        final newWallet = wallet.copyWith(
+        final newWallet = wallet!.copyWith(
           name: walletNameController.text,
           currency: currencyController.value,
           imageUrl: '',

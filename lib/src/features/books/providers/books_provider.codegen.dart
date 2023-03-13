@@ -20,10 +20,6 @@ final selectedBookProvider = StateProvider<BookModel?>((ref) {
   return null;
 });
 
-final editBookProvider = StateProvider.autoDispose<BookModel?>((ref) {
-  return null;
-});
-
 @riverpod
 Stream<List<BookModel>> booksStream(BooksStreamRef ref) {
   final currentUser = ref.watch(currentUserProvider).valueOrNull!;

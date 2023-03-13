@@ -1,4 +1,3 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Models
@@ -14,10 +13,6 @@ import '../repositories/categories_repository.codegen.dart';
 import '../../books/books.dart';
 
 part 'categories_provider.codegen.g.dart';
-
-final editCategoryProvider = StateProvider.autoDispose<CategoryModel?>((ref) {
-  return null;
-});
 
 @Riverpod(keepAlive: true)
 Stream<List<CategoryModel>> categoriesStream(

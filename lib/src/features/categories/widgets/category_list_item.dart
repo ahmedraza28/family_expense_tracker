@@ -10,11 +10,9 @@ import '../../../config/routing/routing.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
-// Providers
-import '../providers/categories_provider.codegen.dart';
-
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import '../screens/add_edit_category_screen.dart';
 
 class CategoryListItem extends ConsumerWidget {
   final CategoryModel category;
@@ -42,10 +40,9 @@ class CategoryListItem extends ConsumerWidget {
         color: AppColors.textLightGreyColor,
       ),
       trailing: InkWell(
-        onTap: () {
-          ref.read(editCategoryProvider.notifier).update((state) => category);
-          AppRouter.pushNamed(Routes.AddEditCategoryScreenRoute);
-        },
+        onTap: () => AppRouter.push(
+          AddEditCategoryScreen(category: category),
+        ),
         child: const Icon(
           Icons.edit_rounded,
           size: 20,

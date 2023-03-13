@@ -21,10 +21,6 @@ final selectedWalletProvider = Provider<WalletModel?>((ref) {
   return null;
 });
 
-final editWalletProvider = StateProvider.autoDispose<WalletModel?>((ref) {
-  return null;
-});
-
 final walletsStreamProvider = StreamProvider<List<WalletModel>>(
   (ref) {
     final wallets = ref.watch(walletsProvider);

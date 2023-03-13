@@ -5,6 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Providers
 import '../providers/books_provider.codegen.dart';
 
+// Models
+import '../models/book_model.codegen.dart';
+
 // Helpers
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/form_validator.dart';
@@ -17,12 +20,16 @@ import '../../wallets/wallets.dart';
 import '../../../global/widgets/widgets.dart';
 
 class AddEditBookScreen extends HookConsumerWidget {
-  const AddEditBookScreen({super.key});
+  final BookModel? book;
+
+  const AddEditBookScreen({
+    super.key,
+    this.book,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    final book = ref.watch(editBookProvider);
     final currencyController = useValueNotifier<CurrencyModel>(
       book?.currency ?? defaultCurrency,
     );
@@ -43,7 +50,7 @@ class AddEditBookScreen extends HookConsumerWidget {
             );
       } else {
         ref.read(booksProvider).updateBook(
-              book.copyWith(
+              book!.copyWith(
                 name: bookNameController.text,
                 currency: currencyController.value,
               ),

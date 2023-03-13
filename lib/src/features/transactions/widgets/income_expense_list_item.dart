@@ -7,14 +7,12 @@ import '../models/income_expense_model.codegen.dart';
 // Routing
 import '../../../config/routing/routing.dart';
 
-// Providers
-import '../providers/transactions_provider.codegen.dart';
-
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import '../screens/add_edit_transaction_screen.dart';
 
 class IncomeExpenseListItem extends ConsumerWidget {
   final IncomeExpenseModel transaction;
@@ -42,12 +40,9 @@ class IncomeExpenseListItem extends ConsumerWidget {
         color: AppColors.textLightGreyColor,
       ),
       trailing: InkWell(
-        onTap: () {
-          ref
-              .read(editTransactionProvider.notifier)
-              .update((state) => transaction);
-          AppRouter.pushNamed(Routes.AddEditTransactionScreenRoute);
-        },
+        onTap: () => AppRouter.push(
+          AddEditTransactionScreen(transaction: transaction),
+        ),
         child: const Icon(
           Icons.edit_rounded,
           size: 20,

@@ -18,9 +18,6 @@ import '../../books/books.dart';
 
 part 'transactions_provider.codegen.g.dart';
 
-final editTransactionProvider =
-    StateProvider.autoDispose<IncomeExpenseModel?>((_) => null);
-
 @riverpod
 Stream<List<TransactionModel>> transactionsStream(TransactionsStreamRef ref) {
   return ref.watch(transactionsProvider).getAllTransactions();

@@ -3,9 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-// Providers
-import '../providers/balance_transfer_provider.dart';
-
 // Routing
 import '../../../config/routing/routing.dart';
 
@@ -15,17 +12,24 @@ import '../../../helpers/constants/constants.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
+// Models
+import '../models/balance_transfer_model.codegen.dart';
+
 // Features
 import '../../calculator/calculator.dart';
 import '../../wallets/wallets.dart';
 
 class AddEditBalanceTransferScreen extends HookConsumerWidget {
-  const AddEditBalanceTransferScreen({super.key});
+  final BalanceTransferModel? balanceTransfer;
+
+  const AddEditBalanceTransferScreen({
+    super.key,
+    this.balanceTransfer,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    final balanceTransfer = ref.watch(editBalanceTransferProvider);
     final amountController = useTextEditingController(
       text: balanceTransfer?.amount.toString() ?? '',
     );
@@ -54,7 +58,7 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
         //       note: noteController.text,
         //     );
       } else {
-        final newTransfer = balanceTransfer.copyWith(
+        final newTransfer = balanceTransfer!.copyWith(
           amount: double.parse(amountController.text),
           srcWallet: srcWalletController.value!,
           date: dateController.value!,

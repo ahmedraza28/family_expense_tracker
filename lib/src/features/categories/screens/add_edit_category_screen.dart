@@ -9,6 +9,9 @@ import '../../../helpers/form_validator.dart';
 // Enums
 import '../enums/category_type_enum.dart';
 
+// Models
+import '../models/category_model.codegen.dart';
+
 // Providers
 import '../providers/categories_provider.codegen.dart';
 
@@ -17,11 +20,15 @@ import '../../../global/widgets/widgets.dart';
 import '../widgets/category_type_selection_cards.dart';
 
 class AddEditCategoryScreen extends HookConsumerWidget {
-  const AddEditCategoryScreen({super.key});
+  final CategoryModel? category;
+
+  const AddEditCategoryScreen({
+    super.key,
+    this.category,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final category = ref.watch(editCategoryProvider);
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final categoryNameController = useTextEditingController(
       text: category?.name ?? '',
@@ -40,7 +47,7 @@ class AddEditCategoryScreen extends HookConsumerWidget {
               imageUrl: '',
             );
       } else {
-        final newCategory = category.copyWith(
+        final newCategory = category!.copyWith(
           name: categoryNameController.text,
           type: typeController.value,
           imageUrl: '',

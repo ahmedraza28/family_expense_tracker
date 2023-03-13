@@ -15,6 +15,7 @@ import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import '../screens/add_edit_book_screen.dart';
 
 class BookListItem extends ConsumerWidget {
   final BookModel book;
@@ -27,7 +28,7 @@ class BookListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         ref.read(selectedBookProvider.notifier).update((state) => book);
         AppRouter.pop();
       },
@@ -57,14 +58,9 @@ class BookListItem extends ConsumerWidget {
                   CustomTextButton.gradient(
                     height: 30,
                     width: 55,
-                    onPressed: () {
-                      ref
-                          .read(editBookProvider.notifier)
-                          .update((state) => book);
-                      AppRouter.pushNamed(
-                        Routes.AddEditBookScreenRoute,
-                      );
-                    },
+                    onPressed: () => AppRouter.push(
+                      AddEditBookScreen(book: book),
+                    ),
                     gradient: AppColors.buttonGradientPrimary,
                     child: Center(
                       child: CustomText.subtitle(

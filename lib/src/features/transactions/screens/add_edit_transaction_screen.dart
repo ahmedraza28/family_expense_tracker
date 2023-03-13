@@ -6,6 +6,9 @@ import 'package:intl/intl.dart';
 // Routing
 import '../../../config/routing/routing.dart';
 
+// Models
+import '../models/income_expense_model.codegen.dart';
+
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
@@ -21,11 +24,15 @@ import '../../categories/categories.dart';
 import '../../wallets/wallets.dart';
 
 class AddEditTransactionScreen extends HookConsumerWidget {
-  const AddEditTransactionScreen({super.key});
+  final IncomeExpenseModel? transaction;
+
+  const AddEditTransactionScreen({
+    super.key,
+    this.transaction,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transaction = ref.watch(editTransactionProvider);
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final amountController = useTextEditingController(
       text: transaction?.amount.toString() ?? '',
@@ -58,7 +65,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               description: descriptionController.text,
             );
       } else {
-        final newTransaction = transaction.copyWith(
+        final newTransaction = transaction!.copyWith(
           amount: double.parse(amountController.text),
           wallet: walletController.value!,
           date: dateController.value!,
