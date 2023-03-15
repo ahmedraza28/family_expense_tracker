@@ -5,6 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Providers
 import '../providers/wallets_provider.codegen.dart';
 
+// Routing
+import '../../../config/routing/routing.dart';
+
 // Helpers
 import '../../../global/formatters/formatters.dart';
 import '../../../helpers/constants/constants.dart';
@@ -57,6 +60,7 @@ class AddEditWalletScreen extends HookConsumerWidget {
         );
         ref.read(walletsProvider).updateWallet(newWallet);
       }
+      AppRouter.pop();
     }
 
     return Scaffold(
@@ -67,7 +71,7 @@ class AddEditWalletScreen extends HookConsumerWidget {
         ),
         actions: [
           // Delete Button
-          IconButton(
+          if(wallet != null) IconButton(
             onPressed: () {},
             icon: const Icon(
               Icons.delete,
@@ -89,7 +93,6 @@ class AddEditWalletScreen extends HookConsumerWidget {
                 'Create a wallet for storing your balance',
                 fontSize: 16,
                 maxLines: 2,
-                fontWeight: FontWeight.bold,
               ),
 
               Insets.gapH20,

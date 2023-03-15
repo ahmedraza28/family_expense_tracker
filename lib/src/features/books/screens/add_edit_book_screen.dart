@@ -78,7 +78,6 @@ class AddEditBookScreen extends HookConsumerWidget {
                 'Add details for a book in which you will record income and expenses',
                 fontSize: 16,
                 maxLines: 2,
-                fontWeight: FontWeight.bold,
               ),
 
               Insets.gapH20,

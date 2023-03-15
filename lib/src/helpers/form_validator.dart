@@ -36,8 +36,9 @@ class FormValidator {
   }
 
   /// A method containing validation logic for name input.
-  static String? nameValidator(String? name) {
-    if (name != null && name.isValidName) return null;
+  static String? nameValidator(String? name, {bool allowSpaces = true}) {
+    final nameString = allowSpaces ? name : name?.replaceAll(' ', '');
+    if (nameString != null && nameString.isValidName) return null;
     return _invalidNameError;
   }
 

@@ -27,31 +27,34 @@ class TransactionsScreen extends ConsumerWidget {
           selectedBook.name,
           fontSize: 20,
         ),
+        toolbarHeight: kToolbarHeight + 30,
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: Row(
-            children: [
-              // Income
-              CustomText(
-                'Income: \$${selectedBook.totalIncome}',
-                fontSize: 16,
-                color: AppColors.textLightGreyColor,
-              ),
+          preferredSize: const Size.fromHeight(0),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Income
+                CustomText(
+                  'Income: \$${selectedBook.totalIncome}',
+                  fontSize: 16,
+                  color: AppColors.textLightGreyColor,
+                ),
 
-              // Expense
-              CustomText(
-                'Expense: \$${selectedBook.totalExpense}',
-                fontSize: 16,
-                color: AppColors.textLightGreyColor,
-              ),
-            ],
+                // Expense
+                CustomText(
+                  'Expense: \$${selectedBook.totalExpense}',
+                  fontSize: 16,
+                  color: AppColors.textLightGreyColor,
+                ),
+              ],
+            ),
           ),
         ),
       ),
       body: Column(
         children: const [
-          Insets.gapH20,
-
           // Filters
           Padding(
             padding: EdgeInsets.symmetric(vertical: 20),

@@ -67,6 +67,7 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
         );
         // ref.read(balanceTransferProvider).updateBalanceTransfer(newTransfer);
       }
+      AppRouter.pop();
     }
 
     return Scaffold(
@@ -99,7 +100,6 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
                 'Create a balance transfer to another wallet',
                 fontSize: 16,
                 maxLines: 2,
-                fontWeight: FontWeight.bold,
               ),
 
               Insets.gapH20,

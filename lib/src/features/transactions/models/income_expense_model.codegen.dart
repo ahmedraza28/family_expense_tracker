@@ -24,6 +24,7 @@ class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
     required double amount,
     @JsonKey(toJson: toWalletId) required WalletModel wallet,
     @JsonKey(toJson: toCategoryId) required CategoryModel category,
+    @JsonKey(toJson: AppUtils.dateToJson)
     required DateTime date,
     String? description,
   }) = _IncomeExpenseModel;

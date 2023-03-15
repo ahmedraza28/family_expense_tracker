@@ -32,7 +32,13 @@ class CurrenciesRepository {
 class MockCurrenciesRepository implements CurrenciesRepository {
   @override
   Stream<List<CurrencyModel>> getAllCurrencies() {
-    return Stream.value([]);
+    return Stream.value(const [
+      CurrencyModel(name: 'PKR', symbol: 'Rs'),
+      CurrencyModel(name: 'USD', symbol: r'$'),
+      CurrencyModel(name: 'EUR', symbol: '€'),
+      CurrencyModel(name: 'GBP', symbol: '£'),
+      CurrencyModel(name: 'INR', symbol: '₹'),
+    ]);
   }
 
   @override

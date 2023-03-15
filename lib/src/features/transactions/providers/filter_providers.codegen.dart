@@ -42,8 +42,8 @@ final filtersProvider = Provider<JSON>(
 );
 
 @riverpod
-Stream<List<TransactionModel>> filteredTransactions(
-  FilteredTransactionsRef ref,
+Stream<List<TransactionModel>> filteredTransactionsStream(
+  FilteredTransactionsStreamRef ref,
 ) {
   final queryParams = ref.watch(filtersProvider);
   return ref.watch(transactionsProvider).getAllTransactions(queryParams);

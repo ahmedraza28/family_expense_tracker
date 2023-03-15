@@ -8,7 +8,8 @@ import '../../../helpers/constants/constants.dart';
 import '../models/income_expense_model.codegen.dart';
 
 // Providers
-import '../providers/transactions_provider.codegen.dart';
+import '../models/transaction_model.dart';
+import '../providers/filter_providers.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
@@ -22,15 +23,32 @@ class TransactionsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transactionsStream = ref.watch(transactionsStreamProvider);
-    return transactionsStream.maybeWhen(
+    final transactionsStream = ref.watch(filteredTransactionsStreamProvider);
+    return AsyncValueWidget<List<TransactionModel>>(
+      value: transactionsStream,
+      loading: () => const Padding(
+        padding: EdgeInsets.only(top: 70),
+        child: CustomCircularLoader(),
+      ),
+      error: (error, st) => ErrorResponseHandler(
+        error: error,
+        retryCallback: () {},
+        stackTrace: st,
+      ),
+      emptyOrNull: () => const EmptyStateWidget(
+        height: 395,
+        width: double.infinity,
+        margin: EdgeInsets.only(top: 20),
+        title: 'No transactions recoreded yet',
+        subtitle: 'Check back later',
+      ),
       data: (transactions) => ListView.separated(
         itemCount: transactions.length,
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
         separatorBuilder: (_, __) => Insets.gapH10,
-        padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
         itemBuilder: (_, i) {
           final trans = transactions[i];
 
@@ -43,7 +61,6 @@ class TransactionsList extends ConsumerWidget {
                 );
         },
       ),
-      orElse: () => const CustomCircularLoader(),
     );
   }
 }

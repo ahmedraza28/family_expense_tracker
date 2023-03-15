@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/core.dart';
 
 // Helpers
+import '../../../helpers/extensions/datetime_extension.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
@@ -63,6 +64,10 @@ class MockTransactionsRepository implements TransactionsRepository {
     final wallet = <String, dynamic>{
       'id': 1,
       'name': 'Wallet',
+      'currency': <String, dynamic>{
+        'name': 'PKR',
+        'symbol': 'Rs',
+      },
       'image_url': 'https://i.imgur.com/1J8ZQYt.png',
       'balance': 1000,
     };
@@ -72,28 +77,80 @@ class MockTransactionsRepository implements TransactionsRepository {
       'image_url': 'https://i.imgur.com/1J8ZQYt.png',
       'type': 'expense',
     };
-    final date = DateTime.now();
+    final category2 = <String, dynamic>{
+      'id': 2,
+      'name': 'Petrol And Maintainance',
+      'image_url': 'https://i.imgur.com/1J8ZQYt.png',
+      'type': 'expense',
+    };
+    final category3 = <String, dynamic>{
+      'id': 3,
+      'name': 'Salary',
+      'image_url': 'https://i.imgur.com/1J8ZQYt.png',
+      'type': 'income',
+    };
+    final date = DateTime.now().toDateString('yyyy-MM-dd');
     return Stream.value(<TransactionModel>[
       TransactionModel.fromJson(<String, dynamic>{
         'id': 1,
         'amount': 100,
-        'description': 'Drinks',
-        'date': '${date.year}-${date.month}-${date.day}',
+        'description': 'Gatorades crate',
+        'date': date,
         'wallet': wallet,
         'category': category,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 2,
         'amount': 200,
-        'description': 'Food',
-        'date': '${date.year}-${date.month}-${date.day}',
+        'description': "McDonald's",
+        'date': date,
         'wallet': wallet,
         'category': category,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
         'amount': 300,
-        'date': '${date.year}-${date.month}-${date.day}',
+        'date': date,
+        'note': 'Ghar kharcha',
+        'src_wallet': wallet,
+        'dest_wallet': wallet,
+      }),
+      TransactionModel.fromJson(<String, dynamic>{
+        'id': 4,
+        'amount': 400,
+        'description': 'Ek wagon fuel',
+        'date': date,
+        'wallet': wallet,
+        'category': category2,
+      }),
+      TransactionModel.fromJson(<String, dynamic>{
+        'id': 5,
+        'amount': 500,
+        'description': 'Civic service',
+        'date': date,
+        'wallet': wallet,
+        'category': category2,
+      }),
+      TransactionModel.fromJson(<String, dynamic>{
+        'id': 1,
+        'amount': 100,
+        'description': '10Pearls',
+        'date': date,
+        'wallet': wallet,
+        'category': category3,
+      }),
+      TransactionModel.fromJson(<String, dynamic>{
+        'id': 2,
+        'amount': 200,
+        'description': 'Food',
+        'date': date,
+        'wallet': wallet,
+        'category': category,
+      }),
+      TransactionModel.fromJson(<String, dynamic>{
+        'id': 3,
+        'amount': 300,
+        'date': date,
         'note': 'Ghar kharcha',
         'src_wallet': wallet,
         'dest_wallet': wallet,
@@ -102,7 +159,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 4,
         'amount': 400,
         'description': 'Shopping',
-        'date': '${date.year}-${date.month}-${date.day}',
+        'date': date,
         'wallet': wallet,
         'category': category,
       }),
@@ -110,7 +167,47 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 5,
         'amount': 500,
         'description': 'Entertainment',
-        'date': '${date.year}-${date.month}-${date.day}',
+        'date': date,
+        'wallet': wallet,
+        'category': category,
+      }),
+      TransactionModel.fromJson(<String, dynamic>{
+        'id': 1,
+        'amount': 100,
+        'description': 'Drinks',
+        'date': date,
+        'wallet': wallet,
+        'category': category,
+      }),
+      TransactionModel.fromJson(<String, dynamic>{
+        'id': 2,
+        'amount': 200,
+        'description': 'Food',
+        'date': date,
+        'wallet': wallet,
+        'category': category,
+      }),
+      TransactionModel.fromJson(<String, dynamic>{
+        'id': 3,
+        'amount': 300,
+        'date': date,
+        'note': 'Ghar kharcha',
+        'src_wallet': wallet,
+        'dest_wallet': wallet,
+      }),
+      TransactionModel.fromJson(<String, dynamic>{
+        'id': 4,
+        'amount': 400,
+        'description': 'Shopping',
+        'date': date,
+        'wallet': wallet,
+        'category': category,
+      }),
+      TransactionModel.fromJson(<String, dynamic>{
+        'id': 5,
+        'amount': 500,
+        'description': 'Entertainment',
+        'date': date,
         'wallet': wallet,
         'category': category,
       }),

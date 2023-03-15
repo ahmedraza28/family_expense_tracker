@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
+import '../../categories/categories.dart';
 import '../models/income_expense_model.codegen.dart';
 
 // Routing
@@ -22,38 +23,68 @@ class IncomeExpenseListItem extends ConsumerWidget {
     super.key,
   });
 
+  bool get isExpense => transaction.category.type == CategoryType.expense;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-      dense: true,
-      horizontalTitleGap: 0,
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 5,
+    final seed = transaction.category.id;
+    final color = AppUtils.getRandomColor(seed);
+    return InkWell(
+      onTap: () => AppRouter.push(
+        AddEditTransactionScreen(transaction: transaction),
       ),
-      tileColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: Corners.rounded15,
-      ),
-      leading: const Icon(
-        Icons.money,
-        color: AppColors.textLightGreyColor,
-      ),
-      trailing: InkWell(
-        onTap: () => AppRouter.push(
-          AddEditTransactionScreen(transaction: transaction),
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: Corners.rounded15,
+          color: Colors.white,
         ),
-        child: const Icon(
-          Icons.edit_rounded,
-          size: 20,
-          color: AppColors.primaryColor,
+        padding: const EdgeInsets.all(15),
+        child: Row(
+          children: [
+            // Category icon
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: Corners.rounded9,
+                color: color.withOpacity(0.2),
+              ),
+              child: Icon(
+                Icons.monetization_on_rounded,
+                size: 20,
+                color: color,
+              ),
+            ),
+
+            Insets.gapW15,
+
+            // Transaction details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title
+                  CustomText.body(
+                    transaction.description ?? '',
+                  ),
+
+                  // Category Name
+                  CustomText.subtitle(
+                    transaction.category.name,
+                    color: AppColors.textLightGreyColor,
+                  ),
+                ],
+              ),
+            ),
+
+            // Amount
+            CustomText.body(
+              '${isExpense ? '-' : '+'}${transaction.wallet.currency.symbol} ${transaction.amount} ',
+              color:
+                  isExpense ? AppColors.redColor : Colors.greenAccent.shade700,
+              fontSize: 14,
+            )
+          ],
         ),
-      ),
-      title: CustomText.body(
-        transaction.category.name,
-      ),
-      subtitle: CustomText.subtitle(
-        transaction.description ?? '',
       ),
     );
   }

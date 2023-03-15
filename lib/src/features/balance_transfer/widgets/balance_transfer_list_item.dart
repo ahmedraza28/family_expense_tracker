@@ -24,36 +24,85 @@ class BalanceTransferListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-      dense: true,
-      horizontalTitleGap: 0,
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 5,
+    const color = Color.fromARGB(255, 149, 165, 173);
+    return InkWell(
+      onTap: () => AppRouter.push(
+        AddEditBalanceTransferScreen(balanceTransfer: balanceTransfer),
       ),
-      tileColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: Corners.rounded15,
-      ),
-      leading: const Icon(
-        Icons.swap_horiz_rounded,
-        color: AppColors.textLightGreyColor,
-      ),
-      trailing: InkWell(
-        onTap: () => AppRouter.push(
-          AddEditBalanceTransferScreen(balanceTransfer: balanceTransfer),
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: Corners.rounded15,
+          color: Colors.white,
         ),
-        child: const Icon(
-          Icons.edit_rounded,
-          size: 20,
-          color: AppColors.primaryColor,
+        padding: const EdgeInsets.all(15),
+        child: Row(
+          children: [
+            // Category icon
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: Corners.rounded9,
+                color: color.withOpacity(0.2),
+              ),
+              child: const Icon(
+                Icons.swap_horiz_rounded,
+                size: 20,
+                color: color,
+              ),
+            ),
+
+            Insets.gapW15,
+
+            // Transfer details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title
+                  Row(
+                    children: [
+                      // Src wallet
+                      CustomText.body(
+                        balanceTransfer.srcWallet.name,
+                        color: AppColors.redColor,
+                      ),
+
+                      Insets.gapW5,
+
+                      // Arrow
+                      const Icon(
+                        Icons.arrow_forward_rounded,
+                        size: 16,
+                        color: AppColors.textLightGreyColor,
+                      ),
+
+                      Insets.gapW5,
+
+                      // Dest wallet
+                      CustomText.body(
+                        balanceTransfer.destWallet.name,
+                        color: Colors.greenAccent.shade700,
+                      ),
+                    ],
+                  ),
+
+                  // Category Name
+                  CustomText.subtitle(
+                    balanceTransfer.note ?? '',
+                    color: AppColors.textLightGreyColor,
+                  ),
+                ],
+              ),
+            ),
+
+            // Amount
+            CustomText.body(
+              '${balanceTransfer.amount}',
+              color: AppColors.textLightGreyColor,
+              fontSize: 14,
+            )
+          ],
         ),
-      ),
-      title: CustomText.body(
-        '${balanceTransfer.srcWallet.name} -> ${balanceTransfer.destWallet.name}',
-      ),
-      subtitle: CustomText.subtitle(
-        '${balanceTransfer.amount}',
       ),
     );
   }

@@ -74,6 +74,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
         );
         ref.read(transactionsProvider).updateTransaction(newTransaction);
       }
+      AppRouter.pop();
     }
 
     return Scaffold(
@@ -106,7 +107,6 @@ class AddEditTransactionScreen extends HookConsumerWidget {
                 'Add details about a transaction',
                 fontSize: 16,
                 maxLines: 2,
-                fontWeight: FontWeight.bold,
               ),
 
               Insets.gapH20,

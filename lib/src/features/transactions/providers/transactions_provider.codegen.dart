@@ -18,11 +18,6 @@ import '../../books/books.dart';
 
 part 'transactions_provider.codegen.g.dart';
 
-@riverpod
-Stream<List<TransactionModel>> transactionsStream(TransactionsStreamRef ref) {
-  return ref.watch(transactionsProvider).getAllTransactions();
-}
-
 /// A provider used to access instance of this service
 @riverpod
 TransactionsProvider transactions(TransactionsRef ref) {

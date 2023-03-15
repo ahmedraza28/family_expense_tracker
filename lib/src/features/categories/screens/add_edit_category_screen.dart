@@ -6,6 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/form_validator.dart';
 
+// Routing
+import '../../../config/routing/routing.dart';
+
 // Enums
 import '../enums/category_type_enum.dart';
 
@@ -54,6 +57,7 @@ class AddEditCategoryScreen extends HookConsumerWidget {
         );
         ref.read(categoriesProvider).updateCategory(newCategory);
       }
+      AppRouter.pop();
     }
 
     return Scaffold(
@@ -86,7 +90,6 @@ class AddEditCategoryScreen extends HookConsumerWidget {
                 'Create a category for organizing your transactions',
                 fontSize: 16,
                 maxLines: 2,
-                fontWeight: FontWeight.bold,
               ),
 
               Insets.gapH20,

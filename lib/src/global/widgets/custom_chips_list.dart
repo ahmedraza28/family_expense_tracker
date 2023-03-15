@@ -17,12 +17,12 @@ class CustomChipsList extends StatelessWidget {
     required this.chipContents,
     required this.chipHeight,
     super.key,
+    this.isScrollable = false,
+    this.chipGap = 0.0,
     this.fontWeight,
     this.chipWidth,
-    this.chipGap = 0.0,
     this.fontSize = 12,
     this.borderWidth = 1.0,
-    this.isScrollable = false,
     this.borderColor = const Color.fromRGBO(122, 122, 122, 1),
     this.backgroundColor = Colors.white,
     this.contentColor = const Color.fromRGBO(122, 122, 122, 1),
@@ -53,7 +53,47 @@ class CustomChipsList extends StatelessWidget {
     );
   }
 
-  Container buildChipListItem(int i) {
+  Widget buildChipListItem(int i) {
+    return CustomChipWidget(
+      chipWidth: chipWidth,
+      backgroundColor: backgroundColor,
+      borderColor: borderColor,
+      borderWidth: borderWidth,
+      content: chipContents[i],
+      labelStyle: TextStyle(
+        color: contentColor,
+        fontSize: fontSize,
+        height: 1,
+        fontWeight: fontWeight,
+      ),
+    );
+  }
+}
+
+class CustomChipWidget extends StatelessWidget {
+  const CustomChipWidget({
+    required this.content,
+    this.chipWidth,
+    this.backgroundColor = Colors.white,
+    this.borderColor = const Color.fromRGBO(122, 122, 122, 1),
+    this.borderWidth = 1,
+    this.labelStyle = const TextStyle(
+      color: Color.fromRGBO(122, 122, 122, 1),
+      fontSize: 12,
+      height: 1,
+    ),
+    super.key,
+  });
+
+  final double? chipWidth;
+  final String content;
+  final Color backgroundColor;
+  final Color borderColor;
+  final double borderWidth;
+  final TextStyle labelStyle;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: chipWidth,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
@@ -64,13 +104,8 @@ class CustomChipsList extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          chipContents[i],
-          style: TextStyle(
-            color: contentColor,
-            fontSize: fontSize,
-            height: 1,
-            fontWeight: fontWeight,
-          ),
+          content,
+          style: labelStyle,
         ),
       ),
     );

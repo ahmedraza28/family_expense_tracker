@@ -12,7 +12,7 @@ import '../../helpers/constants/app_styles.dart';
 import './custom_dropdown_sheet.dart';
 import './custom_text_button.dart';
 
-abstract class CustomDropdownField<T> extends StatelessWidget {
+abstract class CustomDropdownField<T> extends HookWidget {
   const CustomDropdownField({super.key});
 
   factory CustomDropdownField.sheet({

@@ -30,7 +30,7 @@ class SearchAndFiltersBar extends ConsumerWidget {
                   .update((_) => searchTerm ?? ''),
               hintText: 'Search by name',
               hintStyle: const TextStyle(
-                color: AppColors.textLightGreyColor,
+                color: AppColors.textGreyColor,
               ),
               keyboardType: TextInputType.name,
               textInputAction: TextInputAction.search,
