@@ -119,7 +119,7 @@ class FiltersListView extends HookConsumerWidget {
         Consumer(
           builder: (context, ref, _) {
             final categoriesStream = ref.watch(
-              categoriesStreamProvider(categoryTypeController.value),
+              categoriesByTypeProvider(categoryTypeController.value),
             );
             return LabeledWidget(
               label: 'Category',

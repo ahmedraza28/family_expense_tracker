@@ -4,8 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
-// Providers
+// Enums
 import '../enums/category_type_enum.dart';
+
+// Providers
 import '../providers/categories_provider.codegen.dart';
 
 // Widgets
@@ -14,7 +16,7 @@ import 'category_list_item.dart';
 
 class CategoriesList extends ConsumerWidget {
   final CategoryType categoryType;
-  
+
   const CategoriesList({
     required this.categoryType,
     super.key,
@@ -22,7 +24,7 @@ class CategoriesList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoriesStream = ref.watch(categoriesStreamProvider(categoryType));
+    final categoriesStream = ref.watch(categoriesByTypeProvider(categoryType));
     return categoriesStream.maybeWhen(
       data: (categories) => ListView.separated(
         itemCount: categories.length,
@@ -31,11 +33,9 @@ class CategoriesList extends ConsumerWidget {
         ),
         separatorBuilder: (_, __) => Insets.gapH10,
         padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-        itemBuilder: (_, i) {
-          return CategoryListItem(
-            category: categories[i],
-          );
-        },
+        itemBuilder: (_, i) => CategoryListItem(
+          category: categories[i],
+        ),
       ),
       orElse: () => const CustomCircularLoader(),
     );

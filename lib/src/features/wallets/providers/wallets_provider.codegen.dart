@@ -1,4 +1,3 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
@@ -29,7 +28,7 @@ final walletsStreamProvider = StreamProvider<List<WalletModel>>(
 );
 
 @Riverpod(keepAlive: true)
-Stream<List<CurrencyModel>> currenciesStream(CurrenciesStreamRef ref){
+Stream<List<CurrencyModel>> currenciesStream(CurrenciesStreamRef ref) {
   return ref.watch(currenciesRepositoryProvider).getAllCurrencies();
 }
 

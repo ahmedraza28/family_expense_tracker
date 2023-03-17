@@ -143,7 +143,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               Consumer(
                 builder: (context, ref, _) {
                   final categoriesStream = ref.watch(
-                    categoriesStreamProvider(typeController.value),
+                    categoriesByTypeProvider(typeController.value),
                   );
                   return LabeledWidget(
                     label: 'Category',

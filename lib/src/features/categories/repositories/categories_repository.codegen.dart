@@ -27,35 +27,27 @@ class CategoriesRepository {
 
   const CategoriesRepository(this._firestoreService);
 
-  Stream<List<CategoryModel>> getBookCategories({
-    required int bookId,
-    required String categoryType,
-  }) {
+  Stream<List<CategoryModel>> fetchAll({required int bookId}) {
     return _firestoreService.collectionStream<CategoryModel>(
-      path: 'books/$bookId/categories/$categoryType',
+      path: 'books/$bookId/categories',
       builder: (json, docId) => CategoryModel.fromJson(json!),
     );
   }
 
-  Future<void> addCategory({
-    required int bookId,
-    required String categoryType,
-    required JSON body,
-  }) {
+  Future<void> create({required int bookId, required JSON body}) {
     return _firestoreService.setData(
-      path: 'books/$bookId/categories/$categoryType',
+      path: 'books/$bookId/categories',
       data: body,
     );
   }
 
-  Future<void> updateCategory({
+  Future<void> update({
     required int bookId,
     required int categoryId,
-    required String categoryType,
     required JSON changes,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/categories/$categoryType/$categoryId',
+      path: 'books/$bookId/categories/$categoryId',
       data: changes,
       merge: true,
     );
@@ -64,10 +56,7 @@ class CategoriesRepository {
 
 class MockCategoriesRepository implements CategoriesRepository {
   @override
-  Stream<List<CategoryModel>> getBookCategories({
-    required int bookId,
-    required String categoryType,
-  }) {
+  Stream<List<CategoryModel>> fetchAll({required int bookId}) {
     const list = [
       CategoryModel(
         id: 1,
@@ -94,23 +83,16 @@ class MockCategoriesRepository implements CategoriesRepository {
         type: CategoryType.income,
       ),
     ];
-    return Stream.value(
-      list.where((element) => element.type.name == categoryType).toList(),
-    );
+    return Stream.value(list);
   }
 
   @override
-  Future<void> addCategory({
-    required int bookId,
-    required String categoryType,
-    required JSON body,
-  }) async {}
+  Future<void> create({required int bookId, required JSON body}) async {}
 
   @override
-  Future<void> updateCategory({
+  Future<void> update({
     required int bookId,
     required int categoryId,
-    required String categoryType,
     required JSON changes,
   }) async {}
 

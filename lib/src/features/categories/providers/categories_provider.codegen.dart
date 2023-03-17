@@ -15,12 +15,29 @@ import '../../books/books.dart';
 part 'categories_provider.codegen.g.dart';
 
 @Riverpod(keepAlive: true)
-Stream<List<CategoryModel>> categoriesStream(
-  CategoriesStreamRef ref,
-  CategoryType type,
-) {
+Stream<List<CategoryModel>> _categoriesStream(_CategoriesStreamRef ref) {
   final categories = ref.watch(categoriesProvider);
-  return categories.getAllCategories(type);
+  return categories.getAllCategories();
+}
+
+@Riverpod(keepAlive: true)
+Future<List<CategoryModel>> categoriesByType(
+  CategoriesByTypeRef ref,
+  CategoryType type,
+) async {
+  final categories = await ref.watch(_categoriesStreamProvider.future);
+  return categories.where((category) => category.type == type).toList();
+}
+
+@Riverpod(keepAlive: true)
+Future<Map<int, CategoryModel>> _categoriesMap(_CategoriesMapRef ref) async {
+  final categories = await ref.watch(_categoriesStreamProvider.future);
+  return {for (var e in categories) e.id!: e};
+}
+
+@riverpod
+CategoryModel categoryById(CategoryByIdRef ref, int id) {
+  return ref.watch(_categoriesMapProvider).asData!.value[id]!;
 }
 
 /// A provider used to access instance of this service
@@ -40,11 +57,8 @@ class CategoriesProvider {
     required this.bookId,
   });
 
-  Stream<List<CategoryModel>> getAllCategories(CategoryType type) {
-    return _categoriesRepository.getBookCategories(
-      bookId: bookId,
-      categoryType: type.name,
-    );
+  Stream<List<CategoryModel>> getAllCategories() {
+    return _categoriesRepository.fetchAll(bookId: bookId);
   }
 
   void addCategory({
@@ -58,18 +72,16 @@ class CategoriesProvider {
       imageUrl: imageUrl,
       type: type,
     );
-    _categoriesRepository.addCategory(
+    _categoriesRepository.create(
       bookId: bookId,
-      categoryType: type.name,
       body: category.toJson(),
     );
   }
 
   void updateCategory(CategoryModel category) {
-    _categoriesRepository.updateCategory(
+    _categoriesRepository.update(
       bookId: bookId,
       categoryId: category.id!,
-      categoryType: category.type.name,
       changes: category.toJson(),
     );
   }
