@@ -15,7 +15,7 @@ import '../../books/books.dart';
 part 'categories_provider.codegen.g.dart';
 
 @Riverpod(keepAlive: true)
-Stream<List<CategoryModel>> _categoriesStream(_CategoriesStreamRef ref) {
+Stream<List<CategoryModel>> categoriesStream(CategoriesStreamRef ref) {
   final categories = ref.watch(categoriesProvider);
   return categories.getAllCategories();
 }
@@ -25,13 +25,13 @@ Future<List<CategoryModel>> categoriesByType(
   CategoriesByTypeRef ref,
   CategoryType type,
 ) async {
-  final categories = await ref.watch(_categoriesStreamProvider.future);
+  final categories = await ref.watch(categoriesStreamProvider.future);
   return categories.where((category) => category.type == type).toList();
 }
 
 @Riverpod(keepAlive: true)
 Future<Map<int, CategoryModel>> _categoriesMap(_CategoriesMapRef ref) async {
-  final categories = await ref.watch(_categoriesStreamProvider.future);
+  final categories = await ref.watch(categoriesStreamProvider.future);
   return {for (var e in categories) e.id!: e};
 }
 
