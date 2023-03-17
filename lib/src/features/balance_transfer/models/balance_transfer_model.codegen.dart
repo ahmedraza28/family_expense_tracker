@@ -36,5 +36,8 @@ class BalanceTransferModel extends TransactionModel
   }
 
   @override
+  DateTime get transDate => date;
+
+  @override
   bool get isBalanceTransfer => true;
 }

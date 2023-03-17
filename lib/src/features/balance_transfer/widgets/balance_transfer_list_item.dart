@@ -65,22 +65,24 @@ class BalanceTransferListItem extends ConsumerWidget {
                       CustomText.body(
                         balanceTransfer.srcWallet.name,
                         color: AppColors.redColor,
+                        fontSize: 15,
                       ),
 
-                      Insets.gapW5,
+                      Insets.gapW3,
 
                       // Arrow
                       const Icon(
                         Icons.arrow_forward_rounded,
-                        size: 16,
+                        size: 14,
                         color: AppColors.textLightGreyColor,
                       ),
 
-                      Insets.gapW5,
+                      Insets.gapW3,
 
                       // Dest wallet
                       CustomText.body(
                         balanceTransfer.destWallet.name,
+                        fontSize: 15,
                         color: Colors.greenAccent.shade700,
                       ),
                     ],

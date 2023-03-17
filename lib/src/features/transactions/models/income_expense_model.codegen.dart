@@ -11,6 +11,7 @@ import '../../../helpers/typedefs.dart';
 import 'transaction_model.dart';
 
 // Features
+import '../../balance_transfer/balance_transfer.dart';
 import '../../categories/categories.dart';
 import '../../wallets/wallets.dart';
 
@@ -24,8 +25,7 @@ class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
     required double amount,
     @JsonKey(toJson: toWalletId) required WalletModel wallet,
     @JsonKey(toJson: toCategoryId) required CategoryModel category,
-    @JsonKey(toJson: AppUtils.dateToJson)
-    required DateTime date,
+    @JsonKey(toJson: AppUtils.dateToJson) required DateTime date,
     String? description,
   }) = _IncomeExpenseModel;
 
@@ -41,4 +41,7 @@ class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
 
   @override
   bool get isBalanceTransfer => false;
+
+  @override
+  DateTime get transDate => date;
 }

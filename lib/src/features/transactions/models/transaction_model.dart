@@ -15,6 +15,7 @@ abstract class TransactionModel {
   bool search(String searchTerm);
 
   bool get isBalanceTransfer;
+  DateTime get transDate;
 
   factory TransactionModel.fromJson(JSON json) {
     final isBalanceTransfer = !json.containsKey('category');

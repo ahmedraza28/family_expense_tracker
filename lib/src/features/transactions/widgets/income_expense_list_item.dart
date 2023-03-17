@@ -65,6 +65,7 @@ class IncomeExpenseListItem extends ConsumerWidget {
                   // Title
                   CustomText.body(
                     transaction.description ?? '',
+                    fontSize: 15,
                   ),
 
                   // Category Name

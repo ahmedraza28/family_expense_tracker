@@ -60,7 +60,10 @@ class TransactionsRepository {
 
 class MockTransactionsRepository implements TransactionsRepository {
   @override
-  Stream<List<TransactionModel>> getBookTransactions({required int bookId, JSON? queryParams}) {
+  Stream<List<TransactionModel>> getBookTransactions({
+    required int bookId,
+    JSON? queryParams,
+  }) {
     final wallet = <String, dynamic>{
       'id': 1,
       'name': 'Wallet',
@@ -89,7 +92,12 @@ class MockTransactionsRepository implements TransactionsRepository {
       'image_url': 'https://i.imgur.com/1J8ZQYt.png',
       'type': 'income',
     };
-    final date = DateTime.now().toDateString('yyyy-MM-dd');
+    final nowDate = DateTime.now();
+    final date = nowDate.toDateString('yyyy-MM-dd');
+    final yesterDate =
+        nowDate.subtract(const Duration(days: 1)).toDateString('yyyy-MM-dd');
+    final twoDaysAgoDate =
+        nowDate.subtract(const Duration(days: 2)).toDateString('yyyy-MM-dd');
     return Stream.value(<TransactionModel>[
       TransactionModel.fromJson(<String, dynamic>{
         'id': 1,
@@ -119,7 +127,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 4,
         'amount': 400,
         'description': 'Ek wagon fuel',
-        'date': date,
+        'date': yesterDate,
         'wallet': wallet,
         'category': category2,
       }),
@@ -127,7 +135,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 5,
         'amount': 500,
         'description': 'Civic service',
-        'date': date,
+        'date': yesterDate,
         'wallet': wallet,
         'category': category2,
       }),
@@ -135,7 +143,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 1,
         'amount': 100,
         'description': '10Pearls',
-        'date': date,
+        'date': yesterDate,
         'wallet': wallet,
         'category': category3,
       }),
@@ -143,14 +151,14 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 2,
         'amount': 200,
         'description': 'Food',
-        'date': date,
+        'date': yesterDate,
         'wallet': wallet,
         'category': category,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
         'amount': 300,
-        'date': date,
+        'date': yesterDate,
         'note': 'Ghar kharcha',
         'src_wallet': wallet,
         'dest_wallet': wallet,
@@ -159,7 +167,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 4,
         'amount': 400,
         'description': 'Shopping',
-        'date': date,
+        'date': yesterDate,
         'wallet': wallet,
         'category': category,
       }),
@@ -167,7 +175,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 5,
         'amount': 500,
         'description': 'Entertainment',
-        'date': date,
+        'date': yesterDate,
         'wallet': wallet,
         'category': category,
       }),
@@ -175,7 +183,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 1,
         'amount': 100,
         'description': 'Drinks',
-        'date': date,
+        'date': yesterDate,
         'wallet': wallet,
         'category': category,
       }),
@@ -183,14 +191,14 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 2,
         'amount': 200,
         'description': 'Food',
-        'date': date,
+        'date': yesterDate,
         'wallet': wallet,
         'category': category,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
         'amount': 300,
-        'date': date,
+        'date': twoDaysAgoDate,
         'note': 'Ghar kharcha',
         'src_wallet': wallet,
         'dest_wallet': wallet,
@@ -199,7 +207,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 4,
         'amount': 400,
         'description': 'Shopping',
-        'date': date,
+        'date': twoDaysAgoDate,
         'wallet': wallet,
         'category': category,
       }),
@@ -207,7 +215,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 5,
         'amount': 500,
         'description': 'Entertainment',
-        'date': date,
+        'date': twoDaysAgoDate,
         'wallet': wallet,
         'category': category,
       }),

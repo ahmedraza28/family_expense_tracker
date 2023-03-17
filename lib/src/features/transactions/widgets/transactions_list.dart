@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Models
+import '../../../helpers/extensions/datetime_extension.dart';
 import '../models/income_expense_model.codegen.dart';
 
 // Providers
@@ -47,18 +48,64 @@ class TransactionsList extends ConsumerWidget {
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        separatorBuilder: (_, __) => Insets.gapH10,
         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+        separatorBuilder: (_, i) {
+          final trans = transactions[i];
+          final nextTrans = transactions[i + 1];
+
+          if (nextTrans.transDate.day == trans.transDate.day) {
+            return const SizedBox(
+              height: 10,
+              child: VerticalDivider(
+                width: 2,
+                thickness: 1.5,
+                color: AppColors.textLightGreyColor,
+              ),
+            );
+          }
+          return Insets.gapH10;
+        },
         itemBuilder: (_, i) {
           final trans = transactions[i];
+          String? headerText;
 
-          return trans.isBalanceTransfer
+          if (i == 0 ||
+              trans.transDate.day < transactions[i - 1].transDate.day) {
+            headerText = trans.transDate.toDateString('d MMM, y');
+          }
+
+          final child = trans.isBalanceTransfer
               ? BalanceTransferListItem(
                   balanceTransfer: trans as BalanceTransferModel,
                 )
               : IncomeExpenseListItem(
                   transaction: trans as IncomeExpenseModel,
                 );
+
+          return headerText != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        0,
+                        i == 0 ? 0 : 10,
+                        0,
+                        10,
+                      ),
+                      child: CustomText(
+                        headerText,
+                        fontSize: 15,
+                        color: AppColors.textGreyColor,
+                      ),
+                    ),
+
+                    // Transaction
+                    child
+                  ],
+                )
+              : child;
         },
       ),
     );

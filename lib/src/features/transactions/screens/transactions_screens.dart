@@ -39,14 +39,14 @@ class TransactionsScreen extends ConsumerWidget {
                 CustomText(
                   'Income: \$${selectedBook.totalIncome}',
                   fontSize: 16,
-                  color: AppColors.textLightGreyColor,
+                  color: AppColors.textGreyColor,
                 ),
 
                 // Expense
                 CustomText(
                   'Expense: \$${selectedBook.totalExpense}',
                   fontSize: 16,
-                  color: AppColors.textLightGreyColor,
+                  color: AppColors.textGreyColor,
                 ),
               ],
             ),
