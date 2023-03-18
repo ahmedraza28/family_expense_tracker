@@ -40,7 +40,7 @@ class TransactionsList extends ConsumerWidget {
         height: 395,
         width: double.infinity,
         margin: EdgeInsets.only(top: 20),
-        title: 'No transactions recoreded yet',
+        title: 'No transactions recorded yet',
         subtitle: 'Check back later',
       ),
       data: (transactions) => ListView.separated(

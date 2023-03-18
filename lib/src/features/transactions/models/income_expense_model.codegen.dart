@@ -24,7 +24,7 @@ class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
     @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
     required double amount,
     @JsonKey(toJson: toWalletId) required WalletModel wallet,
-    @JsonKey(toJson: toCategoryId) required CategoryModel category,
+    required int categoryId,
     @JsonKey(toJson: AppUtils.dateToJson) required DateTime date,
     String? description,
   }) = _IncomeExpenseModel;

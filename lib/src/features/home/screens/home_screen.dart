@@ -27,19 +27,14 @@ class HomeScreen extends ConsumerWidget {
           children: [
             const SizedBox(height: 65),
 
-            // Log out icon
-            RotatedBox(
-              quarterTurns: 2,
-              child: InkResponse(
-                radius: 26,
-                child: const Icon(
-                  Icons.logout,
-                  color: AppColors.primaryColor,
-                  size: 30,
-                ),
-                onTap: () {
-                  ref.read(authControllerProvider.notifier).logout();
-                },
+            // Back
+            InkWell(
+              onTap: AppRouter.pop,
+              radius: 26,
+              child: Icon(
+                Icons.adaptive.arrow_back,
+                color: AppColors.primaryColor,
+                size: 30,
               ),
             ),
 
@@ -78,34 +73,6 @@ class ScreensList extends StatelessWidget {
     return ListView(
       padding: EdgeInsets.zero,
       children: [
-        // Books
-        ListTile(
-          tileColor: Colors.white,
-          shape: const RoundedRectangleBorder(
-            borderRadius: Corners.rounded15,
-          ),
-          onTap: () {
-            AppRouter.pushNamed(Routes.BooksScreenRoute);
-          },
-          leading: const Icon(
-            Icons.book,
-            color: AppColors.primaryColor,
-            size: 40,
-          ),
-          title: const CustomText(
-            'Books',
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-          subtitle: const CustomText(
-            'View your books',
-            fontSize: 16,
-          ),
-        ),
-
-        Insets.gapH20,
-
         // Wallets
         ListTile(
           tileColor: Colors.white,

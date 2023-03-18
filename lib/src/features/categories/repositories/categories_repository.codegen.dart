@@ -55,30 +55,30 @@ class CategoriesRepository {
 }
 
 class MockCategoriesRepository implements CategoriesRepository {
+    final category3 = <String, dynamic>{
+      'id': 3,
+      'name': 'Salary',
+      'image_url': 'https://i.imgur.com/1J8ZQYt.png',
+      'type': 'income',
+    };
   @override
   Stream<List<CategoryModel>> fetchAll({required int bookId}) {
     const list = [
       CategoryModel(
         id: 1,
-        name: 'Category 1',
+        name: 'Food',
         imageUrl: 'https://picsum.photos/200/300',
-        type: CategoryType.income,
+        type: CategoryType.expense,
       ),
       CategoryModel(
         id: 2,
-        name: 'Category 2',
+        name: 'Petrol And Maintainance',
         imageUrl: 'https://picsum.photos/200/300',
         type: CategoryType.expense,
       ),
       CategoryModel(
         id: 3,
-        name: 'Category 3',
-        imageUrl: 'https://picsum.photos/200/300',
-        type: CategoryType.expense,
-      ),
-      CategoryModel(
-        id: 4,
-        name: 'Category 4',
+        name: 'Salary',
         imageUrl: 'https://picsum.photos/200/300',
         type: CategoryType.income,
       ),

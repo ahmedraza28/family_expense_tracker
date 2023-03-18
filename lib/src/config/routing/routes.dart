@@ -29,6 +29,9 @@ class Routes {
   /// The route to be loaded in case of unrecognized route name
   static const String fallbackRoute = NotFoundScreenRoute;
 
+  // The name for the app startup screen
+  static const String AppStartupScreenRoute = '/app-startup-screen';
+
   // The name for the auth widget screen
   static const String AuthWidgetBuilderRoute = '/auth-widget-builder';
 
@@ -91,6 +94,7 @@ class Routes {
 
   static final Map<String, RouteBuilder> _routesMap = {
     LoginScreenRoute: (_) => const LoginScreen(),
+    AppStartupScreenRoute: (_) => const AppStartupScreen(),
     AuthWidgetBuilderRoute: (_) => const AuthWidgetBuilder(),
     NotFoundScreenRoute: (_) => const NotFoundScreen(),
     HomeScreenRoute: (_) => const HomeScreen(),

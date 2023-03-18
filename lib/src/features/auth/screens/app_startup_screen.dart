@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
 // Features
+import '../../home/home.dart';
 import '../../categories/categories.dart';
 
 // Helpers
@@ -11,11 +12,11 @@ import '../../../helpers/extensions/extensions.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
-import 'auth_widget_builder.dart';
 
 final _cacheLoaderFutureProvider = FutureProvider.autoDispose<void>(
   (ref) => Future.wait<void>([
-    ref.watch(categoriesStreamProvider.future),
+    Future.delayed(3.seconds),
+    ref.watch(categoriesMapProvider.future),
   ]),
 );
 
@@ -26,7 +27,7 @@ class AppStartupScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cacheLoaderFuture = ref.watch(_cacheLoaderFutureProvider);
     return cacheLoaderFuture.when(
-      data: (_) => const AuthWidgetBuilder(),
+      data: (_) => const HomeScreen(),
       loading: () => const LottieAnimationLoader(),
       error: (error, st) => Scaffold(
         body: ErrorResponseHandler(

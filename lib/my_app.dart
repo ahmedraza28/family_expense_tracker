@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 // Routers
+import 'src/config/logging/provider_logger.dart';
 import 'src/config/routing/routing.dart';
 
 // Helpers
@@ -17,6 +18,9 @@ class MyApp extends StatelessWidget {
     const showDebugBanner = false;
     final navigatorObservers = <NavigatorObserver>[SentryNavigatorObserver()];
     return ProviderScope(
+      observers: const [
+        ProviderLogger(),
+      ],
       child: MaterialApp(
         title: title,
         navigatorObservers: navigatorObservers,

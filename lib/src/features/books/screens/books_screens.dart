@@ -11,6 +11,9 @@ import '../widgets/add_book_fab.dart';
 import '../widgets/books_list.dart';
 import 'add_edit_book_screen.dart';
 
+// Features
+import '../../auth/auth.dart';
+
 class BooksScreen extends ConsumerWidget {
   const BooksScreen({super.key});
 
@@ -21,6 +24,19 @@ class BooksScreen extends ConsumerWidget {
         title: const CustomText(
           'Your Books',
           fontSize: 20,
+        ),
+        leading: RotatedBox(
+          quarterTurns: 2,
+          child: InkResponse(
+            radius: 26,
+            child: const Icon(
+              Icons.logout,
+              color: AppColors.primaryColor,
+            ),
+            onTap: () {
+              ref.read(authControllerProvider.notifier).logout();
+            },
+          ),
         ),
       ),
       body: const BooksList(),

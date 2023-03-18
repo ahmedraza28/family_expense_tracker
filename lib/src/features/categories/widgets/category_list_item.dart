@@ -50,7 +50,7 @@ class CategoryListItem extends ConsumerWidget {
         ),
       ),
       title: CustomText.body(
-        'Category Name',
+        category.name,
       ),
     );
   }

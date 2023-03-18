@@ -52,7 +52,7 @@ class TransactionsProvider {
       id: null,
       amount: amount,
       wallet: wallet,
-      category: category,
+      categoryId: category.id!,
       date: date,
       description: description,
     );

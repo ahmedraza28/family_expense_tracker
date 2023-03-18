@@ -47,7 +47,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
       transaction?.wallet,
     );
     final categoryController = useValueNotifier<CategoryModel?>(
-      transaction?.category,
+      ref.watch(categoryByIdProvider(transaction?.categoryId)),
     );
     final typeController = useValueNotifier<CategoryType>(
       categoryController.value?.type ?? CategoryType.income,
@@ -69,7 +69,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
           amount: double.parse(amountController.text),
           wallet: walletController.value!,
           date: dateController.value!,
-          category: categoryController.value!,
+          categoryId: categoryController.value!.id!,
           description: descriptionController.text,
         );
         ref.read(transactionsProvider).updateTransaction(newTransaction);

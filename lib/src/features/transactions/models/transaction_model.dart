@@ -18,7 +18,7 @@ abstract class TransactionModel {
   DateTime get transDate;
 
   factory TransactionModel.fromJson(JSON json) {
-    final isBalanceTransfer = !json.containsKey('category');
+    final isBalanceTransfer = !json.containsKey('category_id');
 
     return isBalanceTransfer
         ? BalanceTransferModel.fromJson(json)

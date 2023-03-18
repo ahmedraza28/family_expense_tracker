@@ -22,7 +22,10 @@ final selectedBookProvider = StateProvider<BookModel?>((ref) {
 
 @riverpod
 Stream<List<BookModel>> booksStream(BooksStreamRef ref) {
-  final currentUser = ref.watch(currentUserProvider).valueOrNull!;
+  final currentUser = ref.watch(currentUserProvider).value;
+  if (currentUser == null) {
+    return const Stream.empty();
+  }
   return ref.watch(booksProvider).getUserBooks(currentUser.uid);
 }
 

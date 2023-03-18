@@ -27,10 +27,14 @@ class BookListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return GestureDetector(
+    ref.listen(selectedBookProvider, (prev, next) {
+      if (next != null && next.id == book.id) {
+        AppRouter.pushNamed(Routes.AppStartupScreenRoute);
+      }
+    });
+    return InkWell(
       onTap: () {
         ref.read(selectedBookProvider.notifier).update((state) => book);
-        AppRouter.pop();
       },
       child: Container(
         width: double.infinity,

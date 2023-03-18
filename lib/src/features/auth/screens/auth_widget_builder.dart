@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../controllers/auth_controller.codegen.dart';
 
 // Screens
-import '../../home/screens/home_screen.dart';
+import '../../books/books.dart';
 import 'login_screen.dart';
 
 class AuthWidgetBuilder extends HookConsumerWidget {
@@ -15,8 +15,8 @@ class AuthWidgetBuilder extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(currentUserProvider);
     return authState.maybeWhen(
-      data: (user) => user != null ? const HomeScreen() : const HomeScreen(),
-      orElse: () => const HomeScreen(),
+      data: (user) => user != null ? const BooksScreen() : const BooksScreen(),
+      orElse: () => const BooksScreen(),
     );
   }
 }
