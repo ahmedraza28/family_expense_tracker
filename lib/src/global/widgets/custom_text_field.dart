@@ -60,7 +60,7 @@ class CustomTextField extends StatefulWidget {
     this.inputFormatters,
     this.hintText,
     this.validator,
-    this.height = 47,
+    this.height = 48,
     this.readOnly = false,
     this.showFocusedBorder = true,
     this.multiline = false,
@@ -95,7 +95,7 @@ class CustomTextField extends StatefulWidget {
       fontSize: 14,
       color: AppColors.textBlueGreyColor,
     ),
-    this.contentPadding = const EdgeInsets.fromLTRB(12, 13, 1, 16),
+    this.contentPadding = const EdgeInsets.fromLTRB(16, 18, 1, 18),
   });
 
   @override
@@ -182,7 +182,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 5),
         ],
 
         // TextField

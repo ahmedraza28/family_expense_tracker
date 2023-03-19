@@ -49,6 +49,9 @@ class AddEditTransactionScreen extends HookConsumerWidget {
     final categoryController = useValueNotifier<CategoryModel?>(
       ref.watch(categoryByIdProvider(transaction?.categoryId)),
     );
+    final categoryTextController = useTextEditingController(
+      text: categoryController.value?.name ?? '',
+    );
 
     void onSave() {
       if (!formKey.currentState!.validate()) return;
@@ -126,10 +129,21 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Category
-              LabeledWidget(
-                label: 'Category',
-                child: CategoryDropdownField(
-                  controller: categoryController,
+              GestureDetector(
+                onTap: () async {
+                  ref
+                      .read(isCategorySelectableProvider.notifier)
+                      .update((_) => true);
+                  final category = await AppRouter.pushNamed(
+                    Routes.CategoriesScreenRoute,
+                  ) as CategoryModel;
+                  categoryController.value = category;
+                  categoryTextController.text = category.name;
+                },
+                child: CustomTextField(
+                  controller: categoryTextController,
+                  enabled: false,
+                  floatingText: 'Category',
                 ),
               ),
 

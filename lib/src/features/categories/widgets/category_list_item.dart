@@ -14,6 +14,8 @@ import '../../../helpers/constants/constants.dart';
 import '../../../global/widgets/widgets.dart';
 import '../screens/add_edit_category_screen.dart';
 
+final isCategorySelectableProvider = StateProvider<bool>((ref) => false);
+
 class CategoryListItem extends ConsumerWidget {
   final CategoryModel category;
 
@@ -24,7 +26,14 @@ class CategoryListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isSelectable = ref.watch(isCategorySelectableProvider);
     return ListTile(
+      onTap: isSelectable
+          ? () {
+              AppRouter.pop(category);
+              ref.invalidate(isCategorySelectableProvider);
+            }
+          : null,
       dense: true,
       horizontalTitleGap: 0,
       contentPadding: const EdgeInsets.symmetric(
@@ -39,16 +48,18 @@ class CategoryListItem extends ConsumerWidget {
         Icons.category_rounded,
         color: AppColors.textLightGreyColor,
       ),
-      trailing: InkWell(
-        onTap: () => AppRouter.push(
-          AddEditCategoryScreen(category: category),
-        ),
-        child: const Icon(
-          Icons.edit_rounded,
-          size: 20,
-          color: AppColors.primaryColor,
-        ),
-      ),
+      trailing: isSelectable
+          ? null
+          : InkWell(
+              onTap: () => AppRouter.push(
+                AddEditCategoryScreen(category: category),
+              ),
+              child: const Icon(
+                Icons.edit_rounded,
+                size: 20,
+                color: AppColors.primaryColor,
+              ),
+            ),
       title: CustomText.body(
         category.name,
       ),
