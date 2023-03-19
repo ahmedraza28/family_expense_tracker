@@ -56,7 +56,7 @@ class FiltersBottomSheet extends ConsumerWidget {
             ),
           ),
         ),
-        trailing: CustomTextButton.gradient(
+        action: CustomTextButton.gradient(
           width: 60,
           height: 30,
           gradient: AppColors.buttonGradientPrimary,

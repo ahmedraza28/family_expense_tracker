@@ -12,7 +12,7 @@ class CustomScrollableBottomSheet extends StatelessWidget {
   final Widget? title;
 
   /// The widget to use at the end of the header.
-  final Widget? trailing;
+  final Widget? action;
 
   /// The callback used to define how the sheet child will be built.
   final ScrollableWidgetBuilder builder;
@@ -30,7 +30,7 @@ class CustomScrollableBottomSheet extends StatelessWidget {
     this.titleText,
     this.leading,
     this.title,
-    this.trailing,
+    this.action,
     this.initialSheetSize = 0.7,
     this.minSheetSize = 0.5,
     this.maxSheetSize = 1,
@@ -78,7 +78,7 @@ class CustomScrollableBottomSheet extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
-                mainAxisAlignment: trailing != null
+                mainAxisAlignment: action != null
                     ? MainAxisAlignment.spaceBetween
                     : MainAxisAlignment.center,
                 children: [
@@ -95,7 +95,7 @@ class CustomScrollableBottomSheet extends StatelessWidget {
                       ),
 
                   // Trailing
-                  if (trailing != null) trailing!,
+                  if (action != null) action!,
                 ],
               ),
             ),

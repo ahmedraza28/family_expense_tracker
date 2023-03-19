@@ -49,9 +49,6 @@ class AddEditTransactionScreen extends HookConsumerWidget {
     final categoryController = useValueNotifier<CategoryModel?>(
       ref.watch(categoryByIdProvider(transaction?.categoryId)),
     );
-    final typeController = useValueNotifier<CategoryType>(
-      categoryController.value?.type ?? CategoryType.income,
-    );
 
     void onSave() {
       if (!formKey.currentState!.validate()) return;
@@ -128,39 +125,12 @@ class AddEditTransactionScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
-              // Category Type
-              LabeledWidget(
-                label: 'Category Type',
-                useDarkerLabel: true,
-                child: CategoryTypeSelectionCards(
-                  controller: typeController,
-                ),
-              ),
-
-              Insets.gapH20,
-
               // Category
-              Consumer(
-                builder: (context, ref, _) {
-                  final categoriesStream = ref.watch(
-                    categoriesByTypeProvider(typeController.value),
-                  );
-                  return LabeledWidget(
-                    label: 'Category',
-                    child: CustomDropdownField<CategoryModel>.sheet(
-                      controller: categoryController,
-                      selectedItemBuilder: (item) => CustomText.body(item.name),
-                      hintText: 'Select category',
-                      itemsSheet: CustomDropdownSheet(
-                        items: categoriesStream.valueOrNull ?? [],
-                        bottomSheetTitle: 'Categories',
-                        itemBuilder: (_, item) => DropdownSheetItem(
-                          label: item.name,
-                        ),
-                      ),
-                    ),
-                  );
-                },
+              LabeledWidget(
+                label: 'Category',
+                child: CategoryDropdownField(
+                  controller: categoryController,
+                ),
               ),
 
               Insets.gapH20,

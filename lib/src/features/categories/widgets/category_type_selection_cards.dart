@@ -21,7 +21,8 @@ class CategoryTypeSelectionCards extends StatelessWidget {
   });
 
   void selectCategoryType(CategoryType categoryType) {
-    controller.value = controller.value == categoryType ? null : categoryType;
+    if (controller.value == categoryType) return;
+    controller.value = categoryType;
     onSelect?.call(controller.value);
   }
 
