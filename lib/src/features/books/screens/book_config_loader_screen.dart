@@ -20,8 +20,8 @@ final _cacheLoaderFutureProvider = FutureProvider.autoDispose<void>(
   ]),
 );
 
-class AppStartupScreen extends ConsumerWidget {
-  const AppStartupScreen({super.key});
+class BookConfigLoaderScreen extends ConsumerWidget {
+  const BookConfigLoaderScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

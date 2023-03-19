@@ -29,7 +29,7 @@ class BookListItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(selectedBookProvider, (prev, next) {
       if (next != null && next.id == book.id) {
-        AppRouter.pushNamed(Routes.AppStartupScreenRoute);
+        AppRouter.pushNamed(Routes.BookConfigLoaderScreenRoute);
       }
     });
     return InkWell(
