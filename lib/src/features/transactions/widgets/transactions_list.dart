@@ -24,9 +24,8 @@ class TransactionsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transactionsStream = ref.watch(filteredTransactionsStreamProvider);
     return AsyncValueWidget<List<TransactionModel>>(
-      value: transactionsStream,
+      value: ref.watch(searchedTransactionsProvider),
       loading: () => const Padding(
         padding: EdgeInsets.only(top: 70),
         child: CustomCircularLoader(),
@@ -43,71 +42,73 @@ class TransactionsList extends ConsumerWidget {
         title: 'No transactions recorded yet',
         subtitle: 'Check back later',
       ),
-      data: (transactions) => ListView.separated(
-        itemCount: transactions.length,
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-        separatorBuilder: (_, i) {
-          final trans = transactions[i];
-          final nextTrans = transactions[i + 1];
+      data: (transactions) {
+        return ListView.separated(
+          itemCount: transactions.length,
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
+          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+          separatorBuilder: (_, i) {
+            final trans = transactions[i];
+            final nextTrans = transactions[i + 1];
 
-          if (nextTrans.transDate.day == trans.transDate.day) {
-            return const SizedBox(
-              height: 10,
-              child: VerticalDivider(
-                width: 2,
-                thickness: 1.5,
-                color: AppColors.textLightGreyColor,
-              ),
-            );
-          }
-          return Insets.gapH10;
-        },
-        itemBuilder: (_, i) {
-          final trans = transactions[i];
-          String? headerText;
+            if (nextTrans.transDate.day == trans.transDate.day) {
+              return const SizedBox(
+                height: 10,
+                child: VerticalDivider(
+                  width: 2,
+                  thickness: 1.5,
+                  color: AppColors.textLightGreyColor,
+                ),
+              );
+            }
+            return Insets.gapH10;
+          },
+          itemBuilder: (_, i) {
+            final trans = transactions[i];
+            String? headerText;
 
-          if (i == 0 ||
-              trans.transDate.day < transactions[i - 1].transDate.day) {
-            headerText = trans.transDate.toDateString('d MMM, y');
-          }
+            if (i == 0 ||
+                trans.transDate.day < transactions[i - 1].transDate.day) {
+              headerText = trans.transDate.toDateString('d MMM, y');
+            }
 
-          final child = trans.isBalanceTransfer
-              ? BalanceTransferListItem(
-                  balanceTransfer: trans as BalanceTransferModel,
-                )
-              : IncomeExpenseListItem(
-                  transaction: trans as IncomeExpenseModel,
-                );
+            final child = trans.isBalanceTransfer
+                ? BalanceTransferListItem(
+                    balanceTransfer: trans as BalanceTransferModel,
+                  )
+                : IncomeExpenseListItem(
+                    transaction: trans as IncomeExpenseModel,
+                  );
 
-          return headerText != null
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        0,
-                        i == 0 ? 0 : 10,
-                        0,
-                        10,
+            return headerText != null
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          0,
+                          i == 0 ? 0 : 10,
+                          0,
+                          10,
+                        ),
+                        child: CustomText(
+                          headerText,
+                          fontSize: 15,
+                          color: AppColors.textGreyColor,
+                        ),
                       ),
-                      child: CustomText(
-                        headerText,
-                        fontSize: 15,
-                        color: AppColors.textGreyColor,
-                      ),
-                    ),
 
-                    // Transaction
-                    child
-                  ],
-                )
-              : child;
-        },
-      ),
+                      // Transaction
+                      child
+                    ],
+                  )
+                : child;
+          },
+        );
+      },
     );
   }
 }

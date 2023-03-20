@@ -27,10 +27,23 @@ class TransactionsRepository {
 
   Stream<List<TransactionModel>> getBookTransactions({
     required int bookId,
-    JSON? queryParams,
+    int? categoryId,
+    DateTime? date,
   }) {
+    final hasQuery = categoryId != null || date != null;
     return _firestoreService.collectionStream<TransactionModel>(
       path: 'books/$bookId/transactions',
+      queryBuilder: !hasQuery
+          ? null
+          : (query) {
+              if (categoryId != null) {
+                query = query.where('category_id', isEqualTo: categoryId);
+              }
+              if (date != null) {
+                query = query.where('date', isGreaterThanOrEqualTo: date);
+              }
+              return query;
+            },
       builder: (json, docId) => TransactionModel.fromJson(json!),
     );
   }
@@ -62,7 +75,8 @@ class MockTransactionsRepository implements TransactionsRepository {
   @override
   Stream<List<TransactionModel>> getBookTransactions({
     required int bookId,
-    JSON? queryParams,
+    int? categoryId,
+    DateTime? date,
   }) {
     final wallet = <String, dynamic>{
       'id': 1,
@@ -80,7 +94,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         nowDate.subtract(const Duration(days: 1)).toDateString('yyyy-MM-dd');
     final twoDaysAgoDate =
         nowDate.subtract(const Duration(days: 2)).toDateString('yyyy-MM-dd');
-    return Stream.value(<TransactionModel>[
+    final list = <TransactionModel>[
       TransactionModel.fromJson(<String, dynamic>{
         'id': 1,
         'amount': 100,
@@ -201,7 +215,8 @@ class MockTransactionsRepository implements TransactionsRepository {
         'wallet': wallet,
         'category_id': 1,
       }),
-    ]);
+    ];
+    return Stream.value(list);
   }
 
   @override

@@ -39,8 +39,7 @@ class FiltersBottomSheet extends ConsumerWidget {
         leading: Consumer(
           builder: (_, ref, child) {
             final hasFilters = ref.watch(
-              // length 2 because is_active is always present + any additional filters
-              filtersProvider.select((value) => value.length >= 2),
+              filtersProvider.select((value) => value.hasFilters),
             );
             return hasFilters ? child! : const SizedBox(width: 50, height: 30);
           },

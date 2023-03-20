@@ -1,10 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-// Helpers
-import '../../../helpers/typedefs.dart';
-
 // Models
+import '../models/filters_model.dart';
 import '../models/transaction_model.dart';
 
 // Providers
@@ -20,50 +18,45 @@ final expenseMonthFilterProvider = StateProvider<int?>((ref) => null);
 final expenseYearFilterProvider = StateProvider<int?>((ref) => null);
 final categoryFilterProvider = StateProvider<CategoryModel?>((ref) => null);
 
-final filtersProvider = Provider<JSON>(
-  (ref) {
-    final expenseMonthFilter =
-        ref.watch(expenseMonthFilterProvider.notifier).state;
-    final expenseYearFilter =
-        ref.watch(expenseYearFilterProvider.notifier).state;
-    final dateFilter = DateTime(
-      expenseYearFilter ?? DateTime.now().year,
-      expenseMonthFilter ?? DateTime.now().month,
-    );
-    final categoryFilter = ref.watch(categoryFilterProvider.notifier).state;
+@riverpod
+FiltersModel filters(FiltersRef ref) {
+  final expenseMonthFilter =
+      ref.watch(expenseMonthFilterProvider.notifier).state;
+  final expenseYearFilter = ref.watch(expenseYearFilterProvider.notifier).state;
+  final dateFilter = DateTime(
+    expenseYearFilter ?? DateTime.now().year,
+    expenseMonthFilter ?? DateTime.now().month,
+  );
+  final categoryFilter = ref.watch(categoryFilterProvider.notifier).state;
 
-    final filters = <String, dynamic>{
-      'date': dateFilter,
-      'category': categoryFilter?.id,
-    };
+  final filters = FiltersModel(
+    date: dateFilter,
+    categoryId: categoryFilter?.id,
+  );
 
-    return filters;
-  },
-);
+  return filters;
+}
 
 @riverpod
 Stream<List<TransactionModel>> filteredTransactionsStream(
   FilteredTransactionsStreamRef ref,
 ) {
-  final queryParams = ref.watch(filtersProvider);
-  return ref.watch(transactionsProvider).getAllTransactions(queryParams);
+  final filters = ref.watch(filtersProvider);
+  return ref.watch(transactionsProvider).getAllTransactions(filters);
 }
 
 /// A provider used to access list of searched expenses
 @riverpod
-Stream<List<TransactionModel>> searchedTransactions(
-  SearchedTransactionsRef ref, {
-  required Stream<List<TransactionModel>> filteredTransactions,
-}) {
+Future<List<TransactionModel>> searchedTransactions(
+  SearchedTransactionsRef ref,
+) async {
   final searchTerm = ref.watch(searchFilterProvider).toLowerCase();
+  final filteredTransactions =
+      await ref.watch(filteredTransactionsStreamProvider.future);
   if (searchTerm.isEmpty) {
     return filteredTransactions;
   }
-  return filteredTransactions.map(
-    (transactionsList) => transactionsList
-        .where(
-          (trans) => trans.search(searchTerm),
-        )
-        .toList(),
-  );
+  return filteredTransactions
+      .where((trans) => trans.search(searchTerm))
+      .toList();
 }

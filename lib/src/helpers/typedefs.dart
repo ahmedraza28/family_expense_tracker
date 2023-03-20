@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-typedef JSON = Map<String, dynamic>;
+typedef JSON = Map<String, Object?>;
 typedef QueryParams = Map<String, String>;
 typedef QueryBuilder = Query<JSON>? Function(Query<JSON> query)?;
 typedef SnapshotBuilder<T> = T Function(JSON? data, String documentID);

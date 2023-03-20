@@ -1,10 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-// Helpers
-import '../../../helpers/typedefs.dart';
-
 // Models
+import '../models/filters_model.dart';
 import '../models/income_expense_model.codegen.dart';
 import '../models/transaction_model.dart';
 
@@ -34,10 +32,11 @@ class TransactionsProvider {
     required this.bookId,
   });
 
-  Stream<List<TransactionModel>> getAllTransactions([JSON? queryParams]) {
+  Stream<List<TransactionModel>> getAllTransactions([FiltersModel? filters]) {
     return _ref.watch(transactionsRepositoryProvider).getBookTransactions(
           bookId: bookId,
-          queryParams: queryParams,
+          categoryId: filters?.categoryId,
+          date: filters?.date,
         );
   }
 

@@ -46,7 +46,7 @@ class BooksRepository {
     final bookIdsStream = _firestoreService.collectionStream<int>(
       path: 'book_members',
       queryBuilder: (query) => query.where('memberId', isEqualTo: memberId),
-      builder: (json, docId) => json!['bookId'] as int,
+      builder: (json, docId) => json!['bookId']! as int,
     );
 
     await for (final bookIds in bookIdsStream) {
