@@ -8,13 +8,20 @@ import '../models/category_model.codegen.dart';
 import '../../../config/routing/routing.dart';
 
 // Helpers
+import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import '../screens/add_edit_category_screen.dart';
 
-final isCategorySelectableProvider = StateProvider<bool>((ref) => false);
+final isCategorySelectableProvider = StateProvider.autoDispose<bool>(
+  name: 'isCategorySelectableProvider',
+  (ref) {
+    ref.delayDispose();
+    return false;
+  },
+);
 
 class CategoryListItem extends ConsumerWidget {
   final CategoryModel category;
@@ -28,12 +35,7 @@ class CategoryListItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isSelectable = ref.watch(isCategorySelectableProvider);
     return ListTile(
-      onTap: isSelectable
-          ? () {
-              AppRouter.pop(category);
-              ref.invalidate(isCategorySelectableProvider);
-            }
-          : null,
+      onTap: isSelectable ? () => AppRouter.pop(category) : null,
       dense: true,
       horizontalTitleGap: 0,
       contentPadding: const EdgeInsets.symmetric(

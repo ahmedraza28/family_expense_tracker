@@ -52,6 +52,9 @@ class AddEditTransactionScreen extends HookConsumerWidget {
     final categoryTextController = useTextEditingController(
       text: categoryController.value?.name ?? '',
     );
+    final walletTextController = useTextEditingController(
+      text: walletController.value?.name ?? '',
+    );
 
     void onSave() {
       if (!formKey.currentState!.validate()) return;
@@ -112,7 +115,10 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Amount
-              GestureDetector(
+              InkWell(
+                customBorder: const RoundedRectangleBorder(
+                  borderRadius: Corners.rounded7,
+                ),
                 onTap: () async {
                   await AppRouter.pushNamed(
                     Routes.CalculatorScreenRoute,
@@ -129,8 +135,14 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Category
-              GestureDetector(
+              InkWell(
+                customBorder: const RoundedRectangleBorder(
+                  borderRadius: Corners.rounded7,
+                ),
                 onTap: () async {
+                  // ref.runAsync(
+                  // isCategorySelectableProvider,
+                  // () async {
                   ref
                       .read(isCategorySelectableProvider.notifier)
                       .update((_) => true);
@@ -139,10 +151,13 @@ class AddEditTransactionScreen extends HookConsumerWidget {
                   ) as CategoryModel;
                   categoryController.value = category;
                   categoryTextController.text = category.name;
+                  //   },
+                  // );
                 },
                 child: CustomTextField(
                   controller: categoryTextController,
                   enabled: false,
+                  hintText: 'Tap to select',
                   floatingText: 'Category',
                 ),
               ),
@@ -150,25 +165,26 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Wallet
-              Consumer(
-                builder: (_, ref, __) {
-                  final walletsStream = ref.watch(walletsStreamProvider);
-                  return LabeledWidget(
-                    label: 'Wallet',
-                    child: CustomDropdownField<WalletModel>.sheet(
-                      controller: walletController,
-                      selectedItemBuilder: (item) => CustomText.body(item.name),
-                      hintText: 'Spend from',
-                      itemsSheet: CustomDropdownSheet(
-                        items: walletsStream.valueOrNull ?? [],
-                        bottomSheetTitle: 'Wallets',
-                        itemBuilder: (_, item) => DropdownSheetItem(
-                          label: item.name,
-                        ),
-                      ),
-                    ),
-                  );
+              InkWell(
+                customBorder: const RoundedRectangleBorder(
+                  borderRadius: Corners.rounded7,
+                ),
+                onTap: () async {
+                  ref
+                      .read(isWalletSelectableProvider.notifier)
+                      .update((_) => true);
+                  final wallet = await AppRouter.pushNamed(
+                    Routes.WalletsScreenRoute,
+                  ) as WalletModel;
+                  walletController.value = wallet;
+                  walletTextController.text = wallet.name;
                 },
+                child: CustomTextField(
+                  controller: walletTextController,
+                  enabled: false,
+                  hintText: 'Tap to select',
+                  floatingText: 'Wallet',
+                ),
               ),
 
               Insets.gapH20,

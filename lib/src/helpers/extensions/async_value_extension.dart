@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../core/core.dart';
@@ -19,5 +20,23 @@ extension AsyncGuardedRequest<T> on AsyncValue<T> {
           : (errorMessage ?? 'Guarded future request failed.');
       return AsyncValue.error(reason, st);
     }
+  }
+}
+
+extension WidgetRefExtension on WidgetRef {
+  Future<void> runAsync(
+    ProviderListenable<Object?> provider,
+    Future<void> Function() cb,
+  ) async {
+    final sub = listenManual(provider, (prev, value) {});
+    await cb();
+    sub.close();
+  }
+}
+
+extension RefExtension on AutoDisposeStateProviderRef<Object?> {
+  void delayDispose() {
+    keepAlive();
+    onCancel(invalidateSelf);
   }
 }

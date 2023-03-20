@@ -9,6 +9,7 @@ import '../../../helpers/constants/constants.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import '../widgets/add_wallet_fab.dart';
+import '../widgets/wallet_list_item.dart';
 import '../widgets/wallets_list.dart';
 import 'add_edit_wallet_screen.dart';
 
@@ -17,6 +18,7 @@ class WalletsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isSelectable = ref.watch(isWalletSelectableProvider);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -25,28 +27,32 @@ class WalletsScreen extends ConsumerWidget {
             'Your Wallets',
             fontSize: 20,
           ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(50),
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: CustomTextButton.outlined(
-                height: 35,
-                width: 200,
-                onPressed: () {
-                  AppRouter.pushNamed(Routes.AddEditBalanceTransferScreenRoute);
-                },
-                border: Border.all(
-                  color: AppColors.primaryColor,
-                ),
-                child: const Center(
-                  child: CustomText(
-                    'Transfer Balance',
-                    color: AppColors.primaryColor,
+          bottom: isSelectable
+              ? null
+              : PreferredSize(
+                  preferredSize: const Size.fromHeight(50),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: CustomTextButton.outlined(
+                      height: 35,
+                      width: 200,
+                      onPressed: () {
+                        AppRouter.pushNamed(
+                          Routes.AddEditBalanceTransferScreenRoute,
+                        );
+                      },
+                      border: Border.all(
+                        color: AppColors.primaryColor,
+                      ),
+                      child: const Center(
+                        child: CustomText(
+                          'Transfer Balance',
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
         ),
         body: const WalletsList(),
         floatingActionButton: OpenContainer(

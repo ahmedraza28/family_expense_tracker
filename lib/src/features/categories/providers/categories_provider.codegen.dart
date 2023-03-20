@@ -35,7 +35,7 @@ Future<Map<int, CategoryModel>> categoriesMap(CategoriesMapRef ref) async {
   return {for (var e in categories) e.id!: e};
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 CategoryModel? categoryById(CategoryByIdRef ref, int? id) {
   return ref.watch(categoriesMapProvider).asData!.value[id];
 }

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Helpers
-import '../../helpers/constants/app_colors.dart';
-import '../../helpers/constants/app_styles.dart';
+import '../../helpers/constants/constants.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
@@ -32,6 +31,7 @@ class CustomTextField extends StatefulWidget {
   final bool showFocusedBorder;
   final BorderSide border;
   final BorderSide focusedBorder;
+  final BorderRadius borderRadius;
   final TextAlign textAlign;
   final TextAlignVertical textAlignVertical;
   final Alignment errorAlign;
@@ -60,6 +60,7 @@ class CustomTextField extends StatefulWidget {
     this.inputFormatters,
     this.hintText,
     this.validator,
+    this.borderRadius = const BorderRadius.all(Radius.circular(7)),
     this.height = 48,
     this.readOnly = false,
     this.showFocusedBorder = true,
@@ -144,22 +145,22 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   OutlineInputBorder _focusedBorder() {
     return OutlineInputBorder(
-      borderRadius: Corners.rounded7,
+      borderRadius: widget.borderRadius,
       borderSide: widget.focusedBorder,
     );
   }
 
   OutlineInputBorder _normalBorder() {
     return OutlineInputBorder(
-      borderRadius: Corners.rounded7,
+      borderRadius: widget.borderRadius,
       borderSide: widget.border,
     );
   }
 
   OutlineInputBorder _errorBorder() {
-    return const OutlineInputBorder(
-      borderRadius: Corners.rounded7,
-      borderSide: BorderSide(
+    return OutlineInputBorder(
+      borderRadius: widget.borderRadius,
+      borderSide: const BorderSide(
         width: 2,
         color: AppColors.redColor,
       ),
@@ -229,7 +230,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
               enabledBorder: (widget.showErrorBorder && hasError)
                   ? _errorBorder()
                   : _normalBorder(),
-              focusedBorder: widget.showFocusedBorder ? _focusedBorder() : null,
+              focusedBorder:
+                  widget.showFocusedBorder ? _focusedBorder() : null,
               suffixIcon: widget.suffix ??
                   (isPasswordField
                       ? InkWell(
