@@ -104,39 +104,13 @@ class FiltersListView extends HookConsumerWidget {
 
         Insets.gapH20,
 
-        // Category Type
-        LabeledWidget(
-          label: 'Category Type',
-          useDarkerLabel: true,
-          child: CategoryTypeSelectionCards(
-            controller: categoryTypeController,
-          ),
-        ),
-
-        Insets.gapH20,
-
         // Category Dropdown Filter
-        Consumer(
-          builder: (context, ref, _) {
-            final categoriesStream = ref.watch(
-              categoriesByTypeProvider(categoryTypeController.value),
-            );
-            return LabeledWidget(
-              label: 'Category',
-              child: CustomDropdownField<CategoryModel>.sheet(
-                controller: categoryFilterController,
-                selectedItemBuilder: (item) => CustomText.body(item.name),
-                hintText: 'Select category',
-                itemsSheet: CustomDropdownSheet(
-                  items: categoriesStream.valueOrNull ?? [],
-                  bottomSheetTitle: 'Categories',
-                  itemBuilder: (_, item) => DropdownSheetItem(
-                    label: item.name,
-                  ),
-                ),
-              ),
-            );
-          },
+        LabeledWidget(
+          label: 'Category',
+          useDarkerLabel: true,
+          child: CategoryDropdownField(
+            controller: categoryFilterController,
+          ),
         ),
       ],
     );
