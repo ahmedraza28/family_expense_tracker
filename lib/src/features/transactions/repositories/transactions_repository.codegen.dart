@@ -11,6 +11,9 @@ import '../../../helpers/typedefs.dart';
 import '../models/income_expense_model.codegen.dart';
 import '../models/transaction_model.dart';
 
+// Features
+import '../../balance_transfer/balance_transfer.dart';
+
 part 'transactions_repository.codegen.g.dart';
 
 /// A provider used to access instance of this service
@@ -30,6 +33,8 @@ class TransactionsRepository {
     required int bookId,
     int? categoryId,
     DateTime? date,
+    bool incomeExpenseOnly = false,
+    bool balanceTransferOnly = false,
   }) {
     final hasQuery = categoryId != null || date != null;
     return _firestoreService.collectionStream<TransactionModel>(
@@ -37,12 +42,21 @@ class TransactionsRepository {
       queryBuilder: !hasQuery
           ? null
           : (query) {
-              if (categoryId != null) {
-                query = query.where('category_id', isEqualTo: categoryId);
-              }
               if (date != null) {
                 // TODO(arafaysaleem): filter based only on month and year
                 query = query.where('date', isGreaterThanOrEqualTo: date);
+              }
+              if (incomeExpenseOnly) {
+                query = query.where('category_id', isNull: false);
+              } else if (balanceTransferOnly) {
+                query = query.where('category_id', isNull: true);
+              }
+              if (categoryId != null) {
+                query = query.where(
+                  'category_id',
+                  isEqualTo: categoryId,
+                  isNull: false,
+                );
               }
               return query;
             },
@@ -79,6 +93,8 @@ class MockTransactionsRepository implements TransactionsRepository {
     required int bookId,
     int? categoryId,
     DateTime? date,
+    bool incomeExpenseOnly = false,
+    bool balanceTransferOnly = false,
   }) {
     final wallet = <String, dynamic>{
       'id': 1,
@@ -223,7 +239,14 @@ class MockTransactionsRepository implements TransactionsRepository {
     return Stream.value(
       list.where((e) {
         if (date != null) {
-          return e.date.year == date.year && e.date.month == date.month;
+          if (e.date.year != date.year || e.date.month != date.month) {
+            return false;
+          }
+        }
+        if (incomeExpenseOnly && e is BalanceTransferModel) {
+          return false;
+        } else if (balanceTransferOnly && e is IncomeExpenseModel) {
+          return false;
         }
         if (categoryId != null && e is IncomeExpenseModel) {
           return e.categoryId == categoryId;

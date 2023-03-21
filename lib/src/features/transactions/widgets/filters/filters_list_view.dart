@@ -42,6 +42,50 @@ class FiltersListView extends HookConsumerWidget {
       controller: scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
+        // Checkboxes Row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Balance Transfer Checkbox
+            LabeledWidget(
+              label: 'Balance Transfer Only',
+              labelDirection: Axis.horizontal,
+              labelPosition: LabelPosition.end,
+              labelGap: 10,
+              labelStyle: const TextStyle(
+                fontSize: 14,
+                color: AppColors.textBlackColor,
+              ),
+              useDarkerLabel: true,
+              child: Checkbox(
+                value: ref.watch(balanceTransferOnlyFilterProvider),
+                onChanged: (value) => ref
+                    .read(balanceTransferOnlyFilterProvider.notifier)
+                    .state = value!,
+              ),
+            ),
+
+            // Income Expense Checkbox
+            LabeledWidget(
+              label: 'Income Expense Only',
+              labelDirection: Axis.horizontal,
+              labelPosition: LabelPosition.end,
+              labelGap: 10,
+              labelStyle: const TextStyle(
+                fontSize: 14,
+                color: AppColors.textBlackColor,
+              ),
+              useDarkerLabel: true,
+              child: Checkbox(
+                value: ref.watch(incomeExpenseOnlyFilterProvider),
+                onChanged: (value) => ref
+                    .read(incomeExpenseOnlyFilterProvider.notifier)
+                    .state = value!,
+              ),
+            ),
+          ],
+        ),
+
         // Month Dropdown Filter
         LabeledWidget(
           label: 'Month',
@@ -96,6 +140,9 @@ class FiltersListView extends HookConsumerWidget {
           useDarkerLabel: true,
           child: CategoryDropdownField(
             controller: categoryFilterController,
+            onSelected: (category) {
+              ref.read(categoryFilterProvider.notifier).state = category;
+            },
           ),
         ),
       ],

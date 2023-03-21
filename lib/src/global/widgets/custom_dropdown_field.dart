@@ -7,11 +7,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 // Helpers
 import '../../helpers/constants/app_colors.dart';
 import '../../helpers/constants/app_styles.dart';
+import '../../helpers/extensions/extensions.dart';
 
 // Widgets
-import '../../helpers/extensions/map_extension.dart';
 import './custom_dropdown_sheet.dart';
 import './custom_text_button.dart';
+
+typedef SelectedCallback<E> = void Function(E?)?;
 
 abstract class CustomDropdownField<T> extends HookWidget {
   const CustomDropdownField({super.key});
@@ -19,6 +21,7 @@ abstract class CustomDropdownField<T> extends HookWidget {
   factory CustomDropdownField.sheet({
     required CustomDropdownSheet<T> itemsSheet,
     required Widget Function(T) selectedItemBuilder,
+    SelectedCallback<T> onSelected,
     Key? key,
     ValueNotifier<T?>? controller,
     Widget suffixIcon,
@@ -33,7 +36,7 @@ abstract class CustomDropdownField<T> extends HookWidget {
   const factory CustomDropdownField.animated({
     required ValueNotifier<T?> controller,
     required Map<String, T> items,
-    void Function(T?)? onSelected,
+    SelectedCallback<T> onSelected,
     Key? key,
     String? hintText,
     TextStyle? hintStyle,
@@ -71,6 +74,9 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
   /// [Widget] for displaying.
   final Widget Function(T) selectedItemBuilder;
 
+  /// The callback used to passback selected value to the parent.
+  final SelectedCallback<T> onSelected;
+
   /// The initial value to be selected in the dropdown
   final T? initialValue;
 
@@ -88,6 +94,7 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
     required this.selectedItemBuilder,
     super.key,
     ValueNotifier<T?>? controller,
+    this.onSelected,
     this.suffixIcon = const Icon(
       Icons.arrow_drop_down_rounded,
       color: AppColors.textGreyColor,
@@ -169,7 +176,7 @@ class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
   final BorderRadius borderRadius;
 
   /// The callback used to passback selected value to the parent.
-  final void Function(T?)? onSelected;
+  final SelectedCallback<T> onSelected;
 
   /// The items to be displayed in the dropdown.
   final Map<String, T> items;

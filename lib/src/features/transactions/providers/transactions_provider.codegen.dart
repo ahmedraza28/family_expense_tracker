@@ -42,6 +42,8 @@ class TransactionsProvider {
             filters?.year ?? _currentDate.year,
             filters?.month ?? _currentDate.month,
           ),
+          incomeExpenseOnly: filters?.incomeExpenseOnly ?? false,
+          balanceTransferOnly: filters?.balanceTransferOnly ?? false,
         );
   }
 

@@ -29,6 +29,14 @@ final categoryFilterProvider = StateProvider.autoDispose<CategoryModel?>(
   name: 'categoryFilterProvider',
   (ref) => null,
 );
+final balanceTransferOnlyFilterProvider = StateProvider.autoDispose<bool>(
+  name: 'balanceTransferOnlyFilterProvider',
+  (ref) => false,
+);
+final incomeExpenseOnlyFilterProvider = StateProvider.autoDispose<bool>(
+  name: 'incomeExpenseOnlyFilterProvider',
+  (ref) => false,
+);
 
 @riverpod
 FiltersModel? filters(FiltersRef ref) {
@@ -36,6 +44,8 @@ FiltersModel? filters(FiltersRef ref) {
       ref.watch(expenseMonthFilterProvider.notifier).state;
   final expenseYearFilter = ref.watch(expenseYearFilterProvider.notifier).state;
   final categoryFilter = ref.watch(categoryFilterProvider.notifier).state;
+  final ieOnly = ref.watch(incomeExpenseOnlyFilterProvider.notifier).state;
+  final btOnly = ref.watch(balanceTransferOnlyFilterProvider.notifier).state;
 
   if (expenseMonthFilter == null &&
       expenseYearFilter == null &&
@@ -44,6 +54,8 @@ FiltersModel? filters(FiltersRef ref) {
   }
 
   final filters = FiltersModel(
+    incomeExpenseOnly: ieOnly,
+    balanceTransferOnly: btOnly,
     year: expenseYearFilter,
     month: expenseMonthFilter,
     categoryId: categoryFilter?.id,

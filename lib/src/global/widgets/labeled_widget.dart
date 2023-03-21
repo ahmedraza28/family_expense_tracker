@@ -14,8 +14,7 @@ enum LabelPosition {
 class LabeledWidget extends StatelessWidget {
   final Widget child;
   final String label;
-  final SizedBox labelGap;
-  final SizedBox horizontalLabelGap;
+  final double labelGap;
   final TextStyle labelStyle;
   final bool useDarkerLabel;
   final Axis labelDirection;
@@ -28,10 +27,9 @@ class LabeledWidget extends StatelessWidget {
     required this.child,
     required this.label,
     super.key,
-    this.labelGap = const SizedBox(height: 5),
+    this.labelGap = 5,
     this.labelPosition = LabelPosition.start,
     this.expand = false,
-    this.horizontalLabelGap = const SizedBox(width: 10),
     this.crossAxisAlignment,
     this.mainAxisAlignment,
     this.labelDirection = Axis.vertical,
@@ -51,7 +49,10 @@ class LabeledWidget extends StatelessWidget {
         style: useDarkerLabel ? const TextStyle(fontSize: 16) : labelStyle,
       ),
 
-      if (labelDirection == Axis.vertical) labelGap else horizontalLabelGap,
+      if (labelDirection == Axis.vertical)
+        SizedBox(height: labelGap)
+      else
+        SizedBox(width: labelGap),
 
       // Widget
       if (expand) Expanded(child: child) else child,

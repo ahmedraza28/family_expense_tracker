@@ -19,8 +19,11 @@ import '../../../global/widgets/widgets.dart';
 
 class CategoryDropdownField extends HookWidget {
   final ValueNotifier<CategoryModel?> controller;
+  final SelectedCallback<CategoryModel> onSelected;
+
   const CategoryDropdownField({
     required this.controller,
+    required this.onSelected,
     super.key,
   });
 
@@ -29,6 +32,7 @@ class CategoryDropdownField extends HookWidget {
     final tabController = useTabController(initialLength: 2);
     return CustomDropdownField<CategoryModel>.sheet(
       controller: controller,
+      onSelected: onSelected,
       selectedItemBuilder: (item) => CustomText.body(item.name),
       hintText: 'Select category',
       itemsSheet: CustomDropdownSheet<CategoryModel>.builder(
