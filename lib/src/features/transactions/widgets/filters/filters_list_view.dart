@@ -30,12 +30,9 @@ class FiltersListView extends HookConsumerWidget {
 
     useEffect(
       () {
-        final filters = ref.read(filtersProvider);
-        monthFilterController.value = filters?.month;
-        yearFilterController.value = filters?.year;
-        categoryFilterController.value = ref.read(
-          categoryByIdProvider(filters?.categoryId),
-        );
+        monthFilterController.value = ref.read(expenseMonthFilterProvider);
+        yearFilterController.value = ref.read(expenseYearFilterProvider);
+        categoryFilterController.value = ref.read(categoryFilterProvider);
         return null;
       },
       [],
