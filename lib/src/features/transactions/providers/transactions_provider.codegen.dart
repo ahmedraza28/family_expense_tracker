@@ -27,6 +27,8 @@ class TransactionsProvider {
   final Ref _ref;
   final int bookId;
 
+  static final _currentDate = DateTime.now();
+
   TransactionsProvider(
     this._ref, {
     required this.bookId,
@@ -36,7 +38,10 @@ class TransactionsProvider {
     return _ref.watch(transactionsRepositoryProvider).getBookTransactions(
           bookId: bookId,
           categoryId: filters?.categoryId,
-          date: filters?.date,
+          date: DateTime(
+            filters?.year ?? _currentDate.year,
+            filters?.month ?? _currentDate.month,
+          ),
         );
   }
 

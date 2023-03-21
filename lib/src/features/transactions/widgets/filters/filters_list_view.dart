@@ -27,16 +27,15 @@ class FiltersListView extends HookConsumerWidget {
     final monthFilterController = useValueNotifier<int?>(null);
     final yearFilterController = useValueNotifier<int?>(null);
     final categoryFilterController = useValueNotifier<CategoryModel?>(null);
-    final categoryTypeController =
-        useValueNotifier<CategoryType>(CategoryType.income);
 
     useEffect(
       () {
-        monthFilterController.value = ref.read(expenseMonthFilterProvider);
-        yearFilterController.value = ref.read(expenseYearFilterProvider);
-        categoryFilterController.value = ref.read(categoryFilterProvider);
-        categoryTypeController.value = categoryFilterController.value?.type ??
-            categoryTypeController.value;
+        final filters = ref.read(filtersProvider);
+        monthFilterController.value = filters?.month;
+        yearFilterController.value = filters?.year;
+        categoryFilterController.value = ref.read(
+          categoryByIdProvider(filters?.categoryId),
+        );
         return null;
       },
       [],
@@ -47,59 +46,49 @@ class FiltersListView extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
         // Month Dropdown Filter
-        Consumer(
-          builder: (context, ref, child) {
-            return LabeledWidget(
-              label: 'Month',
-              useDarkerLabel: true,
-              child: CustomDropdownField<int>.animated(
-                controller: monthFilterController,
-                hintText: 'Select a month',
-                items: const {
-                  'January': 1,
-                  'February': 2,
-                  'March': 3,
-                  'April': 4,
-                  'May': 5,
-                  'June': 6,
-                  'July': 7,
-                  'August': 8,
-                  'September': 9,
-                  'October': 10,
-                  'November': 11,
-                  'December': 12,
-                },
-                onSelected: (month) {
-                  ref.read(expenseMonthFilterProvider.notifier).state = month;
-                },
-              ),
-            );
-          },
+        LabeledWidget(
+          label: 'Month',
+          useDarkerLabel: true,
+          child: CustomDropdownField<int>.animated(
+            controller: monthFilterController,
+            hintText: 'Select a month',
+            items: const {
+              'January': 1,
+              'February': 2,
+              'March': 3,
+              'April': 4,
+              'May': 5,
+              'June': 6,
+              'July': 7,
+              'August': 8,
+              'September': 9,
+              'October': 10,
+              'November': 11,
+              'December': 12,
+            },
+            onSelected: (month) {
+              ref.read(expenseMonthFilterProvider.notifier).state = month;
+            },
+          ),
         ),
 
         Insets.gapH20,
 
         // Year Dropdown Filter
-        Consumer(
-          builder: (context, ref, child) {
-            final today = DateTime.now();
-            final maxYear = today.year + 10;
-            const minYear = 2023;
-            return LabeledWidget(
-              label: 'Year',
-              useDarkerLabel: true,
-              child: CustomDropdownField<int>.animated(
-                controller: yearFilterController,
-                hintText: 'Select a year',
-                items: {
-                  for (var i = minYear; i <= maxYear; i++) i.toString(): i
-                },
-                onSelected: (month) {
-                  ref.read(expenseYearFilterProvider.notifier).state = month;
-                },
-              ),
-            );
-          },
+        LabeledWidget(
+          label: 'Year',
+          useDarkerLabel: true,
+          child: CustomDropdownField<int>.animated(
+            controller: yearFilterController,
+            hintText: 'Select a year',
+            items: {
+              for (var i = 2023; i <= (DateTime.now().year + 10); i++)
+                i.toString(): i
+            },
+            onSelected: (month) {
+              ref.read(expenseYearFilterProvider.notifier).state = month;
+            },
+          ),
         ),
 
         Insets.gapH20,

@@ -3,13 +3,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
+import '../../../helpers/extensions/extensions.dart';
 
 // Models
-import '../../../helpers/extensions/datetime_extension.dart';
 import '../models/income_expense_model.codegen.dart';
+import '../models/transaction_model.dart';
 
 // Providers
-import '../models/transaction_model.dart';
 import '../providers/filter_providers.codegen.dart';
 
 // Widgets
@@ -53,7 +53,7 @@ class TransactionsList extends ConsumerWidget {
             final trans = transactions[i];
             final nextTrans = transactions[i + 1];
 
-            if (nextTrans.transDate.day == trans.transDate.day) {
+            if (nextTrans.date.day == trans.date.day) {
               return const SizedBox(
                 height: 10,
                 child: VerticalDivider(
@@ -70,8 +70,8 @@ class TransactionsList extends ConsumerWidget {
             String? headerText;
 
             if (i == 0 ||
-                trans.transDate.day < transactions[i - 1].transDate.day) {
-              headerText = trans.transDate.toDateString('d MMM, y');
+                trans.date.day < transactions[i - 1].date.day) {
+              headerText = trans.date.toDateString('d MMM, y');
             }
 
             final child = trans.isBalanceTransfer

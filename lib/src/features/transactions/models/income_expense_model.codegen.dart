@@ -41,7 +41,4 @@ class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
 
   @override
   bool get isBalanceTransfer => false;
-
-  @override
-  DateTime get transDate => date;
 }

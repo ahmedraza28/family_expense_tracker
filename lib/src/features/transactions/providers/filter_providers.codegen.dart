@@ -13,24 +13,39 @@ import '../../categories/categories.dart';
 
 part 'filter_providers.codegen.g.dart';
 
-final searchFilterProvider = StateProvider.autoDispose<String>((ref) => '');
-final expenseMonthFilterProvider = StateProvider<int?>((ref) => null);
-final expenseYearFilterProvider = StateProvider<int?>((ref) => null);
-final categoryFilterProvider = StateProvider<CategoryModel?>((ref) => null);
+final searchFilterProvider = StateProvider.autoDispose<String>(
+  name: 'searchFilterProvider',
+  (ref) => '',
+);
+final expenseMonthFilterProvider = StateProvider.autoDispose<int?>(
+  name: 'expenseMonthFilterProvider',
+  (ref) => null,
+);
+final expenseYearFilterProvider = StateProvider.autoDispose<int?>(
+  name: 'expenseYearFilterProvider',
+  (ref) => null,
+);
+final categoryFilterProvider = StateProvider.autoDispose<CategoryModel?>(
+  name: 'categoryFilterProvider',
+  (ref) => null,
+);
 
 @riverpod
-FiltersModel filters(FiltersRef ref) {
+FiltersModel? filters(FiltersRef ref) {
   final expenseMonthFilter =
       ref.watch(expenseMonthFilterProvider.notifier).state;
   final expenseYearFilter = ref.watch(expenseYearFilterProvider.notifier).state;
-  final dateFilter = DateTime(
-    expenseYearFilter ?? DateTime.now().year,
-    expenseMonthFilter ?? DateTime.now().month,
-  );
   final categoryFilter = ref.watch(categoryFilterProvider.notifier).state;
 
+  if (expenseMonthFilter == null &&
+      expenseYearFilter == null &&
+      categoryFilter == null) {
+    return null;
+  }
+
   final filters = FiltersModel(
-    date: dateFilter,
+    year: expenseYearFilter,
+    month: expenseMonthFilter,
     categoryId: categoryFilter?.id,
   );
 

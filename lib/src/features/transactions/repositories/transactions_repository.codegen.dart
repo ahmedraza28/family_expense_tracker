@@ -8,6 +8,7 @@ import '../../../helpers/extensions/datetime_extension.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
+import '../models/income_expense_model.codegen.dart';
 import '../models/transaction_model.dart';
 
 part 'transactions_repository.codegen.g.dart';
@@ -40,6 +41,7 @@ class TransactionsRepository {
                 query = query.where('category_id', isEqualTo: categoryId);
               }
               if (date != null) {
+                // TODO(arafaysaleem): filter based only on month and year
                 query = query.where('date', isGreaterThanOrEqualTo: date);
               }
               return query;
@@ -89,17 +91,19 @@ class MockTransactionsRepository implements TransactionsRepository {
       'balance': 1000,
     };
     final nowDate = DateTime.now();
-    final date = nowDate.toDateString('yyyy-MM-dd');
+    final todayDate = nowDate.toDateString('yyyy-MM-dd');
     final yesterDate =
         nowDate.subtract(const Duration(days: 1)).toDateString('yyyy-MM-dd');
     final twoDaysAgoDate =
         nowDate.subtract(const Duration(days: 2)).toDateString('yyyy-MM-dd');
+    final lastMonthDate =
+        nowDate.subtract(const Duration(days: 30)).toDateString('yyyy-MM-dd');
     final list = <TransactionModel>[
       TransactionModel.fromJson(<String, dynamic>{
         'id': 1,
         'amount': 100,
         'description': 'Gatorades crate',
-        'date': date,
+        'date': todayDate,
         'wallet': wallet,
         'category_id': 1,
       }),
@@ -107,14 +111,14 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 2,
         'amount': 200,
         'description': "McDonald's",
-        'date': date,
+        'date': todayDate,
         'wallet': wallet,
         'category_id': 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
         'amount': 300,
-        'date': date,
+        'date': todayDate,
         'note': 'Ghar kharcha',
         'src_wallet': wallet,
         'dest_wallet': wallet,
@@ -154,7 +158,7 @@ class MockTransactionsRepository implements TransactionsRepository {
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
         'amount': 300,
-        'date': yesterDate,
+        'date': lastMonthDate,
         'note': 'Ghar kharcha',
         'src_wallet': wallet,
         'dest_wallet': wallet,
@@ -171,7 +175,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 5,
         'amount': 500,
         'description': 'Entertainment',
-        'date': yesterDate,
+        'date': lastMonthDate,
         'wallet': wallet,
         'category_id': 1,
       }),
@@ -179,7 +183,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 1,
         'amount': 100,
         'description': 'Drinks',
-        'date': yesterDate,
+        'date': lastMonthDate,
         'wallet': wallet,
         'category_id': 1,
       }),
@@ -187,7 +191,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 2,
         'amount': 200,
         'description': 'Food',
-        'date': yesterDate,
+        'date': lastMonthDate,
         'wallet': wallet,
         'category_id': 1,
       }),
@@ -216,7 +220,17 @@ class MockTransactionsRepository implements TransactionsRepository {
         'category_id': 1,
       }),
     ];
-    return Stream.value(list);
+    return Stream.value(
+      list.where((e) {
+        if (date != null) {
+          return e.date.year == date.year && e.date.month == date.month;
+        }
+        if (categoryId != null && e is IncomeExpenseModel) {
+          return e.categoryId == categoryId;
+        }
+        return true;
+      }).toList(),
+    );
   }
 
   @override

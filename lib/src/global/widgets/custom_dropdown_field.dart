@@ -9,6 +9,7 @@ import '../../helpers/constants/app_colors.dart';
 import '../../helpers/constants/app_styles.dart';
 
 // Widgets
+import '../../helpers/extensions/map_extension.dart';
 import './custom_dropdown_sheet.dart';
 import './custom_text_button.dart';
 
@@ -195,7 +196,7 @@ class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
     ),
     this.selectedStyle = const TextStyle(
       fontSize: 16,
-      color: AppColors.textGreyColor,
+      color: AppColors.textBlackColor,
     ),
     this.fieldSuffixIcon = const Icon(
       Icons.keyboard_arrow_down_rounded,
@@ -208,7 +209,8 @@ class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
 
   @override
   Widget build(BuildContext context) {
-    final textController = useTextEditingController();
+    final previousValue = items.findKeyByValue(controller.value);
+    final textController = useTextEditingController(text: previousValue);
     final searchItems = <String>[hintText ?? 'Select value', ...items.keys];
     return enableSearch
         ? CustomDropdown.search(

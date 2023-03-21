@@ -21,7 +21,7 @@ class FiltersBottomSheet extends ConsumerWidget {
     ref
       ..invalidate(expenseMonthFilterProvider)
       ..invalidate(expenseYearFilterProvider)
-      ..invalidate(searchFilterProvider)
+      ..invalidate(categoryFilterProvider)
       ..invalidate(filtersProvider);
     AppRouter.pop();
   }
@@ -39,7 +39,7 @@ class FiltersBottomSheet extends ConsumerWidget {
         leading: Consumer(
           builder: (_, ref, child) {
             final hasFilters = ref.watch(
-              filtersProvider.select((value) => value.hasFilters),
+              filtersProvider.select((value) => value != null),
             );
             return hasFilters ? child! : const SizedBox(width: 50, height: 30);
           },

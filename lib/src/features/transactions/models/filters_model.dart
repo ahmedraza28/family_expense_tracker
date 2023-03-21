@@ -1,11 +1,16 @@
 class FiltersModel {
-  final DateTime? date;
+  final int? year;
+  final int? month;
   final int? categoryId;
 
   FiltersModel({
-    this.date,
+    this.year,
+    this.month,
     this.categoryId,
   });
 
-  bool get hasFilters => date != null || categoryId != null;
+  @override
+  String toString() {
+    return '{year: $year, month: $month, categoryId: $categoryId}';
+  }
 }
