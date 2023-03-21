@@ -1,7 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'log_service.dart';
+
 class ProviderLogger implements ProviderObserver {
+  static final _logger = LogService.forClass('ProviderLogger');
+
   const ProviderLogger();
 
   @override
@@ -11,7 +14,7 @@ class ProviderLogger implements ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    debugPrint(
+    _logger.info(
       '[ProviderUpdated: ${provider.name ?? provider.runtimeType}], previous: $previousValue, new: $newValue',
     );
   }
@@ -21,7 +24,7 @@ class ProviderLogger implements ProviderObserver {
     ProviderBase<Object?> provider,
     ProviderContainer container,
   ) {
-    debugPrint('[ProviderDisposed: ${provider.name ?? provider.runtimeType}]');
+    _logger.warn('[ProviderDisposed: ${provider.name ?? provider.runtimeType}]');
   }
 
   @override
@@ -31,7 +34,7 @@ class ProviderLogger implements ProviderObserver {
     StackTrace stackTrace,
     ProviderContainer container,
   ) {
-    debugPrint(
+    _logger.error(
       '''[ProviderFailed: ${provider.name ?? provider.runtimeType}]'''
       '''\nError: $error'''
       '''\nStackTrace: $stackTrace''',
@@ -44,7 +47,7 @@ class ProviderLogger implements ProviderObserver {
     Object? value,
     ProviderContainer container,
   ) {
-    debugPrint(
+    _logger.info(
       '[ProviderAdded: ${provider.name ?? provider.runtimeType}], value: $value',
     );
   }
