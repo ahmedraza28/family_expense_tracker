@@ -47,13 +47,13 @@ class TransactionsRepository {
                 query = query.where('date', isGreaterThanOrEqualTo: date);
               }
               if (incomeExpenseOnly) {
-                query = query.where('category_id', isNull: false);
+                query = query.where(IncomeExpenseModel.categoryIdField, isNull: false);
               } else if (balanceTransferOnly) {
-                query = query.where('category_id', isNull: true);
+                query = query.where(IncomeExpenseModel.categoryIdField, isNull: true);
               }
               if (categoryId != null) {
                 query = query.where(
-                  'category_id',
+                  IncomeExpenseModel.categoryIdField,
                   isEqualTo: categoryId,
                   isNull: false,
                 );
@@ -121,7 +121,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': 'Gatorades crate',
         'date': todayDate,
         'wallet': wallet,
-        'category_id': 1,
+        IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 2,
@@ -129,7 +129,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': "McDonald's",
         'date': todayDate,
         'wallet': wallet,
-        'category_id': 1,
+        IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
@@ -145,7 +145,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': 'Ek wagon fuel',
         'date': yesterDate,
         'wallet': wallet,
-        'category_id': 2,
+        IncomeExpenseModel.categoryIdField: 2,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 5,
@@ -153,7 +153,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': 'Civic service',
         'date': yesterDate,
         'wallet': wallet,
-        'category_id': 2,
+        IncomeExpenseModel.categoryIdField: 2,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 1,
@@ -161,7 +161,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': '10Pearls',
         'date': yesterDate,
         'wallet': wallet,
-        'category_id': 3,
+        IncomeExpenseModel.categoryIdField: 3,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 2,
@@ -169,7 +169,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': 'Food',
         'date': yesterDate,
         'wallet': wallet,
-        'category_id': 1,
+        IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
@@ -185,7 +185,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': 'Shopping',
         'date': yesterDate,
         'wallet': wallet,
-        'category_id': 1,
+        IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 5,
@@ -193,7 +193,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': 'Entertainment',
         'date': lastMonthDate,
         'wallet': wallet,
-        'category_id': 1,
+        IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 1,
@@ -201,7 +201,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': 'Drinks',
         'date': lastMonthDate,
         'wallet': wallet,
-        'category_id': 1,
+        IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 2,
@@ -209,7 +209,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': 'Food',
         'date': lastMonthDate,
         'wallet': wallet,
-        'category_id': 1,
+        IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
@@ -225,7 +225,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': 'Shopping',
         'date': twoDaysAgoDate,
         'wallet': wallet,
-        'category_id': 1,
+        IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 5,
@@ -233,7 +233,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'description': 'Entertainment',
         'date': twoDaysAgoDate,
         'wallet': wallet,
-        'category_id': 1,
+        IncomeExpenseModel.categoryIdField: 1,
       }),
     ];
     return Stream.value(

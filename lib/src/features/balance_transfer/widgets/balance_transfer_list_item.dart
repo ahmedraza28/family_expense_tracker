@@ -14,6 +14,9 @@ import '../../../helpers/constants/constants.dart';
 import '../../../global/widgets/widgets.dart';
 import '../screens/add_edit_balance_transfer_screen.dart';
 
+// Features
+import '../../wallets/wallets.dart';
+
 class BalanceTransferListItem extends ConsumerWidget {
   final BalanceTransferModel balanceTransfer;
 
@@ -25,6 +28,12 @@ class BalanceTransferListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const color = Color.fromARGB(255, 149, 165, 173);
+    final srcWallet = ref.watch(
+      walletByIdProvider(balanceTransfer.srcWalletId),
+    );
+    final destWallet = ref.watch(
+      walletByIdProvider(balanceTransfer.destWalletId),
+    );
     return InkWell(
       onTap: () => AppRouter.push(
         AddEditBalanceTransferScreen(balanceTransfer: balanceTransfer),
@@ -63,7 +72,7 @@ class BalanceTransferListItem extends ConsumerWidget {
                     children: [
                       // Src wallet
                       CustomText.body(
-                        balanceTransfer.srcWallet.name,
+                        srcWallet!.name,
                         color: AppColors.redColor,
                         fontSize: 15,
                       ),
@@ -81,7 +90,7 @@ class BalanceTransferListItem extends ConsumerWidget {
 
                       // Dest wallet
                       CustomText.body(
-                        balanceTransfer.destWallet.name,
+                        destWallet!.name,
                         fontSize: 15,
                         color: Colors.greenAccent.shade700,
                       ),
@@ -90,7 +99,7 @@ class BalanceTransferListItem extends ConsumerWidget {
 
                   // Category Name
                   CustomText.subtitle(
-                    balanceTransfer.note ?? '',
+                    balanceTransfer.description ?? '',
                     color: AppColors.textLightGreyColor,
                   ),
                 ],

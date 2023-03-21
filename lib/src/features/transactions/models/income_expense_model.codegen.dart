@@ -20,10 +20,12 @@ part 'income_expense_model.codegen.g.dart';
 
 @freezed
 class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
+  static const categoryIdField = 'category_id';
+
   const factory IncomeExpenseModel({
     @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
     required double amount,
-    @JsonKey(toJson: toWalletId) required WalletModel wallet,
+    required int walletId,
     required int categoryId,
     @JsonKey(toJson: AppUtils.dateToJson) required DateTime date,
     String? description,
@@ -33,11 +35,6 @@ class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
 
   factory IncomeExpenseModel.fromJson(JSON json) =>
       _$IncomeExpenseModelFromJson(json);
-
-  @override
-  bool search(String searchTerm) {
-    return description?.toLowerCase().contains(searchTerm) ?? false;
-  }
 
   @override
   bool get isBalanceTransfer => false;

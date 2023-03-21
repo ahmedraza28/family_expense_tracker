@@ -33,17 +33,17 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
     final amountController = useTextEditingController(
       text: balanceTransfer?.amount.toString() ?? '',
     );
-    final noteController = useTextEditingController(
-      text: balanceTransfer?.note ?? '',
+    final descriptionController = useTextEditingController(
+      text: balanceTransfer?.description ?? '',
     );
     final dateController = useValueNotifier<DateTime?>(
       balanceTransfer?.date,
     );
     final srcWalletController = useValueNotifier<WalletModel?>(
-      balanceTransfer?.srcWallet,
+      ref.watch(walletByIdProvider(balanceTransfer?.srcWalletId)),
     );
     final destWalletController = useValueNotifier<WalletModel?>(
-      balanceTransfer?.destWallet,
+      ref.watch(walletByIdProvider(balanceTransfer?.destWalletId)),
     );
 
     void onSave() {
@@ -52,18 +52,18 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
       if (balanceTransfer == null) {
         // ref.read(balanceTransferProvider).create(
         //       amount: double.parse(amountController.text),
-        //       srcWallet: srcWalletController.value!,
+        //       srcWalletId: srcWalletController.value!.id!,
         //       date: dateController.value!,
-        //       destWallet: destWalletController.value!,
-        //       note: noteController.text,
+        //       destWalletId: destWalletController.value!.id!,
+        //       description: descriptionController.text,
         //     );
       } else {
         final newTransfer = balanceTransfer!.copyWith(
           amount: double.parse(amountController.text),
-          srcWallet: srcWalletController.value!,
+          srcWalletId: srcWalletController.value!.id!,
           date: dateController.value!,
-          destWallet: destWalletController.value!,
-          note: noteController.text,
+          destWalletId: destWalletController.value!.id!,
+          description: descriptionController.text,
         );
         // ref.read(balanceTransferProvider).updateBalanceTransfer(newTransfer);
       }
@@ -186,7 +186,7 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
 
               // Note
               CustomTextField(
-                controller: noteController,
+                controller: descriptionController,
                 floatingText: 'Note',
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,

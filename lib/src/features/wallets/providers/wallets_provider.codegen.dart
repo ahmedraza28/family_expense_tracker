@@ -16,16 +16,22 @@ import '../../books/books.dart';
 
 part 'wallets_provider.codegen.g.dart';
 
-final selectedWalletProvider = Provider<WalletModel?>((ref) {
-  return null;
-});
+@Riverpod(keepAlive: true)
+Stream<List<WalletModel>> walletsStream(WalletsStreamRef ref) {
+  final wallets = ref.watch(walletsProvider);
+  return wallets.getAllWallets();
+}
 
-final walletsStreamProvider = StreamProvider<List<WalletModel>>(
-  (ref) {
-    final wallets = ref.watch(walletsProvider);
-    return wallets.getAllWallets();
-  },
-);
+@Riverpod(keepAlive: true)
+Future<Map<int, WalletModel>> walletsMap(WalletsMapRef ref) async {
+  final wallets = await ref.watch(walletsStreamProvider.future);
+  return {for (var e in wallets) e.id!: e};
+}
+
+@Riverpod(keepAlive: true)
+WalletModel? walletById(WalletByIdRef ref, int? id) {
+  return ref.watch(walletsMapProvider).asData!.value[id];
+}
 
 @Riverpod(keepAlive: true)
 Stream<List<CurrencyModel>> currenciesStream(CurrenciesStreamRef ref) {

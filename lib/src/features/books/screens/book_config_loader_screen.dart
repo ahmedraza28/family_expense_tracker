@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 // Features
 import '../../home/home.dart';
 import '../../categories/categories.dart';
+import '../../wallets/wallets.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
@@ -17,6 +18,7 @@ final _cacheLoaderFutureProvider = FutureProvider.autoDispose<void>(
   (ref) => Future.wait<void>([
     Future.delayed(3.seconds),
     ref.watch(categoriesMapProvider.future),
+    ref.watch(walletsMapProvider.future),
   ]),
 );
 

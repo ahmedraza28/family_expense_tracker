@@ -57,7 +57,7 @@ class TransactionsProvider {
     final transaction = IncomeExpenseModel(
       id: null,
       amount: amount,
-      wallet: wallet,
+      walletId: wallet.id!,
       categoryId: category.id!,
       date: date,
       description: description,

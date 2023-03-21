@@ -20,20 +20,15 @@ class BalanceTransferModel extends TransactionModel
     required int id,
     required double amount,
     required DateTime date,
-    @JsonKey(toJson: toWalletId) required WalletModel srcWallet,
-    @JsonKey(toJson: toWalletId) required WalletModel destWallet,
-    String? note,
+    required int srcWalletId,
+    required int destWalletId,
+    String? description,
   }) = _BalanceTransferModel;
 
   const BalanceTransferModel._();
 
   factory BalanceTransferModel.fromJson(JSON json) =>
       _$BalanceTransferModelFromJson(json);
-
-  @override
-  bool search(String searchTerm) {
-    return note?.toLowerCase().contains(searchTerm) ?? false;
-  }
 
   @override
   bool get isBalanceTransfer => true;

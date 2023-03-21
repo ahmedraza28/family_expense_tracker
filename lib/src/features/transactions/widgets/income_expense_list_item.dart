@@ -15,6 +15,7 @@ import '../../../global/widgets/widgets.dart';
 import '../screens/add_edit_transaction_screen.dart';
 
 // Features
+import '../../wallets/wallets.dart';
 import '../../categories/categories.dart';
 
 class IncomeExpenseListItem extends ConsumerWidget {
@@ -28,6 +29,7 @@ class IncomeExpenseListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final category = ref.watch(categoryByIdProvider(transaction.categoryId))!;
+    final wallet = ref.watch(walletByIdProvider(transaction.walletId))!;
     final isExpense = category.type == CategoryType.expense;
     final seed = transaction.categoryId;
     final color = AppUtils.getRandomColor(seed);
@@ -81,7 +83,7 @@ class IncomeExpenseListItem extends ConsumerWidget {
 
             // Amount
             CustomText.body(
-              '${isExpense ? '-' : '+'}${transaction.wallet.currency.symbol} ${transaction.amount} ',
+              '${isExpense ? '-' : '+'}${wallet.currency.symbol} ${transaction.amount} ',
               color:
                   isExpense ? AppColors.redColor : Colors.greenAccent.shade700,
               fontSize: 14,

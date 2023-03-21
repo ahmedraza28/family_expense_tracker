@@ -44,7 +44,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
       transaction?.date,
     );
     final walletController = useValueNotifier<WalletModel?>(
-      transaction?.wallet,
+      ref.watch(walletByIdProvider(transaction?.walletId)),
     );
     final categoryController = useValueNotifier<CategoryModel?>(
       ref.watch(categoryByIdProvider(transaction?.categoryId)),
@@ -70,7 +70,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
       } else {
         final newTransaction = transaction!.copyWith(
           amount: double.parse(amountController.text),
-          wallet: walletController.value!,
+          walletId: walletController.value!.id!,
           date: dateController.value!,
           categoryId: categoryController.value!.id!,
           description: descriptionController.text,
