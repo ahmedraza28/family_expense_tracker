@@ -1,11 +1,11 @@
-class FiltersModel {
+class TransactionFiltersModel {
   final int? year;
   final int? month;
   final int? categoryId;
   final bool incomeExpenseOnly;
   final bool balanceTransferOnly;
 
-  FiltersModel({
+  TransactionFiltersModel({
     required this.incomeExpenseOnly,
     required this.balanceTransferOnly,
     this.year,
@@ -15,6 +15,6 @@ class FiltersModel {
 
   @override
   String toString() {
-    return '{year: $year, month: $month, categoryId: $categoryId}';
+    return 'TransactionFiltersModel(year: $year, month: $month, categoryId: $categoryId, incomeExpenseOnly: $incomeExpenseOnly, balanceTransferOnly: $balanceTransferOnly)';
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
-import '../providers/transaction_filters_providers.codegen.dart';
+import '../providers/budget_filters_providers.codegen.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
@@ -11,8 +11,8 @@ import '../../../helpers/constants/constants.dart';
 import '../../../global/widgets/widgets.dart';
 import 'filters/filters_bottom_sheet.dart';
 
-class SearchAndFiltersBar extends ConsumerWidget {
-  const SearchAndFiltersBar({super.key});
+class BudgetFiltersBar extends ConsumerWidget {
+  const BudgetFiltersBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,24 +21,25 @@ class SearchAndFiltersBar extends ConsumerWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Search field
-          Expanded(
-            child: CustomTextField(
-              contentPadding: const EdgeInsets.fromLTRB(12, 13, 1, 22),
-              onChanged: (searchTerm) => ref
-                  .read(searchFilterProvider.notifier)
-                  .update((_) => searchTerm ?? ''),
-              hintText: 'Search by name',
-              hintStyle: const TextStyle(
-                color: AppColors.textGreyColor,
-              ),
-              keyboardType: TextInputType.name,
-              textInputAction: TextInputAction.search,
-              prefix: const Icon(Icons.search_rounded, size: 22),
+          // Month Filter Value
+          LabeledWidget(
+            label: 'Month',
+            child: CustomText.body(
+              ref.watch(budgetMonthFilterProvider).toString(),
             ),
           ),
 
-          Insets.gapW10,
+          Insets.gapW20,
+
+          // Year Filter Value
+          LabeledWidget(
+            label: 'Year',
+            child: CustomText.body(
+              ref.watch(budgetYearFilterProvider).toString(),
+            ),
+          ),
+
+          Insets.expand,
 
           // Filters Button
           InkWell(

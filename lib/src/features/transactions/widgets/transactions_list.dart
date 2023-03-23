@@ -7,10 +7,9 @@ import '../../../helpers/extensions/extensions.dart';
 
 // Models
 import '../models/income_expense_model.codegen.dart';
-import '../models/transaction_model.dart';
 
 // Providers
-import '../providers/filter_providers.codegen.dart';
+import '../providers/transaction_filters_providers.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
@@ -24,7 +23,7 @@ class TransactionsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AsyncValueWidget<List<TransactionModel>>(
+    return AsyncValueWidget(
       value: ref.watch(searchedTransactionsProvider),
       loading: () => const Padding(
         padding: EdgeInsets.only(top: 70),
@@ -69,8 +68,7 @@ class TransactionsList extends ConsumerWidget {
             final trans = transactions[i];
             String? headerText;
 
-            if (i == 0 ||
-                trans.date.day < transactions[i - 1].date.day) {
+            if (i == 0 || trans.date.day < transactions[i - 1].date.day) {
               headerText = trans.date.toDateString('d MMM, y');
             }
 

@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Models
-import '../models/filters_model.dart';
+import '../models/transaction_filters_model.dart';
 import '../models/transaction_model.dart';
 
 // Providers
@@ -11,7 +11,7 @@ import 'transactions_provider.codegen.dart';
 // Features
 import '../../categories/categories.dart';
 
-part 'filter_providers.codegen.g.dart';
+part 'transaction_filters_providers.codegen.g.dart';
 
 final searchFilterProvider = StateProvider.autoDispose<String>(
   name: 'searchFilterProvider',
@@ -39,7 +39,7 @@ final incomeExpenseOnlyFilterProvider = StateProvider.autoDispose<bool>(
 );
 
 @riverpod
-FiltersModel? filters(FiltersRef ref) {
+TransactionFiltersModel? transactionFilters(TransactionFiltersRef ref) {
   final expenseMonthFilter =
       ref.watch(expenseMonthFilterProvider.notifier).state;
   final expenseYearFilter = ref.watch(expenseYearFilterProvider.notifier).state;
@@ -53,7 +53,7 @@ FiltersModel? filters(FiltersRef ref) {
     return null;
   }
 
-  final filters = FiltersModel(
+  final filters = TransactionFiltersModel(
     incomeExpenseOnly: ieOnly,
     balanceTransferOnly: btOnly,
     year: expenseYearFilter,
@@ -68,7 +68,7 @@ FiltersModel? filters(FiltersRef ref) {
 Stream<List<TransactionModel>> filteredTransactionsStream(
   FilteredTransactionsStreamRef ref,
 ) {
-  final filters = ref.watch(filtersProvider);
+  final filters = ref.watch(transactionFiltersProvider);
   return ref.watch(transactionsProvider).getAllTransactions(filters);
 }
 

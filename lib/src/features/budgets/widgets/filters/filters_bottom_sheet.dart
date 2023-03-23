@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
-import '../../providers/transaction_filters_providers.codegen.dart';
+import '../../providers/budget_filters_providers.codegen.dart';
 
 // Helpers
 import '../../../../helpers/constants/constants.dart';
@@ -19,15 +19,15 @@ class FiltersBottomSheet extends ConsumerWidget {
 
   void _onResetTap(WidgetRef ref) {
     ref
-      ..invalidate(expenseMonthFilterProvider)
-      ..invalidate(expenseYearFilterProvider)
-      ..invalidate(categoryFilterProvider)
-      ..invalidate(transactionFiltersProvider);
+      ..invalidate(budgetMonthFilterProvider)
+      ..invalidate(budgetYearFilterProvider)
+      ..invalidate(budgetCategoryFilterProvider)
+      ..invalidate(budgetFiltersProvider);
     AppRouter.pop();
   }
 
   void _onSaveTap(WidgetRef ref) {
-    ref.invalidate(transactionFiltersProvider);
+    ref.invalidate(budgetFiltersProvider);
     AppRouter.pop();
   }
 
@@ -39,7 +39,7 @@ class FiltersBottomSheet extends ConsumerWidget {
         leading: Consumer(
           builder: (_, ref, child) {
             final hasFilters = ref.watch(
-              transactionFiltersProvider.select((value) => value != null),
+              budgetFiltersProvider.select((value) => value != null),
             );
             return hasFilters ? child! : const SizedBox(width: 50, height: 30);
           },

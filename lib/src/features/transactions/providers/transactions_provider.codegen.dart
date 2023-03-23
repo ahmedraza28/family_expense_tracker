@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Models
-import '../models/filters_model.dart';
+import '../models/transaction_filters_model.dart';
 import '../models/transaction_model.dart';
 
 // Repositories
@@ -31,7 +31,7 @@ class TransactionsProvider {
     required this.bookId,
   });
 
-  Stream<List<TransactionModel>> getAllTransactions([FiltersModel? filters]) {
+  Stream<List<TransactionModel>> getAllTransactions([TransactionFiltersModel? filters]) {
     return _ref.watch(transactionsRepositoryProvider).getBookTransactions(
           bookId: bookId,
           categoryId: filters?.categoryId,

@@ -3,79 +3,71 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
+// Providers
+import '../providers/budgets_provider.codegen.dart';
+
 // Routing
 import '../../../config/routing/routing.dart';
 
-// Models
-import '../models/income_expense_model.codegen.dart';
-
 // Helpers
+import '../../../global/formatters/formatters.dart';
 import '../../../helpers/constants/constants.dart';
+
+// Models
+import '../models/budget_model.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-// Providers
-import '../providers/income_expense_provider.codegen.dart';
-
 // Features
-import '../../calculator/calculator.dart';
 import '../../categories/categories.dart';
-import '../../wallets/wallets.dart';
 
-class AddEditTransactionScreen extends HookConsumerWidget {
-  final IncomeExpenseModel? transaction;
+class AddEditBudgetScreen extends HookConsumerWidget {
+  final BudgetModel? budget;
 
-  const AddEditTransactionScreen({
+  const AddEditBudgetScreen({
     super.key,
-    this.transaction,
+    this.budget,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    final amountController = useTextEditingController(
-      text: transaction?.amount.toString() ?? '',
-    );
-    final descriptionController = useTextEditingController(
-      text: transaction?.description ?? '',
-    );
-    final dateController = useValueNotifier<DateTime?>(
-      transaction?.date,
-    );
-    final walletController = useValueNotifier<WalletModel?>(
-      ref.watch(walletByIdProvider(transaction?.walletId)),
-    );
     final categoryController = useValueNotifier<CategoryModel?>(
-      ref.watch(categoryByIdProvider(transaction?.categoryId)),
+      ref.watch(categoryByIdProvider(budget?.categoryId)),
     );
     final categoryTextController = useTextEditingController(
       text: categoryController.value?.name ?? '',
     );
-    final walletTextController = useTextEditingController(
-      text: walletController.value?.name ?? '',
+    final budgetAmountController = useTextEditingController(
+      text: budget?.amount.toString() ?? '',
     );
+    final descriptionController = useTextEditingController(
+      text: budget?.description ?? '',
+    );
+    // TODO(arafaysaleem): Add year month picker
+    final dateController = useValueNotifier<DateTime?>(null);
 
     void onSave() {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
-      if (transaction == null) {
-        ref.read(incomeExpenseProvider).addTransaction(
-              amount: double.parse(amountController.text),
-              wallet: walletController.value!,
-              date: dateController.value!,
-              category: categoryController.value!,
+      if (budget == null) {
+        ref.read(budgetsProvider).addBudget(
+              year: dateController.value!.year,
+              month: dateController.value!.month,
+              categoryId: categoryController.value!.id!,
+              amount: double.parse(budgetAmountController.text),
               description: descriptionController.text,
             );
       } else {
-        final newTransaction = transaction!.copyWith(
-          amount: double.parse(amountController.text),
-          walletId: walletController.value!.id!,
-          date: dateController.value!,
+        final newBudget = budget!.copyWith(
+          year: dateController.value!.year,
+          month: dateController.value!.month,
           categoryId: categoryController.value!.id!,
+          amount: double.parse(budgetAmountController.text),
           description: descriptionController.text,
         );
-        ref.read(incomeExpenseProvider).updateTransaction(newTransaction);
+        ref.read(budgetsProvider).updateBudget(newBudget);
       }
       AppRouter.pop();
     }
@@ -83,18 +75,19 @@ class AddEditTransactionScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
-          transaction != null ? 'Edit transaction' : 'Add a new transaction',
+          budget != null ? 'Edit a budget' : 'Add a new budget',
           fontSize: 20,
         ),
         actions: [
           // Delete Button
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
+          if (budget != null)
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
             ),
-          ),
         ],
       ),
       body: GestureDetector(
@@ -107,29 +100,9 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               const CustomText(
-                'Add details about a transaction',
+                'Create a budget for storing your balance',
                 fontSize: 16,
                 maxLines: 2,
-              ),
-
-              Insets.gapH20,
-
-              // Amount
-              InkWell(
-                customBorder: const RoundedRectangleBorder(
-                  borderRadius: Corners.rounded7,
-                ),
-                onTap: () async {
-                  await AppRouter.pushNamed(
-                    Routes.CalculatorScreenRoute,
-                  );
-                  amountController.text = ref.read(numberResultProvider);
-                },
-                child: CustomTextField(
-                  controller: amountController,
-                  enabled: false,
-                  floatingText: 'Amount',
-                ),
               ),
 
               Insets.gapH20,
@@ -159,27 +132,16 @@ class AddEditTransactionScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
-              // Wallet
-              InkWell(
-                customBorder: const RoundedRectangleBorder(
-                  borderRadius: Corners.rounded7,
-                ),
-                onTap: () async {
-                  ref
-                      .read(isWalletSelectableProvider.notifier)
-                      .update((_) => true);
-                  final wallet = await AppRouter.pushNamed(
-                    Routes.WalletsScreenRoute,
-                  ) as WalletModel;
-                  walletController.value = wallet;
-                  walletTextController.text = wallet.name;
-                },
-                child: CustomTextField(
-                  controller: walletTextController,
-                  enabled: false,
-                  hintText: 'Tap to select',
-                  floatingText: 'Wallet',
-                ),
+              // Budget Balance
+              CustomTextField(
+                controller: budgetAmountController,
+                floatingText: 'Balance',
+                inputFormatters: [
+                  DecimalTextInputFormatter(decimalDigits: 1),
+                ],
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                textInputAction: TextInputAction.done,
               ),
 
               Insets.gapH20,

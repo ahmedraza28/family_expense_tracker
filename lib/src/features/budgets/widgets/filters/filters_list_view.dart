@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../helpers/constants/constants.dart';
 
 // Providers
-import '../../providers/transaction_filters_providers.codegen.dart';
+import '../../providers/budget_filters_providers.codegen.dart';
 
 // Widgets
 import '../../../../global/widgets/widgets.dart';
@@ -30,9 +30,9 @@ class FiltersListView extends HookConsumerWidget {
 
     useEffect(
       () {
-        monthFilterController.value = ref.read(expenseMonthFilterProvider);
-        yearFilterController.value = ref.read(expenseYearFilterProvider);
-        categoryFilterController.value = ref.read(categoryFilterProvider);
+        monthFilterController.value = ref.read(budgetMonthFilterProvider);
+        yearFilterController.value = ref.read(budgetYearFilterProvider);
+        categoryFilterController.value = ref.read(budgetCategoryFilterProvider);
         return null;
       },
       [],
@@ -42,50 +42,6 @@ class FiltersListView extends HookConsumerWidget {
       controller: scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
-        // Checkboxes Row
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Balance Transfer Checkbox
-            LabeledWidget(
-              label: 'Balance Transfer Only',
-              labelDirection: Axis.horizontal,
-              labelPosition: LabelPosition.end,
-              labelGap: 10,
-              labelStyle: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textBlackColor,
-              ),
-              useDarkerLabel: true,
-              child: Checkbox(
-                value: ref.watch(balanceTransferOnlyFilterProvider),
-                onChanged: (value) => ref
-                    .read(balanceTransferOnlyFilterProvider.notifier)
-                    .state = value!,
-              ),
-            ),
-
-            // Income Expense Checkbox
-            LabeledWidget(
-              label: 'Income Expense Only',
-              labelDirection: Axis.horizontal,
-              labelPosition: LabelPosition.end,
-              labelGap: 10,
-              labelStyle: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textBlackColor,
-              ),
-              useDarkerLabel: true,
-              child: Checkbox(
-                value: ref.watch(incomeExpenseOnlyFilterProvider),
-                onChanged: (value) => ref
-                    .read(incomeExpenseOnlyFilterProvider.notifier)
-                    .state = value!,
-              ),
-            ),
-          ],
-        ),
-
         // Month Dropdown Filter
         LabeledWidget(
           label: 'Month',
@@ -108,7 +64,7 @@ class FiltersListView extends HookConsumerWidget {
               'December': 12,
             },
             onSelected: (month) {
-              ref.read(expenseMonthFilterProvider.notifier).state = month;
+              ref.read(budgetMonthFilterProvider.notifier).state = month;
             },
           ),
         ),
@@ -127,7 +83,7 @@ class FiltersListView extends HookConsumerWidget {
                 i.toString(): i
             },
             onSelected: (month) {
-              ref.read(expenseYearFilterProvider.notifier).state = month;
+              ref.read(budgetYearFilterProvider.notifier).state = month;
             },
           ),
         ),
@@ -141,7 +97,7 @@ class FiltersListView extends HookConsumerWidget {
           child: CategoryDropdownField(
             controller: categoryFilterController,
             onSelected: (category) {
-              ref.read(categoryFilterProvider.notifier).state = category;
+              ref.read(budgetCategoryFilterProvider.notifier).state = category;
             },
           ),
         ),
