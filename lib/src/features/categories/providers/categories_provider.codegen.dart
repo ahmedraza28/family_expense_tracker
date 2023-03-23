@@ -75,12 +75,10 @@ class Categories extends _$Categories {
     );
 
     state = await state.makeGuardedRequest(
-      () {
-        return _categoriesRepository.create(
-          bookId: bookId,
-          body: category.toJson(),
-        );
-      },
+      () => _categoriesRepository.create(
+        bookId: bookId,
+        body: category.toJson(),
+      ),
       errorMessage: 'Failed to add category',
     );
   }
@@ -89,13 +87,11 @@ class Categories extends _$Categories {
     state = const AsyncValue.loading();
 
     state = await state.makeGuardedRequest(
-      () {
-        return _categoriesRepository.update(
-          bookId: bookId,
-          categoryId: category.id!,
-          changes: category.toJson(),
-        );
-      },
+      () => _categoriesRepository.update(
+        bookId: bookId,
+        categoryId: category.id!,
+        changes: category.toJson(),
+      ),
       errorMessage: 'Failed to update category',
     );
   }

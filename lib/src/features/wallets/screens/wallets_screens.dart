@@ -69,7 +69,9 @@ class WalletsScreen extends ConsumerWidget {
           closedBuilder: (ctx, openFunction) => AddWalletFab(
             onPressed: openFunction,
           ),
-          openBuilder: (ctx, closeFunction) => const AddEditWalletScreen(),
+          openBuilder: (ctx, closeFunction) => AddEditWalletScreen(
+            onPressed: closeFunction,
+          ),
         ),
       ),
     );

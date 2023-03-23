@@ -22,10 +22,12 @@ import '../../../global/widgets/widgets.dart';
 
 class AddEditWalletScreen extends HookConsumerWidget {
   final WalletModel? wallet;
+  final VoidCallback? onPressed;
 
   const AddEditWalletScreen({
     super.key,
     this.wallet,
+    this.onPressed,
   });
 
   @override
@@ -45,7 +47,7 @@ class AddEditWalletScreen extends HookConsumerWidget {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       if (wallet == null) {
-        ref.read(walletsProvider).addWallet(
+        ref.read(walletsProvider.notifier).addWallet(
               name: walletNameController.text,
               currency: currencyController.value,
               imageUrl: '',
@@ -58,9 +60,9 @@ class AddEditWalletScreen extends HookConsumerWidget {
           imageUrl: '',
           balance: double.parse(walletBalanceController.text),
         );
-        ref.read(walletsProvider).updateWallet(newWallet);
+        ref.read(walletsProvider.notifier).updateWallet(newWallet);
       }
-      AppRouter.pop();
+      (onPressed ?? AppRouter.pop).call();
     }
 
     return Scaffold(
@@ -71,13 +73,14 @@ class AddEditWalletScreen extends HookConsumerWidget {
         ),
         actions: [
           // Delete Button
-          if(wallet != null) IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
+          if (wallet != null)
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
             ),
-          ),
         ],
       ),
       body: GestureDetector(
