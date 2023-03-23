@@ -8,9 +8,8 @@ import '../../helpers/typedefs.dart';
 
 part 'firestore_service.codegen.g.dart';
 
-final firebaseAuthProvider = Provider<FirebaseAuth>(
-  (ref) => FirebaseAuth.instance,
-);
+@Riverpod(keepAlive: true)
+FirebaseAuth firebaseAuth(FirebaseAuthRef ref) => FirebaseAuth.instance;
 
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)
