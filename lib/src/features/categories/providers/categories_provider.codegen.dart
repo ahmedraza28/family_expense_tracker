@@ -1,5 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+// Helpers
+import '../../../helpers/extensions/extensions.dart';
+
 // Models
 import '../models/category_model.codegen.dart';
 
@@ -16,8 +19,8 @@ part 'categories_provider.codegen.g.dart';
 
 @Riverpod(keepAlive: true)
 Stream<List<CategoryModel>> _categoriesStream(_CategoriesStreamRef ref) {
-  final categories = ref.watch(categoriesProvider);
-  return categories.getAllCategories();
+  final categoriesProv = ref.watch(categoriesProvider.notifier);
+  return categoriesProv.getAllCategories();
 }
 
 @Riverpod(keepAlive: true)
@@ -42,47 +45,58 @@ CategoryModel? categoryById(CategoryByIdRef ref, int? id) {
 
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)
-CategoriesProvider categories(CategoriesRef ref) {
-  final categoriesRepository = ref.watch(categoriesRepositoryProvider);
-  final bookId = ref.watch(selectedBookProvider)!.id!;
-  return CategoriesProvider(categoriesRepository, bookId: bookId);
-}
+class Categories extends _$Categories {
+  late final int bookId;
+  late final CategoriesRepository _categoriesRepository;
 
-class CategoriesProvider {
-  final int bookId;
-  final CategoriesRepository _categoriesRepository;
-
-  CategoriesProvider(
-    this._categoriesRepository, {
-    required this.bookId,
-  });
+  @override
+  FutureOr<void> build() {
+    _categoriesRepository = ref.watch(categoriesRepositoryProvider);
+    bookId = ref.watch(selectedBookProvider)!.id!;
+    return null;
+  }
 
   Stream<List<CategoryModel>> getAllCategories() {
     return _categoriesRepository.fetchAll(bookId: bookId);
   }
 
-  void addCategory({
+  Future<void> addCategory({
     required String name,
     required String imageUrl,
     required CategoryType type,
-  }) {
+  }) async {
+    state = const AsyncValue.loading();
+
     final category = CategoryModel(
       id: null,
       name: name,
       imageUrl: imageUrl,
       type: type,
     );
-    _categoriesRepository.create(
-      bookId: bookId,
-      body: category.toJson(),
+
+    state = await state.makeGuardedRequest(
+      () {
+        return _categoriesRepository.create(
+          bookId: bookId,
+          body: category.toJson(),
+        );
+      },
+      errorMessage: 'Failed to add category',
     );
   }
 
-  void updateCategory(CategoryModel category) {
-    _categoriesRepository.update(
-      bookId: bookId,
-      categoryId: category.id!,
-      changes: category.toJson(),
+  Future<void> updateCategory(CategoryModel category) async {
+    state = const AsyncValue.loading();
+
+    state = await state.makeGuardedRequest(
+      () {
+        return _categoriesRepository.update(
+          bookId: bookId,
+          categoryId: category.id!,
+          changes: category.toJson(),
+        );
+      },
+      errorMessage: 'Failed to update category',
     );
   }
 }

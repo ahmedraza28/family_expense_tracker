@@ -24,10 +24,12 @@ import '../widgets/category_type_selection_cards.dart';
 
 class AddEditCategoryScreen extends HookConsumerWidget {
   final CategoryModel? category;
+  final VoidCallback? onPressed;
 
   const AddEditCategoryScreen({
     super.key,
     this.category,
+    this.onPressed,
   });
 
   @override
@@ -44,7 +46,7 @@ class AddEditCategoryScreen extends HookConsumerWidget {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       if (category == null) {
-        ref.read(categoriesProvider).addCategory(
+        ref.read(categoriesProvider.notifier).addCategory(
               name: categoryNameController.text,
               type: typeController.value,
               imageUrl: '',
@@ -55,9 +57,11 @@ class AddEditCategoryScreen extends HookConsumerWidget {
           type: typeController.value,
           imageUrl: '',
         );
-        ref.read(categoriesProvider).updateCategory(newCategory);
+        ref.read(categoriesProvider.notifier).updateCategory(
+              newCategory,
+            );
       }
-      AppRouter.pop();
+      (onPressed ?? AppRouter.pop).call();
     }
 
     return Scaffold(

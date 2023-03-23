@@ -50,7 +50,9 @@ class CategoriesScreen extends ConsumerWidget {
           closedBuilder: (ctx, openFunction) => AddCategoryFab(
             onPressed: openFunction,
           ),
-          openBuilder: (ctx, closeFunction) => const AddEditCategoryScreen(),
+          openBuilder: (ctx, closeFunction) => AddEditCategoryScreen(
+            onPressed: closeFunction,
+          ),
         ),
       ),
     );
