@@ -9,11 +9,14 @@ import '../../../config/routing/routing.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
-// Widgets
-import '../../../global/widgets/widgets.dart';
+// Providers
+import '../providers/balance_transfer_provider.codegen.dart';
 
 // Models
 import '../models/balance_transfer_model.codegen.dart';
+
+// Widgets
+import '../../../global/widgets/widgets.dart';
 
 // Features
 import '../../calculator/calculator.dart';
@@ -42,21 +45,27 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
     final srcWalletController = useValueNotifier<WalletModel?>(
       ref.watch(walletByIdProvider(balanceTransfer?.srcWalletId)),
     );
+    final srcWalletTextController = useTextEditingController(
+      text: srcWalletController.value?.name ?? '',
+    );
     final destWalletController = useValueNotifier<WalletModel?>(
       ref.watch(walletByIdProvider(balanceTransfer?.destWalletId)),
+    );
+    final destWalletTextController = useTextEditingController(
+      text: destWalletController.value?.name ?? '',
     );
 
     void onSave() {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       if (balanceTransfer == null) {
-        // ref.read(balanceTransferProvider).create(
-        //       amount: double.parse(amountController.text),
-        //       srcWalletId: srcWalletController.value!.id!,
-        //       date: dateController.value!,
-        //       destWalletId: destWalletController.value!.id!,
-        //       description: descriptionController.text,
-        //     );
+        ref.read(balanceTransferProvider).addTransaction(
+              amount: double.parse(amountController.text),
+              srcWalletId: srcWalletController.value!.id!,
+              date: dateController.value!,
+              destWalletId: destWalletController.value!.id!,
+              description: descriptionController.text,
+            );
       } else {
         final newTransfer = balanceTransfer!.copyWith(
           amount: double.parse(amountController.text),
@@ -65,15 +74,15 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
           destWalletId: destWalletController.value!.id!,
           description: descriptionController.text,
         );
-        // ref.read(balanceTransferProvider).updateBalanceTransfer(newTransfer);
+        ref.read(balanceTransferProvider).updateTransaction(newTransfer);
       }
       AppRouter.pop();
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const CustomText(
-          'Add a new category',
+        title: CustomText(
+          balanceTransfer == null ? 'Add a new category' : 'Edit category',
           fontSize: 20,
         ),
         actions: [
@@ -122,49 +131,51 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Source Wallet
-              Consumer(
-                builder: (_, ref, __) {
-                  final walletsStream = ref.watch(walletsStreamProvider);
-                  return LabeledWidget(
-                    label: 'Source Wallet',
-                    child: CustomDropdownField<WalletModel>.sheet(
-                      controller: srcWalletController,
-                      selectedItemBuilder: (item) => CustomText.body(item.name),
-                      hintText: 'Transfer from',
-                      itemsSheet: CustomDropdownSheet(
-                        items: walletsStream.valueOrNull ?? [],
-                        bottomSheetTitle: 'Wallets',
-                        itemBuilder: (_, item) => DropdownSheetItem(
-                          label: item.name,
-                        ),
-                      ),
-                    ),
-                  );
+              InkWell(
+                customBorder: const RoundedRectangleBorder(
+                  borderRadius: Corners.rounded7,
+                ),
+                onTap: () async {
+                  ref
+                      .read(isWalletSelectableProvider.notifier)
+                      .update((_) => true);
+                  final wallet = await AppRouter.pushNamed(
+                    Routes.WalletsScreenRoute,
+                  ) as WalletModel;
+                  srcWalletController.value = wallet;
+                  srcWalletTextController.text = wallet.name;
                 },
+                child: CustomTextField(
+                  controller: srcWalletTextController,
+                  enabled: false,
+                  hintText: 'Transfer from',
+                  floatingText: 'Source Wallet',
+                ),
               ),
 
               Insets.gapH20,
 
               // Destination Wallet
-              Consumer(
-                builder: (_, ref, __) {
-                  final walletsStream = ref.watch(walletsStreamProvider);
-                  return LabeledWidget(
-                    label: 'Destination Wallet',
-                    child: CustomDropdownField<WalletModel>.sheet(
-                      controller: destWalletController,
-                      selectedItemBuilder: (item) => CustomText.body(item.name),
-                      hintText: 'Transfer to',
-                      itemsSheet: CustomDropdownSheet(
-                        items: walletsStream.valueOrNull ?? [],
-                        bottomSheetTitle: 'Wallets',
-                        itemBuilder: (_, item) => DropdownSheetItem(
-                          label: item.name,
-                        ),
-                      ),
-                    ),
-                  );
+              InkWell(
+                customBorder: const RoundedRectangleBorder(
+                  borderRadius: Corners.rounded7,
+                ),
+                onTap: () async {
+                  ref
+                      .read(isWalletSelectableProvider.notifier)
+                      .update((_) => true);
+                  final wallet = await AppRouter.pushNamed(
+                    Routes.WalletsScreenRoute,
+                  ) as WalletModel;
+                  destWalletController.value = wallet;
+                  destWalletTextController.text = wallet.name;
                 },
+                child: CustomTextField(
+                  controller: destWalletTextController,
+                  enabled: false,
+                  hintText: 'Transfer to',
+                  floatingText: 'Destination Wallet',
+                ),
               ),
 
               Insets.gapH20,
@@ -184,10 +195,10 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
-              // Note
+              // Description
               CustomTextField(
                 controller: descriptionController,
-                floatingText: 'Note',
+                floatingText: 'Description',
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
               ),

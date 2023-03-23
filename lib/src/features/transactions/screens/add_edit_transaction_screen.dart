@@ -16,7 +16,7 @@ import '../../../helpers/constants/constants.dart';
 import '../../../global/widgets/widgets.dart';
 
 // Providers
-import '../providers/transactions_provider.codegen.dart';
+import '../providers/income_expense_provider.codegen.dart';
 
 // Features
 import '../../calculator/calculator.dart';
@@ -60,7 +60,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       if (transaction == null) {
-        ref.read(transactionsProvider).addTransaction(
+        ref.read(incomeExpenseProvider).addTransaction(
               amount: double.parse(amountController.text),
               wallet: walletController.value!,
               date: dateController.value!,
@@ -75,7 +75,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
           categoryId: categoryController.value!.id!,
           description: descriptionController.text,
         );
-        ref.read(transactionsProvider).updateTransaction(newTransaction);
+        ref.read(incomeExpenseProvider).updateTransaction(newTransaction);
       }
       AppRouter.pop();
     }
@@ -140,9 +140,6 @@ class AddEditTransactionScreen extends HookConsumerWidget {
                   borderRadius: Corners.rounded7,
                 ),
                 onTap: () async {
-                  // ref.runAsync(
-                  // isCategorySelectableProvider,
-                  // () async {
                   ref
                       .read(isCategorySelectableProvider.notifier)
                       .update((_) => true);
@@ -151,8 +148,6 @@ class AddEditTransactionScreen extends HookConsumerWidget {
                   ) as CategoryModel;
                   categoryController.value = category;
                   categoryTextController.text = category.name;
-                  //   },
-                  // );
                 },
                 child: CustomTextField(
                   controller: categoryTextController,

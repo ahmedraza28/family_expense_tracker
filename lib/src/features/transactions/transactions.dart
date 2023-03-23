@@ -1,6 +1,8 @@
+export 'models/filters_model.dart';
 export 'models/income_expense_model.codegen.dart';
 export 'models/transaction_model.dart';
 export 'providers/filter_providers.codegen.dart';
+export 'providers/income_expense_provider.codegen.dart';
 export 'providers/transactions_provider.codegen.dart';
 export 'repositories/transactions_repository.codegen.dart';
 export 'screens/add_edit_transaction_screen.dart';

@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
 // Helpers
+import '../../../helpers/constants/constants.dart';
 import '../../../helpers/typedefs.dart';
 
 // Features
@@ -17,7 +18,7 @@ part 'balance_transfer_model.codegen.g.dart';
 class BalanceTransferModel extends TransactionModel
     with _$BalanceTransferModel {
   const factory BalanceTransferModel({
-    required int id,
+    @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
     required double amount,
     required DateTime date,
     required int srcWalletId,
