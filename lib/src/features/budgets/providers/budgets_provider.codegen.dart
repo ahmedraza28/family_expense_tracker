@@ -14,7 +14,7 @@ part 'budgets_provider.codegen.g.dart';
 
 @Riverpod(keepAlive: true)
 Stream<List<BudgetModel>> _budgetsStream(_BudgetsStreamRef ref) {
-  final budgets = ref.watch(budgetsProvider);
+  final budgets = ref.watch(budgetsProvider.notifier);
   return budgets.getAllBudgets();
 }
 
@@ -31,22 +31,18 @@ BudgetModel? budgetById(BudgetByIdRef ref, int? id) {
 
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)
-BudgetsProvider budgets(BudgetsRef ref) {
-  final budgetsRepository = ref.watch(budgetsRepositoryProvider);
-  final bookId = ref.watch(selectedBookProvider)!.id!;
-  return BudgetsProvider(budgetsRepository, bookId: bookId);
-}
-
-class BudgetsProvider {
-  final int bookId;
-  final BudgetsRepository _budgetsRepository;
+class Budgets extends _$Budgets {
+  late final int bookId;
+  late final BudgetsRepository _budgetsRepository;
 
   static final _currentDate = DateTime.now();
 
-  BudgetsProvider(
-    this._budgetsRepository, {
-    required this.bookId,
-  });
+  @override
+  FutureOr<void> build() {
+    _budgetsRepository = ref.watch(budgetsRepositoryProvider);
+    bookId = ref.watch(selectedBookProvider)!.id!;
+    return null;
+  }
 
   Stream<List<BudgetModel>> getAllBudgets([BudgetFiltersModel? filters]) {
     return _budgetsRepository.getBookBudgets(

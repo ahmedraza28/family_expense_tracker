@@ -53,7 +53,9 @@ class BudgetsScreen extends StatelessWidget {
           closedBuilder: (ctx, openFunction) => AddBudgetFab(
             onPressed: openFunction,
           ),
-          openBuilder: (ctx, closeFunction) => const AddEditBudgetScreen(),
+          openBuilder: (ctx, closeFunction) => AddEditBudgetScreen(
+            onPressed: closeFunction,
+          ),
         ),
       ),
     );

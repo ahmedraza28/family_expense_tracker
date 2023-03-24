@@ -24,10 +24,12 @@ import '../../categories/categories.dart';
 
 class AddEditBudgetScreen extends HookConsumerWidget {
   final BudgetModel? budget;
+  final VoidCallback? onPressed;
 
   const AddEditBudgetScreen({
     super.key,
     this.budget,
+    this.onPressed,
   });
 
   @override
@@ -52,7 +54,7 @@ class AddEditBudgetScreen extends HookConsumerWidget {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       if (budget == null) {
-        ref.read(budgetsProvider).addBudget(
+        ref.read(budgetsProvider.notifier).addBudget(
               year: dateController.value!.year,
               month: dateController.value!.month,
               categoryId: categoryController.value!.id!,
@@ -67,9 +69,9 @@ class AddEditBudgetScreen extends HookConsumerWidget {
           amount: double.parse(budgetAmountController.text),
           description: descriptionController.text,
         );
-        ref.read(budgetsProvider).updateBudget(newBudget);
+        ref.read(budgetsProvider.notifier).updateBudget(newBudget);
       }
-      AppRouter.pop();
+      (onPressed ?? AppRouter.pop).call();
     }
 
     return Scaffold(
