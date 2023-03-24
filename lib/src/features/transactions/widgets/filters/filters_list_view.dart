@@ -93,20 +93,7 @@ class FiltersListView extends HookConsumerWidget {
           child: CustomDropdownField<int>.animated(
             controller: monthFilterController,
             hintText: 'Select a month',
-            items: const {
-              'January': 1,
-              'February': 2,
-              'March': 3,
-              'April': 4,
-              'May': 5,
-              'June': 6,
-              'July': 7,
-              'August': 8,
-              'September': 9,
-              'October': 10,
-              'November': 11,
-              'December': 12,
-            },
+            items: monthNames,
             onSelected: (month) {
               ref.read(expenseMonthFilterProvider.notifier).state = month;
             },

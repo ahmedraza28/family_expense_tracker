@@ -12,6 +12,7 @@ import '../../providers/budget_filters_providers.codegen.dart';
 import '../../../../global/widgets/widgets.dart';
 
 // Features
+import '../../../transactions/transactions.dart';
 import '../../../categories/categories.dart';
 
 class FiltersListView extends HookConsumerWidget {
@@ -42,49 +43,47 @@ class FiltersListView extends HookConsumerWidget {
       controller: scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
-        // Month Dropdown Filter
-        LabeledWidget(
-          label: 'Month',
-          useDarkerLabel: true,
-          child: CustomDropdownField<int>.animated(
-            controller: monthFilterController,
-            hintText: 'Select a month',
-            items: const {
-              'January': 1,
-              'February': 2,
-              'March': 3,
-              'April': 4,
-              'May': 5,
-              'June': 6,
-              'July': 7,
-              'August': 8,
-              'September': 9,
-              'October': 10,
-              'November': 11,
-              'December': 12,
-            },
-            onSelected: (month) {
-              ref.read(budgetMonthFilterProvider.notifier).state = month;
-            },
-          ),
-        ),
+        Expanded(
+          child: Row(
+            children: [
+              // Month Dropdown Filter
+              Expanded(
+                child: LabeledWidget(
+                  label: 'Month',
+                  useDarkerLabel: true,
+                  child: CustomDropdownField<int>.animated(
+                    controller: monthFilterController,
+                    hintText: 'Select a month',
+                    items: monthNames,
+                    onSelected: (month) {
+                      ref.read(budgetMonthFilterProvider.notifier).state =
+                          month;
+                    },
+                  ),
+                ),
+              ),
 
-        Insets.gapH20,
+              Insets.gapW20,
 
-        // Year Dropdown Filter
-        LabeledWidget(
-          label: 'Year',
-          useDarkerLabel: true,
-          child: CustomDropdownField<int>.animated(
-            controller: yearFilterController,
-            hintText: 'Select a year',
-            items: {
-              for (var i = 2023; i <= (DateTime.now().year + 10); i++)
-                i.toString(): i
-            },
-            onSelected: (month) {
-              ref.read(budgetYearFilterProvider.notifier).state = month;
-            },
+              // Year Dropdown Filter
+              Expanded(
+                child: LabeledWidget(
+                  label: 'Year',
+                  useDarkerLabel: true,
+                  child: CustomDropdownField<int>.animated(
+                    controller: yearFilterController,
+                    hintText: 'Select a year',
+                    items: {
+                      for (var i = 2023; i <= (DateTime.now().year + 10); i++)
+                        i.toString(): i
+                    },
+                    onSelected: (month) {
+                      ref.read(budgetYearFilterProvider.notifier).state = month;
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
 

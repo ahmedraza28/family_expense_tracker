@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 
 // Providers
 import '../providers/budgets_provider.codegen.dart';
@@ -20,6 +19,7 @@ import '../models/budget_model.codegen.dart';
 import '../../../global/widgets/widgets.dart';
 
 // Features
+import '../../transactions/transactions.dart';
 import '../../categories/categories.dart';
 
 class AddEditBudgetScreen extends HookConsumerWidget {
@@ -47,24 +47,24 @@ class AddEditBudgetScreen extends HookConsumerWidget {
     final descriptionController = useTextEditingController(
       text: budget?.description ?? '',
     );
-    // TODO(arafaysaleem): Add year month picker
-    final dateController = useValueNotifier<DateTime?>(null);
+    final monthFilterController = useValueNotifier<int?>(null);
+    final yearFilterController = useValueNotifier<int?>(null);
 
     void onSave() {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       if (budget == null) {
         ref.read(budgetsProvider.notifier).addBudget(
-              year: dateController.value!.year,
-              month: dateController.value!.month,
+              year: yearFilterController.value!,
+              month: monthFilterController.value!,
               categoryId: categoryController.value!.id!,
               amount: double.parse(budgetAmountController.text),
               description: descriptionController.text,
             );
       } else {
         final newBudget = budget!.copyWith(
-          year: dateController.value!.year,
-          month: dateController.value!.month,
+          year: yearFilterController.value!,
+          month: monthFilterController.value!,
           categoryId: categoryController.value!.id!,
           amount: double.parse(budgetAmountController.text),
           description: descriptionController.text,
@@ -148,16 +148,43 @@ class AddEditBudgetScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
-              // Transfer date
-              CustomDatePicker(
-                firstDate: DateTime(1950),
-                dateNotifier: dateController,
-                dateFormat: DateFormat('d MMMM, y'),
-                helpText: 'Select Date',
-                initialEntryMode: DatePickerEntryMode.calendarOnly,
-                pickerStyle: const CustomDatePickerStyle(
-                  initialDateString: 'DD MONTH, YYYY',
-                  floatingText: 'Date',
+              // Period
+              Expanded(
+                child: Row(
+                  children: [
+                    // Month Dropdown Filter
+                    Expanded(
+                      child: LabeledWidget(
+                        label: 'Month',
+                        useDarkerLabel: true,
+                        child: CustomDropdownField<int>.animated(
+                          controller: monthFilterController,
+                          hintText: 'Select a month',
+                          items: monthNames,
+                        ),
+                      ),
+                    ),
+
+                    Insets.gapW20,
+
+                    // Year Dropdown Filter
+                    Expanded(
+                      child: LabeledWidget(
+                        label: 'Year',
+                        useDarkerLabel: true,
+                        child: CustomDropdownField<int>.animated(
+                          controller: yearFilterController,
+                          hintText: 'Select a year',
+                          items: {
+                            for (var i = 2023;
+                                i <= (DateTime.now().year + 10);
+                                i++)
+                              i.toString(): i
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
