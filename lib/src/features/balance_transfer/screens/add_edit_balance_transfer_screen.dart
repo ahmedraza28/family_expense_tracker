@@ -24,10 +24,12 @@ import '../../wallets/wallets.dart';
 
 class AddEditBalanceTransferScreen extends HookConsumerWidget {
   final BalanceTransferModel? balanceTransfer;
+  final VoidCallback? onPressed;
 
   const AddEditBalanceTransferScreen({
     super.key,
     this.balanceTransfer,
+    this.onPressed,
   });
 
   @override
@@ -59,7 +61,7 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       if (balanceTransfer == null) {
-        ref.read(balanceTransferProvider).addTransaction(
+        ref.read(balanceTransferProvider.notifier).addTransaction(
               amount: double.parse(amountController.text),
               srcWalletId: srcWalletController.value!.id!,
               date: dateController.value!,
@@ -74,9 +76,11 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
           destWalletId: destWalletController.value!.id!,
           description: descriptionController.text,
         );
-        ref.read(balanceTransferProvider).updateTransaction(newTransfer);
+        ref
+            .read(balanceTransferProvider.notifier)
+            .updateTransaction(newTransfer);
       }
-      AppRouter.pop();
+      (onPressed ?? AppRouter.pop).call();
     }
 
     return Scaffold(

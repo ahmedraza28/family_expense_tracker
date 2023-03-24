@@ -53,5 +53,5 @@ Stream<List<BudgetModel>> filteredBudgetsStream(
   FilteredBudgetsStreamRef ref,
 ) {
   final filters = ref.watch(budgetFiltersProvider);
-  return ref.watch(budgetsProvider).getAllBudgets(filters);
+  return ref.watch(budgetsProvider.notifier).getAllBudgets(filters);
 }

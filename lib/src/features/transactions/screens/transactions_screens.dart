@@ -6,13 +6,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
-import '../widgets/add_transaction_fab.dart';
+import '../widgets/add_income_expense_fab.dart';
 import '../widgets/search_and_filters_bar.dart';
 import '../widgets/transactions_list.dart';
 import '../../../global/widgets/widgets.dart';
 import 'add_edit_transaction_screen.dart';
 
 // Features
+import '../../balance_transfer/balance_transfer.dart';
 import '../../books/books.dart';
 
 class TransactionsScreen extends ConsumerWidget {
@@ -67,22 +68,65 @@ class TransactionsScreen extends ConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: OpenContainer(
-        openElevation: 0,
-        closedElevation: 5,
-        transitionType: ContainerTransitionType.fadeThrough,
-        closedColor: AppColors.primaryColor,
-        middleColor: AppColors.lightPrimaryColor,
-        closedShape: RoundedRectangleBorder(
-          borderRadius: Corners.rounded(50),
-        ),
-        tappable: false,
-        transitionDuration: Durations.medium,
-        closedBuilder: (ctx, openFunction) => AddTransactionFab(
-          onPressed: openFunction,
-        ),
-        openBuilder: (ctx, closeFunction) => AddEditTransactionScreen(
-          onPressed: closeFunction,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SizedBox(
+        height: 55,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Balance transfer fab
+            OpenContainer(
+              openElevation: 0,
+              closedElevation: 5,
+              transitionType: ContainerTransitionType.fadeThrough,
+              middleColor: AppColors.lightPrimaryColor,
+              closedShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  bottomLeft: Radius.circular(50),
+                ),
+              ),
+              tappable: false,
+              transitionDuration: Durations.medium,
+              closedBuilder: (ctx, openFunction) => SizedBox(
+                height: 55,
+                child: AddBalanceTransferFab(onPressed: openFunction),
+              ),
+              openBuilder: (ctx, closeFunction) => AddEditBalanceTransferScreen(
+                onPressed: closeFunction,
+              ),
+            ),
+      
+            // Divider
+            const VerticalDivider(
+              color: Colors.white,
+              thickness: 1,
+              width: 1,
+            ),
+      
+            // Add transaction fab
+            OpenContainer(
+              openElevation: 0,
+              closedElevation: 5,
+              transitionType: ContainerTransitionType.fadeThrough,
+              middleColor: AppColors.lightPrimaryColor,
+              closedShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
+                ),
+              ),
+              tappable: false,
+              transitionDuration: Durations.medium,
+              closedBuilder: (ctx, openFunction) => SizedBox(
+                height: 55,
+                child: AddIncomeExpenseFab(onPressed: openFunction),
+              ),
+              openBuilder: (ctx, closeFunction) => AddEditTransactionScreen(
+                onPressed: closeFunction,
+              ),
+            ),
+          ],
         ),
       ),
     );

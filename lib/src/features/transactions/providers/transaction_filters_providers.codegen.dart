@@ -65,7 +65,9 @@ TransactionFiltersModel? transactionFilters(TransactionFiltersRef ref) {
 
   if (expenseMonthFilter == null &&
       expenseYearFilter == null &&
-      categoryFilter == null) {
+      categoryFilter == null &&
+      !ieOnly &&
+      !btOnly) {
     return null;
   }
 

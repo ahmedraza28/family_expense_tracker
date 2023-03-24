@@ -30,7 +30,7 @@ class SearchAndFiltersBar extends ConsumerWidget {
                   .update((_) => searchTerm ?? ''),
               hintText: 'Search by name',
               hintStyle: const TextStyle(
-                color: AppColors.textGreyColor,
+                color: AppColors.textLightGreyColor,
               ),
               keyboardType: TextInputType.name,
               textInputAction: TextInputAction.search,
@@ -60,12 +60,21 @@ class SearchAndFiltersBar extends ConsumerWidget {
               height: 47,
               width: 47,
               decoration: const BoxDecoration(
-                color: AppColors.surfaceColor,
+                color: AppColors.lightBackgroundColor,
                 borderRadius: Corners.rounded7,
               ),
-              child: const Icon(
-                Icons.tune_rounded,
-                color: AppColors.textLightGreyColor,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final hasFilters = ref.watch(
+                    transactionFiltersProvider.select((value) => value != null),
+                  );
+                  return Icon(
+                    Icons.tune_rounded,
+                    color: hasFilters
+                        ? AppColors.primaryColor
+                        : AppColors.textLightGreyColor,
+                  );
+                },
               ),
             ),
           ),

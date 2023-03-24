@@ -47,9 +47,15 @@ class TransactionsRepository {
                 query = query.where('date', isGreaterThanOrEqualTo: date);
               }
               if (incomeExpenseOnly) {
-                query = query.where(IncomeExpenseModel.categoryIdField, isNull: false);
+                query = query.where(
+                  IncomeExpenseModel.categoryIdField,
+                  isNull: false,
+                );
               } else if (balanceTransferOnly) {
-                query = query.where(IncomeExpenseModel.categoryIdField, isNull: true);
+                query = query.where(
+                  IncomeExpenseModel.categoryIdField,
+                  isNull: true,
+                );
               }
               if (categoryId != null) {
                 query = query.where(
@@ -96,16 +102,7 @@ class MockTransactionsRepository implements TransactionsRepository {
     bool incomeExpenseOnly = false,
     bool balanceTransferOnly = false,
   }) {
-    final wallet = <String, dynamic>{
-      'id': 1,
-      'name': 'Wallet',
-      'currency': <String, dynamic>{
-        'name': 'PKR',
-        'symbol': 'Rs',
-      },
-      'image_url': 'https://i.imgur.com/1J8ZQYt.png',
-      'balance': 1000,
-    };
+    const walletId = 1;
     final nowDate = DateTime.now();
     final todayDate = nowDate.toDateString('yyyy-MM-dd');
     final yesterDate =
@@ -120,7 +117,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 100,
         'description': 'Gatorades crate',
         'date': todayDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
@@ -128,23 +125,23 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 200,
         'description': "McDonald's",
         'date': todayDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
         'amount': 300,
         'date': todayDate,
-        'note': 'Ghar kharcha',
-        'src_wallet': wallet,
-        'dest_wallet': wallet,
+        'description': 'Ghar kharcha',
+        'src_wallet_id': walletId,
+        'dest_wallet_id': walletId,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 4,
         'amount': 400,
         'description': 'Ek wagon fuel',
         'date': yesterDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 2,
       }),
       TransactionModel.fromJson(<String, dynamic>{
@@ -152,7 +149,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 500,
         'description': 'Civic service',
         'date': yesterDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 2,
       }),
       TransactionModel.fromJson(<String, dynamic>{
@@ -160,7 +157,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 100,
         'description': '10Pearls',
         'date': yesterDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 3,
       }),
       TransactionModel.fromJson(<String, dynamic>{
@@ -168,23 +165,23 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 200,
         'description': 'Food',
         'date': yesterDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
         'amount': 300,
         'date': lastMonthDate,
-        'note': 'Ghar kharcha',
-        'src_wallet': wallet,
-        'dest_wallet': wallet,
+        'description': 'Ghar kharcha',
+        'src_wallet_id': walletId,
+        'dest_wallet_id': walletId,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 4,
         'amount': 400,
         'description': 'Shopping',
         'date': yesterDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
@@ -192,7 +189,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 500,
         'description': 'Entertainment',
         'date': lastMonthDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
@@ -200,7 +197,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 100,
         'description': 'Drinks',
         'date': lastMonthDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
@@ -208,23 +205,23 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 200,
         'description': 'Food',
         'date': lastMonthDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
         'amount': 300,
         'date': twoDaysAgoDate,
-        'note': 'Ghar kharcha',
-        'src_wallet': wallet,
-        'dest_wallet': wallet,
+        'description': 'Ghar kharcha',
+        'src_wallet_id': walletId,
+        'dest_wallet_id': walletId,
       }),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 4,
         'amount': 400,
         'description': 'Shopping',
         'date': twoDaysAgoDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
       TransactionModel.fromJson(<String, dynamic>{
@@ -232,7 +229,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 500,
         'description': 'Entertainment',
         'date': twoDaysAgoDate,
-        'wallet': wallet,
+        'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
     ];

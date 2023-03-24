@@ -22,6 +22,8 @@ class FiltersBottomSheet extends ConsumerWidget {
       ..invalidate(expenseMonthFilterProvider)
       ..invalidate(expenseYearFilterProvider)
       ..invalidate(categoryFilterProvider)
+      ..invalidate(balanceTransferOnlyFilterProvider)
+      ..invalidate(incomeExpenseOnlyFilterProvider)
       ..invalidate(transactionFiltersProvider);
     AppRouter.pop();
   }
@@ -43,7 +45,7 @@ class FiltersBottomSheet extends ConsumerWidget {
             );
             return hasFilters ? child! : const SizedBox(width: 50, height: 30);
           },
-          child: GestureDetector(
+          child: InkWell(
             onTap: () => _onResetTap(ref),
             child: const Padding(
               padding: EdgeInsets.all(15),

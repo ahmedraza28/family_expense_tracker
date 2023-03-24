@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
+import '../../../helpers/extensions/extensions.dart';
 import '../providers/budget_filters_providers.codegen.dart';
 
 // Helpers
@@ -16,30 +17,28 @@ class BudgetFiltersBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final today = DateTime.now();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Month Filter Value
           LabeledWidget(
             label: 'Month',
             child: CustomText.body(
-              ref.watch(budgetMonthFilterProvider).toString(),
+              "${ref.watch(budgetMonthFilterProvider) ?? today.toDateString('MMMM')}",
             ),
           ),
-
-          Insets.gapW20,
 
           // Year Filter Value
           LabeledWidget(
             label: 'Year',
             child: CustomText.body(
-              ref.watch(budgetYearFilterProvider).toString(),
+              '${ref.watch(budgetYearFilterProvider) ?? today.year}',
             ),
           ),
-
-          Insets.expand,
 
           // Filters Button
           InkWell(
@@ -61,12 +60,21 @@ class BudgetFiltersBar extends ConsumerWidget {
               height: 47,
               width: 47,
               decoration: const BoxDecoration(
-                color: AppColors.surfaceColor,
+                color: AppColors.lightBackgroundColor,
                 borderRadius: Corners.rounded7,
               ),
-              child: const Icon(
-                Icons.tune_rounded,
-                color: AppColors.textLightGreyColor,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final hasFilters = ref.watch(
+                    budgetFiltersProvider.select((value) => value != null),
+                  );
+                  return Icon(
+                    Icons.tune_rounded,
+                    color: hasFilters
+                        ? AppColors.primaryColor
+                        : AppColors.textLightGreyColor,
+                  );
+                },
               ),
             ),
           ),

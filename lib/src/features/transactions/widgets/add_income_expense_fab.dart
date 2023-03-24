@@ -10,10 +10,10 @@ import '../providers/income_expense_provider.codegen.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-class AddTransactionFab extends ConsumerWidget {
+class AddIncomeExpenseFab extends ConsumerWidget {
   final VoidCallback onPressed;
 
-  const AddTransactionFab({
+  const AddIncomeExpenseFab({
     required this.onPressed,
     super.key,
   });
@@ -46,7 +46,16 @@ class AddTransactionFab extends ConsumerWidget {
         ),
         orElse: () => FloatingActionButton.extended(
           elevation: 0,
+          hoverElevation: 0,
+          hoverColor: Colors.black12,
           backgroundColor: AppColors.primaryColor,
+          heroTag: 'incomeExpense',
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(50),
+              bottomRight: Radius.circular(50),
+            ),
+          ),
           onPressed: onPressed,
           label: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

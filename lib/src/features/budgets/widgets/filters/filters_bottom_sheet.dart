@@ -43,7 +43,7 @@ class FiltersBottomSheet extends ConsumerWidget {
             );
             return hasFilters ? child! : const SizedBox(width: 50, height: 30);
           },
-          child: GestureDetector(
+          child: InkWell(
             onTap: () => _onResetTap(ref),
             child: const Padding(
               padding: EdgeInsets.all(15),

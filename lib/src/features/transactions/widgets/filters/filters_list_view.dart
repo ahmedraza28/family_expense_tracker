@@ -47,44 +47,48 @@ class FiltersListView extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Balance Transfer Checkbox
-            LabeledWidget(
-              label: 'Balance Transfer Only',
-              labelDirection: Axis.horizontal,
-              labelPosition: LabelPosition.end,
-              labelGap: 10,
-              labelStyle: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textBlackColor,
-              ),
-              useDarkerLabel: true,
-              child: Checkbox(
-                value: ref.watch(balanceTransferOnlyFilterProvider),
-                onChanged: (value) => ref
-                    .read(balanceTransferOnlyFilterProvider.notifier)
-                    .state = value!,
-              ),
+            Consumer(
+              builder: (context, ref, child) {
+                final isChecked = ref.watch(balanceTransferOnlyFilterProvider);
+                return LabeledWidget(
+                  label: 'Balance Transfer',
+                  labelDirection: Axis.horizontal,
+                  labelPosition: LabelPosition.end,
+                  labelGap: 0,
+                  useDarkerLabel: true,
+                  child: Checkbox(
+                    value: isChecked,
+                    onChanged: (value) => ref
+                        .read(balanceTransferOnlyFilterProvider.notifier)
+                        .state = value!,
+                  ),
+                );
+              },
             ),
 
             // Income Expense Checkbox
-            LabeledWidget(
-              label: 'Income Expense Only',
-              labelDirection: Axis.horizontal,
-              labelPosition: LabelPosition.end,
-              labelGap: 10,
-              labelStyle: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textBlackColor,
-              ),
-              useDarkerLabel: true,
-              child: Checkbox(
-                value: ref.watch(incomeExpenseOnlyFilterProvider),
-                onChanged: (value) => ref
-                    .read(incomeExpenseOnlyFilterProvider.notifier)
-                    .state = value!,
-              ),
+            Consumer(
+              builder: (context, ref, child) {
+                final isChecked = ref.watch(incomeExpenseOnlyFilterProvider);
+                return LabeledWidget(
+                  label: 'Income Expense',
+                  labelDirection: Axis.horizontal,
+                  labelPosition: LabelPosition.end,
+                  labelGap: 0,
+                  useDarkerLabel: true,
+                  child: Checkbox(
+                    value: isChecked,
+                    onChanged: (value) => ref
+                        .read(incomeExpenseOnlyFilterProvider.notifier)
+                        .state = value!,
+                  ),
+                );
+              },
             ),
           ],
         ),
+
+        Insets.gapH20,
 
         // Month Dropdown Filter
         LabeledWidget(

@@ -1,4 +1,3 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Models
@@ -12,19 +11,14 @@ part 'balance_transfer_provider.codegen.g.dart';
 
 /// A provider used to access instance of this service
 @riverpod
-BalanceTransferProvider balanceTransfer(BalanceTransferRef ref) {
-  final bookId = ref.watch(selectedBookProvider)!.id!;
-  return BalanceTransferProvider(ref, bookId: bookId);
-}
+class BalanceTransfer extends _$BalanceTransfer {
+  late final int bookId;
 
-class BalanceTransferProvider {
-  final Ref _ref;
-  final int bookId;
-
-  BalanceTransferProvider(
-    this._ref, {
-    required this.bookId,
-  });
+  @override
+  FutureOr<void> build() {
+    bookId = ref.watch(selectedBookProvider)!.id!;
+    return null;
+  }
 
   void addTransaction({
     required double amount,
@@ -41,13 +35,13 @@ class BalanceTransferProvider {
       date: date,
       description: description,
     );
-    _ref
+    ref
         .read(transactionsRepositoryProvider)
         .addTransaction(bookId: bookId, body: transaction.toJson());
   }
 
   void updateTransaction(BalanceTransferModel transaction) {
-    _ref.read(transactionsRepositoryProvider).updateTransaction(
+    ref.read(transactionsRepositoryProvider).updateTransaction(
           bookId: bookId,
           transactionId: transaction.id!,
           changes: transaction.toJson(),
