@@ -81,7 +81,9 @@ class TransactionsScreen extends ConsumerWidget {
         closedBuilder: (ctx, openFunction) => AddTransactionFab(
           onPressed: openFunction,
         ),
-        openBuilder: (ctx, closeFunction) => const AddEditTransactionScreen(),
+        openBuilder: (ctx, closeFunction) => AddEditTransactionScreen(
+          onPressed: closeFunction,
+        ),
       ),
     );
   }

@@ -4,6 +4,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
+// Providers
+import '../providers/income_expense_provider.codegen.dart';
+
+// Widgets
+import '../../../global/widgets/widgets.dart';
+
 class AddTransactionFab extends ConsumerWidget {
   final VoidCallback onPressed;
 
@@ -14,50 +20,56 @@ class AddTransactionFab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ref.listen<FutureState<String>>(
-    //   profileHangoutProvider,
-    //   (_, next) => next.whenOrNull(
-    //     data: (message) => AppUtils.showFlushBar(
-    //       context: context,
-    //       message: message,
-    //       icon: Icons.check_circle_rounded,
-    //       iconColor: Colors.green,
-    //     ),
-    //     failed: (reason) => AppUtils.showFlushBar(
-    //       context: context,
-    //       message: reason,
-    //     ),
-    //   ),
-    // );
-    // final hangoutFuture = ref.watch(profileHangoutProvider);
+    ref.listen(
+      incomeExpenseProvider,
+      (_, next) => next.whenOrNull(
+        data: (_) => AppUtils.showFlushBar(
+          context: context,
+          message: 'Transaction added successfully',
+          icon: Icons.check_circle_rounded,
+          iconColor: Colors.green,
+        ),
+        error: (error, stack) => AppUtils.showFlushBar(
+          context: context,
+          message: error.toString(),
+          iconColor: Colors.red,
+        ),
+      ),
+    );
+    final transactionFuture = ref.watch(incomeExpenseProvider);
     return SizedBox(
       height: 55,
       width: 140,
-      child: FloatingActionButton.extended(
-        elevation: 0,
-        backgroundColor: AppColors.primaryColor,
-        onPressed: onPressed,
-        label: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            // Add icon
-            Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-
-            Insets.gapW5,
-
-            // Label
-            Text(
-              'Create New',
-              style: TextStyle(
-                fontSize: 14,
+      child: transactionFuture.maybeWhen(
+        loading: () => const CustomCircularLoader(
+          color: Colors.white,
+        ),
+        orElse: () => FloatingActionButton.extended(
+          elevation: 0,
+          backgroundColor: AppColors.primaryColor,
+          onPressed: onPressed,
+          label: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              // Add icon
+              Icon(
+                Icons.add,
                 color: Colors.white,
-                letterSpacing: 0.3,
               ),
-            )
-          ],
+
+              Insets.gapW5,
+
+              // Label
+              Text(
+                'Create New',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                  letterSpacing: 0.3,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

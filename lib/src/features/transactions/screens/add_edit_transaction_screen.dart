@@ -25,10 +25,12 @@ import '../../wallets/wallets.dart';
 
 class AddEditTransactionScreen extends HookConsumerWidget {
   final IncomeExpenseModel? transaction;
+  final VoidCallback? onPressed;
 
   const AddEditTransactionScreen({
     super.key,
     this.transaction,
+    this.onPressed,
   });
 
   @override
@@ -60,7 +62,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       if (transaction == null) {
-        ref.read(incomeExpenseProvider).addTransaction(
+        ref.read(incomeExpenseProvider.notifier).addTransaction(
               amount: double.parse(amountController.text),
               wallet: walletController.value!,
               date: dateController.value!,
@@ -75,9 +77,11 @@ class AddEditTransactionScreen extends HookConsumerWidget {
           categoryId: categoryController.value!.id!,
           description: descriptionController.text,
         );
-        ref.read(incomeExpenseProvider).updateTransaction(newTransaction);
+        ref
+            .read(incomeExpenseProvider.notifier)
+            .updateTransaction(newTransaction);
       }
-      AppRouter.pop();
+      (onPressed ?? AppRouter.pop).call();
     }
 
     return Scaffold(
