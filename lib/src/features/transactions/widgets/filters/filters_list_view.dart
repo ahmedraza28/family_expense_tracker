@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
 import '../../../../helpers/constants/constants.dart';
+import '../../enums/transaction_type_enum.dart';
 
 // Providers
 import '../../providers/transaction_filters_providers.codegen.dart';
@@ -43,49 +44,59 @@ class FiltersListView extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
         // Checkboxes Row
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Balance Transfer Checkbox
-            Consumer(
-              builder: (context, ref, child) {
-                final isChecked = ref.watch(balanceTransferOnlyFilterProvider);
-                return LabeledWidget(
-                  label: 'Balance Transfer',
+        Consumer(
+          builder: (context, ref, child) {
+            final types = ref.watch(transactionTypesFilterProvider);
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Transfer Checkbox
+                LabeledWidget(
+                  label: 'Transfer',
                   labelDirection: Axis.horizontal,
                   labelPosition: LabelPosition.end,
                   labelGap: 0,
                   useDarkerLabel: true,
                   child: Checkbox(
-                    value: isChecked,
+                    value: types.contains(TransactionType.transfer),
                     onChanged: (value) => ref
-                        .read(balanceTransferOnlyFilterProvider.notifier)
-                        .state = value!,
+                        .read(transactionTypesFilterProvider.notifier)
+                        .toggle(TransactionType.transfer, value!),
                   ),
-                );
-              },
-            ),
+                ),
 
-            // Income Expense Checkbox
-            Consumer(
-              builder: (context, ref, child) {
-                final isChecked = ref.watch(incomeExpenseOnlyFilterProvider);
-                return LabeledWidget(
-                  label: 'Income Expense',
+                // Income Checkbox
+                LabeledWidget(
+                  label: 'Income',
                   labelDirection: Axis.horizontal,
                   labelPosition: LabelPosition.end,
                   labelGap: 0,
                   useDarkerLabel: true,
                   child: Checkbox(
-                    value: isChecked,
+                    value: types.contains(TransactionType.income),
                     onChanged: (value) => ref
-                        .read(incomeExpenseOnlyFilterProvider.notifier)
-                        .state = value!,
+                        .read(transactionTypesFilterProvider.notifier)
+                        .toggle(TransactionType.income, value!),
                   ),
-                );
-              },
-            ),
-          ],
+                ),
+
+                // Expense Checkbox
+                LabeledWidget(
+                  label: 'Expense',
+                  labelDirection: Axis.horizontal,
+                  labelPosition: LabelPosition.end,
+                  labelGap: 0,
+                  useDarkerLabel: true,
+                  child: Checkbox(
+                    value: types.contains(TransactionType.expense),
+                    onChanged: (value) => ref
+                        .read(transactionTypesFilterProvider.notifier)
+                        .toggle(TransactionType.expense, value!),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
 
         Insets.gapH20,

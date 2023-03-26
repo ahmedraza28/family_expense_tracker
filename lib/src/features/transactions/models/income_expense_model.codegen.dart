@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/typedefs.dart';
+import '../enums/transaction_type_enum.dart';
 
 // Models
 import 'transaction_model.dart';
@@ -25,6 +26,7 @@ class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
   const factory IncomeExpenseModel({
     @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
     required double amount,
+    required TransactionType type,
     required int walletId,
     required int categoryId,
     @JsonKey(toJson: AppUtils.dateToJson) required DateTime date,
@@ -35,7 +37,4 @@ class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
 
   factory IncomeExpenseModel.fromJson(JSON json) =>
       _$IncomeExpenseModelFromJson(json);
-
-  @override
-  bool get isBalanceTransfer => false;
 }

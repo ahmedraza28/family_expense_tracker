@@ -1,13 +1,13 @@
+import '../enums/transaction_type_enum.dart';
+
 class TransactionFiltersModel {
   final int? year;
   final int? month;
   final int? categoryId;
-  final bool incomeExpenseOnly;
-  final bool balanceTransferOnly;
+  final List<TransactionType>? types;
 
   TransactionFiltersModel({
-    required this.incomeExpenseOnly,
-    required this.balanceTransferOnly,
+    this.types,
     this.year,
     this.month,
     this.categoryId,
@@ -15,6 +15,6 @@ class TransactionFiltersModel {
 
   @override
   String toString() {
-    return 'TransactionFiltersModel(year: $year, month: $month, categoryId: $categoryId, incomeExpenseOnly: $incomeExpenseOnly, balanceTransferOnly: $balanceTransferOnly)';
+    return 'TransactionFiltersModel(year: $year, month: $month, categoryId: $categoryId, type: ${types?.map((e) => e.name).toList()})';
   }
 }

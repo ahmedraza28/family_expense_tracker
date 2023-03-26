@@ -8,7 +8,7 @@ import '../../../helpers/constants/constants.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import '../widgets/add_category_fab.dart';
-import '../widgets/category_type_tabs.dart';
+import '../widgets/categories_list.dart';
 import 'add_edit_category_screen.dart';
 
 class CategoriesScreen extends ConsumerWidget {
@@ -35,7 +35,7 @@ class CategoriesScreen extends ConsumerWidget {
             ],
           ),
         ),
-        body: const CategoryTypesTabViews(),
+        body: const CategoriesList(),
         floatingActionButton: OpenContainer(
           openElevation: 0,
           closedElevation: 5,

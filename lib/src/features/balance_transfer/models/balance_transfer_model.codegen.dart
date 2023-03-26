@@ -23,6 +23,7 @@ class BalanceTransferModel extends TransactionModel
     required DateTime date,
     required int srcWalletId,
     required int destWalletId,
+    @Default(TransactionType.transfer) TransactionType type,
     String? description,
   }) = _BalanceTransferModel;
 
@@ -30,7 +31,4 @@ class BalanceTransferModel extends TransactionModel
 
   factory BalanceTransferModel.fromJson(JSON json) =>
       _$BalanceTransferModelFromJson(json);
-
-  @override
-  bool get isBalanceTransfer => true;
 }

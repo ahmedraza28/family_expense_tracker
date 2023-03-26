@@ -28,6 +28,23 @@ class AppUtils {
     return _colors[randomizer(rInt).nextInt(_colors.length)];
   }
 
+  /// A utility method to convert a color to a hex string
+  static String toColorHex(Color color) {
+    return '#${color.value.toRadixString(16).substring(2)}';
+  }
+
+  /// A utility method to convert a hex string to a color
+  /// If the hex string is invalid, returns [Colors.black]
+  static Color fromColorHex(String hex) {
+    if (hex.length == 7) {
+      return Color(int.parse(hex.substring(1, 7), radix: 16) + 0xFF000000);
+    } else if (hex.length == 9) {
+      return Color(int.parse(hex.substring(1, 9), radix: 16));
+    } else {
+      return Colors.black;
+    }
+  }
+
   /// A utility method to convert 0/1 to false/true
   static bool boolFromInt(int i) => i == 1;
 
@@ -128,8 +145,7 @@ class Regexes {
   static RegExp contactRegex = RegExp(r'^(4|[6-8])\d{7}$');
 
   /// The regular expression for validating ids in the app.
-  static RegExp idRegex =
-      RegExp(r'^([1-9]\d{8}|[1-9]\d{11})$');
+  static RegExp idRegex = RegExp(r'^([1-9]\d{8}|[1-9]\d{11})$');
 
   /// The regular expression for validating names in the app.
   static RegExp nameRegex = RegExp(r'^[a-z A-Z]+$');
@@ -138,8 +154,9 @@ class Regexes {
   static RegExp zipCodeRegex = RegExp(r'^\d{5}$');
 
   /// The regular expression for validating credit card numbers in the app.
-  static RegExp creditCardNumberRegex =
-      RegExp(r'^(?:4[0-9]{12}(?:[0-9]{3})?|(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$');
+  static RegExp creditCardNumberRegex = RegExp(
+    r'^(?:4[0-9]{12}(?:[0-9]{3})?|(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$',
+  );
 
   /// The regular expression for validating credit card CVV in the app.
   static RegExp creditCardCVVRegex = RegExp(r'^[0-9]{3}$');

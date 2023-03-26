@@ -22,8 +22,7 @@ class FiltersBottomSheet extends ConsumerWidget {
       ..invalidate(expenseMonthFilterProvider)
       ..invalidate(expenseYearFilterProvider)
       ..invalidate(categoryFilterProvider)
-      ..invalidate(balanceTransferOnlyFilterProvider)
-      ..invalidate(incomeExpenseOnlyFilterProvider)
+      ..invalidate(transactionTypesFilterProvider)
       ..invalidate(transactionFiltersProvider);
     AppRouter.pop();
   }

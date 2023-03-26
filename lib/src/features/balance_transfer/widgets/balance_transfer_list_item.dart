@@ -43,12 +43,12 @@ class BalanceTransferListItem extends ConsumerWidget {
           borderRadius: Corners.rounded15,
           color: Colors.white,
         ),
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(10),
         child: Row(
           children: [
             // Category icon
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 borderRadius: Corners.rounded9,
                 color: color.withOpacity(0.2),
@@ -60,7 +60,7 @@ class BalanceTransferListItem extends ConsumerWidget {
               ),
             ),
 
-            Insets.gapW15,
+            Insets.gapW10,
 
             // Transfer details
             Expanded(
@@ -97,11 +97,14 @@ class BalanceTransferListItem extends ConsumerWidget {
                     ],
                   ),
 
-                  // Category Name
-                  CustomText.subtitle(
-                    balanceTransfer.description ?? '',
-                    color: AppColors.textLightGreyColor,
-                  ),
+                  // Description
+                  if (balanceTransfer.description != null) ...[
+                    Insets.gapH3,
+                    CustomText.subtitle(
+                      balanceTransfer.description!,
+                      color: AppColors.textLightGreyColor,
+                    ),
+                  ]
                 ],
               ),
             ),

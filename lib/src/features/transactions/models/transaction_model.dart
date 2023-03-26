@@ -2,6 +2,7 @@
 
 // Helpers
 import '../../../helpers/typedefs.dart';
+import '../enums/transaction_type_enum.dart';
 
 // Models
 import 'income_expense_model.codegen.dart';
@@ -16,13 +17,13 @@ abstract class TransactionModel {
     return description?.toLowerCase().contains(searchTerm) ?? false;
   }
 
-  bool get isBalanceTransfer;
+  bool get isBalanceTransfer => type == TransactionType.transfer;
+  TransactionType get type;
   DateTime get date;
   String? get description;
 
   factory TransactionModel.fromJson(JSON json) {
-    final isBalanceTransfer =
-        !json.containsKey(IncomeExpenseModel.categoryIdField);
+    final isBalanceTransfer = json['type'] == TransactionType.transfer.name;
 
     return isBalanceTransfer
         ? BalanceTransferModel.fromJson(json)

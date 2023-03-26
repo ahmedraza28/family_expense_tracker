@@ -4,9 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
-// Enums
-import '../enums/category_type_enum.dart';
-
 // Providers
 import '../providers/categories_provider.codegen.dart';
 
@@ -15,16 +12,11 @@ import '../../../global/widgets/widgets.dart';
 import 'category_list_item.dart';
 
 class CategoriesList extends ConsumerWidget {
-  final CategoryType categoryType;
-
-  const CategoriesList({
-    required this.categoryType,
-    super.key,
-  });
+  const CategoriesList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoriesStream = ref.watch(categoriesByTypeProvider(categoryType));
+    final categoriesStream = ref.watch(categoriesStreamProvider);
     return categoriesStream.maybeWhen(
       data: (categories) => ListView.separated(
         itemCount: categories.length,

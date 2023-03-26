@@ -28,9 +28,8 @@ class BudgetListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final seed = budget.categoryId;
-    final color = AppUtils.getRandomColor(seed);
     final used =
-        AppUtils.randomizer().nextInt(budget.amount.toInt()).toDouble();
+        AppUtils.randomizer(seed).nextInt(budget.amount.toInt()).toDouble();
     final fraction = used / budget.amount;
     return Container(
       padding: const EdgeInsets.fromLTRB(15, 15, 15, 12),
@@ -52,9 +51,16 @@ class BudgetListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Icon in a circular progress bar
-              _CircularProgressIcon(
-                fraction: fraction,
-                iconColor: color,
+              Consumer(
+                builder: (context, ref, _) {
+                  final category = ref.watch(
+                    categoryByIdProvider(budget.categoryId),
+                  )!;
+                  return _CircularProgressIcon(
+                    fraction: fraction,
+                    iconColor: category.color,
+                  );
+                },
               ),
 
               Insets.gapW15,
@@ -74,24 +80,28 @@ class BudgetListItem extends StatelessWidget {
   }
 }
 
-class _NameAndEditRow extends ConsumerWidget {
+class _NameAndEditRow extends StatelessWidget {
   const _NameAndEditRow({required this.budget});
 
   final BudgetModel budget;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final category = ref.watch(
-      categoryByIdProvider(budget.categoryId),
-    )!;
+  Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Category name
         Expanded(
-          child: CustomText.body(
-            category.name,
+          child: Consumer(
+            builder: (context, ref, _) {
+              final category = ref.watch(
+                categoryByIdProvider(budget.categoryId),
+              )!;
+              return CustomText.body(
+                category.name,
+              );
+            },
           ),
         ),
 
@@ -124,12 +134,12 @@ class _CircularProgressIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return RadialProgress(
       progressValue: fraction,
-      height: 80, 
+      height: 80,
       showThumb: false,
       width: 80,
       style: PainterStyle(
         strokeWidth: 6,
-        startClr: iconColor.withOpacity(0.6),
+        startClr: iconColor.withOpacity(0.8),
         endClr: iconColor,
       ),
       child: Container(

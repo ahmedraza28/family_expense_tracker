@@ -9,9 +9,6 @@ import '../../../helpers/form_validator.dart';
 // Routing
 import '../../../config/routing/routing.dart';
 
-// Enums
-import '../enums/category_type_enum.dart';
-
 // Models
 import '../models/category_model.codegen.dart';
 
@@ -20,7 +17,6 @@ import '../providers/categories_provider.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
-import '../widgets/category_type_selection_cards.dart';
 
 class AddEditCategoryScreen extends HookConsumerWidget {
   final CategoryModel? category;
@@ -38,8 +34,8 @@ class AddEditCategoryScreen extends HookConsumerWidget {
     final categoryNameController = useTextEditingController(
       text: category?.name ?? '',
     );
-    final typeController = useValueNotifier<CategoryType>(
-      category?.type ?? CategoryType.income,
+    final colorController = useValueNotifier<Color>(
+      category?.color ?? AppColors.primaryColor,
     );
 
     void onSave() {
@@ -48,13 +44,13 @@ class AddEditCategoryScreen extends HookConsumerWidget {
       if (category == null) {
         ref.read(categoriesProvider.notifier).addCategory(
               name: categoryNameController.text,
-              type: typeController.value,
+              color: colorController.value,
               imageUrl: '',
             );
       } else {
         final newCategory = category!.copyWith(
           name: categoryNameController.text,
-          type: typeController.value,
+          color: colorController.value,
           imageUrl: '',
         );
         ref.read(categoriesProvider.notifier).updateCategory(
@@ -105,17 +101,6 @@ class AddEditCategoryScreen extends HookConsumerWidget {
                 keyboardType: TextInputType.name,
                 textInputAction: TextInputAction.next,
                 validator: FormValidator.nameValidator,
-              ),
-
-              Insets.gapH20,
-
-              // Category Type
-              LabeledWidget(
-                label: 'Category Type',
-                useDarkerLabel: true,
-                child: CategoryTypeSelectionCards(
-                  controller: typeController,
-                ),
               ),
 
               Insets.expand,

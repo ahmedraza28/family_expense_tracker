@@ -10,13 +10,15 @@ import '../../../config/routing/routing.dart';
 import '../models/income_expense_model.codegen.dart';
 
 // Helpers
+import '../enums/transaction_type_enum.dart';
 import '../../../helpers/constants/constants.dart';
-
-// Widgets
-import '../../../global/widgets/widgets.dart';
 
 // Providers
 import '../providers/income_expense_provider.codegen.dart';
+
+// Widgets
+import '../../../global/widgets/widgets.dart';
+import '../widgets/transaction_type_selection_cards.dart';
 
 // Features
 import '../../calculator/calculator.dart';
@@ -57,6 +59,9 @@ class AddEditTransactionScreen extends HookConsumerWidget {
     final walletTextController = useTextEditingController(
       text: walletController.value?.name ?? '',
     );
+    final typeController = useValueNotifier<TransactionType?>(
+      transaction?.type ?? TransactionType.expense,
+    );
 
     void onSave() {
       if (!formKey.currentState!.validate()) return;
@@ -66,6 +71,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               amount: double.parse(amountController.text),
               wallet: walletController.value!,
               date: dateController.value!,
+              type: typeController.value!,
               category: categoryController.value!,
               description: descriptionController.text,
             );
@@ -74,6 +80,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
           amount: double.parse(amountController.text),
           walletId: walletController.value!.id!,
           date: dateController.value!,
+          type: typeController.value!,
           categoryId: categoryController.value!.id!,
           description: descriptionController.text,
         );
@@ -133,6 +140,17 @@ class AddEditTransactionScreen extends HookConsumerWidget {
                   controller: amountController,
                   enabled: false,
                   floatingText: 'Amount',
+                ),
+              ),
+
+              Insets.gapH20,
+
+              // Type Selection Cards
+              LabeledWidget(
+                label: 'Transaction Type',
+                useDarkerLabel: true,
+                child: TransactionTypeSelectionCards(
+                  controller: typeController,
                 ),
               ),
 

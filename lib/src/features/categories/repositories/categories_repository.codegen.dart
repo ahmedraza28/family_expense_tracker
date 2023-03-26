@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Core
@@ -5,9 +6,6 @@ import '../../../core/core.dart';
 
 // Helpers
 import '../../../helpers/typedefs.dart';
-
-// Enums
-import '../enums/category_type_enum.dart';
 
 // Models
 import '../models/category_model.codegen.dart';
@@ -68,19 +66,19 @@ class MockCategoriesRepository implements CategoriesRepository {
         id: 1,
         name: 'Food',
         imageUrl: 'https://picsum.photos/200/300',
-        type: CategoryType.expense,
+        color: Colors.amber,
       ),
       CategoryModel(
         id: 2,
         name: 'Petrol And Maintainance',
         imageUrl: 'https://picsum.photos/200/300',
-        type: CategoryType.expense,
+        color: Colors.blue,
       ),
       CategoryModel(
         id: 3,
         name: 'Salary',
         imageUrl: 'https://picsum.photos/200/300',
-        type: CategoryType.income,
+        color: Colors.green,
       ),
     ];
     return Stream.value(list);

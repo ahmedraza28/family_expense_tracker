@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
@@ -5,9 +7,6 @@ import '../../../helpers/extensions/extensions.dart';
 
 // Models
 import '../models/category_model.codegen.dart';
-
-// Enums
-import '../enums/category_type_enum.dart';
 
 // Repositories
 import '../repositories/categories_repository.codegen.dart';
@@ -18,23 +17,14 @@ import '../../books/books.dart';
 part 'categories_provider.codegen.g.dart';
 
 @Riverpod(keepAlive: true)
-Stream<List<CategoryModel>> _categoriesStream(_CategoriesStreamRef ref) {
+Stream<List<CategoryModel>> categoriesStream(CategoriesStreamRef ref) {
   final categoriesProv = ref.watch(categoriesProvider.notifier);
   return categoriesProv.getAllCategories();
 }
 
 @Riverpod(keepAlive: true)
-Future<List<CategoryModel>> categoriesByType(
-  CategoriesByTypeRef ref,
-  CategoryType type,
-) async {
-  final categories = await ref.watch(_categoriesStreamProvider.future);
-  return categories.where((category) => category.type == type).toList();
-}
-
-@Riverpod(keepAlive: true)
 Future<Map<int, CategoryModel>> categoriesMap(CategoriesMapRef ref) async {
-  final categories = await ref.watch(_categoriesStreamProvider.future);
+  final categories = await ref.watch(categoriesStreamProvider.future);
   return {for (var e in categories) e.id!: e};
 }
 
@@ -63,7 +53,7 @@ class Categories extends _$Categories {
   Future<void> addCategory({
     required String name,
     required String imageUrl,
-    required CategoryType type,
+    required Color color,
   }) async {
     state = const AsyncValue.loading();
 
@@ -71,7 +61,7 @@ class Categories extends _$Categories {
       id: null,
       name: name,
       imageUrl: imageUrl,
-      type: type,
+      color: color,
     );
 
     state = await state.makeGuardedRequest(

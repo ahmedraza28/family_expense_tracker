@@ -31,16 +31,15 @@ class TransactionsProvider {
     required this.bookId,
   });
 
-  Stream<List<TransactionModel>> getAllTransactions([TransactionFiltersModel? filters]) {
+  Stream<List<TransactionModel>> getAllTransactions([
+    TransactionFiltersModel? filters,
+  ]) {
     return _ref.watch(transactionsRepositoryProvider).getBookTransactions(
           bookId: bookId,
           categoryId: filters?.categoryId,
-          date: DateTime(
-            filters?.year ?? _currentDate.year,
-            filters?.month ?? _currentDate.month,
-          ),
-          incomeExpenseOnly: filters?.incomeExpenseOnly ?? false,
-          balanceTransferOnly: filters?.balanceTransferOnly ?? false,
+          year: filters?.year ?? _currentDate.year,
+          month: filters?.month ?? _currentDate.month,
+          transactionTypes: filters?.types?.map((e) => e.name).toList(),
         );
   }
 }

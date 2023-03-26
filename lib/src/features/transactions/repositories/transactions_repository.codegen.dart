@@ -6,13 +6,11 @@ import '../../../core/core.dart';
 // Helpers
 import '../../../helpers/extensions/datetime_extension.dart';
 import '../../../helpers/typedefs.dart';
+import '../enums/transaction_type_enum.dart';
 
 // Models
 import '../models/income_expense_model.codegen.dart';
 import '../models/transaction_model.dart';
-
-// Features
-import '../../balance_transfer/balance_transfer.dart';
 
 part 'transactions_repository.codegen.g.dart';
 
@@ -32,30 +30,32 @@ class TransactionsRepository {
   Stream<List<TransactionModel>> getBookTransactions({
     required int bookId,
     int? categoryId,
-    DateTime? date,
-    bool incomeExpenseOnly = false,
-    bool balanceTransferOnly = false,
+    int? day,
+    int? month,
+    int? year,
+    List<String>? transactionTypes,
   }) {
-    final hasQuery = categoryId != null || date != null;
+    final hasQuery = categoryId != null ||
+        transactionTypes != null ||
+        day != null ||
+        month != null ||
+        year != null;
     return _firestoreService.collectionStream<TransactionModel>(
       path: 'books/$bookId/transactions',
       queryBuilder: !hasQuery
           ? null
           : (query) {
-              if (date != null) {
-                // TODO(arafaysaleem): filter based only on month and year
-                query = query.where('date', isGreaterThanOrEqualTo: date);
+              if (year != null) {
+                query = query.where('year', isEqualTo: year);
               }
-              if (incomeExpenseOnly) {
-                query = query.where(
-                  IncomeExpenseModel.categoryIdField,
-                  isNull: false,
-                );
-              } else if (balanceTransferOnly) {
-                query = query.where(
-                  IncomeExpenseModel.categoryIdField,
-                  isNull: true,
-                );
+              if (month != null) {
+                query = query.where('month', isEqualTo: month);
+              }
+              if (day != null) {
+                query = query.where('day', isEqualTo: day);
+              }
+              if (transactionTypes != null) {
+                query = query.where('type', whereIn: transactionTypes);
               }
               if (categoryId != null) {
                 query = query.where(
@@ -98,9 +98,10 @@ class MockTransactionsRepository implements TransactionsRepository {
   Stream<List<TransactionModel>> getBookTransactions({
     required int bookId,
     int? categoryId,
-    DateTime? date,
-    bool incomeExpenseOnly = false,
-    bool balanceTransferOnly = false,
+    int? day,
+    int? month,
+    int? year,
+    List<String>? transactionTypes,
   }) {
     const walletId = 1;
     final nowDate = DateTime.now();
@@ -112,26 +113,19 @@ class MockTransactionsRepository implements TransactionsRepository {
     final lastMonthDate =
         nowDate.subtract(const Duration(days: 30)).toDateString('yyyy-MM-dd');
     final list = <TransactionModel>[
-      TransactionModel.fromJson(<String, dynamic>{
-        'id': 1,
-        'amount': 100,
-        'description': 'Gatorades crate',
-        'date': todayDate,
-        'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 1,
-      }),
-      TransactionModel.fromJson(<String, dynamic>{
-        'id': 2,
-        'amount': 200,
-        'description': "McDonald's",
-        'date': todayDate,
-        'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 1,
-      }),
+      IncomeExpenseModel(
+        id: 1,
+        amount: 100,
+        type: TransactionType.income,
+        walletId: walletId,
+        categoryId: 1,
+        date: nowDate,
+      ),
       TransactionModel.fromJson(<String, dynamic>{
         'id': 3,
         'amount': 300,
         'date': todayDate,
+        'type': TransactionType.transfer.name,
         'description': 'Ghar kharcha',
         'src_wallet_id': walletId,
         'dest_wallet_id': walletId,
@@ -139,6 +133,7 @@ class MockTransactionsRepository implements TransactionsRepository {
       TransactionModel.fromJson(<String, dynamic>{
         'id': 4,
         'amount': 400,
+        'type': TransactionType.expense.name,
         'description': 'Ek wagon fuel',
         'date': yesterDate,
         'wallet_id': walletId,
@@ -148,6 +143,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 5,
         'amount': 500,
         'description': 'Civic service',
+        'type': TransactionType.expense.name,
         'date': yesterDate,
         'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 2,
@@ -156,6 +152,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 1,
         'amount': 100,
         'description': '10Pearls',
+        'type': TransactionType.income.name,
         'date': yesterDate,
         'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 3,
@@ -165,6 +162,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 200,
         'description': 'Food',
         'date': yesterDate,
+        'type': TransactionType.expense.name,
         'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
@@ -172,6 +170,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'id': 3,
         'amount': 300,
         'date': lastMonthDate,
+        'type': TransactionType.transfer.name,
         'description': 'Ghar kharcha',
         'src_wallet_id': walletId,
         'dest_wallet_id': walletId,
@@ -181,6 +180,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 400,
         'description': 'Shopping',
         'date': yesterDate,
+        'type': TransactionType.expense.name,
         'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
@@ -189,6 +189,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 500,
         'description': 'Entertainment',
         'date': lastMonthDate,
+        'type': TransactionType.expense.name,
         'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
@@ -197,6 +198,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 100,
         'description': 'Drinks',
         'date': lastMonthDate,
+        'type': TransactionType.expense.name,
         'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
@@ -205,6 +207,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 200,
         'description': 'Food',
         'date': lastMonthDate,
+        'type': TransactionType.expense.name,
         'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
@@ -213,6 +216,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 300,
         'date': twoDaysAgoDate,
         'description': 'Ghar kharcha',
+        'type': TransactionType.transfer.name,
         'src_wallet_id': walletId,
         'dest_wallet_id': walletId,
       }),
@@ -221,6 +225,7 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 400,
         'description': 'Shopping',
         'date': twoDaysAgoDate,
+        'type': TransactionType.expense.name,
         'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
@@ -229,20 +234,24 @@ class MockTransactionsRepository implements TransactionsRepository {
         'amount': 500,
         'description': 'Entertainment',
         'date': twoDaysAgoDate,
+        'type': TransactionType.expense.name,
         'wallet_id': walletId,
         IncomeExpenseModel.categoryIdField: 1,
       }),
     ];
     return Stream.value(
       list.where((e) {
-        if (date != null) {
-          if (e.date.year != date.year || e.date.month != date.month) {
-            return false;
-          }
-        }
-        if (incomeExpenseOnly && e is BalanceTransferModel) {
+        if (year != null && e.date.year != year) {
           return false;
-        } else if (balanceTransferOnly && e is IncomeExpenseModel) {
+        }
+        if (month != null && e.date.month != month) {
+          return false;
+        }
+        if (day != null && e.date.day != day) {
+          return false;
+        }
+        if (transactionTypes != null &&
+            !transactionTypes.contains(e.type.name)) {
           return false;
         }
         if (categoryId != null && e is IncomeExpenseModel) {

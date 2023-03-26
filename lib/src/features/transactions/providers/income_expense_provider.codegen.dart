@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
 import '../../../helpers/extensions/extensions.dart';
+import '../enums/transaction_type_enum.dart';
 
 // Models
 import '../models/income_expense_model.codegen.dart';
@@ -31,6 +32,7 @@ class IncomeExpense extends _$IncomeExpense {
     required WalletModel wallet,
     required DateTime date,
     required CategoryModel category,
+    required TransactionType type,
     String? description,
   }) async {
     state = const AsyncValue.loading();
@@ -41,6 +43,7 @@ class IncomeExpense extends _$IncomeExpense {
       walletId: wallet.id!,
       categoryId: category.id!,
       date: date,
+      type: type,
       description: description,
     );
 

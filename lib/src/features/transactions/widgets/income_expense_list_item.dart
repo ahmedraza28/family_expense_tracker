@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
+import '../enums/transaction_type_enum.dart';
 import '../models/income_expense_model.codegen.dart';
 
 // Routing
@@ -30,9 +31,7 @@ class IncomeExpenseListItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final category = ref.watch(categoryByIdProvider(transaction.categoryId))!;
     final wallet = ref.watch(walletByIdProvider(transaction.walletId))!;
-    final isExpense = category.type == CategoryType.expense;
-    final seed = transaction.categoryId;
-    final color = AppUtils.getRandomColor(seed);
+    final isExpense = transaction.type == TransactionType.expense;
     return InkWell(
       onTap: () => AppRouter.push(
         AddEditTransactionScreen(transaction: transaction),
@@ -42,24 +41,24 @@ class IncomeExpenseListItem extends ConsumerWidget {
           borderRadius: Corners.rounded15,
           color: Colors.white,
         ),
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(10),
         child: Row(
           children: [
             // Category icon
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 borderRadius: Corners.rounded9,
-                color: color.withOpacity(0.2),
+                color: category.color.withOpacity(0.2),
               ),
               child: Icon(
                 Icons.monetization_on_rounded,
                 size: 20,
-                color: color,
+                color: category.color,
               ),
             ),
 
-            Insets.gapW15,
+            Insets.gapW10,
 
             // Transaction details
             Expanded(
@@ -67,23 +66,32 @@ class IncomeExpenseListItem extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Title
-                  CustomText.body(
-                    transaction.description ?? '',
-                    fontSize: 15,
-                  ),
+                  if (transaction.description != null) ...[
+                    CustomText.body(
+                      transaction.description ?? '',
+                      fontSize: 15,
+                    ),
+
+                    Insets.gapH3,
+                  ],
 
                   // Category Name
-                  CustomText.subtitle(
+                  CustomText(
                     category.name,
-                    color: AppColors.textLightGreyColor,
+                    color: transaction.description != null
+                        ? AppColors.textLightGreyColor
+                        : null,
+                    fontSize: transaction.description != null ? 13 : 15,
                   ),
                 ],
               ),
             ),
 
+            Insets.gapW10,
+
             // Amount
             CustomText.body(
-              '${isExpense ? '-' : '+'}${wallet.currency.symbol} ${transaction.amount} ',
+              '${isExpense ? '-' : '+'}${wallet.currency.symbol}${transaction.amount.toInt()} ',
               color:
                   isExpense ? AppColors.redColor : Colors.greenAccent.shade700,
               fontSize: 14,

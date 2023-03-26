@@ -1,7 +1,10 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Models
+import '../enums/transaction_type_enum.dart';
 import '../models/transaction_filters_model.dart';
 import '../models/transaction_model.dart';
 
@@ -29,14 +32,32 @@ final categoryFilterProvider = StateProvider.autoDispose<CategoryModel?>(
   name: 'categoryFilterProvider',
   (ref) => null,
 );
-final balanceTransferOnlyFilterProvider = StateProvider.autoDispose<bool>(
-  name: 'balanceTransferOnlyFilterProvider',
-  (ref) => false,
-);
-final incomeExpenseOnlyFilterProvider = StateProvider.autoDispose<bool>(
-  name: 'incomeExpenseOnlyFilterProvider',
-  (ref) => false,
-);
+
+@riverpod
+class TransactionTypesFilter extends _$TransactionTypesFilter {
+  @override
+  List<TransactionType> build() => [];
+
+  void _add(TransactionType type) {
+    state = [...state, type];
+  }
+
+  void _remove(TransactionType type) {
+    state = state.where((e) => e != type).toList();
+  }
+
+  void toggle(TransactionType type, bool contains) {
+    if (contains) {
+      _remove(type);
+    } else {
+      _add(type);
+    }
+  }
+
+  bool contains(TransactionType type) {
+    return state.contains(type);
+  }
+}
 
 /// A map of month names and number
 const monthNames = {
@@ -60,20 +81,18 @@ TransactionFiltersModel? transactionFilters(TransactionFiltersRef ref) {
       ref.watch(expenseMonthFilterProvider.notifier).state;
   final expenseYearFilter = ref.watch(expenseYearFilterProvider.notifier).state;
   final categoryFilter = ref.watch(categoryFilterProvider.notifier).state;
-  final ieOnly = ref.watch(incomeExpenseOnlyFilterProvider.notifier).state;
-  final btOnly = ref.watch(balanceTransferOnlyFilterProvider.notifier).state;
+  // ignore: invalid_use_of_protected_member
+  final types = ref.watch(transactionTypesFilterProvider.notifier).state;
 
   if (expenseMonthFilter == null &&
       expenseYearFilter == null &&
       categoryFilter == null &&
-      !ieOnly &&
-      !btOnly) {
+      types.isEmpty) {
     return null;
   }
 
   final filters = TransactionFiltersModel(
-    incomeExpenseOnly: ieOnly,
-    balanceTransferOnly: btOnly,
+    types: types,
     year: expenseYearFilter,
     month: expenseMonthFilter,
     categoryId: categoryFilter?.id,
