@@ -57,15 +57,31 @@ class AppThemes {
       backgroundColor: AppColors.backgroundColor,
     ),
     fontFamily: AppTypography.primaryFontFamily,
-    textTheme: AppTypography.primary,
+    textTheme: AppTypography.primary.copyWith(
+      titleMedium: const TextStyle(
+        fontSize: 16,
+        color: AppColors.textBlackColor,
+      ),
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      fillColor: AppColors.fieldFillColor,
+      hintStyle: TextStyle(
+        fontSize: 16,
+        color: AppColors.textLightGreyColor,
+      ),
+      errorStyle: TextStyle(
+        height: 0.01,
+        color: Colors.transparent,
+      ),
+      floatingLabelStyle: TextStyle(
+        fontSize: 14,
+      ),
+    ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
-    ),
-    inputDecorationTheme: const InputDecorationTheme(
-      fillColor: AppColors.fieldFillColor,
     ),
     chipTheme: const ChipThemeData(
       backgroundColor: AppColors.fieldFillColor,

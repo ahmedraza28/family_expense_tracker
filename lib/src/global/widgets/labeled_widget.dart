@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+// Helpers
 import '../../helpers/constants/app_colors.dart';
+import '../../helpers/extensions/extensions.dart';
 
 enum LabelPosition {
   start,
@@ -15,7 +17,7 @@ class LabeledWidget extends StatelessWidget {
   final Widget child;
   final String label;
   final double labelGap;
-  final TextStyle labelStyle;
+  final TextStyle? labelStyle;
   final bool useDarkerLabel;
   final Axis labelDirection;
   final LabelPosition labelPosition;
@@ -34,10 +36,7 @@ class LabeledWidget extends StatelessWidget {
     this.mainAxisAlignment,
     this.labelDirection = Axis.vertical,
     this.useDarkerLabel = false,
-    this.labelStyle = const TextStyle(
-      fontSize: 14,
-      color: AppColors.textBlueGreyColor,
-    ),
+    this.labelStyle,
   });
 
   @override
@@ -46,7 +45,10 @@ class LabeledWidget extends StatelessWidget {
       // Label
       Text(
         label,
-        style: useDarkerLabel ? const TextStyle(fontSize: 16) : labelStyle,
+        style: useDarkerLabel
+            ? const TextStyle(color: AppColors.textBlackColor)
+            : (labelStyle ??
+                context.theme.inputDecorationTheme.floatingLabelStyle),
       ),
 
       if (labelDirection == Axis.vertical)

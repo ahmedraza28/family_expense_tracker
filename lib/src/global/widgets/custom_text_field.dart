@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 // Helpers
 import '../../helpers/constants/constants.dart';
+import '../../helpers/extensions/context_extensions.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
@@ -11,9 +12,9 @@ class CustomTextField extends StatefulWidget {
   final int? maxLength;
   final String? floatingText;
   final String? hintText;
-  final TextStyle hintStyle;
-  final TextStyle errorStyle;
-  final TextStyle inputStyle;
+  final TextStyle? hintStyle;
+  final TextStyle? errorStyle;
+  final TextStyle? inputStyle;
   final TextStyle? floatingStyle;
   final EdgeInsets? contentPadding;
   final void Function(String? value)? onSaved;
@@ -36,7 +37,7 @@ class CustomTextField extends StatefulWidget {
   final TextAlignVertical textAlignVertical;
   final Alignment errorAlign;
   final Alignment floatingAlign;
-  final Color fillColor;
+  final Color? fillColor;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final String? initialValue;
@@ -79,23 +80,11 @@ class CustomTextField extends StatefulWidget {
     this.textAlignVertical = TextAlignVertical.center,
     this.errorAlign = Alignment.centerRight,
     this.floatingAlign = Alignment.centerLeft,
-    this.fillColor = AppColors.fieldFillColor,
-    this.hintStyle = const TextStyle(
-      fontSize: 16,
-      color: AppColors.textWhite80Color,
-    ),
-    this.errorStyle = const TextStyle(
-      height: 0.01,
-      color: Colors.transparent,
-    ),
-    this.inputStyle = const TextStyle(
-      fontSize: 16,
-      color: AppColors.textBlackColor,
-    ),
-    this.floatingStyle = const TextStyle(
-      fontSize: 14,
-      color: AppColors.textBlueGreyColor,
-    ),
+    this.fillColor,
+    this.hintStyle,
+    this.errorStyle,
+    this.inputStyle,
+    this.floatingStyle,
     this.contentPadding = const EdgeInsets.fromLTRB(16, 18, 1, 18),
   });
 
@@ -115,6 +104,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   bool get isPasswordField =>
       widget.keyboardType == TextInputType.visiblePassword;
+
+  TextStyle? get inputStyle =>
+      widget.inputStyle ?? context.theme.textTheme.titleMedium;
 
   void _onSaved(String? value) {
     final trimmedValue = value!.trim();
@@ -179,7 +171,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
               alignment: widget.floatingAlign,
               child: Text(
                 widget.floatingText!,
-                style: widget.floatingStyle ?? const TextStyle(fontSize: 16),
+                style: widget.floatingStyle ??
+                    (context.theme.inputDecorationTheme.floatingLabelStyle ??
+                        const TextStyle(fontSize: 16)),
               ),
             ),
           ),
@@ -206,21 +200,24 @@ class _CustomTextFieldState extends State<CustomTextField> {
             textInputAction: widget.textInputAction ??
                 (widget.multiline ? TextInputAction.newline : null),
             inputFormatters: widget.inputFormatters,
-            style: widget.inputStyle,
             showCursor: widget.showCursor,
             maxLengthEnforcement: MaxLengthEnforcement.enforced,
             autovalidateMode: AutovalidateMode.disabled,
-            cursorColor: widget.inputStyle.color,
             obscureText: isPasswordField && hidePassword,
             validator: _runValidator,
             onFieldSubmitted: _runValidator,
             onSaved: _onSaved,
             onChanged: _onChanged,
+            style: inputStyle,
+            cursorColor: inputStyle?.color,
             decoration: InputDecoration(
               hintText: widget.hintText,
-              hintStyle: widget.hintStyle,
-              errorStyle: widget.errorStyle,
-              fillColor: widget.fillColor,
+              hintStyle: widget.hintStyle ??
+                  context.theme.inputDecorationTheme.hintStyle,
+              errorStyle: widget.errorStyle ??
+                  context.theme.inputDecorationTheme.errorStyle,
+              fillColor: widget.fillColor ??
+                  context.theme.inputDecorationTheme.fillColor,
               prefixIcon: widget.prefix,
               contentPadding: widget.contentPadding,
               isDense: true,
@@ -230,8 +227,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               enabledBorder: (widget.showErrorBorder && hasError)
                   ? _errorBorder()
                   : _normalBorder(),
-              focusedBorder:
-                  widget.showFocusedBorder ? _focusedBorder() : null,
+              focusedBorder: widget.showFocusedBorder ? _focusedBorder() : null,
               suffixIcon: widget.suffix ??
                   (isPasswordField
                       ? InkWell(

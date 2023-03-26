@@ -25,7 +25,7 @@ abstract class CustomDropdownField<T> extends HookWidget {
     Key? key,
     ValueNotifier<T?>? controller,
     Widget suffixIcon,
-    TextStyle selectedStyle,
+    TextStyle? selectedStyle,
     double height,
     Color displayFieldColor,
     EdgeInsets padding,
@@ -59,7 +59,7 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
   final Widget suffixIcon;
 
   /// The [TextStyle] used for displaying selected value in the field.
-  final TextStyle selectedStyle;
+  final TextStyle? selectedStyle;
 
   /// The [Color] used for filling background of the field.
   final Color displayFieldColor;
@@ -99,15 +99,12 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
       Icons.arrow_drop_down_rounded,
       color: AppColors.textGreyColor,
     ),
-    this.selectedStyle = const TextStyle(
-      fontSize: 16,
-      color: AppColors.textGreyColor,
-    ),
     this.displayFieldColor = AppColors.fieldFillColor,
     this.backgroundColor = AppColors.surfaceColor,
     this.height = 47,
     this.hintText = 'Select a value',
     this.padding = const EdgeInsets.only(left: 20, right: 15),
+    this.selectedStyle,
     this.initialValue,
   }) : controller = controller ?? ValueNotifier(initialValue);
 
@@ -144,7 +141,8 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
                 ? selectedItemBuilder(value)
                 : Text(
                     hintText,
-                    style: selectedStyle,
+                    style: selectedStyle ??
+                        context.theme.inputDecorationTheme.hintStyle,
                   ),
           ),
 
@@ -197,14 +195,8 @@ class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
     this.onSelected,
     this.hintText,
     this.listItemStyle,
-    this.hintStyle = const TextStyle(
-      fontSize: 16,
-      color: AppColors.textGreyColor,
-    ),
-    this.selectedStyle = const TextStyle(
-      fontSize: 16,
-      color: AppColors.textBlackColor,
-    ),
+    this.hintStyle,
+    this.selectedStyle,
     this.fieldSuffixIcon = const Icon(
       Icons.keyboard_arrow_down_rounded,
       size: 22,
@@ -219,6 +211,10 @@ class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
     final previousValue = items.findKeyByValue(controller.value);
     final textController = useTextEditingController(text: previousValue);
     final searchItems = <String>[hintText ?? 'Select value', ...items.keys];
+    final mergedHintStyle =
+        this.hintStyle ?? context.theme.inputDecorationTheme.hintStyle;
+    final mergedSelectedStyle =
+        this.selectedStyle ?? context.theme.textTheme.titleMedium;
     return enableSearch
         ? CustomDropdown.search(
             controller: textController,
@@ -228,8 +224,8 @@ class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
               onSelected?.call(items[label]);
             },
             hintText: hintText,
-            hintStyle: hintStyle,
-            selectedStyle: selectedStyle,
+            hintStyle: mergedHintStyle,
+            selectedStyle: mergedSelectedStyle,
             listItemStyle: listItemStyle,
             borderRadius: borderRadius,
             fillColor: fillColor,
@@ -243,8 +239,8 @@ class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
               onSelected?.call(items[label]);
             },
             hintText: hintText,
-            hintStyle: hintStyle,
-            selectedStyle: selectedStyle,
+            hintStyle: mergedHintStyle,
+            selectedStyle: mergedSelectedStyle,
             listItemStyle: listItemStyle,
             borderRadius: borderRadius,
             fillColor: fillColor,
