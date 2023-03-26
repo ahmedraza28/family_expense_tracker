@@ -17,7 +17,7 @@ import '../screens/add_edit_budget_screen.dart';
 // Features
 import '../../categories/categories.dart';
 
-class BudgetListItem extends ConsumerWidget {
+class BudgetListItem extends StatelessWidget {
   final BudgetModel budget;
 
   const BudgetListItem({
@@ -26,14 +26,14 @@ class BudgetListItem extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final category = ref.watch(
-      categoryByIdProvider(budget.categoryId),
-    )!;
+  Widget build(BuildContext context) {
     final seed = budget.categoryId;
     final color = AppUtils.getRandomColor(seed);
+    final used =
+        AppUtils.randomizer().nextInt(budget.amount.toInt()).toDouble();
+    final fraction = used / budget.amount;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.fromLTRB(15, 15, 15, 12),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: Corners.rounded9,
@@ -41,60 +41,29 @@ class BudgetListItem extends ConsumerWidget {
       child: Column(
         children: [
           // Name and edit row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Category name
-              Expanded(
-                child: CustomText.body(
-                  category.name,
-                  fontSize: 15,
-                ),
-              ),
-
-              // Edit button
-              InkWell(
-                onTap: () => AppRouter.push(
-                  AddEditBudgetScreen(budget: budget),
-                ),
-                child: const Icon(
-                  Icons.edit_rounded,
-                  size: 16,
-                  color: AppColors.textGreyColor,
-                ),
-              ),
-            ],
+          _NameAndEditRow(
+            budget: budget,
           ),
 
           Insets.gapH10,
 
-          // Icon and Bar Row
+          // Icon and Budget Usage
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Icon
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: Corners.rounded10,
-                  color: color.withOpacity(0.2),
-                ),
-                child: Icon(
-                  Icons.category_rounded,
-                  size: 20,
-                  color: color,
-                ),
+              // Icon in a circular progress bar
+              _CircularProgressIcon(
+                fraction: fraction,
+                iconColor: color,
               ),
 
               Insets.gapW15,
 
-              // Budget usage bar
+              // Details column
               Expanded(
-                child: _BudgetUsageBar(
+                child: _DetailsColumn(
                   total: budget.amount,
-                  used: AppUtils.randomizer()
-                      .nextInt(budget.amount.toInt())
-                      .toDouble(),
+                  used: used,
                 ),
               ),
             ],
@@ -105,23 +74,100 @@ class BudgetListItem extends ConsumerWidget {
   }
 }
 
-class _BudgetUsageBar extends StatelessWidget {
-  final double total;
-  final double used;
+class _NameAndEditRow extends ConsumerWidget {
+  const _NameAndEditRow({required this.budget});
 
-  const _BudgetUsageBar({
+  final BudgetModel budget;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final category = ref.watch(
+      categoryByIdProvider(budget.categoryId),
+    )!;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Category name
+        Expanded(
+          child: CustomText.body(
+            category.name,
+          ),
+        ),
+
+        // Edit button
+        InkWell(
+          onTap: () => AppRouter.push(
+            AddEditBudgetScreen(budget: budget),
+          ),
+          child: const Icon(
+            Icons.edit_rounded,
+            size: 16,
+            color: AppColors.textGreyColor,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _CircularProgressIcon extends StatelessWidget {
+  const _CircularProgressIcon({
+    required this.fraction,
+    required this.iconColor,
+  });
+
+  final double fraction;
+  final Color iconColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return RadialProgress(
+      progressValue: fraction,
+      height: 80, 
+      showThumb: false,
+      width: 80,
+      style: PainterStyle(
+        strokeWidth: 6,
+        startClr: iconColor.withOpacity(0.6),
+        endClr: iconColor,
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: iconColor.withOpacity(0.2),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.category_rounded,
+          size: 19,
+          color: iconColor,
+        ),
+      ),
+    );
+  }
+}
+
+class _DetailsColumn extends StatelessWidget {
+  const _DetailsColumn({
     required this.total,
     required this.used,
   });
 
+  final double total;
+  final double used;
+
+  double get fraction => used / total;
+
   Color get color {
-    final fraction = used / total;
-    if (fraction > 0.8) {
-      return const Color(0xFFed0000);
-    } else if (fraction > 0.6) {
-      return const Color.fromARGB(255, 255, 149, 0);
+    if (fraction > 0.80) {
+      return const Color.fromARGB(255, 242, 0, 0);
+    } else if (fraction > 0.60) {
+      return const Color.fromARGB(255, 255, 132, 0);
     } else if (fraction > 0.45) {
-      return const Color.fromARGB(255, 255, 214, 64);
+      return const Color.fromARGB(255, 253, 204, 26);
+    } else if (fraction > 0.25) {
+      return const Color.fromARGB(255, 11, 161, 19);
     } else {
       return const Color.fromARGB(255, 49, 205, 57);
     }
@@ -129,62 +175,67 @@ class _BudgetUsageBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final usedWidth = width * (used / total);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Bugdet usage bar
-            Container(
-              height: 20,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: AppColors.lightOutlineColor,
-                borderRadius: Corners.rounded7,
-              ),
-              child: Row(
-                children: [
-                  // Bar with a glow
-                  Container(
-                    height: 20,
-                    width: usedWidth,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: Corners.rounded7,
-                      boxShadow: [
-                        // Slight glow
-                        BoxShadow(
-                          color: color.withOpacity(0.5),
-                          blurRadius: 5,
-                          spreadRadius: 1,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: CustomText.label(
-                        '\$$used',
-                        color: AppColors.textWhite80Color,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Insets.gapH10,
-
             // Total budget
             CustomText.subtitle(
               '\$$total',
-              color: AppColors.textGreyColor,
+              fontWeight: FontWeight.bold,
+            ),
+
+            // Percent used
+            CustomText.subtitle(
+              '${(fraction * 100).toInt()}% budget used',
+              color: color,
             ),
           ],
-        );
-      },
+        ),
+
+        Insets.gapH10,
+
+        // Used budget
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Used Label
+            CustomText.subtitle(
+              'Used',
+              color: AppColors.textBlackColor,
+            ),
+
+            // Used value
+            CustomText.subtitle(
+              '- \$$used',
+              color: AppColors.textLightGreyColor,
+            ),
+          ],
+        ),
+
+        Insets.gapH10,
+
+        // Remaining budget
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Remaining Label
+            CustomText.subtitle(
+              'Remaining',
+              color: AppColors.textBlackColor,
+            ),
+
+            // Remaining value
+            CustomText.subtitle(
+              '= \$${total - used}',
+              color: AppColors.textLightGreyColor,
+            )
+          ],
+        ),
+      ],
     );
   }
 }

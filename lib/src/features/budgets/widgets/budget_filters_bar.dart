@@ -29,7 +29,7 @@ class BudgetFiltersBar extends ConsumerWidget {
           // Month Filter Value
           Expanded(
             child: Center(
-              child: CustomText.title(
+              child: CustomText.body(
                 'Month of $month, $year',
                 useSecondaryFont: true,
                 fontSize: 20,
@@ -59,7 +59,7 @@ class BudgetFiltersBar extends ConsumerWidget {
               height: 47,
               width: 47,
               decoration: const BoxDecoration(
-                color: AppColors.lightBackgroundColor,
+                color: Colors.white,
                 borderRadius: Corners.rounded7,
               ),
               child: Consumer(

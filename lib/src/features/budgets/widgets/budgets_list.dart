@@ -40,8 +40,8 @@ class BudgetsList extends ConsumerWidget {
           physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics(),
           ),
-          separatorBuilder: (_, __) => Insets.gapH10,
-          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+          separatorBuilder: (_, __) => Insets.gapH15,
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           itemBuilder: (_, i) {
             return BudgetListItem(
               budget: budgets[i],
