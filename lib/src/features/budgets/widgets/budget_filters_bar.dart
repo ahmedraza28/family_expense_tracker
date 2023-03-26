@@ -18,27 +18,26 @@ class BudgetFiltersBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final today = DateTime.now();
+    final month =
+        ref.watch(budgetMonthFilterProvider) ?? today.toDateString('MMMM');
+    final year = ref.watch(budgetYearFilterProvider) ?? today.year;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Month Filter Value
-          LabeledWidget(
-            label: 'Month',
-            child: CustomText.body(
-              "${ref.watch(budgetMonthFilterProvider) ?? today.toDateString('MMMM')}",
+          Expanded(
+            child: Center(
+              child: CustomText.title(
+                'Month of $month, $year',
+                useSecondaryFont: true,
+                fontSize: 20,
+              ),
             ),
           ),
 
-          // Year Filter Value
-          LabeledWidget(
-            label: 'Year',
-            child: CustomText.body(
-              '${ref.watch(budgetYearFilterProvider) ?? today.year}',
-            ),
-          ),
+          Insets.gapW15,
 
           // Filters Button
           InkWell(

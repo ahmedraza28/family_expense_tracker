@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../helpers/constants/constants.dart';
+
 class CustomText extends StatelessWidget {
   final String text;
   final TextAlign? textAlign;
@@ -10,11 +12,13 @@ class CustomText extends StatelessWidget {
   final int? maxLines;
   final Color? color;
   final TextStyle? style;
+  final bool useSecondaryFont;
 
   const CustomText(
     this.text, {
     super.key,
     this.textAlign,
+    this.useSecondaryFont = false,
     this.overflow = TextOverflow.ellipsis,
     this.fontWeight,
     this.fontSize,
@@ -27,11 +31,13 @@ class CustomText extends StatelessWidget {
   factory CustomText.heading(
     String text, {
     Color? color,
+    bool useSecondaryFont = false,
     double fontSize = 34,
     FontWeight fontWeight = FontWeight.bold,
   }) {
     return CustomText(
       text,
+      useSecondaryFont: useSecondaryFont,
       fontWeight: fontWeight,
       fontSize: fontSize,
       color: color,
@@ -41,11 +47,13 @@ class CustomText extends StatelessWidget {
   factory CustomText.title(
     String text, {
     Color? color,
+    bool useSecondaryFont = false,
     double fontSize = 22,
     FontWeight fontWeight = FontWeight.w600,
   }) {
     return CustomText(
       text,
+      useSecondaryFont: useSecondaryFont,
       fontWeight: fontWeight,
       fontSize: fontSize,
       color: color,
@@ -55,11 +63,13 @@ class CustomText extends StatelessWidget {
   factory CustomText.body(
     String text, {
     Color? color,
+    bool useSecondaryFont = false,
     FontWeight fontWeight = FontWeight.w400,
     double fontSize = 16,
   }) {
     return CustomText(
       text,
+      useSecondaryFont: useSecondaryFont,
       fontWeight: fontWeight,
       fontSize: fontSize,
       color: color,
@@ -69,11 +79,13 @@ class CustomText extends StatelessWidget {
   factory CustomText.subtitle(
     String text, {
     Color? color,
+    bool useSecondaryFont = false,
     FontWeight fontWeight = FontWeight.w400,
     double fontSize = 13,
   }) {
     return CustomText(
       text,
+      useSecondaryFont: useSecondaryFont,
       fontWeight: fontWeight,
       fontSize: fontSize,
       color: color,
@@ -83,11 +95,13 @@ class CustomText extends StatelessWidget {
   factory CustomText.label(
     String text, {
     Color? color,
+    bool useSecondaryFont = false,
     FontWeight fontWeight = FontWeight.w300,
     double fontSize = 11,
   }) {
     return CustomText(
       text,
+      useSecondaryFont: useSecondaryFont,
       fontWeight: fontWeight,
       fontSize: fontSize,
       color: color,
@@ -129,6 +143,8 @@ class CustomText extends StatelessWidget {
           TextStyle(
             fontSize: fontSize,
             fontWeight: fontWeight,
+            fontFamily:
+                useSecondaryFont ? AppTypography.secondaryFontFamily : null,
             color: color ?? Theme.of(context).colorScheme.onBackground,
           ),
     );

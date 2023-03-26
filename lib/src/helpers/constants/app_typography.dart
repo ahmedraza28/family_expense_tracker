@@ -26,11 +26,11 @@ class AppTypography {
   static final primary = _outfitTextTheme;
 
   /// The font family of the primary text theme.
-  static final primaryFontFamily = primary.bodyLarge!.fontFamily;
+  static final primaryFontFamily = primary.bodyLarge!.fontFamily!;
 
   /// The secondary [TextTheme] used for lower level typography in the app.
   static final secondary = _poppinsTextTheme;
 
   /// The font family of the secondary text theme.
-  static final secondaryFontFamily = secondary.bodyLarge!.fontFamily;
+  static final secondaryFontFamily = secondary.bodyLarge!.fontFamily!;
 }

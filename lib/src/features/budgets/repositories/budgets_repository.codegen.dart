@@ -79,7 +79,30 @@ class MockBudgetsRepository implements BudgetsRepository {
     int? month,
     int? categoryId,
   }) {
-    return Stream.value([]);
+    final date = DateTime.now();
+    return Stream.value([
+      BudgetModel(
+        id: 1,
+        categoryId: 1,
+        amount: 1000,
+        year: date.year,
+        month: date.month,
+      ),
+      BudgetModel(
+        id: 2,
+        categoryId: 2,
+        amount: 1000,
+        year: date.year,
+        month: date.month,
+      ),
+      BudgetModel(
+        id: 3,
+        categoryId: 3,
+        amount: 1000,
+        year: date.year,
+        month: date.month,
+      ),
+    ]);
   }
 
   @override
