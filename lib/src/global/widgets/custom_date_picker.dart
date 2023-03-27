@@ -9,6 +9,7 @@ import '../../helpers/constants/app_colors.dart';
 import '../../helpers/constants/app_styles.dart';
 
 // Widgets
+import '../../helpers/extensions/extensions.dart';
 import './cupertino_date_picker_dialog.dart';
 import './custom_text_button.dart';
 
@@ -128,6 +129,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final inputTheme = context.theme.inputDecorationTheme;
     return Column(
       children: [
         // Label
@@ -136,7 +138,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           child: Text(
             widget.pickerStyle.floatingText,
             style: widget.pickerStyle.floatingTextStyle ??
-                const TextStyle(fontSize: 16),
+                inputTheme.floatingLabelStyle,
           ),
         ),
 
@@ -147,7 +149,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           width: double.infinity,
           height: 47,
           onPressed: () => _pickDate(context),
-          color: widget.pickerStyle.displayFieldColor,
+          color: widget.pickerStyle.displayFieldColor ?? inputTheme.fillColor,
           padding: const EdgeInsets.only(left: 20, right: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,7 +163,8 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                   }
                   return Text(
                     dateString,
-                    style: widget.pickerStyle.displayTextStyle,
+                    style: widget.pickerStyle.displayTextStyle ??
+                        inputTheme.hintStyle,
                   );
                 },
               ),
@@ -178,10 +181,10 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
 
 class CustomDatePickerStyle {
   final Widget icon;
-  final TextStyle displayTextStyle;
+  final TextStyle? displayTextStyle;
   final TextStyle? floatingTextStyle;
   final String floatingText;
-  final Color displayFieldColor;
+  final Color? displayFieldColor;
   final String initialDateString;
 
   const CustomDatePickerStyle({
@@ -190,15 +193,9 @@ class CustomDatePickerStyle {
       color: AppColors.primaryColor,
       size: 22,
     ),
-    this.displayTextStyle = const TextStyle(
-      fontSize: 16,
-      color: AppColors.textGreyColor,
-    ),
-    this.floatingTextStyle = const TextStyle(
-      fontSize: 14,
-      color: AppColors.textBlueGreyColor,
-    ),
-    this.displayFieldColor = AppColors.fieldFillColor,
+    this.displayTextStyle,
+    this.floatingTextStyle,
+    this.displayFieldColor,
     this.initialDateString = 'Select a date',
     this.floatingText = 'Date Picker',
   });

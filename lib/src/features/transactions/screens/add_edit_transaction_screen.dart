@@ -139,6 +139,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
                 child: CustomTextField(
                   controller: amountController,
                   enabled: false,
+                  hintText: 'Tap to calculate',
                   floatingText: 'Amount',
                 ),
               ),
@@ -214,7 +215,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
                 helpText: 'Select Date',
                 initialEntryMode: DatePickerEntryMode.calendarOnly,
                 pickerStyle: const CustomDatePickerStyle(
-                  initialDateString: 'DD MONTH, YYYY',
+                  initialDateString: 'dd month, yyyy',
                   floatingText: 'Date',
                 ),
               ),
@@ -224,29 +225,41 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               // Description
               CustomTextField(
                 controller: descriptionController,
-                floatingText: 'Description',
+                floatingText: 'Description (Optional)',
+                hintText: 'Type here...',
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
               ),
 
-              Insets.expand,
-
-              // Confirm Details Button
-              CustomTextButton.gradient(
-                width: double.infinity,
-                onPressed: onSave,
-                gradient: AppColors.buttonGradientPrimary,
-                child: const Center(
-                  child: CustomText(
-                    'Save',
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-
-              Insets.bottomInsetsLow,
+              Insets.gapH(114),
             ],
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        width: double.infinity,
+        height: 55,
+        margin: const EdgeInsets.symmetric(horizontal: 15),
+        child: FloatingActionButton(
+          onPressed: onSave,
+          elevation: 5,
+          backgroundColor: Colors.transparent,
+          shape: const RoundedRectangleBorder(
+            borderRadius: Corners.rounded7,
+          ),
+          child: const DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: Corners.rounded7,
+              gradient: AppColors.buttonGradientPrimary,
+            ),
+            child: Center(
+              child: CustomText(
+                'Save',
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
           ),
         ),
       ),

@@ -86,7 +86,7 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
-          balanceTransfer == null ? 'Add a new category' : 'Edit category',
+          balanceTransfer == null ? 'Add a new transfer' : 'Edit transfer',
           fontSize: 20,
         ),
         actions: [
@@ -118,7 +118,10 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Amount
-              GestureDetector(
+              InkWell(
+                customBorder: const RoundedRectangleBorder(
+                  borderRadius: Corners.rounded7,
+                ),
                 onTap: () async {
                   await AppRouter.pushNamed(
                     Routes.CalculatorScreenRoute,
@@ -128,6 +131,7 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
                 child: CustomTextField(
                   controller: amountController,
                   enabled: false,
+                  hintText: 'Tap to calculate',
                   floatingText: 'Amount',
                 ),
               ),
@@ -186,13 +190,13 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
 
               // Transfer date
               CustomDatePicker(
-                firstDate: DateTime(1950),
+                firstDate: DateTime(2023),
                 dateNotifier: dateController,
                 dateFormat: DateFormat('d MMMM, y'),
                 helpText: 'Select Date',
                 initialEntryMode: DatePickerEntryMode.calendarOnly,
                 pickerStyle: const CustomDatePickerStyle(
-                  initialDateString: 'DD MONTH, YYYY',
+                  initialDateString: 'dd month, yyyy',
                   floatingText: 'Date',
                 ),
               ),
@@ -202,7 +206,8 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
               // Description
               CustomTextField(
                 controller: descriptionController,
-                floatingText: 'Description',
+                floatingText: 'Description (Optional)',
+                hintText: 'Type here...',
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
               ),
