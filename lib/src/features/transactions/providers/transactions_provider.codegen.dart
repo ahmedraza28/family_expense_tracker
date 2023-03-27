@@ -5,6 +5,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/transaction_filters_model.dart';
 import '../models/transaction_model.dart';
 
+// Providers
+import 'transaction_filters_providers.codegen.dart';
+
 // Repositories
 import '../repositories/transactions_repository.codegen.dart';
 
@@ -12,6 +15,30 @@ import '../repositories/transactions_repository.codegen.dart';
 import '../../books/books.dart';
 
 part 'transactions_provider.codegen.g.dart';
+
+@riverpod
+Stream<List<TransactionModel>> filteredTransactionsStream(
+  FilteredTransactionsStreamRef ref,
+) {
+  final filters = ref.read(transactionFiltersProvider);
+  return ref.watch(transactionsProvider).getAllTransactions(filters);
+}
+
+/// A provider used to access list of searched expenses
+@riverpod
+Future<List<TransactionModel>> searchedTransactions(
+  SearchedTransactionsRef ref,
+) async {
+  final searchTerm = ref.watch(searchFilterProvider).toLowerCase();
+  final filteredTransactions =
+      await ref.watch(filteredTransactionsStreamProvider.future);
+  if (searchTerm.isEmpty) {
+    return filteredTransactions;
+  }
+  return filteredTransactions
+      .where((trans) => trans.search(searchTerm))
+      .toList();
+}
 
 /// A provider used to access instance of this service
 @riverpod

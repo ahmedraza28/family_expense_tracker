@@ -6,10 +6,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 // Models
 import '../enums/transaction_type_enum.dart';
 import '../models/transaction_filters_model.dart';
-import '../models/transaction_model.dart';
-
-// Providers
-import 'transactions_provider.codegen.dart';
 
 // Features
 import '../../categories/categories.dart';
@@ -20,44 +16,6 @@ final searchFilterProvider = StateProvider.autoDispose<String>(
   name: 'searchFilterProvider',
   (ref) => '',
 );
-final expenseMonthFilterProvider = StateProvider.autoDispose<int?>(
-  name: 'expenseMonthFilterProvider',
-  (ref) => null,
-);
-final expenseYearFilterProvider = StateProvider.autoDispose<int?>(
-  name: 'expenseYearFilterProvider',
-  (ref) => null,
-);
-final categoryFilterProvider = StateProvider.autoDispose<CategoryModel?>(
-  name: 'categoryFilterProvider',
-  (ref) => null,
-);
-
-@riverpod
-class TransactionTypesFilter extends _$TransactionTypesFilter {
-  @override
-  List<TransactionType> build() => [];
-
-  void _add(TransactionType type) {
-    state = [...state, type];
-  }
-
-  void _remove(TransactionType type) {
-    state = state.where((e) => e != type).toList();
-  }
-
-  void toggle(TransactionType type, bool contains) {
-    if (contains) {
-      _remove(type);
-    } else {
-      _add(type);
-    }
-  }
-
-  bool contains(TransactionType type) {
-    return state.contains(type);
-  }
-}
 
 /// A map of month names and number
 const monthNames = {
@@ -76,51 +34,48 @@ const monthNames = {
 };
 
 @riverpod
-TransactionFiltersModel? transactionFilters(TransactionFiltersRef ref) {
-  final expenseMonthFilter =
-      ref.watch(expenseMonthFilterProvider.notifier).state;
-  final expenseYearFilter = ref.watch(expenseYearFilterProvider.notifier).state;
-  final categoryFilter = ref.watch(categoryFilterProvider.notifier).state;
-  // ignore: invalid_use_of_protected_member
-  final types = ref.watch(transactionTypesFilterProvider.notifier).state;
+class TransactionFilters extends _$TransactionFilters {
+  @override
+  TransactionFiltersModel? build() => null;
 
-  if (expenseMonthFilter == null &&
-      expenseYearFilter == null &&
-      categoryFilter == null &&
-      types.isEmpty) {
-    return null;
+  TransactionFiltersModel get filters =>
+      state ?? const TransactionFiltersModel();
+
+  void setMonth(int? month) {
+    state = filters.copyWith(month: month);
   }
 
-  final filters = TransactionFiltersModel(
-    types: types,
-    year: expenseYearFilter,
-    month: expenseMonthFilter,
-    categoryId: categoryFilter?.id,
-  );
-
-  return filters;
-}
-
-@riverpod
-Stream<List<TransactionModel>> filteredTransactionsStream(
-  FilteredTransactionsStreamRef ref,
-) {
-  final filters = ref.watch(transactionFiltersProvider);
-  return ref.watch(transactionsProvider).getAllTransactions(filters);
-}
-
-/// A provider used to access list of searched expenses
-@riverpod
-Future<List<TransactionModel>> searchedTransactions(
-  SearchedTransactionsRef ref,
-) async {
-  final searchTerm = ref.watch(searchFilterProvider).toLowerCase();
-  final filteredTransactions =
-      await ref.watch(filteredTransactionsStreamProvider.future);
-  if (searchTerm.isEmpty) {
-    return filteredTransactions;
+  void setYear(int? year) {
+    state = filters.copyWith(year: year);
   }
-  return filteredTransactions
-      .where((trans) => trans.search(searchTerm))
-      .toList();
+
+  void setCategory(CategoryModel? category) {
+    state = filters.copyWith(categoryId: category?.id);
+  }
+
+  void setTypes(List<TransactionType> types) {
+    state = filters.copyWith(types: types);
+  }
+
+  void clear() {
+    state = const TransactionFiltersModel();
+  }
+
+  TransactionFiltersModel _addType(TransactionType type) {
+    final types = filters.types ?? [];
+    return filters.copyWith(types: [...types, type]);
+  }
+
+  TransactionFiltersModel _removeType(TransactionType type) {
+    final types = filters.types ?? [];
+    return filters.copyWith(types: types.where((e) => e != type).toList());
+  }
+
+  void toggleType(TransactionType type, bool isChecked) {
+    if (isChecked) {
+      state = _addType(type);
+    } else {
+      state = _removeType(type);
+    }
+  }
 }

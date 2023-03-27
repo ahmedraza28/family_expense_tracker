@@ -1,6 +1,7 @@
 export 'async_value_widget.dart';
 export 'cupertino_date_picker_dialog.dart';
 export 'custom_back_icon.dart';
+export 'custom_checkbox.dart';
 export 'custom_chips_list.dart';
 export 'custom_circular_loader.dart';
 export 'custom_date_picker.dart';

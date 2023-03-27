@@ -9,7 +9,7 @@ import '../../../helpers/extensions/extensions.dart';
 import '../models/income_expense_model.codegen.dart';
 
 // Providers
-import '../providers/transaction_filters_providers.codegen.dart';
+import '../providers/transactions_provider.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
