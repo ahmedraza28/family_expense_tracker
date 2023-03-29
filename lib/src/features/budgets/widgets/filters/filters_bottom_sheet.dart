@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
 import '../../providers/budget_filters_providers.codegen.dart';
+import '../../providers/budgets_provider.codegen.dart';
 
 // Helpers
 import '../../../../helpers/constants/constants.dart';
@@ -19,15 +20,13 @@ class FiltersBottomSheet extends ConsumerWidget {
 
   void _onResetTap(WidgetRef ref) {
     ref
-      ..invalidate(budgetMonthFilterProvider)
-      ..invalidate(budgetYearFilterProvider)
-      ..invalidate(budgetCategoryFilterProvider)
-      ..invalidate(budgetFiltersProvider);
+      ..invalidate(budgetFiltersProvider)
+      ..invalidate(filteredBudgetsStreamProvider);
     AppRouter.pop();
   }
 
   void _onSaveTap(WidgetRef ref) {
-    ref.invalidate(budgetFiltersProvider);
+    ref.invalidate(filteredBudgetsStreamProvider);
     AppRouter.pop();
   }
 

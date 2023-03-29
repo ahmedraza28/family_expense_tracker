@@ -4,6 +4,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/budget_filters_model.dart';
 import '../models/budget_model.codegen.dart';
 
+// Providers
+import 'budget_filters_providers.codegen.dart';
+
 // Repositories
 import '../repositories/budgets_repository.codegen.dart';
 
@@ -12,21 +15,12 @@ import '../../books/books.dart';
 
 part 'budgets_provider.codegen.g.dart';
 
-@Riverpod(keepAlive: true)
-Stream<List<BudgetModel>> _budgetsStream(_BudgetsStreamRef ref) {
-  final budgets = ref.watch(budgetsProvider.notifier);
-  return budgets.getAllBudgets();
-}
-
-@Riverpod(keepAlive: true)
-Future<Map<int, BudgetModel>> budgetsMap(BudgetsMapRef ref) async {
-  final budgets = await ref.watch(_budgetsStreamProvider.future);
-  return {for (var e in budgets) e.id!: e};
-}
-
-@Riverpod(keepAlive: true)
-BudgetModel? budgetById(BudgetByIdRef ref, int? id) {
-  return ref.watch(budgetsMapProvider).asData!.value[id];
+@riverpod
+Stream<List<BudgetModel>> filteredBudgetsStream(
+  FilteredBudgetsStreamRef ref,
+) {
+  final filters = ref.read(budgetFiltersProvider);
+  return ref.watch(budgetsProvider.notifier).getAllBudgets(filters);
 }
 
 /// A provider used to access instance of this service

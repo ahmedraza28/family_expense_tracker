@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 // Helpers
-import '../../helpers/constants/app_colors.dart';
-import '../../helpers/constants/app_styles.dart';
+import '../../helpers/constants/constants.dart';
 import '../../helpers/extensions/extensions.dart';
 
 // Widgets
@@ -21,7 +20,6 @@ abstract class CustomDropdownField<T> extends HookWidget {
   factory CustomDropdownField.sheet({
     required CustomDropdownSheet<T> itemsSheet,
     required Widget Function(T) selectedItemBuilder,
-    SelectedCallback<T> onSelected,
     Key? key,
     ValueNotifier<T?>? controller,
     Widget suffixIcon,
@@ -74,9 +72,6 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
   /// [Widget] for displaying.
   final Widget Function(T) selectedItemBuilder;
 
-  /// The callback used to passback selected value to the parent.
-  final SelectedCallback<T> onSelected;
-
   /// The initial value to be selected in the dropdown
   final T? initialValue;
 
@@ -94,7 +89,6 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
     required this.selectedItemBuilder,
     super.key,
     ValueNotifier<T?>? controller,
-    this.onSelected,
     this.suffixIcon = const Icon(
       Icons.arrow_drop_down_rounded,
       color: AppColors.textGreyColor,

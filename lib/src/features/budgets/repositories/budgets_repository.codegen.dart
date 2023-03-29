@@ -80,29 +80,65 @@ class MockBudgetsRepository implements BudgetsRepository {
     int? categoryId,
   }) {
     final date = DateTime.now();
-    return Stream.value([
+    final lastMonth = DateTime(date.year, date.month - 1);
+    final list = [
       BudgetModel(
         id: 1,
         categoryId: 1,
-        amount: 1000,
+        amount: 20000,
         year: date.year,
         month: date.month,
       ),
       BudgetModel(
         id: 2,
         categoryId: 2,
-        amount: 1000,
+        amount: 55000,
         year: date.year,
         month: date.month,
       ),
       BudgetModel(
         id: 3,
         categoryId: 3,
-        amount: 1000,
+        amount: 100000,
         year: date.year,
         month: date.month,
       ),
-    ]);
+      BudgetModel(
+        id: 4,
+        categoryId: 1,
+        amount: 10000,
+        year: lastMonth.year,
+        month: lastMonth.month,
+      ),
+      BudgetModel(
+        id: 5,
+        categoryId: 2,
+        amount: 39000,
+        year: lastMonth.year,
+        month: lastMonth.month,
+      ),
+      BudgetModel(
+        id: 6,
+        categoryId: 3,
+        amount: 90000,
+        year: lastMonth.year,
+        month: lastMonth.month,
+      ),
+    ];
+    return Stream.value(
+      list.where((element) {
+        if (year != null && element.year != year) {
+          return false;
+        }
+        if (month != null && element.month != month) {
+          return false;
+        }
+        if (categoryId != null && element.categoryId != categoryId) {
+          return false;
+        }
+        return true;
+      }).toList(),
+    );
   }
 
   @override

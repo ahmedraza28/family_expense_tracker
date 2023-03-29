@@ -25,18 +25,11 @@ class FiltersListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final monthFilterController = useValueNotifier<int?>(null);
-    final yearFilterController = useValueNotifier<int?>(null);
-    final categoryFilterController = useValueNotifier<CategoryModel?>(null);
-
-    useEffect(
-      () {
-        monthFilterController.value = ref.read(budgetMonthFilterProvider);
-        yearFilterController.value = ref.read(budgetYearFilterProvider);
-        categoryFilterController.value = ref.read(budgetCategoryFilterProvider);
-        return null;
-      },
-      [],
+    final filters = ref.watch(budgetFiltersProvider);
+    final monthFilterController = useValueNotifier<int?>(filters?.month);
+    final yearFilterController = useValueNotifier<int?>(filters?.year);
+    final categoryFilterController = useValueNotifier<CategoryModel?>(
+      ref.watch(categoryByIdProvider(filters?.categoryId)),
     );
 
     return ListView(
@@ -52,11 +45,9 @@ class FiltersListView extends HookConsumerWidget {
                 useDarkerLabel: true,
                 child: CustomDropdownField<int>.animated(
                   controller: monthFilterController,
-                  hintText: 'Select month',
+                  hintText: 'Select',
                   items: monthNames,
-                  onSelected: (month) {
-                    ref.read(budgetMonthFilterProvider.notifier).state = month;
-                  },
+                  onSelected: ref.read(budgetFiltersProvider.notifier).setMonth,
                 ),
               ),
             ),
@@ -70,14 +61,12 @@ class FiltersListView extends HookConsumerWidget {
                 useDarkerLabel: true,
                 child: CustomDropdownField<int>.animated(
                   controller: yearFilterController,
-                  hintText: 'Select year',
+                  hintText: 'Select',
                   items: {
                     for (var i = 2023; i <= (DateTime.now().year + 10); i++)
                       i.toString(): i
                   },
-                  onSelected: (month) {
-                    ref.read(budgetYearFilterProvider.notifier).state = month;
-                  },
+                  onSelected: ref.read(budgetFiltersProvider.notifier).setYear,
                 ),
               ),
             ),
@@ -92,9 +81,7 @@ class FiltersListView extends HookConsumerWidget {
           useDarkerLabel: true,
           child: CategoryDropdownField(
             controller: categoryFilterController,
-            onSelected: (category) {
-              ref.read(budgetCategoryFilterProvider.notifier).state = category;
-            },
+            onSelected: ref.read(budgetFiltersProvider.notifier).setCategory,
           ),
         ),
       ],

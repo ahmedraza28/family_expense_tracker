@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// Routing
-import '../../../config/routing/routing.dart';
-
 // Models
 import '../models/category_model.codegen.dart';
 
@@ -28,15 +25,14 @@ class CategoryDropdownField extends ConsumerWidget {
     final categories = ref.watch(categoriesStreamProvider).valueOrNull ?? [];
     return CustomDropdownField<CategoryModel>.sheet(
       controller: controller,
-      onSelected: onSelected,
       selectedItemBuilder: (item) => CustomText.body(item.name),
       hintText: 'Select category',
       itemsSheet: CustomDropdownSheet<CategoryModel>(
         bottomSheetTitle: 'Categories',
         items: categories,
-        itemBuilder: (context, index) => InkWell(
-          onTap: () => AppRouter.pop(index),
-          child: DropdownSheetItem(label: index.name),
+        onItemSelect: onSelected,
+        itemBuilder: (_, category) => DropdownSheetItem(
+          label: category.name,
         ),
       ),
     );

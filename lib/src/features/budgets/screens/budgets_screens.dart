@@ -1,14 +1,18 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
+// Providers
+import '../providers/budget_filters_providers.codegen.dart';
+
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import '../widgets/add_budget_fab.dart';
-import '../widgets/budget_filters_bar.dart';
 import '../widgets/budgets_list.dart';
+import '../widgets/filters/filters_bottom_sheet.dart';
 import 'add_edit_budget_screen.dart';
 
 class BudgetsScreen extends StatelessWidget {
@@ -24,21 +28,40 @@ class BudgetsScreen extends StatelessWidget {
             'Your Budgets',
             fontSize: 20,
           ),
-        ),
-        body: Column(
-          children: const [
-            // Filters
+          actions: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: BudgetFiltersBar(),
-            ),
-
-            // Events List
-            Expanded(
-              child: BudgetsList(),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: InkWell(
+                onTap: () {
+                  showModalBottomSheet<dynamic>(
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    context: context,
+                    builder: (context) => const FiltersBottomSheet(),
+                  );
+                },
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    final hasFilters = ref.watch(
+                      budgetFiltersProvider.select((value) => value != null),
+                    );
+                    return Icon(
+                      Icons.tune_rounded,
+                      color: hasFilters
+                          ? AppColors.primaryColor
+                          : AppColors.textLightGreyColor,
+                    );
+                  },
+                ),
+              ),
             ),
           ],
         ),
+        body: const BudgetsList(),
         floatingActionButton: OpenContainer(
           openElevation: 0,
           closedElevation: 5,
