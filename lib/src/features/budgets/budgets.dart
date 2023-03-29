@@ -7,6 +7,8 @@ export 'screens/add_edit_budget_screen.dart';
 export 'screens/budgets_screens.dart';
 export 'widgets/add_budget_fab.dart';
 export 'widgets/budget_list_item.dart';
+export 'widgets/budget_type_selection_cards.dart';
 export 'widgets/budgets_list.dart';
+export 'widgets/budgets_view.dart';
 export 'widgets/filters/filters_bottom_sheet.dart';
 export 'widgets/filters/filters_list_view.dart';

@@ -27,10 +27,7 @@ class BudgetListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final seed = budget.id;
-    final used =
-        AppUtils.randomizer(seed).nextInt(budget.amount.toInt()).toDouble();
-    final fraction = used / budget.amount;
+    final fraction = budget.used / budget.amount;
     return Container(
       padding: const EdgeInsets.fromLTRB(15, 15, 15, 12),
       decoration: const BoxDecoration(
@@ -69,7 +66,8 @@ class BudgetListItem extends StatelessWidget {
               Expanded(
                 child: _DetailsColumn(
                   total: budget.amount,
-                  used: used,
+                  used: budget.used,
+                  isExpense: budget.isExpense,
                 ),
               ),
             ],
@@ -155,21 +153,25 @@ class _DetailsColumn extends StatelessWidget {
   const _DetailsColumn({
     required this.total,
     required this.used,
+    required this.isExpense,
   });
 
   final double total;
   final double used;
+  final bool isExpense;
 
+  double get remaining => total - used;
   double get fraction => used / total;
 
   Color get color {
-    if (fraction > 0.80) {
+    final frac = isExpense ? fraction : remaining / total;
+    if (frac > 0.80) {
       return const Color.fromARGB(255, 242, 0, 0);
-    } else if (fraction > 0.60) {
+    } else if (frac > 0.60) {
       return const Color.fromARGB(255, 255, 132, 0);
-    } else if (fraction > 0.45) {
+    } else if (frac > 0.45) {
       return const Color.fromARGB(255, 253, 204, 26);
-    } else if (fraction > 0.25) {
+    } else if (frac > 0.25) {
       return const Color.fromARGB(255, 11, 161, 19);
     } else {
       return const Color.fromARGB(255, 49, 205, 57);
@@ -193,7 +195,7 @@ class _DetailsColumn extends StatelessWidget {
 
             // Percent used
             CustomText.subtitle(
-              '${(fraction * 100).toInt()}% budget used',
+              '${(fraction * 100).toInt()}% ${isExpense ? 'used' : 'claimed'}',
               color: color,
             ),
           ],
@@ -233,7 +235,7 @@ class _DetailsColumn extends StatelessWidget {
 
             // Remaining value
             CustomText.subtitle(
-              '= \$${total - used}',
+              '= \$$remaining',
               color: AppColors.textLightGreyColor,
             )
           ],

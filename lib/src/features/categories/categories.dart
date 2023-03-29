@@ -9,5 +9,6 @@ export 'widgets/add_category_fab.dart';
 export 'widgets/categories_list.dart';
 export 'widgets/category_dropdown_field.dart';
 export 'widgets/category_list_item.dart';
+export 'widgets/multi_category_field.dart';
 export 'widgets/selectable/selectable_categories_list.dart';
 export 'widgets/selectable/selectable_category_list_item.dart';

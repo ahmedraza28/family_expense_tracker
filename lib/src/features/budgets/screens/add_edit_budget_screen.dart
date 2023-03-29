@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
-import '../providers/budgets_provider.codegen.dart';
+import '../budgets.dart';
 
 // Routing
 import '../../../config/routing/routing.dart';
@@ -12,9 +12,6 @@ import '../../../config/routing/routing.dart';
 import '../../../helpers/form_validator.dart';
 import '../../../global/formatters/formatters.dart';
 import '../../../helpers/constants/constants.dart';
-
-// Models
-import '../models/budget_model.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
@@ -43,6 +40,9 @@ class AddEditBudgetScreen extends HookConsumerWidget {
         .toList();
     final categoriesController = useValueNotifier<List<CategoryModel>>(
       categories ?? [],
+    );
+    final budgetTypeController = useValueNotifier<bool>(
+      budget?.isExpense ?? true,
     );
     final budgetNameController = useTextEditingController(
       text: budget?.name ?? '',
@@ -128,6 +128,17 @@ class AddEditBudgetScreen extends HookConsumerWidget {
                 keyboardType: TextInputType.name,
                 textInputAction: TextInputAction.next,
                 validator: FormValidator.nameValidator,
+              ),
+
+              Insets.gapH20,
+
+              // Budget Type
+              LabeledWidget(
+                label: 'Budget Type',
+                useDarkerLabel: true,
+                child: BudgetTypeSelectionCards(
+                  controller: budgetTypeController,
+                ),
               ),
 
               Insets.gapH20,
@@ -227,57 +238,6 @@ class AddEditBudgetScreen extends HookConsumerWidget {
               Insets.bottomInsetsLow,
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class MultiCategoryField extends ConsumerWidget {
-  const MultiCategoryField({
-    required this.categoriesController,
-    super.key,
-  });
-
-  final ValueNotifier<List<CategoryModel>> categoriesController;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return InkWell(
-      customBorder: const RoundedRectangleBorder(
-        borderRadius: Corners.rounded7,
-      ),
-      onTap: () async {
-        ref
-            .read(selectedCategoriesProvider.notifier)
-            .addAll(categoriesController.value);
-        final categories = await AppRouter.pushNamed(
-          Routes.SelectCategoriesScreenRoute,
-        ) as List<CategoryModel>;
-        categoriesController.value = categories;
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 10,
-        ),
-        decoration: const BoxDecoration(
-          color: AppColors.fieldFillColor,
-          borderRadius: Corners.rounded7,
-        ),
-        child: ValueListenableBuilder(
-          valueListenable: categoriesController,
-          builder: (context, categories, _) {
-            return CustomChipsList(
-              chipLabels: [for (final category in categories) category.name],
-              isScrollable: true,
-              backgroundColor: AppColors.surfaceColor,
-              borderColor: Colors.transparent,
-              labelColor: const Color.fromARGB(255, 160, 169, 173),
-              chipHeight: 30,
-              chipGap: 10,
-            );
-          },
         ),
       ),
     );

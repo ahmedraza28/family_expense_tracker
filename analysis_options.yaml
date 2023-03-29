@@ -25,6 +25,7 @@ custom_lint:
 linter:
   rules:
     prefer_single_quotes: true
+    avoid_positional_boolean_parameters: false
     directives_ordering: false
     prefer_double_quotes: false
     always_use_package_imports: false

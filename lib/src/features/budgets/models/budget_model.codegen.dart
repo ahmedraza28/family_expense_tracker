@@ -21,6 +21,8 @@ class BudgetModel with _$BudgetModel {
     required double amount,
     required int year,
     required int month,
+    @Default(0.0) double used,
+    @Default(true) bool isExpense,
     String? description,
   }) = _BudgetModel;
 

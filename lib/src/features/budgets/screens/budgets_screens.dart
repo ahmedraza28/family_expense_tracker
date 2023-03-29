@@ -11,7 +11,7 @@ import '../providers/budget_filters_providers.codegen.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import '../widgets/add_budget_fab.dart';
-import '../widgets/budgets_list.dart';
+import '../widgets/budgets_view.dart';
 import '../widgets/filters/filters_bottom_sheet.dart';
 import 'add_edit_budget_screen.dart';
 
@@ -61,7 +61,7 @@ class BudgetsScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: const BudgetsList(),
+        body: const BudgetsView(),
         floatingActionButton: OpenContainer(
           openElevation: 0,
           closedElevation: 5,
