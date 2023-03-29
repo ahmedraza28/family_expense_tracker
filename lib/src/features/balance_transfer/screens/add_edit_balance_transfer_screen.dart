@@ -47,14 +47,8 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
     final srcWalletController = useValueNotifier<WalletModel?>(
       ref.watch(walletByIdProvider(balanceTransfer?.srcWalletId)),
     );
-    final srcWalletTextController = useTextEditingController(
-      text: srcWalletController.value?.name ?? '',
-    );
     final destWalletController = useValueNotifier<WalletModel?>(
       ref.watch(walletByIdProvider(balanceTransfer?.destWalletId)),
-    );
-    final destWalletTextController = useTextEditingController(
-      text: destWalletController.value?.name ?? '',
     );
 
     void onSave() {
@@ -139,50 +133,22 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Source Wallet
-              InkWell(
-                customBorder: const RoundedRectangleBorder(
-                  borderRadius: Corners.rounded7,
-                ),
-                onTap: () async {
-                  ref
-                      .read(isWalletSelectableProvider.notifier)
-                      .update((_) => true);
-                  final wallet = await AppRouter.pushNamed(
-                    Routes.WalletsScreenRoute,
-                  ) as WalletModel;
-                  srcWalletController.value = wallet;
-                  srcWalletTextController.text = wallet.name;
-                },
-                child: CustomTextField(
-                  controller: srcWalletTextController,
-                  enabled: false,
-                  hintText: 'Transfer from',
-                  floatingText: 'Source Wallet',
+              LabeledWidget(
+                label: 'Source Wallet',
+                useDarkerLabel: true,
+                child: WalletDropdownField(
+                  controller: srcWalletController,
                 ),
               ),
 
               Insets.gapH20,
 
               // Destination Wallet
-              InkWell(
-                customBorder: const RoundedRectangleBorder(
-                  borderRadius: Corners.rounded7,
-                ),
-                onTap: () async {
-                  ref
-                      .read(isWalletSelectableProvider.notifier)
-                      .update((_) => true);
-                  final wallet = await AppRouter.pushNamed(
-                    Routes.WalletsScreenRoute,
-                  ) as WalletModel;
-                  destWalletController.value = wallet;
-                  destWalletTextController.text = wallet.name;
-                },
-                child: CustomTextField(
-                  controller: destWalletTextController,
-                  enabled: false,
-                  hintText: 'Transfer to',
-                  floatingText: 'Destination Wallet',
+              LabeledWidget(
+                label: 'Destination Wallet',
+                useDarkerLabel: true,
+                child: WalletDropdownField(
+                  controller: destWalletController,
                 ),
               ),
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
 import '../models/wallet_model.codegen.dart';
@@ -8,22 +7,13 @@ import '../models/wallet_model.codegen.dart';
 import '../../../config/routing/routing.dart';
 
 // Helpers
-import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import '../screens/add_edit_wallet_screen.dart';
 
-final isWalletSelectableProvider = StateProvider.autoDispose<bool>(
-  name: 'isWalletSelectableProvider',
-  (ref) {
-    ref.delayDispose();
-    return false;
-  },
-);
-
-class WalletListItem extends ConsumerWidget {
+class WalletListItem extends StatelessWidget {
   final WalletModel wallet;
 
   const WalletListItem({
@@ -32,10 +22,8 @@ class WalletListItem extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isSelectable = ref.watch(isWalletSelectableProvider);
+  Widget build(BuildContext context) {
     return ListTile(
-      onTap: isSelectable ? () => AppRouter.pop(wallet) : null,
       dense: true,
       horizontalTitleGap: 0,
       contentPadding: const EdgeInsets.symmetric(
@@ -51,18 +39,16 @@ class WalletListItem extends ConsumerWidget {
         size: 27,
         color: AppUtils.getRandomColor(),
       ),
-      trailing: isSelectable
-          ? null
-          : InkWell(
-              onTap: () => AppRouter.push(
-                AddEditWalletScreen(wallet: wallet),
-              ),
-              child: const Icon(
-                Icons.edit_rounded,
-                size: 20,
-                color: AppColors.textGreyColor,
-              ),
-            ),
+      trailing: InkWell(
+        onTap: () => AppRouter.push(
+          AddEditWalletScreen(wallet: wallet),
+        ),
+        child: const Icon(
+          Icons.edit_rounded,
+          size: 20,
+          color: AppColors.textGreyColor,
+        ),
+      ),
       subtitle: CustomText.subtitle(
         '${wallet.balance}',
         color: AppColors.textLightGreyColor,
