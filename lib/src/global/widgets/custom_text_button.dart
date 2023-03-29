@@ -57,6 +57,7 @@ class CustomTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
+    final colorScheme = context.theme.colorScheme;
     final textButtonTheme = theme.textButtonTheme;
     return Container(
       height: height,
@@ -65,14 +66,14 @@ class CustomTextButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
         border: border,
         gradient: !disabled ? gradient : AppColors.buttonGradientGrey,
-        color: color?.withOpacity(disabled ? 0.15 : 1),
+        color: (color ?? colorScheme.primary).withOpacity(disabled ? 0.15 : 1),
       ),
       clipBehavior: Clip.hardEdge,
       child: TextButton(
         style: textButtonTheme.style!.copyWith(
           padding: MaterialStateProperty.all(padding),
           overlayColor: MaterialStateProperty.all(
-            AppColors.primaryColor.withOpacity(disabled ? 0.15 : 1),
+            (color ?? colorScheme.primary).withOpacity(disabled ? 0.15 : 1),
           ),
         ),
         onPressed: disabled ? null : onPressed,

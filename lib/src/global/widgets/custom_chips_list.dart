@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomChipsList extends StatelessWidget {
-  final List<String> chipContents;
+  final List<String> chipLabels;
   final double chipHeight;
   final double chipGap;
   final double? chipWidth;
@@ -11,10 +11,10 @@ class CustomChipsList extends StatelessWidget {
   final double borderWidth;
   final Color borderColor;
   final Color backgroundColor;
-  final Color contentColor;
+  final Color labelColor;
 
   const CustomChipsList({
-    required this.chipContents,
+    required this.chipLabels,
     required this.chipHeight,
     super.key,
     this.isScrollable = false,
@@ -25,7 +25,7 @@ class CustomChipsList extends StatelessWidget {
     this.borderWidth = 1.0,
     this.borderColor = const Color.fromRGBO(122, 122, 122, 1),
     this.backgroundColor = Colors.white,
-    this.contentColor = const Color.fromRGBO(122, 122, 122, 1),
+    this.labelColor = const Color.fromRGBO(122, 122, 122, 1),
   });
 
   @override
@@ -36,14 +36,14 @@ class CustomChipsList extends StatelessWidget {
           ? ListView.separated(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: chipContents.length,
+              itemCount: chipLabels.length,
               separatorBuilder: (ctx, i) => SizedBox(width: chipGap),
               itemBuilder: (ctx, i) => buildChipListItem(i),
             )
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (var i = 0; i < chipContents.length; i++)
+                for (var i = 0; i < chipLabels.length; i++)
                   Padding(
                     padding: EdgeInsets.only(left: i == 0 ? 0 : chipGap),
                     child: buildChipListItem(i),
@@ -59,9 +59,9 @@ class CustomChipsList extends StatelessWidget {
       backgroundColor: backgroundColor,
       borderColor: borderColor,
       borderWidth: borderWidth,
-      content: chipContents[i],
+      content: chipLabels[i],
       labelStyle: TextStyle(
-        color: contentColor,
+        color: labelColor,
         fontSize: fontSize,
         height: 1,
         fontWeight: fontWeight,
@@ -96,7 +96,7 @@ class CustomChipWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: chipWidth,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: const BorderRadius.all(Radius.circular(20)),

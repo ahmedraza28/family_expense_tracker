@@ -98,6 +98,7 @@ class AddEditCategoryScreen extends HookConsumerWidget {
               CustomTextField(
                 controller: categoryNameController,
                 floatingText: 'Category Name',
+                hintText: 'Enter category name',
                 keyboardType: TextInputType.name,
                 textInputAction: TextInputAction.next,
                 validator: FormValidator.nameValidator,

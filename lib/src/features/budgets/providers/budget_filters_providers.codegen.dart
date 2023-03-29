@@ -26,8 +26,4 @@ class BudgetFilters extends _$BudgetFilters {
   void setCategory(CategoryModel? category) {
     state = filters.copyWith(categoryId: category?.id);
   }
-
-  void clear() {
-    state = const BudgetFiltersModel();
-  }
 }

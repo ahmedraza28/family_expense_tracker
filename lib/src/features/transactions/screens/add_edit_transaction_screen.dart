@@ -53,9 +53,6 @@ class AddEditTransactionScreen extends HookConsumerWidget {
     final categoryController = useValueNotifier<CategoryModel?>(
       ref.watch(categoryByIdProvider(transaction?.categoryId)),
     );
-    final categoryTextController = useTextEditingController(
-      text: categoryController.value?.name ?? '',
-    );
     final walletTextController = useTextEditingController(
       text: walletController.value?.name ?? '',
     );
@@ -158,25 +155,11 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               Insets.gapH20,
 
               // Category
-              InkWell(
-                customBorder: const RoundedRectangleBorder(
-                  borderRadius: Corners.rounded7,
-                ),
-                onTap: () async {
-                  ref
-                      .read(isCategorySelectableProvider.notifier)
-                      .update((_) => true);
-                  final category = await AppRouter.pushNamed(
-                    Routes.CategoriesScreenRoute,
-                  ) as CategoryModel;
-                  categoryController.value = category;
-                  categoryTextController.text = category.name;
-                },
-                child: CustomTextField(
-                  controller: categoryTextController,
-                  enabled: false,
-                  hintText: 'Tap to select',
-                  floatingText: 'Category',
+              LabeledWidget(
+                label: 'Category',
+                useDarkerLabel: true,
+                child: CategoryDropdownField(
+                  controller: categoryController,
                 ),
               ),
 

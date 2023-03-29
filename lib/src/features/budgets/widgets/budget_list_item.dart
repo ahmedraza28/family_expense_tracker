@@ -27,7 +27,7 @@ class BudgetListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final seed = budget.categoryId;
+    final seed = budget.id;
     final used =
         AppUtils.randomizer(seed).nextInt(budget.amount.toInt()).toDouble();
     final fraction = used / budget.amount;
@@ -54,7 +54,7 @@ class BudgetListItem extends StatelessWidget {
               Consumer(
                 builder: (context, ref, _) {
                   final category = ref.watch(
-                    categoryByIdProvider(budget.categoryId),
+                    categoryByIdProvider(budget.categoryIds.first),
                   )!;
                   return _CircularProgressIcon(
                     fraction: fraction,
@@ -91,17 +91,10 @@ class _NameAndEditRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Category name
+        // Budget name
         Expanded(
-          child: Consumer(
-            builder: (context, ref, _) {
-              final category = ref.watch(
-                categoryByIdProvider(budget.categoryId),
-              )!;
-              return CustomText.body(
-                category.name,
-              );
-            },
+          child: CustomText.body(
+            budget.name,
           ),
         ),
 

@@ -49,16 +49,18 @@ class Budgets extends _$Budgets {
 
   void addBudget({
     required int year,
+    required String name,
     required int month,
-    required int categoryId,
+    required List<int> categoryIds,
     required double amount,
     String? description,
   }) {
     final budget = BudgetModel(
       id: null,
       year: year,
+      name: name,
       month: month,
-      categoryId: categoryId,
+      categoryIds: categoryIds,
       amount: amount,
       description: description,
     );

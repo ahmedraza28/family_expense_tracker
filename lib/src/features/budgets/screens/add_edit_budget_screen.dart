@@ -9,6 +9,7 @@ import '../providers/budgets_provider.codegen.dart';
 import '../../../config/routing/routing.dart';
 
 // Helpers
+import '../../../helpers/form_validator.dart';
 import '../../../global/formatters/formatters.dart';
 import '../../../helpers/constants/constants.dart';
 
@@ -35,11 +36,16 @@ class AddEditBudgetScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    final categoryController = useValueNotifier<CategoryModel?>(
-      ref.watch(categoryByIdProvider(budget?.categoryId)),
+    final categories = budget?.categoryIds
+        .map(
+          (e) => ref.watch(categoryByIdProvider(e))!,
+        )
+        .toList();
+    final categoriesController = useValueNotifier<List<CategoryModel>>(
+      categories ?? [],
     );
-    final categoryTextController = useTextEditingController(
-      text: categoryController.value?.name ?? '',
+    final budgetNameController = useTextEditingController(
+      text: budget?.name ?? '',
     );
     final budgetAmountController = useTextEditingController(
       text: budget?.amount.toString() ?? '',
@@ -53,20 +59,25 @@ class AddEditBudgetScreen extends HookConsumerWidget {
     void onSave() {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
+      final categoryIds = [
+        for (final category in categoriesController.value) category.id!
+      ];
       if (budget == null) {
         ref.read(budgetsProvider.notifier).addBudget(
               year: yearFilterController.value!,
               month: monthFilterController.value!,
-              categoryId: categoryController.value!.id!,
+              categoryIds: categoryIds,
               amount: double.parse(budgetAmountController.text),
+              name: budgetNameController.text,
               description: descriptionController.text,
             );
       } else {
         final newBudget = budget!.copyWith(
           year: yearFilterController.value!,
           month: monthFilterController.value!,
-          categoryId: categoryController.value!.id!,
+          categoryIds: categoryIds,
           amount: double.parse(budgetAmountController.text),
+          name: budgetNameController.text,
           description: descriptionController.text,
         );
         ref.read(budgetsProvider.notifier).updateBudget(newBudget);
@@ -109,26 +120,24 @@ class AddEditBudgetScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
+              // Budget Name
+              CustomTextField(
+                controller: budgetNameController,
+                floatingText: 'Budget Name',
+                hintText: 'Enter budget name',
+                keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.next,
+                validator: FormValidator.nameValidator,
+              ),
+
+              Insets.gapH20,
+
               // Category
-              InkWell(
-                customBorder: const RoundedRectangleBorder(
-                  borderRadius: Corners.rounded7,
-                ),
-                onTap: () async {
-                  ref
-                      .read(isCategorySelectableProvider.notifier)
-                      .update((_) => true);
-                  final category = await AppRouter.pushNamed(
-                    Routes.CategoriesScreenRoute,
-                  ) as CategoryModel;
-                  categoryController.value = category;
-                  categoryTextController.text = category.name;
-                },
-                child: CustomTextField(
-                  controller: categoryTextController,
-                  enabled: false,
-                  hintText: 'Tap to select',
-                  floatingText: 'Category',
+              LabeledWidget(
+                label: 'Category',
+                useDarkerLabel: true,
+                child: MultiCategoryField(
+                  categoriesController: categoriesController,
                 ),
               ),
 
@@ -218,6 +227,57 @@ class AddEditBudgetScreen extends HookConsumerWidget {
               Insets.bottomInsetsLow,
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class MultiCategoryField extends ConsumerWidget {
+  const MultiCategoryField({
+    required this.categoriesController,
+    super.key,
+  });
+
+  final ValueNotifier<List<CategoryModel>> categoriesController;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return InkWell(
+      customBorder: const RoundedRectangleBorder(
+        borderRadius: Corners.rounded7,
+      ),
+      onTap: () async {
+        ref
+            .read(selectedCategoriesProvider.notifier)
+            .addAll(categoriesController.value);
+        final categories = await AppRouter.pushNamed(
+          Routes.SelectCategoriesScreenRoute,
+        ) as List<CategoryModel>;
+        categoriesController.value = categories;
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 10,
+        ),
+        decoration: const BoxDecoration(
+          color: AppColors.fieldFillColor,
+          borderRadius: Corners.rounded7,
+        ),
+        child: ValueListenableBuilder(
+          valueListenable: categoriesController,
+          builder: (context, categories, _) {
+            return CustomChipsList(
+              chipLabels: [for (final category in categories) category.name],
+              isScrollable: true,
+              backgroundColor: AppColors.surfaceColor,
+              borderColor: Colors.transparent,
+              labelColor: const Color.fromARGB(255, 160, 169, 173),
+              chipHeight: 30,
+              chipGap: 10,
+            );
+          },
         ),
       ),
     );

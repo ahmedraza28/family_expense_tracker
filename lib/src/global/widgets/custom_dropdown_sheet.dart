@@ -89,7 +89,7 @@ class CustomDropdownSheet<T> extends StatefulWidget {
           showSearch == false || searchFilterCondition != null,
           'Search must be used with a search condition',
         ),
-        this.actionButtonColor = actionButtonColor ?? AppColors.secondaryColor,
+        this.actionButtonColor = actionButtonColor ?? AppColors.primaryColor,
         this.actionButtonText = actionButtonText ?? 'DONE',
         this.enableMultipleSelection = enableMultipleSelection ?? false;
 
@@ -153,6 +153,7 @@ class _CustomDropdownSheetState<T> extends State<CustomDropdownSheet<T>> {
                 : CustomTextButton(
                     color: widget.actionButtonColor,
                     width: 50,
+                    height: 30,
                     onPressed: () {
                       widget.onMultipleSelect?.call(_selectedItemList);
                       _removeFocusAndPopValue<List<T>>(_selectedItemList);

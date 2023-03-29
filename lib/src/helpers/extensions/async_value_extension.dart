@@ -34,7 +34,14 @@ extension WidgetRefExtension on WidgetRef {
   }
 }
 
-extension RefExtension on AutoDisposeStateProviderRef<Object?> {
+extension StateRefExtension on AutoDisposeStateProviderRef<Object?> {
+  void delayDispose() {
+    keepAlive();
+    onCancel(invalidateSelf);
+  }
+}
+
+extension NotifierRefExtension on AutoDisposeNotifierProviderRef<Object?> {
   void delayDispose() {
     keepAlive();
     onCancel(invalidateSelf);

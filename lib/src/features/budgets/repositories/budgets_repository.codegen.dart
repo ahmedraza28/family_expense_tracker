@@ -40,11 +40,12 @@ class BudgetsRepository {
           query = query.where('month', isEqualTo: month);
         }
         if (categoryId != null) {
-          query = query.where('categoryId', isEqualTo: categoryId);
+          query = query.where(BudgetModel.categoryIdsField, arrayContains: categoryId);
         }
         return query;
       },
       builder: (json, docId) => BudgetModel.fromJson(json!),
+      sort: (lhs, rhs) => lhs.name.compareTo(rhs.name),
     );
   }
 
@@ -84,42 +85,48 @@ class MockBudgetsRepository implements BudgetsRepository {
     final list = [
       BudgetModel(
         id: 1,
-        categoryId: 1,
+        name: 'Food and snacks',
+        categoryIds: [1],
         amount: 20000,
         year: date.year,
         month: date.month,
       ),
       BudgetModel(
         id: 2,
-        categoryId: 2,
+        name: 'Vehicle and transport',
+        categoryIds: [2],
         amount: 55000,
         year: date.year,
         month: date.month,
       ),
       BudgetModel(
         id: 3,
-        categoryId: 3,
+        name: 'Salary',
+        categoryIds: [3],
         amount: 100000,
         year: date.year,
         month: date.month,
       ),
       BudgetModel(
         id: 4,
-        categoryId: 1,
+        name: 'Food and snacks',
+        categoryIds: [1],
         amount: 10000,
         year: lastMonth.year,
         month: lastMonth.month,
       ),
       BudgetModel(
         id: 5,
-        categoryId: 2,
+        name: 'Vehicle and transport',
+        categoryIds: [2],
         amount: 39000,
         year: lastMonth.year,
         month: lastMonth.month,
       ),
       BudgetModel(
         id: 6,
-        categoryId: 3,
+        name: 'Salary',
+        categoryIds: [3],
         amount: 90000,
         year: lastMonth.year,
         month: lastMonth.month,
@@ -133,7 +140,7 @@ class MockBudgetsRepository implements BudgetsRepository {
         if (month != null && element.month != month) {
           return false;
         }
-        if (categoryId != null && element.categoryId != categoryId) {
+        if (categoryId != null && element.categoryIds.contains(categoryId)) {
           return false;
         }
         return true;

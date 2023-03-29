@@ -9,7 +9,6 @@ import '../../helpers/constants/constants.dart';
 import '../../helpers/extensions/extensions.dart';
 
 // Widgets
-import './custom_dropdown_sheet.dart';
 import './custom_text_button.dart';
 
 typedef SelectedCallback<E> = void Function(E?)?;
@@ -18,7 +17,7 @@ abstract class CustomDropdownField<T> extends HookWidget {
   const CustomDropdownField({super.key});
 
   factory CustomDropdownField.sheet({
-    required CustomDropdownSheet<T> itemsSheet,
+    required Widget itemsSheet,
     required Widget Function(T) selectedItemBuilder,
     Key? key,
     ValueNotifier<T?>? controller,
@@ -66,7 +65,7 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
   final String hintText;
 
   /// The bottom modal sheet used to display dropdown items
-  final CustomDropdownSheet<T> itemsSheet;
+  final Widget itemsSheet;
 
   /// This callback is used to map the selected value to a
   /// [Widget] for displaying.
@@ -112,9 +111,7 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
           ),
           backgroundColor: backgroundColor,
           context: context,
-          builder: (context) {
-            return itemsSheet;
-          },
+          builder: (context) => itemsSheet,
         ) ??
         controller.value;
   }

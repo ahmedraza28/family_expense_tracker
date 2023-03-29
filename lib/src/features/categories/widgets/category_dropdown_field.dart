@@ -12,11 +12,11 @@ import '../../../global/widgets/widgets.dart';
 
 class CategoryDropdownField extends ConsumerWidget {
   final ValueNotifier<CategoryModel?> controller;
-  final SelectedCallback<CategoryModel> onSelected;
+  final SelectedCallback<CategoryModel>? onSelected;
 
   const CategoryDropdownField({
     required this.controller,
-    required this.onSelected,
+    this.onSelected,
     super.key,
   });
 
