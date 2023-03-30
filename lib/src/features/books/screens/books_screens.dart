@@ -54,7 +54,9 @@ class BooksScreen extends ConsumerWidget {
         closedBuilder: (ctx, openFunction) => AddBookFab(
           onPressed: openFunction,
         ),
-        openBuilder: (ctx, closeFunction) => const AddEditBookScreen(),
+        openBuilder: (ctx, closeFunction) => AddEditBookScreen(
+          onPressed: closeFunction,
+        ),
       ),
     );
   }

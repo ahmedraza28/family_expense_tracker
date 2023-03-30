@@ -5,6 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Providers
 import '../providers/books_provider.codegen.dart';
 
+// Routing
+import '../../../config/routing/routing.dart';
+
 // Models
 import '../models/book_model.codegen.dart';
 
@@ -21,10 +24,12 @@ import '../../../global/widgets/widgets.dart';
 
 class AddEditBookScreen extends HookConsumerWidget {
   final BookModel? book;
+  final VoidCallback? onPressed;
 
   const AddEditBookScreen({
     super.key,
     this.book,
+    this.onPressed,
   });
 
   @override
@@ -40,7 +45,7 @@ class AddEditBookScreen extends HookConsumerWidget {
       formKey.currentState!.save();
       if (book == null) {
         final currentUser = ref.read(currentUserProvider).value!;
-        ref.read(booksProvider).addBook(
+        ref.read(booksProvider.notifier).addBook(
               name: bookNameController.text,
               imageUrl: '',
               currency: currencyController.value,
@@ -49,13 +54,14 @@ class AddEditBookScreen extends HookConsumerWidget {
               createdBy: currentUser,
             );
       } else {
-        ref.read(booksProvider).updateBook(
+        ref.read(booksProvider.notifier).updateBook(
               book!.copyWith(
                 name: bookNameController.text,
                 currency: currencyController.value,
               ),
             );
       }
+      (onPressed ?? AppRouter.pop).call();
     }
 
     return Scaffold(

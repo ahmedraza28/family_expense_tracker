@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
+import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
@@ -26,20 +27,19 @@ Stream<List<BookModel>> booksStream(BooksStreamRef ref) {
   if (currentUser == null) {
     return const Stream.empty();
   }
-  return ref.watch(booksProvider).getUserBooks(currentUser.uid);
+  return ref.watch(booksProvider.notifier).getUserBooks(currentUser.uid);
 }
 
 /// A provider used to access instance of this service
 @riverpod
-BooksProvider books(BooksRef ref) {
-  final booksRepository = ref.watch(booksRepositoryProvider);
-  return BooksProvider(booksRepository);
-}
+class Books extends _$Books {
+  late final BooksRepository _booksRepository;
 
-class BooksProvider {
-  final BooksRepository _booksRepository;
-
-  BooksProvider(this._booksRepository);
+  @override
+  FutureOr<void> build() {
+    _booksRepository = ref.watch(booksRepositoryProvider);
+    return null;
+  }
 
   Stream<List<BookModel>> getAllBooks([JSON? queryParams]) {
     return _booksRepository.getBooks();
@@ -50,7 +50,7 @@ class BooksProvider {
     return _booksRepository.getUserBooks(memberId);
   }
 
-  void addBook({
+  Future<void> addBook({
     required String name,
     required String imageUrl,
     required double totalIncome,
@@ -58,7 +58,8 @@ class BooksProvider {
     required UserModel createdBy,
     required CurrencyModel currency,
     String? description,
-  }) {
+  }) async {
+    state = const AsyncValue.loading();
     final book = BookModel(
       id: null,
       name: name,
@@ -69,13 +70,20 @@ class BooksProvider {
       totalIncome: totalIncome,
       totalExpense: totalExpense,
     );
-    _booksRepository.addBook(body: book.toJson());
+
+    state = await state.makeGuardedRequest(
+      () => _booksRepository.addBook(body: book.toJson()),
+    );
   }
 
-  void updateBook(BookModel book) {
-    _booksRepository.updateBook(
-      bookId: book.id!,
-      changes: book.toJson(),
+  Future<void> updateBook(BookModel book) async {
+    state = const AsyncValue.loading();
+
+    state = await state.makeGuardedRequest(
+      () => _booksRepository.updateBook(
+        bookId: book.id!,
+        changes: book.toJson(),
+      ),
     );
   }
 }
