@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -52,9 +53,7 @@ class Books extends _$Books {
 
   Future<void> addBook({
     required String name,
-    required String imageUrl,
-    required double totalIncome,
-    required double totalExpense,
+    required Color color,
     required UserModel createdBy,
     required CurrencyModel currency,
     String? description,
@@ -63,12 +62,10 @@ class Books extends _$Books {
     final book = BookModel(
       id: null,
       name: name,
-      imageUrl: imageUrl,
+      color: color,
       currency: currency,
       description: description ?? '',
       createdBy: createdBy,
-      totalIncome: totalIncome,
-      totalExpense: totalExpense,
     );
 
     state = await state.makeGuardedRequest(

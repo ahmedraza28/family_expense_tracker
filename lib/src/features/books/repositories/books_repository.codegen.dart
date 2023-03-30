@@ -1,15 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Core
 import '../../../core/core.dart';
 
-// Models
+// Helpers
 import '../../../helpers/typedefs.dart';
-import '../../wallets/wallets.dart';
+
+// Models
 import '../models/book_model.codegen.dart';
 
 // Features
+import '../../wallets/wallets.dart';
 import '../../auth/auth.dart';
 
 part 'books_repository.codegen.g.dart';
@@ -82,7 +85,7 @@ class MockBooksRepository implements BooksRepository {
     email: 'a.rafaysaleem@gmail.com',
     profilePictureUrl: '',
   );
-  
+
   @override
   Stream<List<BookModel>> getBooks({List<int>? bookIds}) {
     return Stream.value(const [
@@ -90,21 +93,17 @@ class MockBooksRepository implements BooksRepository {
         id: 1,
         name: 'Book 1',
         description: 'Book 1 description',
-        imageUrl: '',
+        color: Colors.purple,
         currency: defaultCurrency,
         createdBy: _user,
-        totalIncome: 0,
-        totalExpense: 0,
       ),
       BookModel(
         id: 2,
         name: 'Book 2',
         description: 'Book 2 description',
-        imageUrl: '',
+        color: Colors.deepOrangeAccent,
         currency: defaultCurrency,
         createdBy: _user,
-        totalIncome: 0,
-        totalExpense: 0,
       ),
     ]);
   }
@@ -119,21 +118,17 @@ class MockBooksRepository implements BooksRepository {
         id: 1,
         name: 'Book 1',
         description: 'Book 1 description',
-        imageUrl: '',
+        color: Colors.purple,
         currency: defaultCurrency,
         createdBy: _user,
-        totalIncome: 0,
-        totalExpense: 0,
       ),
       BookModel(
         id: 2,
         name: 'Book 2',
         description: 'Book 2 description',
-        imageUrl: '',
+        color: Colors.deepOrangeAccent,
         currency: defaultCurrency,
         createdBy: _user,
-        totalIncome: 0,
-        totalExpense: 0,
       ),
     ]);
   }

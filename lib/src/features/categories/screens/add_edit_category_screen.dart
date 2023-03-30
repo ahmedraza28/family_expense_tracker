@@ -62,8 +62,8 @@ class AddEditCategoryScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const CustomText(
-          'Add a new category',
+        title: CustomText(
+          category == null ? 'Add a new category' : 'Edit category',
           fontSize: 20,
         ),
         actions: [
@@ -103,6 +103,8 @@ class AddEditCategoryScreen extends HookConsumerWidget {
                 textInputAction: TextInputAction.next,
                 validator: FormValidator.nameValidator,
               ),
+
+              // TODO(arafaysaleem): Add color picker
 
               Insets.expand,
 

@@ -48,15 +48,32 @@ class BookListItem extends ConsumerWidget {
           children: [
             // Title and Edit
             Padding(
-              padding: const EdgeInsets.fromLTRB(15, 15, 15, 10),
+              padding: const EdgeInsets.fromLTRB(15, 15, 15, 14),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Book Icon
+                  Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: book.color.withOpacity(0.2),
+                      borderRadius: Corners.rounded9,
+                    ),
+                    child: Icon(
+                      Icons.book_rounded,
+                      color: book.color,
+                    ),
+                  ),
+
+                  Insets.gapW15,
+
                   // Book Name
                   CustomText.title(
                     'Book Name',
                     fontSize: 20,
                   ),
+
+                  Insets.expand,
 
                   // Edit button
                   CustomTextButton.gradient(
@@ -81,7 +98,7 @@ class BookListItem extends ConsumerWidget {
 
             // Details
             Padding(
-              padding: const EdgeInsets.fromLTRB(15, 10, 15, 15),
+              padding: const EdgeInsets.fromLTRB(15, 12, 15, 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -89,7 +106,7 @@ class BookListItem extends ConsumerWidget {
                   LabeledWidget(
                     label: 'Balance',
                     child: CustomText.body(
-                      'Rs100,000',
+                      '${book.currency.symbol} ${book.totalIncome - book.totalExpense}',
                     ),
                   ),
 

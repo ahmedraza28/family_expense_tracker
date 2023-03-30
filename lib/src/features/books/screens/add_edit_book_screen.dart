@@ -39,6 +39,9 @@ class AddEditBookScreen extends HookConsumerWidget {
       book?.currency ?? defaultCurrency,
     );
     final bookNameController = useTextEditingController(text: book?.name ?? '');
+    final colorController = useValueNotifier<Color>(
+      book?.color ?? AppColors.primaryColor,
+    );
 
     void saveBook() {
       if (!formKey.currentState!.validate()) return;
@@ -47,16 +50,15 @@ class AddEditBookScreen extends HookConsumerWidget {
         final currentUser = ref.read(currentUserProvider).value!;
         ref.read(booksProvider.notifier).addBook(
               name: bookNameController.text,
-              imageUrl: '',
+              color: colorController.value,
               currency: currencyController.value,
-              totalIncome: 0,
-              totalExpense: 0,
               createdBy: currentUser,
             );
       } else {
         ref.read(booksProvider.notifier).updateBook(
               book!.copyWith(
                 name: bookNameController.text,
+                color: colorController.value,
                 currency: currencyController.value,
               ),
             );
@@ -98,6 +100,8 @@ class AddEditBookScreen extends HookConsumerWidget {
               ),
 
               Insets.gapH20,
+
+              // TODO(arafaysaleem): Add color picker
 
               // Currency Dropdown
               Consumer(
