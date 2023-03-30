@@ -23,7 +23,7 @@ class BookModel with _$BookModel {
     @JsonKey(toJson: AppUtils.toColorHex, fromJson: AppUtils.fromColorHex)
         required Color color,
     required String description,
-    @JsonKey(toJson: toCurrencyId) required CurrencyModel currency,
+    required String currencyName,
     required UserModel createdBy,
     @Default(0) double totalIncome,
     @Default(0) double totalExpense,

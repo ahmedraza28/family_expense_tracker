@@ -5,11 +5,9 @@ import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
-import '../models/currency_model.codegen.dart';
 import '../models/wallet_model.codegen.dart';
 
 // Repositories
-import '../repositories/currencies_repository.codegen.dart';
 import '../repositories/wallets_repository.codegen.dart';
 
 // Features
@@ -31,15 +29,8 @@ Future<Map<int, WalletModel>> walletsMap(WalletsMapRef ref) async {
 
 @Riverpod(keepAlive: true)
 WalletModel? walletById(WalletByIdRef ref, int? id) {
-  return ref.watch(walletsMapProvider).asData!.value[id];
+  return ref.watch(walletsMapProvider).value?[id];
 }
-
-@Riverpod(keepAlive: true)
-Stream<List<CurrencyModel>> currenciesStream(CurrenciesStreamRef ref) {
-  return ref.watch(currenciesRepositoryProvider).getAllCurrencies();
-}
-
-const defaultCurrency = CurrencyModel(name: 'PKR', symbol: 'Rs');
 
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)
@@ -62,7 +53,6 @@ class Wallets extends _$Wallets {
     required String name,
     required String imageUrl,
     required double balance,
-    required CurrencyModel currency,
     String? description,
   }) async {
     state = const AsyncValue.loading();
@@ -70,7 +60,6 @@ class Wallets extends _$Wallets {
     final wallet = WalletModel(
       id: null,
       name: name,
-      currency: currency,
       imageUrl: imageUrl,
       balance: balance,
       description: description,

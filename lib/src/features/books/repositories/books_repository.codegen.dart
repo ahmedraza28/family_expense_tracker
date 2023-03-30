@@ -12,7 +12,6 @@ import '../../../helpers/typedefs.dart';
 import '../models/book_model.codegen.dart';
 
 // Features
-import '../../wallets/wallets.dart';
 import '../../auth/auth.dart';
 
 part 'books_repository.codegen.g.dart';
@@ -94,7 +93,7 @@ class MockBooksRepository implements BooksRepository {
         name: 'Book 1',
         description: 'Book 1 description',
         color: Colors.purple,
-        currency: defaultCurrency,
+        currencyName: 'PKR',
         createdBy: _user,
       ),
       BookModel(
@@ -102,7 +101,7 @@ class MockBooksRepository implements BooksRepository {
         name: 'Book 2',
         description: 'Book 2 description',
         color: Colors.deepOrangeAccent,
-        currency: defaultCurrency,
+        currencyName: 'PKR',
         createdBy: _user,
       ),
     ]);
@@ -119,7 +118,7 @@ class MockBooksRepository implements BooksRepository {
         name: 'Book 1',
         description: 'Book 1 description',
         color: Colors.purple,
-        currency: defaultCurrency,
+        currencyName: 'PKR',
         createdBy: _user,
       ),
       BookModel(
@@ -127,7 +126,7 @@ class MockBooksRepository implements BooksRepository {
         name: 'Book 2',
         description: 'Book 2 description',
         color: Colors.deepOrangeAccent,
-        currency: defaultCurrency,
+        currencyName: 'USD',
         createdBy: _user,
       ),
     ]);

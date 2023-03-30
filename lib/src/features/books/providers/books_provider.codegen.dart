@@ -13,7 +13,6 @@ import '../models/book_model.codegen.dart';
 import '../repositories/books_repository.codegen.dart';
 
 // Features
-import '../../wallets/wallets.dart';
 import '../../auth/auth.dart';
 
 part 'books_provider.codegen.g.dart';
@@ -55,7 +54,7 @@ class Books extends _$Books {
     required String name,
     required Color color,
     required UserModel createdBy,
-    required CurrencyModel currency,
+    required String currencyName,
     String? description,
   }) async {
     state = const AsyncValue.loading();
@@ -63,7 +62,7 @@ class Books extends _$Books {
       id: null,
       name: name,
       color: color,
-      currency: currency,
+      currencyName: currencyName,
       description: description ?? '',
       createdBy: createdBy,
     );

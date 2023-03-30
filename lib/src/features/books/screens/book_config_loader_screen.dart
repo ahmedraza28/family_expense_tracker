@@ -19,6 +19,7 @@ final _cacheLoaderFutureProvider = FutureProvider.autoDispose<void>(
     Future.delayed(3.seconds),
     ref.watch(categoriesMapProvider.future),
     ref.watch(walletsMapProvider.future),
+    ref.watch(currenciesMapProvider.future),
   ]),
 );
 

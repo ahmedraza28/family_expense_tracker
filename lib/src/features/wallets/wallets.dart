@@ -1,5 +1,6 @@
 export 'models/currency_model.codegen.dart';
 export 'models/wallet_model.codegen.dart';
+export 'providers/currencies_provider.codegen.dart';
 export 'providers/wallets_provider.codegen.dart';
 export 'repositories/currencies_repository.codegen.dart';
 export 'repositories/wallets_repository.codegen.dart';

@@ -17,6 +17,9 @@ import '../../../helpers/constants/constants.dart';
 import '../../../global/widgets/widgets.dart';
 import '../screens/add_edit_book_screen.dart';
 
+// Features
+import '../../wallets/wallets.dart';
+
 class BookListItem extends ConsumerWidget {
   final BookModel book;
 
@@ -68,8 +71,8 @@ class BookListItem extends ConsumerWidget {
                   Insets.gapW15,
 
                   // Book Name
-                  CustomText.title(
-                    'Book Name',
+                  CustomText.body(
+                    book.name,
                     fontSize: 20,
                   ),
 
@@ -105,8 +108,19 @@ class BookListItem extends ConsumerWidget {
                   // Balance Amount
                   LabeledWidget(
                     label: 'Balance',
-                    child: CustomText.body(
-                      '${book.currency.symbol} ${book.totalIncome - book.totalExpense}',
+                    labelStyle: const TextStyle(
+                      color: AppColors.textBlueGreyColor,
+                    ),
+                    child: Consumer(
+                      builder: (context, ref, child) {
+                        final currency = ref.watch(
+                          currencyByNameProvider(book.currencyName),
+                        );
+                        return CustomText.body(
+                          '${currency.symbol} ${book.totalIncome - book.totalExpense}',
+                          fontWeight: FontWeight.bold,
+                        );
+                      },
                     ),
                   ),
 
@@ -115,6 +129,9 @@ class BookListItem extends ConsumerWidget {
                   // Members Row
                   LabeledWidget(
                     label: 'Members',
+                    labelStyle: const TextStyle(
+                      color: AppColors.textBlueGreyColor,
+                    ),
                     child: SizedBox(
                       height: 36,
                       child: Row(

@@ -30,7 +30,6 @@ class IncomeExpenseListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final category = ref.watch(categoryByIdProvider(transaction.categoryId))!;
-    final wallet = ref.watch(walletByIdProvider(transaction.walletId))!;
     final isExpense = transaction.type == TransactionType.expense;
     return InkWell(
       onTap: () => AppRouter.push(
@@ -71,7 +70,6 @@ class IncomeExpenseListItem extends ConsumerWidget {
                       transaction.description ?? '',
                       fontSize: 15,
                     ),
-
                     Insets.gapH3,
                   ],
 
@@ -90,11 +88,17 @@ class IncomeExpenseListItem extends ConsumerWidget {
             Insets.gapW10,
 
             // Amount
-            CustomText.body(
-              '${isExpense ? '-' : '+'}${wallet.currency.symbol}${transaction.amount.toInt()} ',
-              color:
-                  isExpense ? AppColors.redColor : Colors.greenAccent.shade700,
-              fontSize: 14,
+            Consumer(
+              builder: (context, ref, child) {
+                final currency = ref.watch(selectedBookCurrencyProvider);
+                return CustomText.body(
+                  '${isExpense ? '-' : '+'}${currency.symbol} ${transaction.amount.toInt()} ',
+                  color: isExpense
+                      ? AppColors.redColor
+                      : Colors.greenAccent.shade700,
+                  fontSize: 14,
+                );
+              },
             )
           ],
         ),

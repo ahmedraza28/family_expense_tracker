@@ -110,10 +110,15 @@ class BalanceTransferListItem extends ConsumerWidget {
             ),
 
             // Amount
-            CustomText.body(
-              '${balanceTransfer.amount}',
-              color: AppColors.textLightGreyColor,
-              fontSize: 14,
+            Consumer(
+              builder: (context, ref, child) {
+                final currency = ref.watch(selectedBookCurrencyProvider);
+                return CustomText.body(
+                  '${currency.symbol} ${balanceTransfer.amount}',
+                  color: AppColors.textLightGreyColor,
+                  fontSize: 14,
+                );
+              },
             )
           ],
         ),

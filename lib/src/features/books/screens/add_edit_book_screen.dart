@@ -36,7 +36,7 @@ class AddEditBookScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final currencyController = useValueNotifier<CurrencyModel>(
-      book?.currency ?? defaultCurrency,
+      ref.watch(currencyByNameProvider(book?.currencyName)),
     );
     final bookNameController = useTextEditingController(text: book?.name ?? '');
     final colorController = useValueNotifier<Color>(
@@ -51,7 +51,7 @@ class AddEditBookScreen extends HookConsumerWidget {
         ref.read(booksProvider.notifier).addBook(
               name: bookNameController.text,
               color: colorController.value,
-              currency: currencyController.value,
+              currencyName: currencyController.value.name,
               createdBy: currentUser,
             );
       } else {
@@ -59,7 +59,7 @@ class AddEditBookScreen extends HookConsumerWidget {
               book!.copyWith(
                 name: bookNameController.text,
                 color: colorController.value,
-                currency: currencyController.value,
+                currencyName: currencyController.value.name,
               ),
             );
       }
