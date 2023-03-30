@@ -25,7 +25,7 @@ class AddBalanceTransferFab extends ConsumerWidget {
       (_, next) => next.whenOrNull(
         data: (_) => AppUtils.showFlushBar(
           context: context,
-          message: 'Transfer created successfully',
+          message: 'Transfer saved successfully',
           icon: Icons.check_circle_rounded,
           iconColor: Colors.green,
         ),

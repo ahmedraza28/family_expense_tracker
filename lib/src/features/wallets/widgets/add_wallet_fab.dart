@@ -25,7 +25,7 @@ class AddWalletFab extends ConsumerWidget {
       (_, next) => next.whenOrNull(
         data: (message) => AppUtils.showFlushBar(
           context: context,
-          message: 'Wallet created successfully',
+          message: 'Wallet saved successfully',
           icon: Icons.check_circle_rounded,
           iconColor: Colors.green,
         ),

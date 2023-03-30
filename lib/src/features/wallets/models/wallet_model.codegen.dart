@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import
 
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
@@ -18,7 +19,8 @@ class WalletModel with _$WalletModel {
   const factory WalletModel({
     @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
     required String name,
-    required String imageUrl,
+    @JsonKey(toJson: AppUtils.toColorHex, fromJson: AppUtils.fromColorHex)
+        required Color color,
     required double balance,
     String? description,
   }) = _WalletModel;

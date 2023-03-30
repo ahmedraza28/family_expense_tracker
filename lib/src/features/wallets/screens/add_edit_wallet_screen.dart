@@ -10,15 +10,16 @@ import '../providers/wallets_provider.codegen.dart';
 import '../../../config/routing/routing.dart';
 
 // Helpers
-import '../../../global/formatters/formatters.dart';
 import '../../../helpers/constants/constants.dart';
-import '../../../helpers/form_validator.dart';
 
 // Models
 import '../models/wallet_model.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+
+// Features
+import '../../calculator/calculator.dart';
 
 class AddEditWalletScreen extends HookConsumerWidget {
   final WalletModel? wallet;
@@ -39,6 +40,9 @@ class AddEditWalletScreen extends HookConsumerWidget {
     final walletBalanceController = useTextEditingController(
       text: wallet?.balance.toString() ?? '',
     );
+    final colorController = useValueNotifier<Color>(
+      wallet?.color ?? AppColors.primaryColor,
+    );
 
     void onSave() {
       if (!formKey.currentState!.validate()) return;
@@ -46,13 +50,13 @@ class AddEditWalletScreen extends HookConsumerWidget {
       if (wallet == null) {
         ref.read(walletsProvider.notifier).addWallet(
               name: walletNameController.text,
-              imageUrl: '',
+              color: colorController.value,
               balance: double.parse(walletBalanceController.text),
             );
       } else {
         final newWallet = wallet!.copyWith(
           name: walletNameController.text,
-          imageUrl: '',
+          color: colorController.value,
           balance: double.parse(walletBalanceController.text),
         );
         ref.read(walletsProvider.notifier).updateWallet(newWallet);
@@ -95,36 +99,66 @@ class AddEditWalletScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
-              // Wallet Name
-              CustomTextField(
-                controller: walletNameController,
-                floatingText: 'Wallet Name',
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
-                validator: FormValidator.nameValidator,
+              // Wallet Color And Name
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Wallet Name
+                  Expanded(
+                    child: CustomTextField(
+                      controller: walletNameController,
+                      floatingText: 'Wallet Name',
+                      hintText: 'Enter wallet name',
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                    ),
+                  ),
+
+                  Insets.gapW10,
+
+                  // Wallet Color
+                  Padding(
+                    padding: const EdgeInsets.only(top: 23),
+                    child: ColorPickerButton(
+                      controller: colorController,
+                      iconData: Icons.wallet_rounded,
+                    ),
+                  )
+                ],
               ),
 
               Insets.gapH20,
 
               // Wallet Balance
-              CustomTextField(
-                controller: walletBalanceController,
-                floatingText: 'Balance',
-                prefix: Consumer(
-                  builder: (context, ref, child) {
-                    final currency = ref.watch(selectedBookCurrencyProvider);
-                    return CustomText.body(
-                      currency.symbol,
-                      fontWeight: FontWeight.bold,
-                    );
-                  },
+              InkWell(
+                customBorder: const RoundedRectangleBorder(
+                  borderRadius: Corners.rounded7,
                 ),
-                inputFormatters: [
-                  DecimalTextInputFormatter(decimalDigits: 1),
-                ],
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                textInputAction: TextInputAction.done,
+                onTap: () async {
+                  await AppRouter.pushNamed(
+                    Routes.CalculatorScreenRoute,
+                  );
+                  walletBalanceController.text = ref.read(numberResultProvider);
+                },
+                child: CustomTextField(
+                  controller: walletBalanceController,
+                  enabled: false,
+                  floatingText: 'Balance',
+                  hintText: '0.0',
+                  prefix: Consumer(
+                    builder: (context, ref, child) {
+                      final currency = ref.watch(selectedBookCurrencyProvider);
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 9, 0, 0),
+                        child: CustomText.body(
+                          currency.symbol,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textGreyColor,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
 
               Insets.expand,

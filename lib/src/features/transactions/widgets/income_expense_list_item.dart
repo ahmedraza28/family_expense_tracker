@@ -44,17 +44,9 @@ class IncomeExpenseListItem extends ConsumerWidget {
         child: Row(
           children: [
             // Category icon
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: Corners.rounded9,
-                color: category.color.withOpacity(0.2),
-              ),
-              child: Icon(
-                Icons.monetization_on_rounded,
-                size: 20,
-                color: category.color,
-              ),
+            ShadedIcon(
+              color: category.color,
+              iconData: Icons.monetization_on_rounded,
             ),
 
             Insets.gapW10,

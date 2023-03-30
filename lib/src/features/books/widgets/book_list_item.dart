@@ -55,17 +55,9 @@ class BookListItem extends ConsumerWidget {
               child: Row(
                 children: [
                   // Book Icon
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: book.color.withOpacity(0.2),
-                      borderRadius: Corners.rounded9,
-                    ),
-                    child: Icon(
-                      Icons.book_rounded,
-                      color: book.color,
-                    ),
+                  ShadedIcon(
+                    color: book.color,
+                    iconData: Icons.menu_book_rounded,
                   ),
 
                   Insets.gapW15,
@@ -108,9 +100,6 @@ class BookListItem extends ConsumerWidget {
                   // Balance Amount
                   LabeledWidget(
                     label: 'Balance',
-                    labelStyle: const TextStyle(
-                      color: AppColors.textBlueGreyColor,
-                    ),
                     child: Consumer(
                       builder: (context, ref, child) {
                         final currency = ref.watch(
@@ -129,9 +118,6 @@ class BookListItem extends ConsumerWidget {
                   // Members Row
                   LabeledWidget(
                     label: 'Members',
-                    labelStyle: const TextStyle(
-                      color: AppColors.textBlueGreyColor,
-                    ),
                     child: SizedBox(
                       height: 36,
                       child: Row(

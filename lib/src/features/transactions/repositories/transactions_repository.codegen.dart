@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/core.dart';
 
 // Helpers
-import '../../../helpers/extensions/datetime_extension.dart';
+import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/typedefs.dart';
 import '../enums/transaction_type_enum.dart';
 
@@ -266,14 +266,16 @@ class MockTransactionsRepository implements TransactionsRepository {
   Future<void> addTransaction({
     required int bookId,
     required JSON body,
-  }) async {}
+  }) async =>
+      Future.delayed(2.seconds);
 
   @override
   Future<void> updateTransaction({
     required int bookId,
     required int transactionId,
     required JSON changes,
-  }) async {}
+  }) async =>
+      Future.delayed(2.seconds);
 
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();

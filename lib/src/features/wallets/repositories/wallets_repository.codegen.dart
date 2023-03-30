@@ -4,6 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/core.dart';
 
 // Helpers
+import '../../../helpers/constants/constants.dart';
+import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
@@ -57,29 +59,29 @@ class WalletsRepository {
 class MockWalletsRepository implements WalletsRepository {
   @override
   Stream<List<WalletModel>> getBookWallets({required int bookId}) {
-    return Stream.value(const [
+    return Stream.value([
       WalletModel(
         id: 1,
         name: 'Wallet 1',
-        imageUrl: 'https://picsum.photos/200/300',
+        color: AppColors.primaries[0],
         balance: 200000,
       ),
       WalletModel(
         id: 2,
         name: 'Wallet 2',
-        imageUrl: 'https://picsum.photos/200/300',
+        color: AppColors.primaries[1],
         balance: 200000,
       ),
       WalletModel(
         id: 3,
         name: 'Wallet 3',
-        imageUrl: 'https://picsum.photos/200/300',
+        color: AppColors.primaries[2],
         balance: 200000,
       ),
       WalletModel(
         id: 4,
         name: 'Wallet 4',
-        imageUrl: 'https://picsum.photos/200/300',
+        color: AppColors.primaries[3],
         balance: 200000,
       ),
     ]);
@@ -89,14 +91,14 @@ class MockWalletsRepository implements WalletsRepository {
   Future<void> addWallet({
     required int bookId,
     required JSON body,
-  }) async {}
+  }) async => Future.delayed(2.seconds);
 
   @override
   Future<void> updateWallet({
     required int bookId,
     required int walletId,
     required JSON changes,
-  }) async {}
+  }) async => Future.delayed(2.seconds);
 
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();

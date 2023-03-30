@@ -25,7 +25,7 @@ class AddCategoryFab extends ConsumerWidget {
       (_, next) => next.whenOrNull(
         data: (message) => AppUtils.showFlushBar(
           context: context,
-          message: 'Category created successfully',
+          message: 'Category saved successfully',
           icon: Icons.check_circle_rounded,
           iconColor: Colors.green,
         ),

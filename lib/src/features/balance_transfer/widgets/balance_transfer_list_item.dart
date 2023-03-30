@@ -46,18 +46,10 @@ class BalanceTransferListItem extends ConsumerWidget {
         padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            // Category icon
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: Corners.rounded9,
-                color: color.withOpacity(0.2),
-              ),
-              child: const Icon(
-                Icons.swap_horiz_rounded,
-                size: 20,
-                color: color,
-              ),
+            // Swap icon
+            const ShadedIcon(
+              color: color,
+              iconData: Icons.swap_horiz_rounded,
             ),
 
             Insets.gapW10,

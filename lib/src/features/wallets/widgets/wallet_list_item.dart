@@ -23,37 +23,61 @@ class WalletListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      dense: true,
-      horizontalTitleGap: 0,
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 5,
-      ),
-      tileColor: Colors.white,
-      shape: const RoundedRectangleBorder(
+    return Container(
+      decoration: const BoxDecoration(
         borderRadius: Corners.rounded15,
+        color: Colors.white,
       ),
-      leading: Icon(
-        Icons.wallet_rounded,
-        size: 27,
-        color: AppUtils.getRandomColor(),
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          // Category icon
+          ShadedIcon(
+            color: wallet.color,
+            iconData: Icons.wallet_rounded,
+          ),
+
+          Insets.gapW10,
+
+          // Transaction details
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title
+                CustomText.body(
+                  wallet.name,
+                  fontSize: 15,
+                ),
+
+                Insets.gapH3,
+
+                // Balance
+                CustomText.subtitle(
+                  '${wallet.balance}',
+                  color: AppColors.textLightGreyColor,
+                ),
+              ],
+            ),
+          ),
+
+          Insets.gapW10,
+
+          // Edit
+          InkWell(
+            onTap: () => AppRouter.push(
+              AddEditWalletScreen(wallet: wallet),
+            ),
+            child: const Icon(
+              Icons.edit_rounded,
+              size: 18,
+              color: AppColors.textGreyColor,
+            ),
+          ),
+
+          Insets.gapW3,
+        ],
       ),
-      trailing: InkWell(
-        onTap: () => AppRouter.push(
-          AddEditWalletScreen(wallet: wallet),
-        ),
-        child: const Icon(
-          Icons.edit_rounded,
-          size: 20,
-          color: AppColors.textGreyColor,
-        ),
-      ),
-      subtitle: CustomText.subtitle(
-        '${wallet.balance}',
-        color: AppColors.textLightGreyColor,
-      ),
-      title: CustomText.body(wallet.name),
     );
   }
 }

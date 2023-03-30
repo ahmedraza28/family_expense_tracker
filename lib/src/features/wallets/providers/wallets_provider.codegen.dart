@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
@@ -51,7 +52,7 @@ class Wallets extends _$Wallets {
 
   Future<void> addWallet({
     required String name,
-    required String imageUrl,
+    required Color color,
     required double balance,
     String? description,
   }) async {
@@ -60,7 +61,7 @@ class Wallets extends _$Wallets {
     final wallet = WalletModel(
       id: null,
       name: name,
-      imageUrl: imageUrl,
+      color: color,
       balance: balance,
       description: description,
     );

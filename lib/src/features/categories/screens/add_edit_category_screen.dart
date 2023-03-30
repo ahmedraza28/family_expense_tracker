@@ -94,17 +94,31 @@ class AddEditCategoryScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
-              // Category Name
-              CustomTextField(
-                controller: categoryNameController,
-                floatingText: 'Category Name',
-                hintText: 'Enter category name',
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
-                validator: FormValidator.nameValidator,
-              ),
+              // Wallet Color And Name
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  // Category Name
+                  Expanded(
+                    child: CustomTextField(
+                      controller: categoryNameController,
+                      floatingText: 'Category Name',
+                      hintText: 'Enter category name',
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      validator: FormValidator.nameValidator,
+                    ),
+                  ),
 
-              // TODO(arafaysaleem): Add color picker
+                  Insets.gapW10,
+
+                  // Category Color
+                  ColorPickerButton(
+                    controller: colorController,
+                    iconData: Icons.category_rounded,
+                  )
+                ],
+              ),
 
               Insets.expand,
 

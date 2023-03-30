@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/core.dart';
 
 // Helpers
+import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/typedefs.dart';
 
 // Models
@@ -160,14 +161,14 @@ class MockBudgetsRepository implements BudgetsRepository {
   Future<void> addBudget({
     required int bookId,
     required JSON body,
-  }) async {}
+  }) async => Future.delayed(2.seconds);
 
   @override
   Future<void> updateBudget({
     required int bookId,
     required int budgetId,
     required JSON changes,
-  }) async {}
+  }) async => Future.delayed(2.seconds);
 
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();

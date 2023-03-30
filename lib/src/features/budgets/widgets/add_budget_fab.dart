@@ -25,7 +25,7 @@ class AddBudgetFab extends ConsumerWidget {
       (_, next) => next.whenOrNull(
         data: (_) => AppUtils.showFlushBar(
           context: context,
-          message: 'Budget created successfully',
+          message: 'Budget saved successfully',
           icon: Icons.check_circle_rounded,
           iconColor: Colors.green,
         ),
