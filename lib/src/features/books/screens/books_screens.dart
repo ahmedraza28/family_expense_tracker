@@ -8,7 +8,7 @@ import '../../../helpers/constants/constants.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import '../widgets/add_book_fab.dart';
-import '../widgets/books_list.dart';
+import 'books_view.dart';
 import 'add_edit_book_screen.dart';
 
 // Features
@@ -39,7 +39,7 @@ class BooksScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: const BooksList(),
+      body: const BooksView(),
       floatingActionButton: OpenContainer(
         openElevation: 0,
         closedElevation: 5,

@@ -35,6 +35,7 @@ class IncomeExpenseListItem extends ConsumerWidget {
       onTap: () => AppRouter.push(
         AddEditTransactionScreen(transaction: transaction),
       ),
+      borderRadius: Corners.rounded15,
       child: Container(
         decoration: const BoxDecoration(
           borderRadius: Corners.rounded15,

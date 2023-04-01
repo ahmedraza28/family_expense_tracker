@@ -38,6 +38,7 @@ class BalanceTransferListItem extends ConsumerWidget {
       onTap: () => AppRouter.push(
         AddEditBalanceTransferScreen(balanceTransfer: balanceTransfer),
       ),
+      borderRadius: Corners.rounded15,
       child: Container(
         decoration: const BoxDecoration(
           borderRadius: Corners.rounded15,

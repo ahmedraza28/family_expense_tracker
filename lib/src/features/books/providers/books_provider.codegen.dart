@@ -4,9 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
 import '../../../helpers/extensions/extensions.dart';
-import '../../../helpers/typedefs.dart';
+import '../enums/member_role_enum.dart';
 
 // Models
+import '../models/book_member_model.codegen.dart';
 import '../models/book_model.codegen.dart';
 
 // Repositories
@@ -22,12 +23,14 @@ final selectedBookProvider = StateProvider<BookModel?>((ref) {
 });
 
 @riverpod
-Stream<List<BookModel>> booksStream(BooksStreamRef ref) {
+Stream<List<BookModel>> booksStream(BooksStreamRef ref, {required List<int> bookIds}) {
   final currentUser = ref.watch(currentUserProvider).value;
   if (currentUser == null) {
     return const Stream.empty();
   }
-  return ref.watch(booksProvider.notifier).getUserBooks(currentUser.uid);
+  return ref
+      .watch(booksProvider.notifier)
+      .getUserBooks(bookIds);
 }
 
 /// A provider used to access instance of this service
@@ -41,30 +44,30 @@ class Books extends _$Books {
     return null;
   }
 
-  Stream<List<BookModel>> getAllBooks([JSON? queryParams]) {
-    return _booksRepository.getBooks();
-  }
-
-  /// Retrive book members
-  Stream<List<BookModel>> getUserBooks(String memberId) {
-    return _booksRepository.getUserBooks(memberId);
+  Stream<List<BookModel>> getUserBooks(List<int> bookIds) {
+    return _booksRepository.getBooks(bookIds);
   }
 
   Future<void> addBook({
     required String name,
     required Color color,
-    required UserModel createdBy,
     required String currencyName,
     String? description,
   }) async {
     state = const AsyncValue.loading();
+    final currentUser = ref.read(currentUserProvider).value!;
     final book = BookModel(
       id: null,
       name: name,
       color: color,
       currencyName: currencyName,
       description: description ?? '',
-      createdBy: createdBy,
+      members: {
+        currentUser.uid: BookMemberModel(
+          imageUrl: currentUser.imageUrl,
+          role: MemberRole.owner,
+        )
+      },
     );
 
     state = await state.makeGuardedRequest(

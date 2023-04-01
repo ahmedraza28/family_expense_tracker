@@ -27,26 +27,13 @@ class UsersRepository {
     required FirestoreService firestoreService,
   }) : _firestoreService = firestoreService;
 
-  Stream<List<UserModel>> getUsers([List<int>? userIds]) {
+  Stream<List<UserModel>> getUsers(List<String> userIds) {
     return _firestoreService.collectionStream<UserModel>(
       path: 'users',
-      queryBuilder: userIds != null
-          ? (query) => query.where(FieldPath.documentId, whereIn: userIds)
-          : null,
+      queryBuilder: (query) =>
+          query.where(FieldPath.documentId, whereIn: userIds),
       builder: (json, docId) => UserModel.fromJson(json!),
     );
-  }
-
-  Stream<List<UserModel>> getBookMembers(String bookId) async* {
-    final memberIdsStream = _firestoreService.collectionStream<int>(
-      path: 'book_members',
-      queryBuilder: (query) => query.where('bookId', isEqualTo: bookId),
-      builder: (json, docId) => json!['memberId']! as int,
-    );
-
-    await for (final memberIds in memberIdsStream) {
-      yield* getUsers(memberIds);
-    }
   }
 }
 
@@ -55,12 +42,13 @@ class MockUsersRepository implements UsersRepository {
   FirestoreService get _firestoreService => throw UnimplementedError();
 
   @override
-  Stream<List<UserModel>> getBookMembers(String bookId) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Stream<List<UserModel>> getUsers([List<int>? userIds]) {
-    return Stream.value(const []);
+  Stream<List<UserModel>> getUsers(List<String> userIds) {
+    return Stream.value(
+      const <UserModel>[]
+          .where(
+            (element) => userIds.contains(element.uid),
+          )
+          .toList(),
+    );
   }
 }

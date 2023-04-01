@@ -22,7 +22,9 @@ Stream<UserModel?> currentUser(CurrentUserRef ref) {
       uid: '1',
       displayName: 'Abdur Rafay',
       email: 'a.rafaysaleem@gmail.com',
-      profilePictureUrl: '',
+      imageUrl: '',
+      ownedBookIds: [1, 10],
+      sharedBookIds: [2],
     ),
   );
   // return ref.watch(firebaseAuthProvider).authStateChanges().map(

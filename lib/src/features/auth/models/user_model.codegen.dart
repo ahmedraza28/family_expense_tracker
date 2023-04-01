@@ -12,14 +12,16 @@ class UserModel with _$UserModel {
     required String uid,
     required String displayName,
     required String email,
-    required String? profilePictureUrl,
+    String? imageUrl,
+    @Default(<int>[]) List<int> ownedBookIds,
+    @Default(<int>[]) List<int> sharedBookIds,
   }) = _UserModel;
 
   factory UserModel.fromFirebaseUser(User firebaseUser) => UserModel(
         uid: firebaseUser.uid,
         displayName: firebaseUser.displayName!,
         email: firebaseUser.email!,
-        profilePictureUrl: firebaseUser.photoURL,
+        imageUrl: firebaseUser.photoURL,
       );
 
   factory UserModel.fromJson(JSON json) => _$UserModelFromJson(json);

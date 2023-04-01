@@ -8,6 +8,9 @@ import 'package:flutter/foundation.dart';
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/typedefs.dart';
 
+// Models
+import 'book_member_model.codegen.dart';
+
 // Features
 import '../../auth/auth.dart';
 import '../../wallets/wallets.dart';
@@ -24,7 +27,7 @@ class BookModel with _$BookModel {
         required Color color,
     required String description,
     required String currencyName,
-    required UserModel createdBy,
+    @Default(<String, BookMemberModel>{}) Map<String, BookMemberModel> members,
     @Default(0) double totalIncome,
     @Default(0) double totalExpense,
   }) = _BookModel;

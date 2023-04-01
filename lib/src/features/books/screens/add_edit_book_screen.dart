@@ -16,7 +16,6 @@ import '../../../helpers/constants/constants.dart';
 import '../../../helpers/form_validator.dart';
 
 // Features
-import '../../auth/auth.dart';
 import '../../wallets/wallets.dart';
 
 // Widgets
@@ -47,12 +46,10 @@ class AddEditBookScreen extends HookConsumerWidget {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       if (book == null) {
-        final currentUser = ref.read(currentUserProvider).value!;
         ref.read(booksProvider.notifier).addBook(
               name: bookNameController.text,
               color: colorController.value,
               currencyName: currencyController.value.name,
-              createdBy: currentUser,
             );
       } else {
         ref.read(booksProvider.notifier).updateBook(
