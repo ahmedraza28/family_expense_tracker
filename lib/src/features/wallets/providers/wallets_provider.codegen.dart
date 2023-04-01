@@ -36,18 +36,14 @@ WalletModel? walletById(WalletByIdRef ref, int? id) {
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)
 class Wallets extends _$Wallets {
-  late final int bookId;
-  late final WalletsRepository _walletsRepository;
 
   @override
-  FutureOr<void> build() {
-    _walletsRepository = ref.watch(walletsRepositoryProvider);
-    bookId = ref.watch(selectedBookProvider)!.id!;
-    return null;
-  }
+  FutureOr<void> build() => null;
 
   Stream<List<WalletModel>> getAllWallets([JSON? queryParams]) {
-    return _walletsRepository.getBookWallets(bookId: bookId);
+    final walletsRepository = ref.watch(walletsRepositoryProvider);
+    final bookId = ref.watch(selectedBookProvider)!.id!;
+    return walletsRepository.getBookWallets(bookId: bookId);
   }
 
   Future<void> addWallet({
@@ -66,8 +62,10 @@ class Wallets extends _$Wallets {
       description: description,
     );
 
+    final walletsRepository = ref.watch(walletsRepositoryProvider);
+    final bookId = ref.watch(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
-      () => _walletsRepository.addWallet(
+      () => walletsRepository.addWallet(
         bookId: bookId,
         body: wallet.toJson(),
       ),
@@ -78,8 +76,10 @@ class Wallets extends _$Wallets {
   Future<void> updateWallet(WalletModel wallet) async {
     state = const AsyncValue.loading();
 
+    final walletsRepository = ref.watch(walletsRepositoryProvider);
+    final bookId = ref.watch(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
-      () => _walletsRepository.updateWallet(
+      () => walletsRepository.updateWallet(
         bookId: bookId,
         walletId: wallet.id!,
         changes: wallet.toJson(),

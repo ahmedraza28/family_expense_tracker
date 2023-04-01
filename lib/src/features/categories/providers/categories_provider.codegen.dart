@@ -36,18 +36,13 @@ CategoryModel? categoryById(CategoryByIdRef ref, int? id) {
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)
 class Categories extends _$Categories {
-  late final int bookId;
-  late final CategoriesRepository _categoriesRepository;
-
   @override
-  FutureOr<void> build() {
-    _categoriesRepository = ref.watch(categoriesRepositoryProvider);
-    bookId = ref.watch(selectedBookProvider)!.id!;
-    return null;
-  }
+  FutureOr<void> build() => null;
 
   Stream<List<CategoryModel>> getAllCategories() {
-    return _categoriesRepository.fetchAll(bookId: bookId);
+    final categoriesRepository = ref.watch(categoriesRepositoryProvider);
+    final bookId = ref.watch(selectedBookProvider)!.id!;
+    return categoriesRepository.fetchAll(bookId: bookId);
   }
 
   Future<void> addCategory({
@@ -64,8 +59,10 @@ class Categories extends _$Categories {
       color: color,
     );
 
+    final categoriesRepository = ref.watch(categoriesRepositoryProvider);
+    final bookId = ref.watch(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
-      () => _categoriesRepository.create(
+      () => categoriesRepository.create(
         bookId: bookId,
         body: category.toJson(),
       ),
@@ -76,8 +73,10 @@ class Categories extends _$Categories {
   Future<void> updateCategory(CategoryModel category) async {
     state = const AsyncValue.loading();
 
+    final categoriesRepository = ref.watch(categoriesRepositoryProvider);
+    final bookId = ref.watch(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
-      () => _categoriesRepository.update(
+      () => categoriesRepository.update(
         bookId: bookId,
         categoryId: category.id!,
         changes: category.toJson(),

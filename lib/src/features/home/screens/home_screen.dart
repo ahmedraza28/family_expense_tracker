@@ -12,6 +12,7 @@ import '../../../global/widgets/widgets.dart';
 
 // Features
 import '../../auth/auth.dart';
+import '../../books/books.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -29,7 +30,10 @@ class HomeScreen extends ConsumerWidget {
 
             // Back
             InkWell(
-              onTap: AppRouter.pop,
+              onTap: () {
+                ref.invalidate(selectedBookProvider);
+                AppRouter.pop();
+              },
               radius: 26,
               child: Icon(
                 Icons.adaptive.arrow_back,

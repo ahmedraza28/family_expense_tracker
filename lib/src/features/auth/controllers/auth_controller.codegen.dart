@@ -34,13 +34,8 @@ Stream<UserModel?> currentUser(CurrentUserRef ref) {
 
 @Riverpod(keepAlive: true)
 class AuthController extends _$AuthController {
-  late final AuthRepository _authRepository;
-
   @override
-  FutureOr<UserCredential?> build() {
-    _authRepository = ref.read(authRepositoryProvider);
-    return null;
-  }
+  FutureOr<UserCredential?> build() => null;
 
   Future<void> register({
     required String email,
@@ -48,25 +43,27 @@ class AuthController extends _$AuthController {
   }) async {
     state = const AsyncValue.loading();
 
+    final authRepository = ref.read(authRepositoryProvider);
     state = await state.makeGuardedRequest(() {
-      return _authRepository.signUp(email: email, password: password);
+      return authRepository.signUp(email: email, password: password);
     });
   }
 
   Future<void> loginWithGoogle() async {
     state = const AsyncValue.loading();
 
+    final authRepository = ref.read(authRepositoryProvider);
     state = await state.makeGuardedRequest(() async {
-      final credential = await _authRepository.createGoogleCredentials();
+      final credential = await authRepository.createGoogleCredentials();
       if (credential != null) {
-        return _authRepository.login(authCredential: credential);
+        return authRepository.login(authCredential: credential);
       }
       return null;
     });
   }
 
   void logout() {
-    _authRepository.signOut();
+    ref.read(authRepositoryProvider).signOut();
     state = const AsyncValue.data(null);
   }
 }

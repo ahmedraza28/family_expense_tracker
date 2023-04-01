@@ -26,20 +26,15 @@ Stream<List<BudgetModel>> filteredBudgetsStream(
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)
 class Budgets extends _$Budgets {
-  late final int bookId;
-  late final BudgetsRepository _budgetsRepository;
-
   static final _currentDate = DateTime.now();
 
   @override
-  FutureOr<void> build() {
-    _budgetsRepository = ref.watch(budgetsRepositoryProvider);
-    bookId = ref.watch(selectedBookProvider)!.id!;
-    return null;
-  }
+  FutureOr<void> build() => null;
 
   Stream<List<BudgetModel>> getAllBudgets([BudgetFiltersModel? filters]) {
-    return _budgetsRepository.getBookBudgets(
+    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final budgetsRepository = ref.watch(budgetsRepositoryProvider);
+    return budgetsRepository.getBookBudgets(
       bookId: bookId,
       year: filters?.year ?? _currentDate.year,
       month: filters?.month ?? _currentDate.month,
@@ -64,14 +59,18 @@ class Budgets extends _$Budgets {
       amount: amount,
       description: description,
     );
-    _budgetsRepository.addBudget(
+    final budgetsRepository = ref.watch(budgetsRepositoryProvider);
+    final bookId = ref.watch(selectedBookProvider)!.id!;
+    budgetsRepository.addBudget(
       bookId: bookId,
       body: budget.toJson(),
     );
   }
 
   void updateBudget(BudgetModel budget) {
-    _budgetsRepository.updateBudget(
+    final budgetsRepository = ref.watch(budgetsRepositoryProvider);
+    final bookId = ref.watch(selectedBookProvider)!.id!;
+    budgetsRepository.updateBudget(
       bookId: bookId,
       budgetId: budget.id!,
       changes: budget.toJson(),

@@ -12,13 +12,8 @@ part 'balance_transfer_provider.codegen.g.dart';
 /// A provider used to access instance of this service
 @riverpod
 class BalanceTransfer extends _$BalanceTransfer {
-  late final int bookId;
-
   @override
-  FutureOr<void> build() {
-    bookId = ref.watch(selectedBookProvider)!.id!;
-    return null;
-  }
+  FutureOr<void> build() => null;
 
   void addTransaction({
     required double amount,
@@ -35,12 +30,14 @@ class BalanceTransfer extends _$BalanceTransfer {
       date: date,
       description: description,
     );
+    final bookId = ref.watch(selectedBookProvider)!.id!;
     ref
         .read(transactionsRepositoryProvider)
         .addTransaction(bookId: bookId, body: transaction.toJson());
   }
 
   void updateTransaction(BalanceTransferModel transaction) {
+    final bookId = ref.watch(selectedBookProvider)!.id!;
     ref.read(transactionsRepositoryProvider).updateTransaction(
           bookId: bookId,
           transactionId: transaction.id!,

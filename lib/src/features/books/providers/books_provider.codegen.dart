@@ -18,34 +18,34 @@ import '../../auth/auth.dart';
 
 part 'books_provider.codegen.g.dart';
 
-final selectedBookProvider = StateProvider<BookModel?>((ref) {
-  return null;
-});
+final selectedBookProvider = StateProvider<BookModel?>(
+  name: 'selectedBookProvider',
+  (ref) {
+    return null;
+  },
+);
 
 @riverpod
-Stream<List<BookModel>> booksStream(BooksStreamRef ref, {required List<int> bookIds}) {
+Stream<List<BookModel>> booksStream(
+  BooksStreamRef ref, {
+  required List<int> bookIds,
+}) {
   final currentUser = ref.watch(currentUserProvider).value;
   if (currentUser == null) {
     return const Stream.empty();
   }
-  return ref
-      .watch(booksProvider.notifier)
-      .getUserBooks(bookIds);
+  return ref.watch(booksProvider.notifier).getUserBooks(bookIds);
 }
 
 /// A provider used to access instance of this service
 @riverpod
 class Books extends _$Books {
-  late final BooksRepository _booksRepository;
-
   @override
-  FutureOr<void> build() {
-    _booksRepository = ref.watch(booksRepositoryProvider);
-    return null;
-  }
+  FutureOr<void> build() => null;
 
   Stream<List<BookModel>> getUserBooks(List<int> bookIds) {
-    return _booksRepository.getBooks(bookIds);
+    final booksRepository = ref.watch(booksRepositoryProvider);
+    return booksRepository.getBooks(bookIds);
   }
 
   Future<void> addBook({
@@ -70,16 +70,18 @@ class Books extends _$Books {
       },
     );
 
+    final booksRepository = ref.watch(booksRepositoryProvider);
     state = await state.makeGuardedRequest(
-      () => _booksRepository.addBook(body: book.toJson()),
+      () => booksRepository.addBook(body: book.toJson()),
     );
   }
 
   Future<void> updateBook(BookModel book) async {
     state = const AsyncValue.loading();
 
+    final booksRepository = ref.watch(booksRepositoryProvider);
     state = await state.makeGuardedRequest(
-      () => _booksRepository.updateBook(
+      () => booksRepository.updateBook(
         bookId: book.id!,
         changes: book.toJson(),
       ),

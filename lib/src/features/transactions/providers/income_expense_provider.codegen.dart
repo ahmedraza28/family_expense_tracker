@@ -19,13 +19,8 @@ part 'income_expense_provider.codegen.g.dart';
 
 @riverpod
 class IncomeExpense extends _$IncomeExpense {
-  late final int bookId;
-
   @override
-  FutureOr<void> build() {
-    bookId = ref.watch(selectedBookProvider)!.id!;
-    return null;
-  }
+  FutureOr<void> build() => null;
 
   Future<void> addTransaction({
     required double amount,
@@ -47,6 +42,7 @@ class IncomeExpense extends _$IncomeExpense {
       description: description,
     );
 
+    final bookId = ref.watch(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
       () => ref
           .read(transactionsRepositoryProvider)
@@ -58,6 +54,7 @@ class IncomeExpense extends _$IncomeExpense {
   Future<void> updateTransaction(IncomeExpenseModel transaction) async {
     state = const AsyncValue.loading();
 
+    final bookId = ref.watch(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
       () => ref.read(transactionsRepositoryProvider).updateTransaction(
             bookId: bookId,
