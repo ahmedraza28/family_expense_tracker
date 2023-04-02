@@ -8,12 +8,16 @@ class ShadedIcon extends StatelessWidget {
   final IconData iconData;
   final EdgeInsetsGeometry padding;
   final BorderRadius borderRadius;
+  final double? width;
+  final double? height;
 
   const ShadedIcon({
     required this.color,
     required this.iconData,
     this.padding = const EdgeInsets.all(12),
     this.borderRadius = Corners.rounded9,
+    this.width,
+    this.height,
     super.key,
   });
 
@@ -21,6 +25,8 @@ class ShadedIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: padding,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         color: color.withOpacity(0.2),

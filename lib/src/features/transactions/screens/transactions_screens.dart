@@ -7,6 +7,7 @@ import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../widgets/add_income_expense_fab.dart';
+import '../widgets/app_drawer.dart';
 import '../widgets/search_and_filters_bar.dart';
 import '../widgets/grouped_transactions_list.dart';
 import '../../../global/widgets/widgets.dart';
@@ -59,6 +60,7 @@ class TransactionsScreen extends ConsumerWidget {
           ),
         ),
       ),
+      drawer: const AppDrawer(),
       body: Column(
         children: const [
           // Filters

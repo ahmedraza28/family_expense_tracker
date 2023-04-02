@@ -39,6 +39,17 @@ class AppRouter {
     );
   }
 
+  /// This method is used to replace a screen with another screen using it's name
+  static Future<dynamic> pushReplacementNamed(
+    String routeName, {
+    dynamic args,
+  }) {
+    return navigatorKey.currentState!.pushReplacementNamed(
+      routeName,
+      arguments: args,
+    );
+  }
+
   /// This method is used to navigate to a screen using builder
   static Future<dynamic> push(Widget page) {
     return navigatorKey.currentState!.push(
