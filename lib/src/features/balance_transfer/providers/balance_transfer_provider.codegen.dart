@@ -31,15 +31,20 @@ class BalanceTransfer extends _$BalanceTransfer {
       description: description,
     );
     final bookId = ref.watch(selectedBookProvider)!.id!;
-    ref
-        .read(transactionsRepositoryProvider)
-        .addTransaction(bookId: bookId, body: transaction.toJson());
+    ref.read(transactionsRepositoryProvider).addTransaction(
+          bookId: bookId,
+          month: transaction.date.month,
+          year: transaction.date.year,
+          body: transaction.toJson(),
+        );
   }
 
   void updateTransaction(BalanceTransferModel transaction) {
     final bookId = ref.watch(selectedBookProvider)!.id!;
     ref.read(transactionsRepositoryProvider).updateTransaction(
           bookId: bookId,
+          month: transaction.date.month,
+          year: transaction.date.year,
           transactionId: transaction.id!,
           changes: transaction.toJson(),
         );

@@ -44,9 +44,12 @@ class IncomeExpense extends _$IncomeExpense {
 
     final bookId = ref.watch(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
-      () => ref
-          .read(transactionsRepositoryProvider)
-          .addTransaction(bookId: bookId, body: transaction.toJson()),
+      () => ref.read(transactionsRepositoryProvider).addTransaction(
+            bookId: bookId,
+            month: transaction.date.month,
+            year: transaction.date.year,
+            body: transaction.toJson(),
+          ),
       errorMessage: 'Failed to add transaction',
     );
   }
@@ -58,6 +61,8 @@ class IncomeExpense extends _$IncomeExpense {
     state = await state.makeGuardedRequest(
       () => ref.read(transactionsRepositoryProvider).updateTransaction(
             bookId: bookId,
+            month: transaction.date.month,
+            year: transaction.date.year,
             transactionId: transaction.id!,
             changes: transaction.toJson(),
           ),

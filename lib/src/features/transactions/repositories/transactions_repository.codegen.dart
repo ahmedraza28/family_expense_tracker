@@ -29,28 +29,19 @@ class TransactionsRepository {
 
   Stream<List<TransactionModel>> getBookTransactions({
     required int bookId,
+    required int month,
+    required int year,
     int? categoryId,
     int? day,
-    int? month,
-    int? year,
     List<String>? transactionTypes,
   }) {
-    final hasQuery = categoryId != null ||
-        transactionTypes != null ||
-        day != null ||
-        month != null ||
-        year != null;
+    final hasQuery =
+        categoryId != null || transactionTypes != null || day != null;
     return _firestoreService.collectionStream<TransactionModel>(
-      path: 'books/$bookId/transactions',
+      path: 'books/$bookId/transactions/$month-$year',
       queryBuilder: !hasQuery
           ? null
           : (query) {
-              if (year != null) {
-                query = query.where('year', isEqualTo: year);
-              }
-              if (month != null) {
-                query = query.where('month', isEqualTo: month);
-              }
               if (day != null) {
                 query = query.where('day', isEqualTo: day);
               }
@@ -72,21 +63,25 @@ class TransactionsRepository {
 
   Future<void> addTransaction({
     required int bookId,
+    required int month,
+    required int year,
     required JSON body,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/transactions',
+      path: 'books/$bookId/transactions/$month-$year',
       data: body,
     );
   }
 
   Future<void> updateTransaction({
     required int bookId,
+    required int month,
+    required int year,
     required int transactionId,
     required JSON changes,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/transactions/$transactionId',
+      path: 'books/$bookId/transactions/$month-$year/$transactionId',
       data: changes,
       merge: true,
     );
@@ -97,10 +92,10 @@ class MockTransactionsRepository implements TransactionsRepository {
   @override
   Stream<List<TransactionModel>> getBookTransactions({
     required int bookId,
+    required int month,
+    required int year,
     int? categoryId,
     int? day,
-    int? month,
-    int? year,
     List<String>? transactionTypes,
   }) {
     const walletId = 1;
@@ -241,10 +236,10 @@ class MockTransactionsRepository implements TransactionsRepository {
     ];
     return Stream.value(
       list.where((e) {
-        if (year != null && e.date.year != year) {
+        if (e.date.year != year) {
           return false;
         }
-        if (month != null && e.date.month != month) {
+        if (e.date.month != month) {
           return false;
         }
         if (day != null && e.date.day != day) {
@@ -265,6 +260,8 @@ class MockTransactionsRepository implements TransactionsRepository {
   @override
   Future<void> addTransaction({
     required int bookId,
+    required int month,
+    required int year,
     required JSON body,
   }) async =>
       Future.delayed(2.seconds);
@@ -272,6 +269,8 @@ class MockTransactionsRepository implements TransactionsRepository {
   @override
   Future<void> updateTransaction({
     required int bookId,
+    required int month,
+    required int year,
     required int transactionId,
     required JSON changes,
   }) async =>

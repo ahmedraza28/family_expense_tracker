@@ -18,8 +18,11 @@ abstract class TransactionModel {
   }
 
   bool get isBalanceTransfer => type == TransactionType.transfer;
+  bool get isExpense => type == TransactionType.expense;
+  bool get isIncome => type == TransactionType.income;
   TransactionType get type;
   DateTime get date;
+  double get amount;
   String? get description;
 
   factory TransactionModel.fromJson(JSON json) {

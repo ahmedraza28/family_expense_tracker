@@ -45,7 +45,7 @@ class BooksList extends ConsumerWidget {
           parent: AlwaysScrollableScrollPhysics(),
         ),
         separatorBuilder: (_, __) => Insets.gapH15,
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        padding: const EdgeInsets.fromLTRB(15, 20, 15, 90),
         itemBuilder: (_, i) {
           return BookListItem(
             book: books[i],

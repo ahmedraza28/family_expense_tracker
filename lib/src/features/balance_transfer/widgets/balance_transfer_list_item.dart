@@ -85,7 +85,7 @@ class BalanceTransferListItem extends ConsumerWidget {
                       CustomText.body(
                         destWallet!.name,
                         fontSize: 15,
-                        color: Colors.greenAccent.shade700,
+                        color: AppColors.greenColor,
                       ),
                     ],
                   ),

@@ -43,7 +43,10 @@ class AsyncValueWidget<T> extends StatelessWidget {
         return error(ex, st);
       },
       data: (d) {
-        if (emptyOrNull != null && (d == null || (d is List && d.isEmpty))) {
+        if (emptyOrNull != null &&
+            (d == null ||
+                (d is Iterable && d.isEmpty) ||
+                (d is Map && d.isEmpty))) {
           return emptyOrNull!.call();
         } else if (onEmpty != null && (d is List && d.isEmpty)) {
           return onEmpty!.call();

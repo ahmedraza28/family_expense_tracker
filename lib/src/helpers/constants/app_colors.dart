@@ -52,6 +52,9 @@ class AppColors {
   /// The color value for red color in the app.
   static const Color redColor = Color(0xFFed0000);
 
+  /// The color value for green color in the app.
+  static const Color greenColor = Color(0xFF00c853);
+
   /// The color value for rating stars in the app.
   static const Color starsColor = Color.fromARGB(255, 247, 162, 64);
 
