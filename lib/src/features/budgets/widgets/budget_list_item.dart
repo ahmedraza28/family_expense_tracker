@@ -12,6 +12,8 @@ import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+
+// Screens
 import '../screens/add_edit_budget_screen.dart';
 
 // Features
@@ -41,6 +43,7 @@ class BudgetListItem extends StatelessWidget {
           // Name and edit row
           _NameAndEditRow(
             budget: budget,
+            isOwner: isOwner,
           ),
 
           Insets.gapH10,
@@ -81,8 +84,12 @@ class BudgetListItem extends StatelessWidget {
 }
 
 class _NameAndEditRow extends StatelessWidget {
-  const _NameAndEditRow({required this.budget});
+  const _NameAndEditRow({
+    required this.budget,
+    required this.isOwner,
+  });
 
+  final bool isOwner;
   final BudgetModel budget;
 
   @override
@@ -99,16 +106,17 @@ class _NameAndEditRow extends StatelessWidget {
         ),
 
         // Edit button
-        InkWell(
-          onTap: () => AppRouter.push(
-            AddEditBudgetScreen(budget: budget),
+        if (isOwner)
+          InkWell(
+            onTap: () => AppRouter.push(
+              AddEditBudgetScreen(budget: budget),
+            ),
+            child: const Icon(
+              Icons.edit_rounded,
+              size: 16,
+              color: AppColors.textGreyColor,
+            ),
           ),
-          child: const Icon(
-            Icons.edit_rounded,
-            size: 16,
-            color: AppColors.textGreyColor,
-          ),
-        ),
       ],
     );
   }

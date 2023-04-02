@@ -13,9 +13,13 @@ import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+
+// Screens
 import '../screens/add_edit_transaction_screen.dart';
 
 // Features
+import '../../auth/auth.dart';
+import '../../books/books.dart';
 import '../../wallets/wallets.dart';
 import '../../categories/categories.dart';
 
@@ -33,10 +37,17 @@ class IncomeExpenseListItem extends ConsumerWidget {
       categoryByIdProvider(transaction.categoryId),
     )!;
     final isExpense = transaction.type == TransactionType.expense;
+    final selectedBook = ref.watch(selectedBookProvider)!;
+    final myId = ref.watch(currentUserProvider).value!.uid;
+    final isViewer = selectedBook.members[myId]!.isViewer;
     return InkWell(
-      onTap: () => AppRouter.push(
-        AddEditTransactionScreen(transaction: transaction),
-      ),
+      onTap: isViewer
+          ? null
+          : () {
+              AppRouter.push(
+                AddEditTransactionScreen(transaction: transaction),
+              );
+            },
       borderRadius: Corners.rounded15,
       child: Container(
         decoration: const BoxDecoration(

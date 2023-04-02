@@ -6,7 +6,6 @@ import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
 
 // Providers
-import '../../books/books.dart';
 import '../models/budget_model.codegen.dart';
 
 // Widgets
@@ -14,6 +13,7 @@ import '../../../global/widgets/widgets.dart';
 import 'budget_list_item.dart';
 
 // Features
+import '../../books/books.dart';
 import '../../transactions/transactions.dart' show monthNames;
 
 class BudgetsList extends ConsumerWidget {

@@ -15,6 +15,8 @@ import '../../../global/widgets/widgets.dart';
 import '../screens/add_edit_balance_transfer_screen.dart';
 
 // Features
+import '../../auth/auth.dart';
+import '../../books/books.dart';
 import '../../wallets/wallets.dart';
 
 class BalanceTransferListItem extends ConsumerWidget {
@@ -34,10 +36,17 @@ class BalanceTransferListItem extends ConsumerWidget {
     final destWallet = ref.watch(
       walletByIdProvider(balanceTransfer.destWalletId),
     );
+    final selectedBook = ref.watch(selectedBookProvider)!;
+    final myId = ref.watch(currentUserProvider).value!.uid;
+    final isViewer = selectedBook.members[myId]!.isViewer;
     return InkWell(
-      onTap: () => AppRouter.push(
-        AddEditBalanceTransferScreen(balanceTransfer: balanceTransfer),
-      ),
+      onTap: isViewer
+          ? null
+          : () {
+              AppRouter.push(
+                AddEditBalanceTransferScreen(balanceTransfer: balanceTransfer),
+              );
+            },
       borderRadius: Corners.rounded15,
       child: Container(
         decoration: const BoxDecoration(

@@ -144,7 +144,7 @@ class MockBooksRepository implements BooksRepository {
           ),
           _user.uid: BookMemberModel(
             imageUrl: _user.imageUrl,
-            role: MemberRole.editor,
+            role: MemberRole.viewer,
           ),
           _user3.uid: BookMemberModel(
             imageUrl: _user3.imageUrl,
