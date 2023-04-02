@@ -42,33 +42,24 @@ class TransactionFilters extends _$TransactionFilters {
       state ?? const TransactionFiltersModel();
 
   void setMonth(int? month) {
-    state = filters.copyWith(month: month);
+    state = filters.copyWith(month: month, allowNull: true);
   }
 
   void setYear(int? year) {
-    state = filters.copyWith(year: year);
+    state = filters.copyWith(year: year, allowNull: true);
   }
 
   void setCategory(CategoryModel? category) {
-    state = filters.copyWith(categoryId: category?.id);
-  }
-
-  void setTypes(List<TransactionType> types) {
-    state = filters.copyWith(types: types);
-  }
-
-  void clear() {
-    state = const TransactionFiltersModel();
+    state = filters.copyWith(categoryId: category?.id, allowNull: true);
   }
 
   TransactionFiltersModel _addType(TransactionType type) {
-    final types = filters.types ?? [];
-    return filters.copyWith(types: [...types, type]);
+    return filters.copyWith(types: [...?filters.types, type]);
   }
 
   TransactionFiltersModel _removeType(TransactionType type) {
-    final types = filters.types ?? [];
-    return filters.copyWith(types: types.where((e) => e != type).toList());
+    filters.types?.remove(type);
+    return filters.copyWith(types: [...?filters.types]);
   }
 
   void toggleType(TransactionType type, bool isChecked) {

@@ -22,12 +22,13 @@ class TransactionFiltersModel {
     int? month,
     int? categoryId,
     List<TransactionType>? types,
+    bool allowNull = false,
   }) {
     return TransactionFiltersModel(
-      year: year ?? this.year,
-      month: month ?? this.month,
-      categoryId: categoryId ?? this.categoryId,
-      types: types ?? this.types,
+      year: allowNull ? year : year ?? this.year,
+      month: allowNull ? month : month ?? this.month,
+      categoryId: allowNull ? categoryId : categoryId ?? this.categoryId,
+      types: allowNull ? types : types ?? this.types,
     );
   }
 

@@ -11,13 +11,17 @@ import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+
+// Screens
 import '../screens/add_edit_wallet_screen.dart';
 
 class WalletListItem extends StatelessWidget {
   final WalletModel wallet;
+  final bool isOwner;
 
   const WalletListItem({
     required this.wallet,
+    required this.isOwner,
     super.key,
   });
 
@@ -61,21 +65,23 @@ class WalletListItem extends StatelessWidget {
             ),
           ),
 
-          Insets.gapW10,
+          if (isOwner) ...[
+            Insets.gapW10,
 
-          // Edit
-          InkWell(
-            onTap: () => AppRouter.push(
-              AddEditWalletScreen(wallet: wallet),
+            // Edit
+            InkWell(
+              onTap: () => AppRouter.push(
+                AddEditWalletScreen(wallet: wallet),
+              ),
+              child: const Icon(
+                Icons.edit_rounded,
+                size: 18,
+                color: AppColors.textGreyColor,
+              ),
             ),
-            child: const Icon(
-              Icons.edit_rounded,
-              size: 18,
-              color: AppColors.textGreyColor,
-            ),
-          ),
 
-          Insets.gapW3,
+            Insets.gapW3,
+          ]
         ],
       ),
     );

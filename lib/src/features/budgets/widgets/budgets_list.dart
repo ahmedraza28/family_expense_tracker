@@ -6,6 +6,7 @@ import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
 
 // Providers
+import '../../books/books.dart';
 import '../models/budget_model.codegen.dart';
 
 // Widgets
@@ -42,6 +43,7 @@ class BudgetsList extends ConsumerWidget {
         }
         final child = BudgetListItem(
           budget: budgets[i],
+          isOwner: ref.watch(isOwnerSelectedBookProvider),
         );
 
         return headerText != null

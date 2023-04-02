@@ -10,13 +10,18 @@ import '../../../helpers/constants/constants.dart';
 import '../../../global/widgets/widgets.dart';
 import '../widgets/add_wallet_fab.dart';
 import '../widgets/wallets_list.dart';
+
+// Screens
 import 'add_edit_wallet_screen.dart';
 
-class WalletsScreen extends ConsumerWidget {
+// Features
+import '../../books/books.dart';
+
+class WalletsScreen extends StatelessWidget {
   const WalletsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const CustomText(
@@ -49,23 +54,30 @@ class WalletsScreen extends ConsumerWidget {
         ),
       ),
       body: const WalletsList(),
-      floatingActionButton: OpenContainer(
-        openElevation: 0,
-        closedElevation: 5,
-        transitionType: ContainerTransitionType.fadeThrough,
-        closedColor: AppColors.primaryColor,
-        middleColor: AppColors.lightPrimaryColor,
-        closedShape: RoundedRectangleBorder(
-          borderRadius: Corners.rounded(50),
-        ),
-        tappable: false,
-        transitionDuration: Durations.medium,
-        closedBuilder: (ctx, openFunction) => AddWalletFab(
-          onPressed: openFunction,
-        ),
-        openBuilder: (ctx, closeFunction) => AddEditWalletScreen(
-          onPressed: closeFunction,
-        ),
+      floatingActionButton: Consumer(
+        builder: (context, ref, child) {
+          final isOwner = ref.watch(isOwnerSelectedBookProvider);
+          return !isOwner
+              ? Insets.shrink
+              : OpenContainer(
+                  openElevation: 0,
+                  closedElevation: 5,
+                  transitionType: ContainerTransitionType.fadeThrough,
+                  closedColor: AppColors.primaryColor,
+                  middleColor: AppColors.lightPrimaryColor,
+                  closedShape: RoundedRectangleBorder(
+                    borderRadius: Corners.rounded(50),
+                  ),
+                  tappable: false,
+                  transitionDuration: Durations.medium,
+                  closedBuilder: (ctx, openFunction) => AddWalletFab(
+                    onPressed: openFunction,
+                  ),
+                  openBuilder: (ctx, closeFunction) => AddEditWalletScreen(
+                    onPressed: closeFunction,
+                  ),
+                );
+        },
       ),
     );
   }

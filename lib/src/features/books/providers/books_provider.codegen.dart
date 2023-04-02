@@ -25,6 +25,15 @@ final selectedBookProvider = StateProvider<BookModel?>(
   },
 );
 
+final isOwnerSelectedBookProvider = Provider<bool>(
+  name: 'isOwnerSelectedBookProvider',
+  (ref) {
+    final myId = ref.watch(currentUserProvider).value!.uid;
+    final selectedBook = ref.watch(selectedBookProvider);
+    return selectedBook!.members[myId]!.isOwner;
+  },
+);
+
 @riverpod
 Stream<List<BookModel>> booksStream(
   BooksStreamRef ref, {

@@ -27,21 +27,20 @@ class BudgetsRepository {
 
   Stream<List<BudgetModel>> getBookBudgets({
     required int bookId,
-    int? year,
-    int? month,
+    required int year,
+    required int month,
     int? categoryId,
   }) {
     return _firestoreService.collectionStream<BudgetModel>(
       path: 'books/$bookId/budgets',
       queryBuilder: (query) {
-        if (year != null) {
-          query = query.where('year', isEqualTo: year);
-        }
-        if (month != null) {
-          query = query.where('month', isEqualTo: month);
-        }
+        query = query.where('year', isEqualTo: year);
+        query = query.where('month', isEqualTo: month);
         if (categoryId != null) {
-          query = query.where(BudgetModel.categoryIdsField, arrayContains: categoryId);
+          query = query.where(
+            BudgetModel.categoryIdsField,
+            arrayContains: categoryId,
+          );
         }
         return query;
       },
@@ -77,8 +76,8 @@ class MockBudgetsRepository implements BudgetsRepository {
   @override
   Stream<List<BudgetModel>> getBookBudgets({
     required int bookId,
-    int? year,
-    int? month,
+    required int year,
+    required int month,
     int? categoryId,
   }) {
     final date = DateTime.now();
@@ -87,7 +86,7 @@ class MockBudgetsRepository implements BudgetsRepository {
       BudgetModel(
         id: 1,
         name: 'Food and snacks',
-        categoryIds: [1],
+        categoryIds: [1, 2],
         amount: 20000,
         used: 11204,
         year: date.year,
@@ -143,10 +142,10 @@ class MockBudgetsRepository implements BudgetsRepository {
     ];
     return Stream.value(
       list.where((element) {
-        if (year != null && element.year != year) {
+        if (element.year != year) {
           return false;
         }
-        if (month != null && element.month != month) {
+        if (element.month != month) {
           return false;
         }
         if (categoryId != null && element.categoryIds.contains(categoryId)) {
@@ -161,14 +160,16 @@ class MockBudgetsRepository implements BudgetsRepository {
   Future<void> addBudget({
     required int bookId,
     required JSON body,
-  }) async => Future.delayed(2.seconds);
+  }) async =>
+      Future.delayed(2.seconds);
 
   @override
   Future<void> updateBudget({
     required int bookId,
     required int budgetId,
     required JSON changes,
-  }) async => Future.delayed(2.seconds);
+  }) async =>
+      Future.delayed(2.seconds);
 
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();

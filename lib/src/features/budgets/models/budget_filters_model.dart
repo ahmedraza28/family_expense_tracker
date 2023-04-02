@@ -13,11 +13,12 @@ class BudgetFiltersModel {
     int? year,
     int? month,
     int? categoryId,
+    bool allowNull = false,
   }) {
     return BudgetFiltersModel(
-      year: year ?? this.year,
-      month: month ?? this.month,
-      categoryId: categoryId ?? this.categoryId,
+      year: allowNull ? year : year ?? this.year,
+      month: allowNull ? month : month ?? this.month,
+      categoryId: allowNull ? categoryId : categoryId ?? this.categoryId,
     );
   }
 

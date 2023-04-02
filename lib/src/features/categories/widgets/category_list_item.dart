@@ -15,9 +15,11 @@ import '../screens/add_edit_category_screen.dart';
 
 class CategoryListItem extends StatelessWidget {
   final CategoryModel category;
+  final bool isOwner;
 
   const CategoryListItem({
     required this.category,
+    required this.isOwner,
     super.key,
   });
 
@@ -47,21 +49,23 @@ class CategoryListItem extends StatelessWidget {
             ),
           ),
 
-          Insets.gapW10,
+          if (isOwner) ...[
+            Insets.gapW10,
 
-          // Edit
-          InkWell(
-            onTap: () => AppRouter.push(
-              AddEditCategoryScreen(category: category),
+            // Edit
+            InkWell(
+              onTap: () => AppRouter.push(
+                AddEditCategoryScreen(category: category),
+              ),
+              child: const Icon(
+                Icons.edit_rounded,
+                size: 20,
+                color: AppColors.textGreyColor,
+              ),
             ),
-            child: const Icon(
-              Icons.edit_rounded,
-              size: 20,
-              color: AppColors.textGreyColor,
-            ),
-          ),
 
-          Insets.gapW3,
+            Insets.gapW3,
+          ]
         ],
       ),
     );

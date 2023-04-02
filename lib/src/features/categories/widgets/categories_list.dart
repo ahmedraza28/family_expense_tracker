@@ -11,6 +11,9 @@ import '../providers/categories_provider.codegen.dart';
 import '../../../global/widgets/widgets.dart';
 import 'category_list_item.dart';
 
+// Features
+import '../../books/books.dart';
+
 class CategoriesList extends ConsumerWidget {
   const CategoriesList({super.key});
 
@@ -27,6 +30,7 @@ class CategoriesList extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
         itemBuilder: (_, i) => CategoryListItem(
           category: categories[i],
+          isOwner: ref.watch(isOwnerSelectedBookProvider),
         ),
       ),
       orElse: () => const CustomCircularLoader(),

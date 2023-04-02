@@ -19,9 +19,11 @@ import '../../categories/categories.dart';
 
 class BudgetListItem extends StatelessWidget {
   final BudgetModel budget;
+  final bool isOwner;
 
   const BudgetListItem({
     required this.budget,
+    required this.isOwner,
     super.key,
   });
 

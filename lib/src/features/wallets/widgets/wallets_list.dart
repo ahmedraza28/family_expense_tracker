@@ -11,6 +11,9 @@ import '../providers/wallets_provider.codegen.dart';
 import '../../../global/widgets/widgets.dart';
 import 'wallet_list_item.dart';
 
+// Features
+import '../../books/books.dart';
+
 class WalletsList extends ConsumerWidget {
   const WalletsList({super.key});
 
@@ -28,6 +31,7 @@ class WalletsList extends ConsumerWidget {
         itemBuilder: (_, i) {
           return WalletListItem(
             wallet: wallets[i],
+            isOwner: ref.watch(isOwnerSelectedBookProvider),
           );
         },
       ),
