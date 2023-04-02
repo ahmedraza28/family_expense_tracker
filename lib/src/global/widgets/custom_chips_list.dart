@@ -55,7 +55,7 @@ class CustomChipsList extends StatelessWidget {
 
   Widget buildChipListItem(int i) {
     return CustomChipWidget(
-      chipWidth: chipWidth,
+      width: chipWidth,
       backgroundColor: backgroundColor,
       borderColor: borderColor,
       borderWidth: borderWidth,
@@ -73,7 +73,9 @@ class CustomChipsList extends StatelessWidget {
 class CustomChipWidget extends StatelessWidget {
   const CustomChipWidget({
     required this.content,
-    this.chipWidth,
+    this.width,
+    this.height,
+    this.borderRadius = const BorderRadius.all(Radius.circular(20)),
     this.backgroundColor = Colors.white,
     this.borderColor = const Color.fromRGBO(122, 122, 122, 1),
     this.borderWidth = 1,
@@ -85,9 +87,11 @@ class CustomChipWidget extends StatelessWidget {
     super.key,
   });
 
-  final double? chipWidth;
+  final double? width;
+  final double? height;
   final String content;
   final Color backgroundColor;
+  final BorderRadius borderRadius;
   final Color borderColor;
   final double borderWidth;
   final TextStyle labelStyle;
@@ -95,11 +99,12 @@ class CustomChipWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: chipWidth,
+      width: width,
+      height: height,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: borderRadius,
         border: Border.all(color: borderColor, width: borderWidth),
       ),
       child: Center(

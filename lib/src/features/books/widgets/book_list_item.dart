@@ -39,6 +39,7 @@ class BookListItem extends ConsumerWidget {
     });
     final myId = ref.watch(currentUserProvider).value!.uid;
     final isOwner = book.members[myId]!.isOwner;
+    final isViewer = book.members[myId]!.isViewer;
     return InkWell(
       onTap: () {
         ref.read(selectedBookProvider.notifier).update((state) => book);
@@ -69,6 +70,7 @@ class BookListItem extends ConsumerWidget {
             BookDetails(
               myId: myId,
               isOwner: isOwner,
+              isViewer: isViewer,
               currencyName: book.currencyName,
               membersMap: book.members,
               totalExpense: book.totalExpense,
@@ -85,6 +87,7 @@ class BookListItem extends ConsumerWidget {
 class BookDetails extends StatelessWidget {
   const BookDetails({
     required this.isOwner,
+    required this.isViewer,
     required this.description,
     required this.myId,
     required this.totalExpense,
@@ -99,6 +102,7 @@ class BookDetails extends StatelessWidget {
   final String currencyName;
   final Map<String, BookMemberModel> membersMap;
   final bool isOwner;
+  final bool isViewer;
   final double totalExpense;
   final double totalIncome;
 
@@ -142,6 +146,7 @@ class BookDetails extends StatelessWidget {
             label: 'Members',
             child: MemberAvatars(
               isOwner: isOwner,
+              isViewer: isViewer,
               members: members,
             ),
           ),
@@ -181,7 +186,7 @@ class _TitleAndEditRow extends StatelessWidget {
           // Book Name
           CustomText.body(
             name,
-            fontSize: 20,
+            fontSize: 18,
           ),
 
           Insets.expand,
@@ -210,10 +215,12 @@ class MemberAvatars extends StatelessWidget {
   const MemberAvatars({
     required this.members,
     required this.isOwner,
+    required this.isViewer,
     super.key,
   });
 
   final List<BookMemberModel> members;
+  final bool isViewer;
   final bool isOwner;
 
   @override
@@ -285,7 +292,20 @@ class MemberAvatars extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
             ),
-          ]
+          ] else if (isViewer) ...[
+            Insets.expand,
+            CustomChipWidget(
+              content: 'Read Only',
+              height: 30,
+              backgroundColor: AppColors.primaryColor.withOpacity(0.2),
+              borderColor: Colors.transparent,
+              labelStyle: const TextStyle(
+                color: AppColors.primaryColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
         ],
       ),
     );
