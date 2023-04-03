@@ -14,6 +14,7 @@ import '../enums/transaction_type_enum.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Providers
+import '../providers/add_edit_transaction_provider.codegen.dart';
 import '../providers/income_expense_provider.codegen.dart';
 
 // Widgets
@@ -44,14 +45,20 @@ class AddEditTransactionScreen extends HookConsumerWidget {
     final descriptionController = useTextEditingController(
       text: transaction?.description ?? '',
     );
-    final dateController = useValueNotifier<DateTime?>(
-      transaction?.date,
+    final dateController = useValueNotifier<DateTime>(
+      transaction?.date ?? ref.watch(selectedDateProvider) ?? DateTime.now(),
     );
+
+    final walletId =
+        transaction?.walletId ?? ref.watch(selectedWalletIdProvider);
     final walletController = useValueNotifier<WalletModel?>(
-      ref.watch(walletByIdProvider(transaction?.walletId)),
+      ref.watch(walletByIdProvider(walletId)),
     );
+
+    final categoryId =
+        transaction?.categoryId ?? ref.watch(selectedCategoryIdProvider);
     final categoryController = useValueNotifier<CategoryModel?>(
-      ref.watch(categoryByIdProvider(transaction?.categoryId)),
+      ref.watch(categoryByIdProvider(categoryId)),
     );
     final typeController = useValueNotifier<TransactionType?>(
       transaction?.type ?? TransactionType.expense,
@@ -63,17 +70,28 @@ class AddEditTransactionScreen extends HookConsumerWidget {
       if (transaction == null) {
         ref.read(incomeExpenseProvider.notifier).addTransaction(
               amount: double.parse(amountController.text),
-              wallet: walletController.value!,
-              date: dateController.value!,
+              walletId: walletController.value!.id!,
+              date: dateController.value,
               type: typeController.value!,
-              category: categoryController.value!,
+              categoryId: categoryController.value!.id!,
               description: descriptionController.text,
             );
+        ref
+            .read(selectedDateProvider.notifier)
+            .update((state) => dateController.value);
+
+        ref
+            .read(selectedWalletIdProvider.notifier)
+            .update((state) => walletController.value!.id);
+
+        ref
+            .read(selectedCategoryIdProvider.notifier)
+            .update((state) => categoryController.value!.id);
       } else {
         final newTransaction = transaction!.copyWith(
           amount: double.parse(amountController.text),
           walletId: walletController.value!.id!,
-          date: dateController.value!,
+          date: dateController.value,
           type: typeController.value!,
           categoryId: categoryController.value!.id!,
           description: descriptionController.text,
@@ -203,28 +221,42 @@ class AddEditTransactionScreen extends HookConsumerWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-        width: double.infinity,
-        height: 55,
-        margin: const EdgeInsets.symmetric(horizontal: 15),
-        child: FloatingActionButton(
-          onPressed: onSave,
-          elevation: 5,
-          backgroundColor: Colors.transparent,
-          shape: const RoundedRectangleBorder(
+      floatingActionButton: SaveButton(onSave: onSave),
+    );
+  }
+}
+
+class SaveButton extends StatelessWidget {
+  const SaveButton({
+    required this.onSave,
+    super.key,
+  });
+
+  final VoidCallback onSave;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 55,
+      margin: const EdgeInsets.symmetric(horizontal: 15),
+      child: FloatingActionButton(
+        onPressed: onSave,
+        elevation: 5,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+          borderRadius: Corners.rounded7,
+        ),
+        child: const DecoratedBox(
+          decoration: BoxDecoration(
             borderRadius: Corners.rounded7,
+            gradient: AppColors.buttonGradientPrimary,
           ),
-          child: const DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: Corners.rounded7,
-              gradient: AppColors.buttonGradientPrimary,
-            ),
-            child: Center(
-              child: CustomText(
-                'Save',
-                color: Colors.white,
-                fontSize: 16,
-              ),
+          child: Center(
+            child: CustomText(
+              'Save',
+              color: Colors.white,
+              fontSize: 16,
             ),
           ),
         ),

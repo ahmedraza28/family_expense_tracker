@@ -7,9 +7,9 @@ import 'package:intl/intl.dart';
 // Helpers
 import '../../helpers/constants/app_colors.dart';
 import '../../helpers/constants/app_styles.dart';
+import '../../helpers/extensions/extensions.dart';
 
 // Widgets
-import '../../helpers/extensions/extensions.dart';
 import './cupertino_date_picker_dialog.dart';
 import './custom_text_button.dart';
 
@@ -130,6 +130,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   @override
   Widget build(BuildContext context) {
     final inputTheme = context.theme.inputDecorationTheme;
+    final textTheme = context.theme.textTheme;
     return Column(
       children: [
         // Label
@@ -158,13 +159,14 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                 valueListenable: widget.dateNotifier,
                 builder: (_, date, __) {
                   var dateString = widget.pickerStyle.initialDateString;
+                  var dateStyle = widget.pickerStyle.displayTextStyle;
                   if (date != null) {
                     dateString = widget.dateFormat.format(date);
+                    dateStyle = dateStyle ?? textTheme.titleMedium;
                   }
                   return Text(
                     dateString,
-                    style: widget.pickerStyle.displayTextStyle ??
-                        inputTheme.hintStyle,
+                    style: date != null ? dateStyle : inputTheme.hintStyle,
                   );
                 },
               ),

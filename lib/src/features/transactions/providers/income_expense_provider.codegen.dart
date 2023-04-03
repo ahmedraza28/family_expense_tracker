@@ -11,8 +11,6 @@ import '../models/income_expense_model.codegen.dart';
 import '../repositories/transactions_repository.codegen.dart';
 
 // Features
-import '../../categories/categories.dart';
-import '../../wallets/wallets.dart';
 import '../../books/books.dart';
 
 part 'income_expense_provider.codegen.g.dart';
@@ -24,9 +22,9 @@ class IncomeExpense extends _$IncomeExpense {
 
   Future<void> addTransaction({
     required double amount,
-    required WalletModel wallet,
+    required int walletId,
     required DateTime date,
-    required CategoryModel category,
+    required int categoryId,
     required TransactionType type,
     String? description,
   }) async {
@@ -35,8 +33,8 @@ class IncomeExpense extends _$IncomeExpense {
     final transaction = IncomeExpenseModel(
       id: null,
       amount: amount,
-      walletId: wallet.id!,
-      categoryId: category.id!,
+      walletId: walletId,
+      categoryId: categoryId,
       date: date,
       type: type,
       description: description,
