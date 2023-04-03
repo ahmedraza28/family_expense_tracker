@@ -20,9 +20,7 @@ part 'books_provider.codegen.g.dart';
 
 final selectedBookProvider = StateProvider<BookModel?>(
   name: 'selectedBookProvider',
-  (ref) {
-    return null;
-  },
+  (ref) => null,
 );
 
 final isOwnerSelectedBookProvider = Provider<bool>(

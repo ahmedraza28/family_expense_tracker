@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
 // Features
-import '../../home/home.dart';
 import '../../categories/categories.dart';
+import '../../transactions/transactions.dart';
 import '../../wallets/wallets.dart';
 
 // Helpers
@@ -30,7 +30,7 @@ class BookConfigLoaderScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cacheLoaderFuture = ref.watch(_cacheLoaderFutureProvider);
     return cacheLoaderFuture.when(
-      data: (_) => const HomeScreen(),
+      data: (_) => const TransactionsScreen(),
       loading: () => const LottieAnimationLoader(),
       error: (error, st) => Scaffold(
         body: ErrorResponseHandler(

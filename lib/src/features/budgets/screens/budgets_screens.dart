@@ -19,6 +19,7 @@ import 'add_edit_budget_screen.dart';
 
 // Features
 import '../../books/books.dart';
+import '../../shared/shared.dart';
 
 class BudgetsScreen extends StatelessWidget {
   const BudgetsScreen({super.key});
@@ -65,6 +66,7 @@ class BudgetsScreen extends StatelessWidget {
           ),
         ],
       ),
+      drawer: const AppDrawer(),
       body: const BudgetsView(),
       floatingActionButton: Consumer(
         builder: (context, ref, child) {

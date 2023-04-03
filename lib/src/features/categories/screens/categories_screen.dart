@@ -14,6 +14,7 @@ import '../widgets/categories_list.dart';
 import 'add_edit_category_screen.dart';
 
 // Features
+import '../../shared/shared.dart';
 import '../../books/books.dart';
 
 class CategoriesScreen extends StatelessWidget {
@@ -28,6 +29,7 @@ class CategoriesScreen extends StatelessWidget {
           fontSize: 20,
         ),
       ),
+      drawer: const AppDrawer(),
       body: const CategoriesList(),
       floatingActionButton: Consumer(
         builder: (context, ref, child) {

@@ -8,7 +8,6 @@ import '../../features/books/books.dart';
 import '../../features/budgets/budgets.dart';
 import '../../features/calculator/calculator.dart';
 import '../../features/categories/categories.dart';
-import '../../features/home/home.dart';
 import '../../features/transactions/transactions.dart';
 import '../../features/wallets/wallets.dart';
 
@@ -36,9 +35,6 @@ class Routes {
 
   // The name for the auth widget screen
   static const String AuthWidgetBuilderRoute = '/auth-widget-builder';
-
-  /// The name of the route for home dashboard screen
-  static const String HomeScreenRoute = '/home-screen';
 
   /// The name of the route for balance transfer screen
   static const String AddEditBalanceTransferScreenRoute =
@@ -89,7 +85,6 @@ class Routes {
     BookConfigLoaderScreenRoute: (_) => const BookConfigLoaderScreen(),
     AuthWidgetBuilderRoute: (_) => const AuthWidgetBuilder(),
     NotFoundScreenRoute: (_) => const NotFoundScreen(),
-    HomeScreenRoute: (_) => const HomeScreen(),
     BooksScreenRoute: (_) => const BooksScreen(),
     CategoriesScreenRoute: (_) => const CategoriesScreen(),
     SelectCategoriesScreenRoute: (_) => const SelectCategoriesScreen(),

@@ -24,7 +24,7 @@ class SelectableCategoriesList extends ConsumerWidget {
           parent: AlwaysScrollableScrollPhysics(),
         ),
         separatorBuilder: (_, __) => Insets.gapH10,
-        padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+        padding: const EdgeInsets.fromLTRB(15, 20, 15, 90),
         itemBuilder: (_, i) => SelectableCategoryListItem(
           category: categories[i],
         ),

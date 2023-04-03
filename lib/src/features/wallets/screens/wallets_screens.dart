@@ -15,6 +15,7 @@ import '../widgets/wallets_list.dart';
 import 'add_edit_wallet_screen.dart';
 
 // Features
+import '../../shared/shared.dart';
 import '../../books/books.dart';
 
 class WalletsScreen extends StatelessWidget {
@@ -31,10 +32,11 @@ class WalletsScreen extends StatelessWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(50),
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 15),
+            padding: const EdgeInsets.only(bottom: 20),
             child: CustomTextButton.outlined(
               height: 35,
               width: 200,
+              borderRadius: 10,
               onPressed: () {
                 AppRouter.pushNamed(
                   Routes.AddEditBalanceTransferScreenRoute,
@@ -53,6 +55,7 @@ class WalletsScreen extends StatelessWidget {
           ),
         ),
       ),
+      drawer: const AppDrawer(),
       body: const WalletsList(),
       floatingActionButton: Consumer(
         builder: (context, ref, child) {
