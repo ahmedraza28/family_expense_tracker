@@ -9,6 +9,7 @@ import '../../../config/routing/routing.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import 'shaded_icon.dart';
 
 // Features
 import '../../auth/auth.dart';

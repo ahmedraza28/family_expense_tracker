@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const title = 'Family Expense Tracker';
     const showDebugBanner = false;
     final navigatorObservers = <NavigatorObserver>[SentryNavigatorObserver()];
     return ProviderScope(
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
         ProviderLogger(),
       ],
       child: MaterialApp(
-        title: title,
+        title: AppConstants.appName,
         navigatorObservers: navigatorObservers,
         debugShowCheckedModeBanner: showDebugBanner,
         color: AppColors.primaryColor,

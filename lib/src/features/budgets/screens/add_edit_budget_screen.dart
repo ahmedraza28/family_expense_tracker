@@ -17,7 +17,6 @@ import '../../../helpers/constants/constants.dart';
 import '../../../global/widgets/widgets.dart';
 
 // Features
-import '../../transactions/transactions.dart';
 import '../../categories/categories.dart';
 
 class AddEditBudgetScreen extends HookConsumerWidget {
@@ -181,7 +180,7 @@ class AddEditBudgetScreen extends HookConsumerWidget {
                       child: CustomDropdownField<int>.animated(
                         controller: monthFilterController,
                         hintText: 'Select',
-                        items: monthNames,
+                        items: AppConstants.monthNames,
                       ),
                     ),
                   ),

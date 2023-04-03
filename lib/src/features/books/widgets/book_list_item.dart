@@ -19,6 +19,7 @@ import '../../../global/widgets/widgets.dart';
 import '../screens/add_edit_book_screen.dart';
 
 // Features
+import '../../shared/shared.dart';
 import '../../auth/auth.dart';
 import '../../wallets/wallets.dart';
 

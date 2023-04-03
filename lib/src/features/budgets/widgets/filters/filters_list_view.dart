@@ -12,7 +12,6 @@ import '../../providers/budget_filters_providers.codegen.dart';
 import '../../../../global/widgets/widgets.dart';
 
 // Features
-import '../../../transactions/transactions.dart';
 import '../../../categories/categories.dart';
 
 class FiltersListView extends HookConsumerWidget {
@@ -46,7 +45,7 @@ class FiltersListView extends HookConsumerWidget {
                 child: CustomDropdownField<int>.animated(
                   controller: monthFilterController,
                   hintText: 'Select',
-                  items: monthNames,
+                  items: AppConstants.monthNames,
                   onSelected: ref.read(budgetFiltersProvider.notifier).setMonth,
                 ),
               ),

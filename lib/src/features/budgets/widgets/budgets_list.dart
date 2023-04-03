@@ -14,7 +14,6 @@ import 'budget_list_item.dart';
 
 // Features
 import '../../books/books.dart';
-import '../../transactions/transactions.dart' show monthNames;
 
 class BudgetsList extends ConsumerWidget {
   final List<BudgetModel> budgets;
@@ -38,7 +37,7 @@ class BudgetsList extends ConsumerWidget {
         String? headerText;
 
         if (i == 0 || budget.month != budgets[i - 1].month) {
-          final month = monthNames.findKeyByValue(budget.month);
+          final month = AppConstants.monthNames.findKeyByValue(budget.month);
           headerText = '$month, ${budget.year}';
         }
         final child = BudgetListItem(

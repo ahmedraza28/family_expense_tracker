@@ -17,28 +17,4 @@ class LottieAssets {
 
   /// The path for lottie people talking animation
   static const String peopleTalkingLottie = 'assets/lottie/people-talking.json';
-
-  /// The path for the lottie love animation
-  static const String loveLottie = 'assets/lottie/love-emoji.json';
-
-  /// The path for the lottie laugh animation
-  static const String laughLottie = 'assets/lottie/laugh-emoji.json';
-
-  /// The path for the lottie wow animation
-  static const String wowLottie = 'assets/lottie/wow-emoji.json';
-
-  /// The path for the lottie sad animation
-  static const String sadLottie = 'assets/lottie/sad-emoji.json';
-
-  /// The path for the lottie angry animation
-  static const String angryLottie = 'assets/lottie/angry-emoji.json';
-
-  /// The path for the lottie cool animation
-  static const String coolLottie = 'assets/lottie/cool-emoji.json';
-
-  /// The path for the lottie disgust animation
-  static const String disgustLottie = 'assets/lottie/disgust-emoji.json';
-
-  /// The path for the lottie like animation
-  static const String likeLottie = 'assets/lottie/like-emoji.json';
 }

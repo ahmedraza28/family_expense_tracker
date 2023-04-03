@@ -15,5 +15,5 @@ export 'widgets/filters/filters_bottom_sheet.dart';
 export 'widgets/filters/filters_list_view.dart';
 export 'widgets/grouped_transactions_list.dart';
 export 'widgets/income_expense_list_item.dart';
-export 'widgets/search_and_filters_bar.dart';
+export 'widgets/filters/search_and_filters_bar.dart';
 export 'widgets/transaction_type_selection_cards.dart';

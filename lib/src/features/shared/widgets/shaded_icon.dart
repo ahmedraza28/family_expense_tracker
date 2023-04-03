@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Helpers
-import '../../helpers/constants/constants.dart';
+import '../../../helpers/constants/constants.dart';
 
 class ShadedIcon extends StatelessWidget {
   final Color color;

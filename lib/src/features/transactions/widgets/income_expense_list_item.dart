@@ -20,6 +20,7 @@ import '../screens/add_edit_transaction_screen.dart';
 // Features
 import '../../auth/auth.dart';
 import '../../books/books.dart';
+import '../../shared/shared.dart';
 import '../../wallets/wallets.dart';
 import '../../categories/categories.dart';
 

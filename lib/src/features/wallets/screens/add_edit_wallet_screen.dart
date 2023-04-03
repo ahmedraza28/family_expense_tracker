@@ -19,6 +19,7 @@ import '../models/wallet_model.codegen.dart';
 import '../../../global/widgets/widgets.dart';
 
 // Features
+import '../../shared/shared.dart';
 import '../../calculator/calculator.dart';
 
 class AddEditWalletScreen extends HookConsumerWidget {

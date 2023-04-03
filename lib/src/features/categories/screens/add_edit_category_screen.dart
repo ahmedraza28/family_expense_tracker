@@ -18,6 +18,9 @@ import '../providers/categories_provider.codegen.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
+// Features
+import '../../shared/shared.dart';
+
 class AddEditCategoryScreen extends HookConsumerWidget {
   final CategoryModel? category;
   final VoidCallback? onPressed;

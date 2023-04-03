@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
-import '../providers/transaction_filters_providers.codegen.dart';
+import '../../providers/transaction_filters_providers.codegen.dart';
 
 // Helpers
-import '../../../helpers/constants/constants.dart';
+import '../../../../helpers/constants/constants.dart';
 
 // Widgets
-import '../../../global/widgets/widgets.dart';
-import 'filters/filters_bottom_sheet.dart';
+import '../../../../global/widgets/widgets.dart';
+import 'filters_bottom_sheet.dart';
 
 class SearchAndFiltersBar extends ConsumerWidget {
   const SearchAndFiltersBar({super.key});

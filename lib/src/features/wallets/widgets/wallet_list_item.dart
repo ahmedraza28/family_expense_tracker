@@ -15,6 +15,9 @@ import '../../../global/widgets/widgets.dart';
 // Screens
 import '../screens/add_edit_wallet_screen.dart';
 
+// Features
+import '../../shared/shared.dart';
+
 class WalletListItem extends StatelessWidget {
   final WalletModel wallet;
   final bool isOwner;
