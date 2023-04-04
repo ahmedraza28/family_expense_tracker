@@ -89,6 +89,7 @@ class TransactionsScreen extends ConsumerWidget {
                     openElevation: 0,
                     closedElevation: 5,
                     transitionType: ContainerTransitionType.fadeThrough,
+                    closedColor: AppColors.primaryColor,
                     middleColor: AppColors.lightPrimaryColor,
                     closedShape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -120,6 +121,7 @@ class TransactionsScreen extends ConsumerWidget {
                     openElevation: 0,
                     closedElevation: 5,
                     transitionType: ContainerTransitionType.fadeThrough,
+                    closedColor: AppColors.primaryColor,
                     middleColor: AppColors.lightPrimaryColor,
                     closedShape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(

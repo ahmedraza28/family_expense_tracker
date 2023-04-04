@@ -42,6 +42,7 @@ class AddIncomeExpenseFab extends ConsumerWidget {
       width: 140,
       child: transactionFuture.maybeWhen(
         loading: () => const CustomCircularLoader(
+          size: 25,
           color: Colors.white,
         ),
         orElse: () => FloatingActionButton.extended(
