@@ -52,8 +52,13 @@ class AddEditBudgetScreen extends HookConsumerWidget {
     final descriptionController = useTextEditingController(
       text: budget?.description ?? '',
     );
-    final monthFilterController = useValueNotifier<int?>(null);
-    final yearFilterController = useValueNotifier<int?>(null);
+    final today = DateTime.now();
+    final monthController = useValueNotifier<int>(
+      budget?.month ?? today.month,
+    );
+    final yearController = useValueNotifier<int>(
+      budget?.year ?? today.year,
+    );
 
     void onSave() {
       if (!formKey.currentState!.validate()) return;
@@ -63,8 +68,8 @@ class AddEditBudgetScreen extends HookConsumerWidget {
       ];
       if (budget == null) {
         ref.read(budgetsProvider.notifier).addBudget(
-              year: yearFilterController.value!,
-              month: monthFilterController.value!,
+              year: yearController.value,
+              month: monthController.value,
               categoryIds: categoryIds,
               amount: double.parse(budgetAmountController.text),
               name: budgetNameController.text,
@@ -72,8 +77,8 @@ class AddEditBudgetScreen extends HookConsumerWidget {
             );
       } else {
         final newBudget = budget!.copyWith(
-          year: yearFilterController.value!,
-          month: monthFilterController.value!,
+          year: yearController.value,
+          month: monthController.value,
           categoryIds: categoryIds,
           amount: double.parse(budgetAmountController.text),
           name: budgetNameController.text,
@@ -178,7 +183,7 @@ class AddEditBudgetScreen extends HookConsumerWidget {
                       label: 'Month',
                       useDarkerLabel: true,
                       child: CustomDropdownField<int>.animated(
-                        controller: monthFilterController,
+                        controller: monthController,
                         hintText: 'Select',
                         items: AppConstants.monthNames,
                       ),
@@ -193,7 +198,7 @@ class AddEditBudgetScreen extends HookConsumerWidget {
                       label: 'Year',
                       useDarkerLabel: true,
                       child: CustomDropdownField<int>.animated(
-                        controller: yearFilterController,
+                        controller: yearController,
                         hintText: 'Select',
                         items: {
                           for (var i = 2023;
@@ -218,24 +223,49 @@ class AddEditBudgetScreen extends HookConsumerWidget {
                 textInputAction: TextInputAction.done,
               ),
 
-              Insets.expand,
-
-              // Confirm Details Button
-              CustomTextButton.gradient(
-                width: double.infinity,
-                onPressed: onSave,
-                gradient: AppColors.buttonGradientPrimary,
-                child: const Center(
-                  child: CustomText(
-                    'Save',
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-
-              Insets.bottomInsetsLow,
+              Insets.gapH(114),
             ],
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SaveButton(onSave: onSave),
+    );
+  }
+}
+
+class SaveButton extends StatelessWidget {
+  const SaveButton({
+    required this.onSave,
+    super.key,
+  });
+
+  final VoidCallback onSave;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 55,
+      margin: const EdgeInsets.symmetric(horizontal: 15),
+      child: FloatingActionButton(
+        onPressed: onSave,
+        elevation: 5,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+          borderRadius: Corners.rounded7,
+        ),
+        child: const DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: Corners.rounded7,
+            gradient: AppColors.buttonGradientPrimary,
+          ),
+          child: Center(
+            child: CustomText(
+              'Save',
+              color: Colors.white,
+              fontSize: 16,
+            ),
           ),
         ),
       ),

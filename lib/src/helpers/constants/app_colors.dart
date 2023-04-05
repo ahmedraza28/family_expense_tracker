@@ -132,5 +132,5 @@ class AppColors {
   static const Color barrierColor = Colors.black87;
 
   /// The color value for light grey [CustomDialog] in the app.
-  static const Color barrierColorLight = Color(0xBF000000);
+  static const Color barrierColorLight = Color.fromARGB(189, 230, 230, 230);
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../helpers/extensions/extensions.dart';
+
 class CustomCheckbox extends StatelessWidget {
   final ValueNotifier<bool?>? controller;
   final bool? value;
@@ -14,7 +16,13 @@ class CustomCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.theme.colorScheme;
     return Checkbox(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+      ),
+      activeColor: colorScheme.primary,
+      checkColor: colorScheme.onPrimary,
       value: value ?? controller?.value ?? false,
       onChanged: (value) {
         controller?.value = value;

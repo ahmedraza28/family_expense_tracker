@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+// Models
+import '../models/budget_model.codegen.dart';
+
 // Helpers
+import '../../../config/routing/routing.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Providers
@@ -43,32 +48,46 @@ class AddBudgetFab extends ConsumerWidget {
         loading: () => const CustomCircularLoader(
           color: Colors.white,
         ),
-        orElse: () => FloatingActionButton.extended(
+        orElse: () => SpeedDial(
+          // onPress: onPressed,
+          childMargin: const EdgeInsets.only(right: 10),
+          animationCurve: Curves.elasticInOut,
+          icon: Icons.add_rounded,
+          spacing: 10,
+          spaceBetweenChildren: 10,
           elevation: 0,
+          overlayOpacity: 0.6,
+          overlayColor: AppColors.barrierColorLight,
           backgroundColor: AppColors.primaryColor,
-          onPressed: onPressed,
-          label: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              // Add icon
-              Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-
-              Insets.gapW5,
-
-              // Label
-              Text(
-                'Create New',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                  letterSpacing: 0.3,
-                ),
-              )
-            ],
+          foregroundColor: Colors.white,
+          label: const Text(
+            'Create',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.white,
+              letterSpacing: 0.3,
+            ),
           ),
+          children: [
+            SpeedDialChild(
+              child: const Icon(Icons.add_rounded),
+              backgroundColor: Colors.white,
+              foregroundColor: AppColors.primaryColor,
+              label: 'New Template',
+              onTap: () => AppRouter.pushNamed(Routes.AddEditBudgetScreenRoute),
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.copy_rounded),
+              backgroundColor: Colors.white,
+              foregroundColor: AppColors.primaryColor,
+              label: 'Copy Previous',
+              onTap: () async {
+                final budgets = await AppRouter.pushNamed(
+                  Routes.SelectBudgetsScreenRoute,
+                ) as List<BudgetModel>;
+              },
+            ),
+          ],
         ),
       ),
     );

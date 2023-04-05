@@ -54,6 +54,9 @@ class Routes {
 
   /// The name of the route for selectable categories screen.
   static const String SelectCategoriesScreenRoute = '/select-categories-screen';
+  
+  /// The name of the route for selectable budgets screen.
+  static const String SelectBudgetsScreenRoute = '/select-budgets-screen';
 
   /// The name of the route for wallets screen.
   static const String WalletsScreenRoute = '/wallets-screen';
@@ -66,6 +69,9 @@ class Routes {
 
   /// The name of the route for budgets screen.
   static const String BudgetsScreenRoute = '/budgets-screen';
+
+  /// The name of the route for budget screen
+  static const String AddEditBudgetScreenRoute = '/add-edit-budget-screen';
 
   /// The name of the route for manage book access screen.
   static const String ManageBookAccessScreenRoute =
@@ -91,9 +97,11 @@ class Routes {
     WalletsScreenRoute: (_) => const WalletsScreen(),
     CalculatorScreenRoute: (_) => const CalculatorScreen(),
     TransactionsScreenRoute: (_) => const TransactionsScreen(),
-    BudgetsScreenRoute: (_) => const BudgetsScreen(),
     AddEditBalanceTransferScreenRoute: (_) =>
         const AddEditBalanceTransferScreen(),
+    BudgetsScreenRoute: (_) => const BudgetsScreen(),
+    SelectBudgetsScreenRoute: (_) => const SelectBudgetsScreen(),
+    AddEditBudgetScreenRoute: (_) => const AddEditBudgetScreen(),
     // ManageBookAccessScreenRoute: (_) => const SizedBox.shrink(),
     // AboutScreenRoute: (_) => const SizedBox.shrink(),
     // InsightsScreenRoute: (_) => const SizedBox.shrink(),
