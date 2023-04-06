@@ -69,7 +69,7 @@ class FirestoreService {
   /// existing at the provided path. The documents are filtered by
   /// the queryBuilder and updated by performing the changes according
   /// to the supplied changes map.
-  Future<void> batchActon({
+  Future<void> batchUpdate({
     required String path,
     required Map<String, dynamic> changes,
     QueryBuilder queryBuilder,
@@ -85,6 +85,22 @@ class FirestoreService {
 
     for (final DocumentSnapshot<JSON> ds in querySnapshot.docs) {
       batchUpdate.update(ds.reference, changes);
+    }
+    await batchUpdate.commit();
+  }
+
+  /// Bulk adds a list of documents to a single collection
+  /// existing at the provided path. 
+  Future<void> batchAdd({
+    required String path,
+    required List<JSON> data,
+  }) async {
+    final batchUpdate = _firestoreDb.batch();
+    debugPrint(path);
+
+    for (final doc in data) {
+      final docRef = _firestoreDb.collection(path).doc();
+      batchUpdate.update(docRef, doc);
     }
     await batchUpdate.commit();
   }

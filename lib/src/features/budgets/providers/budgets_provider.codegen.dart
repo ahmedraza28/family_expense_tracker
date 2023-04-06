@@ -42,6 +42,18 @@ class Budgets extends _$Budgets {
     );
   }
 
+  /// Copies the given [List<BudgetModels>] to the current month
+  void copyBudgets(List<BudgetModel> budgets) {
+    final budgetsRepository = ref.watch(budgetsRepositoryProvider);
+    final bookId = ref.watch(selectedBookProvider)!.id!;
+    budgetsRepository.addAllBudgets(
+      bookId: bookId,
+      year: _currentDate.year,
+      month: _currentDate.month,
+      body: budgets.map((budget) => budget.toJson()).toList(),
+    );
+  }
+
   void addBudget({
     required int year,
     required String name,
@@ -63,6 +75,8 @@ class Budgets extends _$Budgets {
     final bookId = ref.watch(selectedBookProvider)!.id!;
     budgetsRepository.addBudget(
       bookId: bookId,
+      year: year,
+      month: month,
       body: budget.toJson(),
     );
   }
@@ -72,6 +86,8 @@ class Budgets extends _$Budgets {
     final bookId = ref.watch(selectedBookProvider)!.id!;
     budgetsRepository.updateBudget(
       bookId: bookId,
+      year: budget.year,
+      month: budget.month,
       budgetId: budget.id!,
       changes: budget.toJson(),
     );

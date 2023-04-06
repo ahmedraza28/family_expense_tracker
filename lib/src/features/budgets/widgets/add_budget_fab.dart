@@ -85,6 +85,7 @@ class AddBudgetFab extends ConsumerWidget {
                 final budgets = await AppRouter.pushNamed(
                   Routes.SelectBudgetsScreenRoute,
                 ) as List<BudgetModel>;
+                ref.read(budgetsProvider.notifier).copyBudgets(budgets);
               },
             ),
           ],

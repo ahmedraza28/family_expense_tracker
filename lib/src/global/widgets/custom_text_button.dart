@@ -66,7 +66,7 @@ class CustomTextButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
         border: border,
         gradient: !disabled ? gradient : AppColors.buttonGradientGrey,
-        color: color?.withOpacity(disabled ? 0.15 : 1),
+        color: (color ?? colorScheme.primary).withOpacity(disabled ? 0.15 : 1),
       ),
       clipBehavior: Clip.hardEdge,
       child: TextButton(
@@ -94,7 +94,7 @@ class _CustomTextButtonWithGradient extends CustomTextButton {
     super.disabled,
     super.borderRadius,
     super.padding,
-  }) : super();
+  });
 }
 
 class _CustomTextButtonOutlined extends CustomTextButton {
@@ -108,5 +108,7 @@ class _CustomTextButtonOutlined extends CustomTextButton {
     super.disabled,
     super.borderRadius,
     super.padding,
-  }) : super();
+  }) : super(
+          color: Colors.transparent,
+        );
 }

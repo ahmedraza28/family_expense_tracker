@@ -32,10 +32,8 @@ class BudgetsRepository {
     int? categoryId,
   }) {
     return _firestoreService.collectionStream<BudgetModel>(
-      path: 'books/$bookId/budgets',
+      path: 'books/$bookId/budgets/$month-$year',
       queryBuilder: (query) {
-        query = query.where('year', isEqualTo: year);
-        query = query.where('month', isEqualTo: month);
         if (categoryId != null) {
           query = query.where(
             BudgetModel.categoryIdsField,
@@ -51,21 +49,37 @@ class BudgetsRepository {
 
   Future<void> addBudget({
     required int bookId,
+    required int year,
+    required int month,
     required JSON body,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/budgets',
+      path: 'books/$bookId/budgets/$month-$year',
+      data: body,
+    );
+  }
+
+  Future<void> addAllBudgets({
+    required int bookId,
+    required int year,
+    required int month,
+    required List<JSON> body,
+  }) {
+    return _firestoreService.batchAdd(
+      path: 'books/$bookId/budgets/$month-$year',
       data: body,
     );
   }
 
   Future<void> updateBudget({
     required int bookId,
+    required int year,
+    required int month,
     required int budgetId,
     required JSON changes,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/budgets/$budgetId',
+      path: 'books/$bookId/budgets/$month-$year/$budgetId',
       data: changes,
       merge: true,
     );
@@ -159,6 +173,8 @@ class MockBudgetsRepository implements BudgetsRepository {
   @override
   Future<void> addBudget({
     required int bookId,
+    required int year,
+    required int month,
     required JSON body,
   }) async =>
       Future.delayed(2.seconds);
@@ -166,6 +182,8 @@ class MockBudgetsRepository implements BudgetsRepository {
   @override
   Future<void> updateBudget({
     required int bookId,
+    required int year,
+    required int month,
     required int budgetId,
     required JSON changes,
   }) async =>
@@ -173,4 +191,13 @@ class MockBudgetsRepository implements BudgetsRepository {
 
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();
+
+  @override
+  Future<void> addAllBudgets({
+    required int bookId,
+    required int year,
+    required int month,
+    required List<JSON> body,
+  }) async =>
+      Future.delayed(2.seconds);
 }

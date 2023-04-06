@@ -7,8 +7,6 @@ import '../providers/selected_categories_provider.codegen.dart';
 // Routing
 import '../../../config/routing/routing.dart';
 
-// Providers
-
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import '../widgets/selectable/selectable_categories_list.dart';
