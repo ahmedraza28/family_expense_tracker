@@ -80,6 +80,7 @@ class Books extends _$Books {
     final booksRepository = ref.watch(booksRepositoryProvider);
     state = await state.makeGuardedRequest(
       () => booksRepository.addBook(body: book.toJson()),
+      errorMessage: 'Failed to add book',
     );
   }
 

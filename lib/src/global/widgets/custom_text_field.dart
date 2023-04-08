@@ -62,7 +62,7 @@ class CustomTextField extends StatefulWidget {
     this.hintText,
     this.validator,
     this.borderRadius = const BorderRadius.all(Radius.circular(7)),
-    this.height = 48,
+    this.height = 54,
     this.readOnly = false,
     this.showFocusedBorder = true,
     this.multiline = false,

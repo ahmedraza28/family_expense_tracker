@@ -94,7 +94,7 @@ class _CustomDropdownFieldSheet<T> extends CustomDropdownField<T> {
     ),
     this.displayFieldColor = AppColors.fieldFillColor,
     this.backgroundColor = AppColors.surfaceColor,
-    this.height = 47,
+    this.height = 54,
     this.hintText = 'Select a value',
     this.padding = const EdgeInsets.only(left: 20, right: 15),
     this.selectedStyle,

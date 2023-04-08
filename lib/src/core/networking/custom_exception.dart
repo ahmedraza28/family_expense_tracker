@@ -16,6 +16,9 @@ enum _ExceptionType {
   /// The exception for any parsing failure encountered during
   /// serialization/deserialization of a request.
   SerializationException,
+
+  /// Unimplemented exception
+  UnimplementedException,
 }
 
 class CustomException implements Exception {
@@ -29,6 +32,13 @@ class CustomException implements Exception {
     this.code,
     this.exceptionType = _ExceptionType.UnrecognizedException,
   }) : name = exceptionType.name;
+
+  factory CustomException.unimplemented() {
+    return CustomException(
+      message: 'This feature is not implemented yet',
+      exceptionType: _ExceptionType.UnimplementedException,
+    );
+  }
 
   factory CustomException.fromOtherException(Exception error) {
     try {

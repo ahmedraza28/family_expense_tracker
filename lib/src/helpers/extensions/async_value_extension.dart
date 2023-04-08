@@ -14,6 +14,15 @@ extension AsyncGuardedRequest<T> on AsyncValue<T> {
       return AsyncValue.data(result);
     } on CustomException catch (ex, st) {
       debugPrintStack(label: ex.message, stackTrace: st);
+      final message = ex.message.isNotEmpty
+          ? ex.message
+          : ex.toString().split(':').last.trim();
+      final reason = message.isNotEmpty
+          ? message
+          : (errorMessage ?? 'Guarded future request failed.');
+      return AsyncValue.error(reason, st);
+    } on Exception catch (ex, st) {
+      debugPrintStack(label: ex.toString(), stackTrace: st);
       final message = ex.toString().split(':').last.trim();
       final reason = message.isNotEmpty
           ? message

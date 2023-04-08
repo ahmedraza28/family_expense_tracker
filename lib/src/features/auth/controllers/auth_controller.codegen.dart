@@ -12,42 +12,26 @@ import '../models/user_model.codegen.dart';
 
 // Repositories
 import '../repositories/auth_repository.codegen.dart';
+import '../repositories/users_repository.codegen.dart';
 
 part 'auth_controller.codegen.g.dart';
 
 @Riverpod(keepAlive: true)
 Stream<UserModel?> currentUser(CurrentUserRef ref) {
-  return Stream.value(
-    const UserModel(
-      uid: '1',
-      displayName: 'Abdur Rafay',
-      email: 'a.rafaysaleem@gmail.com',
-      imageUrl: '',
-      ownedBookIds: [1, 10],
-      sharedBookIds: [2],
-    ),
-  );
-  // return ref.watch(firebaseAuthProvider).authStateChanges().map(
-  //       (event) => UserModel.fromFirebaseUser(event!),
-  //     );
+  final usersRepository = ref.read(usersRepositoryProvider);
+  return ref
+      .watch(firebaseAuthProvider)
+      .authStateChanges()
+      .asyncExpand((event) {
+    if (event == null) return null;
+    return usersRepository.getUserById(event.uid);
+  });
 }
 
 @Riverpod(keepAlive: true)
 class AuthController extends _$AuthController {
   @override
   FutureOr<UserCredential?> build() => null;
-
-  Future<void> register({
-    required String email,
-    required String password,
-  }) async {
-    state = const AsyncValue.loading();
-
-    final authRepository = ref.read(authRepositoryProvider);
-    state = await state.makeGuardedRequest(() {
-      return authRepository.signUp(email: email, password: password);
-    });
-  }
 
   Future<void> loginWithGoogle() async {
     state = const AsyncValue.loading();
@@ -56,7 +40,21 @@ class AuthController extends _$AuthController {
     state = await state.makeGuardedRequest(() async {
       final credential = await authRepository.createGoogleCredentials();
       if (credential != null) {
-        return authRepository.login(authCredential: credential);
+        final userCred = await authRepository.login(authCredential: credential);
+
+        // TODO(arafaysaleem): Move this to cloud function triggers
+        final usersRepository = ref.read(usersRepositoryProvider);
+        final user = userCred.user!;
+        final userExists = await usersRepository.userExists(user.uid);
+
+        if (!userExists) {
+          await usersRepository.addUser(
+            uid: user.uid,
+            body: UserModel.fromFirebaseUser(user).toJson(),
+          );
+        }
+
+        return userCred;
       }
       return null;
     });

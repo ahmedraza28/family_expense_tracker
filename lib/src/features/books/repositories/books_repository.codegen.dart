@@ -180,11 +180,11 @@ class MockBooksRepository implements BooksRepository {
 
   @override
   Future<void> addBook({required JSON body}) {
-    throw UnimplementedError();
+    throw CustomException.unimplemented();
   }
 
   @override
   Future<void> updateBook({required int bookId, required JSON changes}) {
-    throw UnimplementedError();
+    throw CustomException.unimplemented();
   }
 }
