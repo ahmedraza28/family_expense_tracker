@@ -57,8 +57,8 @@ class SearchAndFiltersBar extends ConsumerWidget {
               );
             },
             child: Container(
-              height: 47,
-              width: 47,
+              height: 54,
+              width: 54,
               decoration: const BoxDecoration(
                 color: AppColors.lightBackgroundColor,
                 borderRadius: Corners.rounded7,

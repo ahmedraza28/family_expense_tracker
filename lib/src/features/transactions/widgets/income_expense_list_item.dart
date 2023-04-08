@@ -55,7 +55,7 @@ class IncomeExpenseListItem extends ConsumerWidget {
           borderRadius: Corners.rounded15,
           color: Colors.white,
         ),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
         child: Row(
           children: [
             // Category icon
@@ -64,7 +64,7 @@ class IncomeExpenseListItem extends ConsumerWidget {
               iconData: Icons.monetization_on_rounded,
             ),
 
-            Insets.gapW10,
+            Insets.gapW15,
 
             // Transaction details
             Expanded(
@@ -75,9 +75,8 @@ class IncomeExpenseListItem extends ConsumerWidget {
                   if (transaction.description != null) ...[
                     CustomText.body(
                       transaction.description ?? '',
-                      fontSize: 15,
                     ),
-                    Insets.gapH3,
+                    Insets.gapH5,
                   ],
 
                   // Category Name
@@ -86,13 +85,13 @@ class IncomeExpenseListItem extends ConsumerWidget {
                     color: transaction.description != null
                         ? AppColors.textLightGreyColor
                         : null,
-                    fontSize: transaction.description != null ? 13 : 15,
+                    fontSize: transaction.description != null ? 14 : 16,
                   ),
                 ],
               ),
             ),
 
-            Insets.gapW10,
+            Insets.gapW15,
 
             // Amount
             Consumer(

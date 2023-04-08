@@ -39,7 +39,7 @@ class AddIncomeExpenseFab extends ConsumerWidget {
     final transactionFuture = ref.watch(incomeExpenseProvider);
     return SizedBox(
       height: 55,
-      width: 140,
+      width: 149,
       child: transactionFuture.maybeWhen(
         loading: () => const CustomCircularLoader(
           size: 25,

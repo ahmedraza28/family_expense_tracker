@@ -56,7 +56,7 @@ class BalanceTransferListItem extends ConsumerWidget {
           borderRadius: Corners.rounded15,
           color: Colors.white,
         ),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
         child: Row(
           children: [
             // Swap icon
@@ -65,7 +65,7 @@ class BalanceTransferListItem extends ConsumerWidget {
               iconData: Icons.swap_horiz_rounded,
             ),
 
-            Insets.gapW10,
+            Insets.gapW15,
 
             // Transfer details
             Expanded(
@@ -79,24 +79,22 @@ class BalanceTransferListItem extends ConsumerWidget {
                       CustomText.body(
                         srcWallet!.name,
                         color: AppColors.redColor,
-                        fontSize: 15,
                       ),
 
-                      Insets.gapW3,
+                      Insets.gapW5,
 
                       // Arrow
                       const Icon(
                         Icons.arrow_forward_rounded,
-                        size: 14,
+                        size: 16,
                         color: AppColors.textLightGreyColor,
                       ),
 
-                      Insets.gapW3,
+                      Insets.gapW5,
 
                       // Dest wallet
                       CustomText.body(
                         destWallet!.name,
-                        fontSize: 15,
                         color: AppColors.greenColor,
                       ),
                     ],
@@ -104,7 +102,7 @@ class BalanceTransferListItem extends ConsumerWidget {
 
                   // Description
                   if (balanceTransfer.description != null) ...[
-                    Insets.gapH3,
+                    Insets.gapH5,
                     CustomText.subtitle(
                       balanceTransfer.description!,
                       color: AppColors.textLightGreyColor,

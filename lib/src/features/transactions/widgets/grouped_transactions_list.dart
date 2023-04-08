@@ -64,9 +64,8 @@ class TransactionsList extends ConsumerWidget {
                   child: Row(
                     children: [
                       // Date
-                      CustomText(
+                      CustomText.body(
                         dayTransactions.date.toDateString('d MMM, y'),
-                        fontSize: 15,
                         color: AppColors.textGreyColor,
                       ),
 
@@ -81,10 +80,8 @@ class TransactionsList extends ConsumerWidget {
                                 .symbol;
                             return CustomText(
                               '${isPositive ? '+' : '-'} $currency ${sum.abs()}',
-                              fontSize: 15,
-                              color: isPositive
-                                  ? AppColors.greenColor
-                                  : AppColors.redColor,
+                              color: AppColors.textGreyColor,
+                              fontSize: 16,
                               textAlign: TextAlign.end,
                             );
                           },

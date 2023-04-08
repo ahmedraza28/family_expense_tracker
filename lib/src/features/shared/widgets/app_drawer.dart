@@ -30,7 +30,7 @@ class AppDrawer extends StatelessWidget {
         children: [
           // User Info and Share access code button
           SizedBox(
-            height: 125,
+            height: 160,
             child: DrawerHeader(
               margin: EdgeInsets.zero,
               padding: const EdgeInsets.fromLTRB(15, 5, 15, 15),
@@ -77,11 +77,12 @@ class AppDrawer extends StatelessWidget {
                   ),
 
                   // Share access code button
-                  CustomTextButton.outlined(
+                  CustomTextButton(
                     height: 33,
                     width: 160,
                     borderRadius: 100,
                     onPressed: () {},
+                    color: Colors.white,
                     border: Border.all(
                       color: AppColors.primaryColor,
                     ),

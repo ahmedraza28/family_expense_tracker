@@ -21,7 +21,7 @@ class CustomRadioButton<T> extends StatelessWidget {
     required this.label,
     super.key,
     this.width = 106,
-    this.height = 46,
+    this.height = 54,
     this.borderRadius = const BorderRadius.all(Radius.circular(7)),
   });
 

@@ -148,7 +148,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         // Field
         CustomTextButton(
           width: double.infinity,
-          height: 47,
+          height: 54,
           onPressed: () => _pickDate(context),
           color: widget.pickerStyle.displayFieldColor ?? inputTheme.fillColor,
           padding: const EdgeInsets.only(left: 20, right: 15),
