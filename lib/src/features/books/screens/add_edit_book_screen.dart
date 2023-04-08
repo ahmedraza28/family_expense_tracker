@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
+import '../../shared/shared.dart';
 import '../providers/books_provider.codegen.dart';
 
 // Routing
@@ -87,13 +88,30 @@ class AddEditBookScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
-              // Book Name
-              CustomTextField(
-                controller: bookNameController,
-                floatingText: 'Book Name',
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
-                validator: FormValidator.nameValidator,
+              // Book Color And Name
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  // Book Name
+                  Expanded(
+                    child: CustomTextField(
+                      controller: bookNameController,
+                      floatingText: 'Book Name',
+                      hintText: 'Enter book name',
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      validator: FormValidator.nameValidator,
+                    ),
+                  ),
+
+                  Insets.gapW10,
+
+                  // Book Color
+                  ColorPickerButton(
+                    controller: colorController,
+                    iconData: Icons.menu_book_rounded,
+                  )
+                ],
               ),
 
               Insets.gapH20,

@@ -26,14 +26,14 @@ class CategoriesRepository {
 
   const CategoriesRepository(this._firestoreService);
 
-  Stream<List<CategoryModel>> fetchAll({required int bookId}) {
+  Stream<List<CategoryModel>> fetchAll({required String bookId}) {
     return _firestoreService.collectionStream<CategoryModel>(
       path: 'books/$bookId/categories',
       builder: (json, docId) => CategoryModel.fromJson(json!),
     );
   }
 
-  Future<void> create({required int bookId, required JSON body}) {
+  Future<void> create({required String bookId, required JSON body}) {
     return _firestoreService.setData(
       path: 'books/$bookId/categories',
       data: body,
@@ -41,7 +41,7 @@ class CategoriesRepository {
   }
 
   Future<void> update({
-    required int bookId,
+    required String bookId,
     required int categoryId,
     required JSON changes,
   }) {
@@ -61,7 +61,7 @@ class MockCategoriesRepository implements CategoriesRepository {
       'type': 'income',
     };
   @override
-  Stream<List<CategoryModel>> fetchAll({required int bookId}) {
+  Stream<List<CategoryModel>> fetchAll({required String bookId}) {
     const list = [
       CategoryModel(
         id: 1,
@@ -86,11 +86,11 @@ class MockCategoriesRepository implements CategoriesRepository {
   }
 
   @override
-  Future<void> create({required int bookId, required JSON body}) async => Future.delayed(2.seconds);
+  Future<void> create({required String bookId, required JSON body}) async => Future.delayed(2.seconds);
 
   @override
   Future<void> update({
-    required int bookId,
+    required String bookId,
     required int categoryId,
     required JSON changes,
   }) async => Future.delayed(2.seconds);

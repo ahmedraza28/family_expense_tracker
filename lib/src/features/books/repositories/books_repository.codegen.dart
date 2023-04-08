@@ -22,11 +22,8 @@ part 'books_repository.codegen.g.dart';
 @Riverpod(keepAlive: true)
 BooksRepository booksRepository(BooksRepositoryRef ref) {
   final firestoreService = ref.read(firestoreServiceProvider);
-  // return BooksRepository(
-  //   firestoreService: firestoreService,
-  //   usersRepository: usersRepository,
-  // );
-  return MockBooksRepository();
+  return BooksRepository(firestoreService: firestoreService);
+  // return MockBooksRepository();
 }
 
 class BooksRepository {
@@ -36,15 +33,15 @@ class BooksRepository {
     required FirestoreService firestoreService,
   }) : _firestoreService = firestoreService;
 
-  Stream<List<BookModel>> getBooks(List<int> bookIds) {
+  Stream<List<BookModel>> getBooks(List<String> bookIds) {
+    if (bookIds.isEmpty) return Stream.value(const []);
     return _firestoreService.collectionStream<BookModel>(
       path: 'books',
       queryBuilder: (query) => query
           .where(
             FieldPath.documentId,
             whereIn: bookIds,
-          )
-          .orderBy('name'),
+          ),
       builder: (json, docId) => BookModel.fromJson(json!),
     );
   }
@@ -52,14 +49,14 @@ class BooksRepository {
   Future<void> addBook({
     required JSON body,
   }) {
-    return _firestoreService.setData(
+    return _firestoreService.insertData(
       path: 'books',
       data: body,
     );
   }
 
   Future<void> updateBook({
-    required int bookId,
+    required String bookId,
     required JSON changes,
   }) {
     return _firestoreService.setData(
@@ -88,10 +85,10 @@ class MockBooksRepository implements BooksRepository {
   );
 
   @override
-  Stream<List<BookModel>> getBooks(List<int> bookIds) {
+  Stream<List<BookModel>> getBooks(List<String> bookIds) {
     final list = [
       BookModel.fromJson({
-        'id': 1,
+        'id': '1',
         'name': 'Book 1',
         'description': 'Book 1 description',
         'color': 'F9C27B0',
@@ -110,7 +107,7 @@ class MockBooksRepository implements BooksRepository {
         },
       }),
       BookModel.fromJson({
-        'id': 10,
+        'id': '10',
         'name': 'Book 10',
         'description': 'Book 10 description',
         'color': 'F9B1C10',
@@ -132,7 +129,7 @@ class MockBooksRepository implements BooksRepository {
         },
       }),
       BookModel(
-        id: 2,
+        id: '2',
         name: 'Book 2',
         description: 'Book 2 description',
         color: Colors.deepOrangeAccent,
@@ -153,7 +150,7 @@ class MockBooksRepository implements BooksRepository {
         },
       ),
       BookModel(
-        id: 3,
+        id: '3',
         name: 'Book 3',
         description: 'Book 3 description',
         color: Colors.teal,
@@ -184,7 +181,7 @@ class MockBooksRepository implements BooksRepository {
   }
 
   @override
-  Future<void> updateBook({required int bookId, required JSON changes}) {
+  Future<void> updateBook({required String bookId, required JSON changes}) {
     throw CustomException.unimplemented();
   }
 }

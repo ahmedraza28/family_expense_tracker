@@ -12,7 +12,7 @@ import '../../../global/widgets/widgets.dart';
 import 'book_list_item.dart';
 
 class BooksList extends ConsumerWidget {
-  final List<int> bookIds;
+  final List<String> bookIds;
 
   const BooksList({
     required this.bookIds,
@@ -39,19 +39,22 @@ class BooksList extends ConsumerWidget {
         title: 'No transactions recorded yet',
         subtitle: 'Check back later',
       ),
-      data: (books) => ListView.separated(
-        itemCount: books.length,
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        separatorBuilder: (_, __) => Insets.gapH15,
-        padding: const EdgeInsets.fromLTRB(15, 20, 15, 90),
-        itemBuilder: (_, i) {
-          return BookListItem(
-            book: books[i],
-          );
-        },
-      ),
+      data: (books) {
+        books.sort((a, b) => a.name.compareTo(b.name));
+        return ListView.separated(
+          itemCount: books.length,
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
+          separatorBuilder: (_, __) => Insets.gapH15,
+          padding: const EdgeInsets.fromLTRB(15, 20, 15, 90),
+          itemBuilder: (_, i) {
+            return BookListItem(
+              book: books[i],
+            );
+          },
+        );
+      },
     );
   }
 }

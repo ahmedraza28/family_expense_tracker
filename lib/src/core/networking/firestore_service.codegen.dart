@@ -24,6 +24,21 @@ class FirestoreService {
 
   /// Sets the data for the document/collection existing
   /// at the provided path.
+  Future<void> insertData({
+    required String path,
+    required Map<String, dynamic> data,
+  }) async {
+    final reference = _firestoreDb.collection(path).doc();
+
+    debugPrint(path);
+
+    // TODO(arafaysaleem): Remove this once the UUid is implemented
+    data['id'] = reference.id;
+    await reference.set(data);
+  }
+
+  /// Sets the data for the document/collection existing
+  /// at the provided path.
   Future<void> setData({
     required String path,
     required Map<String, dynamic> data,

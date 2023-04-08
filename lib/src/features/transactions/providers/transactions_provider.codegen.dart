@@ -77,7 +77,7 @@ TransactionsProvider transactions(TransactionsRef ref) {
 
 class TransactionsProvider {
   final Ref _ref;
-  final int bookId;
+  final String bookId;
 
   static final _currentDate = DateTime.now();
 

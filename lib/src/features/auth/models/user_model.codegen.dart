@@ -13,8 +13,8 @@ class UserModel with _$UserModel {
     required String displayName,
     required String email,
     String? imageUrl,
-    @Default(<int>[]) List<int> ownedBookIds,
-    @Default(<int>[]) List<int> sharedBookIds,
+    @Default(<String>[]) List<String> ownedBookIds,
+    @Default(<String>[]) List<String> sharedBookIds,
   }) = _UserModel;
 
   factory UserModel.fromFirebaseUser(User firebaseUser) => UserModel(

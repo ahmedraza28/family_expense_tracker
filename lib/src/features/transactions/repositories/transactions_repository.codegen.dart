@@ -28,7 +28,7 @@ class TransactionsRepository {
   const TransactionsRepository(this._firestoreService);
 
   Stream<List<TransactionModel>> getBookTransactions({
-    required int bookId,
+    required String bookId,
     required int month,
     required int year,
     int? categoryId,
@@ -62,7 +62,7 @@ class TransactionsRepository {
   }
 
   Future<void> addTransaction({
-    required int bookId,
+    required String bookId,
     required int month,
     required int year,
     required JSON body,
@@ -74,7 +74,7 @@ class TransactionsRepository {
   }
 
   Future<void> updateTransaction({
-    required int bookId,
+    required String bookId,
     required int month,
     required int year,
     required int transactionId,
@@ -91,7 +91,7 @@ class TransactionsRepository {
 class MockTransactionsRepository implements TransactionsRepository {
   @override
   Stream<List<TransactionModel>> getBookTransactions({
-    required int bookId,
+    required String bookId,
     required int month,
     required int year,
     int? categoryId,
@@ -259,7 +259,7 @@ class MockTransactionsRepository implements TransactionsRepository {
 
   @override
   Future<void> addTransaction({
-    required int bookId,
+    required String bookId,
     required int month,
     required int year,
     required JSON body,
@@ -268,7 +268,7 @@ class MockTransactionsRepository implements TransactionsRepository {
 
   @override
   Future<void> updateTransaction({
-    required int bookId,
+    required String bookId,
     required int month,
     required int year,
     required int transactionId,

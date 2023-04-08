@@ -26,7 +26,7 @@ class BudgetsRepository {
   const BudgetsRepository(this._firestoreService);
 
   Stream<List<BudgetModel>> getBookBudgets({
-    required int bookId,
+    required String bookId,
     required int year,
     required int month,
     int? categoryId,
@@ -48,7 +48,7 @@ class BudgetsRepository {
   }
 
   Future<void> addBudget({
-    required int bookId,
+    required String bookId,
     required int year,
     required int month,
     required JSON body,
@@ -60,7 +60,7 @@ class BudgetsRepository {
   }
 
   Future<void> addAllBudgets({
-    required int bookId,
+    required String bookId,
     required int year,
     required int month,
     required List<JSON> body,
@@ -72,7 +72,7 @@ class BudgetsRepository {
   }
 
   Future<void> updateBudget({
-    required int bookId,
+    required String bookId,
     required int year,
     required int month,
     required int budgetId,
@@ -89,7 +89,7 @@ class BudgetsRepository {
 class MockBudgetsRepository implements BudgetsRepository {
   @override
   Stream<List<BudgetModel>> getBookBudgets({
-    required int bookId,
+    required String bookId,
     required int year,
     required int month,
     int? categoryId,
@@ -172,7 +172,7 @@ class MockBudgetsRepository implements BudgetsRepository {
 
   @override
   Future<void> addBudget({
-    required int bookId,
+    required String bookId,
     required int year,
     required int month,
     required JSON body,
@@ -181,7 +181,7 @@ class MockBudgetsRepository implements BudgetsRepository {
 
   @override
   Future<void> updateBudget({
-    required int bookId,
+    required String bookId,
     required int year,
     required int month,
     required int budgetId,
@@ -194,7 +194,7 @@ class MockBudgetsRepository implements BudgetsRepository {
 
   @override
   Future<void> addAllBudgets({
-    required int bookId,
+    required String bookId,
     required int year,
     required int month,
     required List<JSON> body,

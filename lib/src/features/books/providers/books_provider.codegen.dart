@@ -35,7 +35,7 @@ final isOwnerSelectedBookProvider = Provider<bool>(
 @riverpod
 Stream<List<BookModel>> booksStream(
   BooksStreamRef ref, {
-  required List<int> bookIds,
+  required List<String> bookIds,
 }) {
   final currentUser = ref.watch(currentUserProvider).value;
   if (currentUser == null) {
@@ -50,7 +50,7 @@ class Books extends _$Books {
   @override
   FutureOr<void> build() => null;
 
-  Stream<List<BookModel>> getUserBooks(List<int> bookIds) {
+  Stream<List<BookModel>> getUserBooks(List<String> bookIds) {
     final booksRepository = ref.watch(booksRepositoryProvider);
     return booksRepository.getBooks(bookIds);
   }

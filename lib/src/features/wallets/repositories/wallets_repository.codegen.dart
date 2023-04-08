@@ -26,7 +26,7 @@ class WalletsRepository {
 
   const WalletsRepository(this._firestoreService);
 
-  Stream<List<WalletModel>> getBookWallets({required int bookId}) {
+  Stream<List<WalletModel>> getBookWallets({required String bookId}) {
     return _firestoreService.collectionStream<WalletModel>(
       path: 'books/$bookId/wallets',
       builder: (json, docId) => WalletModel.fromJson(json!),
@@ -34,7 +34,7 @@ class WalletsRepository {
   }
 
   Future<void> addWallet({
-    required int bookId,
+    required String bookId,
     required JSON body,
   }) {
     return _firestoreService.setData(
@@ -44,7 +44,7 @@ class WalletsRepository {
   }
 
   Future<void> updateWallet({
-    required int bookId,
+    required String bookId,
     required int walletId,
     required JSON changes,
   }) {
@@ -58,7 +58,7 @@ class WalletsRepository {
 
 class MockWalletsRepository implements WalletsRepository {
   @override
-  Stream<List<WalletModel>> getBookWallets({required int bookId}) {
+  Stream<List<WalletModel>> getBookWallets({required String bookId}) {
     return Stream.value([
       WalletModel(
         id: 1,
@@ -89,13 +89,13 @@ class MockWalletsRepository implements WalletsRepository {
 
   @override
   Future<void> addWallet({
-    required int bookId,
+    required String bookId,
     required JSON body,
   }) async => Future.delayed(2.seconds);
 
   @override
   Future<void> updateWallet({
-    required int bookId,
+    required String bookId,
     required int walletId,
     required JSON changes,
   }) async => Future.delayed(2.seconds);

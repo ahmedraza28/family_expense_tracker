@@ -86,8 +86,8 @@ class MockUsersRepository implements UsersRepository {
         displayName: 'Abdur Rafay',
         email: 'a.rafaysaleem@gmail.com',
         imageUrl: '',
-        ownedBookIds: [1, 10],
-        sharedBookIds: [2],
+        ownedBookIds: ['1', '10'],
+        sharedBookIds: ['2'],
       ),
     );
   }
