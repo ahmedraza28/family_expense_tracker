@@ -57,9 +57,8 @@ class BudgetsList extends ConsumerWidget {
                       0,
                       10,
                     ),
-                    child: CustomText(
+                    child: CustomText.body(
                       headerText,
-                      fontSize: 15,
                       color: AppColors.textGreyColor,
                     ),
                   ),

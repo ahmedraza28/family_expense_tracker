@@ -54,7 +54,6 @@ class WalletListItem extends StatelessWidget {
                 // Title
                 CustomText.body(
                   wallet.name,
-                  fontSize: 15,
                 ),
 
                 Insets.gapH3,

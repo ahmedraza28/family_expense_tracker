@@ -43,17 +43,15 @@ class TransactionsScreen extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Income
-                CustomText(
+                CustomText.body(
                   'Income: \$${selectedBook.totalIncome}',
                   color: AppColors.textGreyColor,
-                  fontSize: 15,
                 ),
 
                 // Expense
-                CustomText(
+                CustomText.body(
                   'Expense: \$${selectedBook.totalExpense}',
                   color: AppColors.textGreyColor,
-                  fontSize: 15,
                 ),
               ],
             ),

@@ -50,7 +50,6 @@ class CategoryListItem extends StatelessWidget {
           Expanded(
             child: CustomText.body(
               category.name,
-              fontSize: 15,
             ),
           ),
 
