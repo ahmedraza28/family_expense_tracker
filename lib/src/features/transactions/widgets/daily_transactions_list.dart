@@ -28,7 +28,7 @@ class DayTransactionsList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       separatorBuilder: (_, i) => const SizedBox(
-        height: 10,
+        height: 15,
         child: VerticalDivider(
           width: 2,
           thickness: 1.5,

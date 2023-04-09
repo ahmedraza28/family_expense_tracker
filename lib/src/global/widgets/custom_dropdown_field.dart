@@ -190,7 +190,7 @@ class _CustomDropdownFieldAnimated<T> extends CustomDropdownField<T> {
     this.selectedStyle,
     this.fieldSuffixIcon = const Icon(
       Icons.keyboard_arrow_down_rounded,
-      size: 22,
+      size: 24,
     ),
     this.fillColor = AppColors.fieldFillColor,
     this.borderRadius = Corners.rounded7,

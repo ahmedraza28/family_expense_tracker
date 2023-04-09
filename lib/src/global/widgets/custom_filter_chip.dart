@@ -44,7 +44,7 @@ class _CustomFilterChipState<T> extends State<CustomFilterChip<T>> {
       labelPadding: const EdgeInsets.symmetric(horizontal: 11),
       showCheckmark: false,
       labelStyle: TextStyle(
-        fontSize: 13,
+        fontSize: 14,
         color: _isSelected
             ? (widget.selectedLabelColor ?? colorScheme.onPrimary)
             : widget.labelColor,

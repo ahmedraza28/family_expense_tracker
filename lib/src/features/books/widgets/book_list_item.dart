@@ -302,7 +302,7 @@ class MemberAvatars extends StatelessWidget {
               borderColor: Colors.transparent,
               labelStyle: const TextStyle(
                 color: AppColors.primaryColor,
-                fontSize: 12,
+                fontSize: 13,
                 fontWeight: FontWeight.w500,
               ),
             ),

@@ -62,6 +62,7 @@ class BalanceTransferListItem extends ConsumerWidget {
             // Swap icon
             const ShadedIcon(
               color: color,
+              padding: EdgeInsets.all(15),
               iconData: Icons.swap_horiz_rounded,
             ),
 

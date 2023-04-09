@@ -90,7 +90,7 @@ class CustomScrollableBottomSheet extends StatelessWidget {
                       Text(
                         titleText ?? 'Title',
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 22,
                         ),
                       ),
 

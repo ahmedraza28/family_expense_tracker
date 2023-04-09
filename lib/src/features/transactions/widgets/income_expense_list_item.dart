@@ -61,6 +61,7 @@ class IncomeExpenseListItem extends ConsumerWidget {
             // Category icon
             ShadedIcon(
               color: category.color,
+              padding: const EdgeInsets.all(15),
               iconData: Icons.monetization_on_rounded,
             ),
 

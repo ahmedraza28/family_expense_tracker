@@ -81,7 +81,7 @@ class CustomText extends StatelessWidget {
     Color? color,
     bool useSecondaryFont = false,
     FontWeight fontWeight = FontWeight.w400,
-    double fontSize = 13,
+    double fontSize = 14,
   }) {
     return CustomText(
       text,
@@ -97,7 +97,7 @@ class CustomText extends StatelessWidget {
     Color? color,
     bool useSecondaryFont = false,
     FontWeight fontWeight = FontWeight.w300,
-    double fontSize = 11,
+    double fontSize = 12,
   }) {
     return CustomText(
       text,

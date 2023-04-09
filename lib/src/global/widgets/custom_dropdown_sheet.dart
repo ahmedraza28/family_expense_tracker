@@ -153,7 +153,7 @@ class _CustomDropdownSheetState<T> extends State<CustomDropdownSheet<T>> {
                 : CustomTextButton(
                     color: widget.actionButtonColor,
                     width: 50,
-                    height: 30,
+                    height: 35,
                     onPressed: () {
                       widget.onMultipleSelect?.call(_selectedItemList);
                       _removeFocusAndPopValue<List<T>>(_selectedItemList);

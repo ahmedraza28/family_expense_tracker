@@ -29,6 +29,14 @@ class MyApp extends StatelessWidget {
         initialRoute: Routes.initialRoute,
         onGenerateRoute: AppRouter.generateRoute,
         navigatorKey: AppRouter.navigatorKey,
+        builder: (context, child) {
+          final mediaQueryData = MediaQuery.of(context);
+          final scale = mediaQueryData.textScaleFactor.clamp(1.0, 1.3);
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
+            child: child!,
+          );
+        },
       ),
     );
   }

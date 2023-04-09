@@ -70,7 +70,6 @@ class AppDrawer extends StatelessWidget {
                         ),
                         subtitle: CustomText.subtitle(
                           currentUser.email,
-                          fontSize: 14,
                         ),
                       );
                     },

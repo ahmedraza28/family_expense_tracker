@@ -48,7 +48,7 @@ class TransactionsList extends ConsumerWidget {
             parent: AlwaysScrollableScrollPhysics(),
           ),
           padding: const EdgeInsets.fromLTRB(15, 0, 15, 90),
-          separatorBuilder: (_, i) => Insets.gapH10,
+          separatorBuilder: (_, i) => Insets.gapH15,
           itemBuilder: (_, i) {
             final day = days[i];
             final dayTransactions = transactions[day]!;
@@ -60,7 +60,7 @@ class TransactionsList extends ConsumerWidget {
               children: [
                 // Day Header
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   child: Row(
                     children: [
                       // Date

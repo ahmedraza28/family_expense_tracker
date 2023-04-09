@@ -40,7 +40,7 @@ class FiltersBottomSheet extends ConsumerWidget {
             final hasFilters = ref.watch(
               transactionFiltersProvider.select((value) => value != null),
             );
-            return hasFilters ? child! : const SizedBox(width: 50, height: 30);
+            return hasFilters ? child! : const SizedBox(width: 50, height: 35);
           },
           child: InkWell(
             onTap: () => _onResetTap(ref),
@@ -55,14 +55,13 @@ class FiltersBottomSheet extends ConsumerWidget {
           ),
         ),
         action: CustomTextButton.gradient(
-          width: 60,
-          height: 30,
+          height: 35,
           gradient: AppColors.buttonGradientPrimary,
           onPressed: () => _onSaveTap(ref),
           child: const Center(
             child: CustomText(
               'Apply',
-              fontSize: 13,
+              fontSize: 14,
               color: Colors.white,
             ),
           ),

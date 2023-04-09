@@ -74,7 +74,7 @@ class AppThemes {
         color: Colors.transparent,
       ),
       floatingLabelStyle: TextStyle(
-        fontSize: 14,
+        fontSize: 16,
       ),
     ),
     textButtonTheme: TextButtonThemeData(
@@ -87,7 +87,7 @@ class AppThemes {
       backgroundColor: AppColors.fieldFillColor,
       selectedColor: AppColors.primaryColor,
       labelStyle: TextStyle(
-        fontSize: 13,
+        fontSize: 14,
         color: AppColors.textBlackColor,
       ),
     ),
