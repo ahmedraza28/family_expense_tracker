@@ -74,7 +74,7 @@ class AppThemes {
         color: Colors.transparent,
       ),
       floatingLabelStyle: TextStyle(
-        fontSize: 16,
+        fontSize: 14,
       ),
     ),
     textButtonTheme: TextButtonThemeData(

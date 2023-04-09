@@ -18,8 +18,8 @@ part 'transactions_repository.codegen.g.dart';
 @Riverpod(keepAlive: true)
 TransactionsRepository transactionsRepository(TransactionsRepositoryRef ref) {
   final firestoreService = ref.read(firestoreServiceProvider);
-  // return TransactionsRepository(firestoreService);
-  return MockTransactionsRepository();
+  return TransactionsRepository(firestoreService);
+  // return MockTransactionsRepository();
 }
 
 class TransactionsRepository {
@@ -38,7 +38,7 @@ class TransactionsRepository {
     final hasQuery =
         categoryId != null || transactionTypes != null || day != null;
     return _firestoreService.collectionStream<TransactionModel>(
-      path: 'books/$bookId/transactions/$month-$year',
+      path: 'books/$bookId/transactions-$month-$year',
       queryBuilder: !hasQuery
           ? null
           : (query) {
@@ -67,8 +67,8 @@ class TransactionsRepository {
     required int year,
     required JSON body,
   }) {
-    return _firestoreService.setData(
-      path: 'books/$bookId/transactions/$month-$year',
+    return _firestoreService.insertData(
+      path: 'books/$bookId/transactions-$month-$year',
       data: body,
     );
   }
@@ -81,7 +81,7 @@ class TransactionsRepository {
     required JSON changes,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/transactions/$month-$year/$transactionId',
+      path: 'books/$bookId/transactions-$month-$year/$transactionId',
       data: changes,
       merge: true,
     );
