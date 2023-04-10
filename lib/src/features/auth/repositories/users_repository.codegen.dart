@@ -48,7 +48,7 @@ class UsersRepository {
 
   /// Method to check if a user exists
   Future<bool> userExists(String uid) {
-    return _firestoreService.checkDocument(path: 'users/$uid');
+    return _firestoreService.existsDocument(path: 'users/$uid');
   }
 
   /// Method to create a user in the database

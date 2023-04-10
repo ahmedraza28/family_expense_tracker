@@ -49,13 +49,21 @@ class FirestoreService {
     await reference.set(data, SetOptions(merge: merge));
   }
 
-  /// Checks if the document/collection exists
-  /// at the provided path.
-  Future<bool> checkDocument({required String path}) async {
+  /// Checks if the document exists at the provided path.
+  Future<bool> existsDocument({required String path}) async {
     final reference = _firestoreDb.doc(path);
     final snapshot = await reference.get();
     debugPrint('$path exists: ${snapshot.exists}');
     return snapshot.exists;
+  }
+
+  /// Checks if the collection exists at the provided path.
+  Future<bool> existsCollection({required String path}) async {
+    final reference = _firestoreDb.collection(path);
+    final snapshot = await reference.limit(1).get();
+    final exists = snapshot.size > 0;
+    debugPrint('$path exists: $exists');
+    return exists;
   }
 
   /// Deletes the document/collection existing at the
@@ -105,7 +113,7 @@ class FirestoreService {
   }
 
   /// Bulk adds a list of documents to a single collection
-  /// existing at the provided path. 
+  /// existing at the provided path.
   Future<void> batchAdd({
     required String path,
     required List<JSON> data,

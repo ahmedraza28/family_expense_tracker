@@ -34,11 +34,17 @@ class TransactionsRepository {
     int? categoryId,
     int? day,
     List<String>? transactionTypes,
-  }) {
+  }) async* {
+    final path = 'books/$bookId/transactions-$month-$year';
+    if (await _firestoreService.existsCollection(path: path)) {
+      yield const [];
+      return;
+    }
+
     final hasQuery =
         categoryId != null || transactionTypes != null || day != null;
-    return _firestoreService.collectionStream<TransactionModel>(
-      path: 'books/$bookId/transactions-$month-$year',
+    yield* _firestoreService.collectionStream<TransactionModel>(
+      path: path,
       queryBuilder: !hasQuery
           ? null
           : (query) {
