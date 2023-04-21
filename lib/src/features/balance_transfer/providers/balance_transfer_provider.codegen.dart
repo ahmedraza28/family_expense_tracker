@@ -1,11 +1,14 @@
 // ignore_for_file: avoid_manual_providers_as_generated_provider_dependency
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-// Models
+// Helpers
 import '../../../helpers/extensions/extensions.dart';
 
 // Models
 import '../models/balance_transfer_model.codegen.dart';
+
+// Repositories
+import '../repositories/balance_transfer_repository.codegen.dart';
 
 // Features
 import '../../wallets/wallets.dart';
@@ -39,30 +42,55 @@ class BalanceTransfer extends _$BalanceTransfer {
           date: date,
           description: description,
         );
-        final bookId = ref.watch(selectedBookProvider)!.id!;
-        return ref.read(transactionsRepositoryProvider).addTransaction(
+        final bookId = ref.read(selectedBookProvider)!.id!;
+        return ref.read(balanceTransferRepositoryProvider).addBalanceTransfer(
               bookId: bookId,
-              month: transaction.date.month,
-              year: transaction.date.year,
-              body: transaction.toJson(),
+              transaction: transaction,
+              srcWallet: ref.read(
+                walletByIdProvider(srcWalletId),
+              )!,
+              destWallet: ref.read(
+                walletByIdProvider(destWalletId),
+              )!,
             );
       },
       errorMessage: 'Failed to transfer balance',
     );
   }
 
-  Future<void> updateTransaction(BalanceTransferModel transaction) async {
+  Future<void> updateTransaction(
+    BalanceTransferModel transaction, {
+    required double newAmount,
+    required double oldAmount,
+  }) async {
     state = const AsyncValue.loading();
 
     state = await state.makeGuardedRequest(
       () {
-        final bookId = ref.watch(selectedBookProvider)!.id!;
-        return ref.read(transactionsRepositoryProvider).updateTransaction(
+        final bookId = ref.read(selectedBookProvider)!.id!;
+        if (newAmount == oldAmount) {
+          return ref.read(transactionsRepositoryProvider).updateTransaction(
+                bookId: bookId,
+                month: transaction.date.month,
+                year: transaction.date.year,
+                transactionId: transaction.id!,
+                changes: transaction.toJson(),
+              );
+        }
+        final srcWallet = ref.read(
+          walletByIdProvider(transaction.srcWalletId),
+        )!;
+        final destWallet = ref.read(
+          walletByIdProvider(transaction.destWalletId),
+        )!;
+        return ref
+            .read(balanceTransferRepositoryProvider)
+            .updateBalanceTransferAmount(
               bookId: bookId,
-              month: transaction.date.month,
-              year: transaction.date.year,
-              transactionId: transaction.id!,
-              changes: transaction.toJson(),
+              transaction: transaction,
+              srcWallet: srcWallet,
+              destWallet: destWallet,
+              isIncreased: newAmount > oldAmount,
             );
       },
       errorMessage: 'Failed to update balance transfer',
@@ -74,14 +102,14 @@ class BalanceTransfer extends _$BalanceTransfer {
 
     state = await state.makeGuardedRequest(
       () {
-        final bookId = ref.watch(selectedBookProvider)!.id!;
-        final srcWallet = ref.watch(
+        final bookId = ref.read(selectedBookProvider)!.id!;
+        final srcWallet = ref.read(
           walletByIdProvider(transaction.srcWalletId),
         )!;
-        final destWallet = ref.watch(
+        final destWallet = ref.read(
           walletByIdProvider(transaction.destWalletId),
         )!;
-        return ref.read(transactionsRepositoryProvider).deleteTransfer(
+        return ref.read(balanceTransferRepositoryProvider).deleteTransfer(
               bookId: bookId,
               transaction: transaction,
               srcWallet: srcWallet,

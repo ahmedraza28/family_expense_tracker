@@ -6,8 +6,10 @@ import '../../../helpers/extensions/extensions.dart';
 // Models
 import '../models/balance_adjustment_model.codegen.dart';
 
+// Repositories
+import '../repositories/balance_adjustment_repository.codegen.dart';
+
 // Features
-import '../../transactions/transactions.dart';
 import '../../books/books.dart';
 
 part 'balance_adjustment_provider.codegen.g.dart';
@@ -34,12 +36,10 @@ class BalanceAdjustment extends _$BalanceAdjustment {
         walletId: walletId,
         date: date,
       );
-      final bookId = ref.watch(selectedBookProvider)!.id!;
-      return ref.read(transactionsRepositoryProvider).addTransaction(
+      final bookId = ref.read(selectedBookProvider)!.id!;
+      return ref.read(balanceAdjustmentRepositoryProvider).addBalanceAdjustment(
             bookId: bookId,
-            month: transaction.date.month,
-            year: transaction.date.year,
-            body: transaction.toJson(),
+            transaction: transaction,
           );
     });
   }
@@ -48,8 +48,8 @@ class BalanceAdjustment extends _$BalanceAdjustment {
     state = const AsyncValue.loading();
 
     state = await state.makeGuardedRequest(() {
-      final bookId = ref.watch(selectedBookProvider)!.id!;
-      return ref.read(transactionsRepositoryProvider).deleteAdjustment(
+      final bookId = ref.read(selectedBookProvider)!.id!;
+      return ref.read(balanceAdjustmentRepositoryProvider).deleteAdjustment(
             bookId: bookId,
             transaction: transaction,
           );

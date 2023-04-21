@@ -70,9 +70,11 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
           destWalletId: destWalletController.value!.id!,
           description: descriptionController.text,
         );
-        ref
-            .read(balanceTransferProvider.notifier)
-            .updateTransaction(newTransfer);
+        ref.read(balanceTransferProvider.notifier).updateTransaction(
+              newTransfer,
+              newAmount: newTransfer.amount,
+              oldAmount: balanceTransfer!.amount,
+            );
       }
       (onPressed ?? AppRouter.pop).call();
     }

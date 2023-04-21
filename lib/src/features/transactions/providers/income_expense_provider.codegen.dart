@@ -41,7 +41,7 @@ class IncomeExpense extends _$IncomeExpense {
       description: description,
     );
 
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
       () => ref.read(transactionsRepositoryProvider).addTransaction(
             bookId: bookId,
@@ -56,7 +56,7 @@ class IncomeExpense extends _$IncomeExpense {
   Future<void> updateTransaction(IncomeExpenseModel transaction) async {
     state = const AsyncValue.loading();
 
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
       () => ref.read(transactionsRepositoryProvider).updateTransaction(
             bookId: bookId,
@@ -74,8 +74,8 @@ class IncomeExpense extends _$IncomeExpense {
 
     state = await state.makeGuardedRequest(
       () {
-        final bookId = ref.watch(selectedBookProvider)!.id!;
-        final wallet = ref.watch(walletByIdProvider(transaction.walletId))!;
+        final bookId = ref.read(selectedBookProvider)!.id!;
+        final wallet = ref.read(walletByIdProvider(transaction.walletId))!;
         return ref.read(transactionsRepositoryProvider).deleteTransaction(
               bookId: bookId,
               transaction: transaction,

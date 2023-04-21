@@ -89,7 +89,7 @@ class TransactionsProvider {
   Stream<List<TransactionModel>> getAllTransactions([
     TransactionFiltersModel? filters,
   ]) {
-    return _ref.watch(transactionsRepositoryProvider).getBookTransactions(
+    return _ref.read(transactionsRepositoryProvider).getBookTransactions(
           bookId: bookId,
           categoryId: filters?.categoryId,
           year: filters?.year ?? _currentDate.year,

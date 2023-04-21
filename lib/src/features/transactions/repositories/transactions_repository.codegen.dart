@@ -6,14 +6,15 @@ import '../../../core/core.dart';
 // Helpers
 import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/typedefs.dart';
-import '../../balance_adjustment/balance_adjustment.dart';
-import '../../balance_transfer/balance_transfer.dart';
-import '../../wallets/wallets.dart';
+
 import '../enums/transaction_type_enum.dart';
 
 // Models
 import '../models/income_expense_model.codegen.dart';
 import '../models/transaction_model.dart';
+
+// Features
+import '../../wallets/wallets.dart';
 
 part 'transactions_repository.codegen.g.dart';
 
@@ -76,6 +77,7 @@ class TransactionsRepository {
     required int year,
     required JSON body,
   }) {
+    // TODO(arafaysaleem): Add wallet balance update using cloud functions
     return _firestoreService.insertData(
       path: 'books/$bookId/transactions-$month-$year',
       data: body,
@@ -89,6 +91,7 @@ class TransactionsRepository {
     required int transactionId,
     required JSON changes,
   }) {
+    // TODO(arafaysaleem): Add wallet balance update using cloud functions
     return _firestoreService.setData(
       path: 'books/$bookId/transactions-$month-$year/$transactionId',
       data: changes,
@@ -96,11 +99,39 @@ class TransactionsRepository {
     );
   }
 
+  Future<void> updateTransactionAmount({
+    required String bookId,
+    required IncomeExpenseModel transaction,
+    required WalletModel wallet,
+    bool isIncreased = true,
+  }) {
+    // TODO(arafaysaleem): Remove after adding cloud functions
+    return _firestoreService.batchBuilder((batch, db) {
+      final transactionId = transaction.id!;
+      final month = transaction.date.month;
+      final year = transaction.date.year;
+      final transactionPath =
+          'books/$bookId/transactions-$month-$year/$transactionId';
+      batch.update(db.doc(transactionPath), transaction.toJson());
+
+      final walletId = wallet.id;
+      final walletPath = 'books/$bookId/wallets/$walletId';
+      final increase = (transaction.isIncome && isIncreased) ||
+          (transaction.isExpense && !isIncreased);
+      batch.update(db.doc(walletPath), <String, Object?>{
+        WalletModel.balanceField: increase
+            ? wallet.balance + transaction.amount
+            : wallet.balance - transaction.amount,
+      });
+    });
+  }
+
   Future<void> deleteTransaction({
     required String bookId,
     required IncomeExpenseModel transaction,
     required WalletModel wallet,
   }) {
+    // TODO(arafaysaleem): Add wallet balance update using cloud functions
     return _firestoreService.batchBuilder((batch, db) {
       final transactionId = transaction.id!;
       final month = transaction.date.month;
@@ -117,49 +148,6 @@ class TransactionsRepository {
       batch.update(db.doc(walletPath), <String, Object?>{
         WalletModel.balanceField: newBalance,
       });
-    });
-  }
-
-  Future<void> deleteTransfer({
-    required String bookId,
-    required BalanceTransferModel transaction,
-    required WalletModel srcWallet,
-    required WalletModel destWallet,
-  }) {
-    return _firestoreService.batchBuilder((batch, db) {
-      final transactionId = transaction.id!;
-      final month = transaction.date.month;
-      final year = transaction.date.year;
-      final transactionPath =
-          'books/$bookId/transactions-$month-$year/$transactionId';
-      final walletsPath = 'books/$bookId/wallets';
-      batch
-        ..delete(db.doc(transactionPath))
-        ..update(db.doc('$walletsPath/${srcWallet.id}'), <String, Object?>{
-          WalletModel.balanceField: srcWallet.balance + transaction.amount,
-        })
-        ..update(db.doc('$walletsPath/${destWallet.id}'), <String, Object?>{
-          WalletModel.balanceField: destWallet.balance - transaction.amount,
-        });
-    });
-  }
-
-  Future<void> deleteAdjustment({
-    required String bookId,
-    required BalanceAdjustmentModel transaction,
-  }) {
-    return _firestoreService.batchBuilder((batch, db) {
-      final transactionId = transaction.id!;
-      final month = transaction.date.month;
-      final year = transaction.date.year;
-      final transactionPath =
-          'books/$bookId/transactions-$month-$year/$transactionId';
-      final walletPath = 'books/$bookId/wallets/${transaction.walletId}';
-      batch
-        ..delete(db.doc(transactionPath))
-        ..update(db.doc(walletPath), <String, Object?>{
-          WalletModel.balanceField: transaction.previousAmount,
-        });
     });
   }
 }
@@ -340,7 +328,7 @@ class MockTransactionsRepository implements TransactionsRepository {
     required int year,
     required JSON body,
   }) async =>
-      Future.delayed(2.seconds);
+      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 
   @override
   Future<void> updateTransaction({
@@ -350,38 +338,25 @@ class MockTransactionsRepository implements TransactionsRepository {
     required int transactionId,
     required JSON changes,
   }) async =>
-      Future.delayed(2.seconds);
+      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();
-
-  @override
-  Future<void> deleteAdjustment({
-    required String bookId,
-    required BalanceAdjustmentModel transaction,
-  }) {
-    // TODO(arafaysaleem): implement deleteAdjustment
-    throw CustomException.unimplemented();
-  }
 
   @override
   Future<void> deleteTransaction({
     required String bookId,
     required IncomeExpenseModel transaction,
     required WalletModel wallet,
-  }) {
-    // TODO(arafaysaleem): implement deleteTransaction
-    throw CustomException.unimplemented();
-  }
+  }) async =>
+      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 
   @override
-  Future<void> deleteTransfer({
+  Future<void> updateTransactionAmount({
     required String bookId,
-    required BalanceTransferModel transaction,
-    required WalletModel srcWallet,
-    required WalletModel destWallet,
-  }) {
-    // TODO(arafaysaleem): implement deleteTransfer
-    throw CustomException.unimplemented();
-  }
+    required IncomeExpenseModel transaction,
+    required WalletModel wallet,
+    bool isIncreased = true,
+  }) async =>
+      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 }

@@ -32,8 +32,8 @@ class Budgets extends _$Budgets {
   FutureOr<void> build() => null;
 
   Stream<List<BudgetModel>> getAllBudgets([BudgetFiltersModel? filters]) {
-    final bookId = ref.watch(selectedBookProvider)!.id!;
-    final budgetsRepository = ref.watch(budgetsRepositoryProvider);
+    final bookId = ref.read(selectedBookProvider)!.id!;
+    final budgetsRepository = ref.read(budgetsRepositoryProvider);
     return budgetsRepository.getBookBudgets(
       bookId: bookId,
       year: filters?.year ?? _currentDate.year,
@@ -44,8 +44,8 @@ class Budgets extends _$Budgets {
 
   /// Copies the given [List<BudgetModels>] to the current month
   void copyBudgets(List<BudgetModel> budgets) {
-    final budgetsRepository = ref.watch(budgetsRepositoryProvider);
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final budgetsRepository = ref.read(budgetsRepositoryProvider);
+    final bookId = ref.read(selectedBookProvider)!.id!;
     budgetsRepository.addAllBudgets(
       bookId: bookId,
       year: _currentDate.year,
@@ -71,8 +71,8 @@ class Budgets extends _$Budgets {
       amount: amount,
       description: description,
     );
-    final budgetsRepository = ref.watch(budgetsRepositoryProvider);
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final budgetsRepository = ref.read(budgetsRepositoryProvider);
+    final bookId = ref.read(selectedBookProvider)!.id!;
     budgetsRepository.addBudget(
       bookId: bookId,
       year: year,
@@ -82,8 +82,8 @@ class Budgets extends _$Budgets {
   }
 
   void updateBudget(BudgetModel budget) {
-    final budgetsRepository = ref.watch(budgetsRepositoryProvider);
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final budgetsRepository = ref.read(budgetsRepositoryProvider);
+    final bookId = ref.read(selectedBookProvider)!.id!;
     budgetsRepository.updateBudget(
       bookId: bookId,
       year: budget.year,

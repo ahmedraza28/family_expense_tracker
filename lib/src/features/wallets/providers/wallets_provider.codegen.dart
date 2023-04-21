@@ -41,8 +41,8 @@ class Wallets extends _$Wallets {
   FutureOr<void> build() => null;
 
   Stream<List<WalletModel>> getAllWallets([JSON? queryParams]) {
-    final walletsRepository = ref.watch(walletsRepositoryProvider);
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final walletsRepository = ref.read(walletsRepositoryProvider);
+    final bookId = ref.read(selectedBookProvider)!.id!;
     return walletsRepository.getBookWallets(bookId: bookId);
   }
 
@@ -62,8 +62,8 @@ class Wallets extends _$Wallets {
       description: description,
     );
 
-    final walletsRepository = ref.watch(walletsRepositoryProvider);
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final walletsRepository = ref.read(walletsRepositoryProvider);
+    final bookId = ref.read(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
       () => walletsRepository.addWallet(
         bookId: bookId,
@@ -76,8 +76,8 @@ class Wallets extends _$Wallets {
   Future<void> updateWallet(WalletModel wallet) async {
     state = const AsyncValue.loading();
 
-    final walletsRepository = ref.watch(walletsRepositoryProvider);
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final walletsRepository = ref.read(walletsRepositoryProvider);
+    final bookId = ref.read(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
       () => walletsRepository.updateWallet(
         bookId: bookId,

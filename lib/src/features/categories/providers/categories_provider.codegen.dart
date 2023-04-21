@@ -40,8 +40,8 @@ class Categories extends _$Categories {
   FutureOr<void> build() => null;
 
   Stream<List<CategoryModel>> getAllCategories() {
-    final categoriesRepository = ref.watch(categoriesRepositoryProvider);
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final categoriesRepository = ref.read(categoriesRepositoryProvider);
+    final bookId = ref.read(selectedBookProvider)!.id!;
     return categoriesRepository.fetchAll(bookId: bookId);
   }
 
@@ -59,8 +59,8 @@ class Categories extends _$Categories {
       color: color,
     );
 
-    final categoriesRepository = ref.watch(categoriesRepositoryProvider);
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final categoriesRepository = ref.read(categoriesRepositoryProvider);
+    final bookId = ref.read(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
       () => categoriesRepository.create(
         bookId: bookId,
@@ -73,8 +73,8 @@ class Categories extends _$Categories {
   Future<void> updateCategory(CategoryModel category) async {
     state = const AsyncValue.loading();
 
-    final categoriesRepository = ref.watch(categoriesRepositoryProvider);
-    final bookId = ref.watch(selectedBookProvider)!.id!;
+    final categoriesRepository = ref.read(categoriesRepositoryProvider);
+    final bookId = ref.read(selectedBookProvider)!.id!;
     state = await state.makeGuardedRequest(
       () => categoriesRepository.update(
         bookId: bookId,

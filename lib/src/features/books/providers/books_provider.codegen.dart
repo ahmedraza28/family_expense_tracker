@@ -51,7 +51,7 @@ class Books extends _$Books {
   FutureOr<void> build() => null;
 
   Stream<List<BookModel>> getUserBooks(List<String> bookIds) {
-    final booksRepository = ref.watch(booksRepositoryProvider);
+    final booksRepository = ref.read(booksRepositoryProvider);
     return booksRepository.getBooks(bookIds);
   }
 
@@ -77,7 +77,7 @@ class Books extends _$Books {
       },
     );
 
-    final booksRepository = ref.watch(booksRepositoryProvider);
+    final booksRepository = ref.read(booksRepositoryProvider);
     state = await state.makeGuardedRequest(
       () => booksRepository.addBook(body: book.toJson()),
       errorMessage: 'Failed to add book',
@@ -87,7 +87,7 @@ class Books extends _$Books {
   Future<void> updateBook(BookModel book) async {
     state = const AsyncValue.loading();
 
-    final booksRepository = ref.watch(booksRepositoryProvider);
+    final booksRepository = ref.read(booksRepositoryProvider);
     state = await state.makeGuardedRequest(
       () => booksRepository.updateBook(
         bookId: book.id!,
