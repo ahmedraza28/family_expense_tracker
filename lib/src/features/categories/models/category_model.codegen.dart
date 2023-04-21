@@ -21,6 +21,7 @@ class CategoryModel with _$CategoryModel {
     required String imageUrl,
     @JsonKey(toJson: AppUtils.toColorHex, fromJson: AppUtils.fromColorHex)
         required Color color,
+    @Default(true) bool isEnabled,
   }) = _CategoryModel;
 
   factory CategoryModel.fromJson(JSON json) => _$CategoryModelFromJson(json);

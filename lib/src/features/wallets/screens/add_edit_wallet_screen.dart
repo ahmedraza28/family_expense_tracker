@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers
+import '../../balance_adjustment/balance_adjustment.dart';
 import '../providers/currencies_provider.codegen.dart';
 import '../providers/wallets_provider.codegen.dart';
 
@@ -34,6 +35,23 @@ class AddEditWalletScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(
+      balanceAdjustmentProvider,
+      (_, next) => next.whenOrNull(
+        data: (_) => AppUtils.showFlushBar(
+          context: context,
+          message: 'Balance adjusted successfully',
+          icon: Icons.check_circle_rounded,
+          iconColor: Colors.green,
+        ),
+        error: (error, stack) => AppUtils.showFlushBar(
+          context: context,
+          message: error.toString(),
+          iconColor: Colors.red,
+        ),
+      ),
+    );
+
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final walletNameController = useTextEditingController(
       text: wallet?.name ?? '',
@@ -58,11 +76,14 @@ class AddEditWalletScreen extends HookConsumerWidget {
         final newWallet = wallet!.copyWith(
           name: walletNameController.text,
           color: colorController.value,
-          balance: double.parse(walletBalanceController.text),
         );
         ref.read(walletsProvider.notifier).updateWallet(newWallet);
       }
       (onPressed ?? AppRouter.pop).call();
+    }
+
+    void editBalance() {
+      AppRouter.pushNamed(Routes.AddEditBalanceAdjustmentScreenRoute);
     }
 
     return Scaffold(
@@ -135,12 +156,15 @@ class AddEditWalletScreen extends HookConsumerWidget {
                 customBorder: const RoundedRectangleBorder(
                   borderRadius: Corners.rounded7,
                 ),
-                onTap: () async {
-                  await AppRouter.pushNamed(
-                    Routes.CalculatorScreenRoute,
-                  );
-                  walletBalanceController.text = ref.read(numberResultProvider);
-                },
+                onTap: wallet != null
+                    ? null
+                    : () async {
+                        await AppRouter.pushNamed(
+                          Routes.CalculatorScreenRoute,
+                        );
+                        walletBalanceController.text =
+                            ref.read(numberResultProvider);
+                      },
                 child: CustomTextField(
                   controller: walletBalanceController,
                   enabled: false,
@@ -159,6 +183,29 @@ class AddEditWalletScreen extends HookConsumerWidget {
                       );
                     },
                   ),
+                  suffix: wallet == null
+                      ? null
+                      : Consumer(
+                          builder: (context, ref, child) {
+                            final state = ref.watch(balanceAdjustmentProvider);
+                            return state.maybeWhen(
+                              loading: () => const CustomCircularLoader(
+                                color: AppColors.textGreyColor,
+                              ),
+                              orElse: () => InkWell(
+                                onTap: editBalance,
+                                customBorder: const RoundedRectangleBorder(
+                                  borderRadius: Corners.rounded7,
+                                ),
+                                child: const Icon(
+                                  Icons.edit,
+                                  color: AppColors.textGreyColor,
+                                  size: 20,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                 ),
               ),
 

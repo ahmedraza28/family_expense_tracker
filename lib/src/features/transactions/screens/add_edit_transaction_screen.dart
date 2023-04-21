@@ -111,13 +111,19 @@ class AddEditTransactionScreen extends HookConsumerWidget {
         ),
         actions: [
           // Delete Button
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
+          if (transaction != null)
+            IconButton(
+              onPressed: () {
+                ref
+                    .read(incomeExpenseProvider.notifier)
+                    .deleteTransaction(transaction!);
+                AppRouter.pop();
+              },
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
             ),
-          ),
         ],
       ),
       body: GestureDetector(

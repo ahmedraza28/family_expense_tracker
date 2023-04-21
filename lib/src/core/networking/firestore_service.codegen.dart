@@ -112,6 +112,14 @@ class FirestoreService {
     await batchUpdate.commit();
   }
 
+  Future<void> batchBuilder(
+    void Function(WriteBatch batch, FirebaseFirestore db) builder,
+  ) async {
+    final batch = _firestoreDb.batch();
+    builder(batch, _firestoreDb);
+    await batch.commit();
+  }
+
   /// Bulk adds a list of documents to a single collection
   /// existing at the provided path.
   Future<void> batchAdd({

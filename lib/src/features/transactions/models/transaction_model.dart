@@ -2,6 +2,7 @@
 
 // Helpers
 import '../../../helpers/typedefs.dart';
+import '../../balance_adjustment/balance_adjustment.dart';
 import '../enums/transaction_type_enum.dart';
 
 // Models
@@ -20,16 +21,19 @@ abstract class TransactionModel {
   bool get isBalanceTransfer => type == TransactionType.transfer;
   bool get isExpense => type == TransactionType.expense;
   bool get isIncome => type == TransactionType.income;
+  bool get isAdjustment => type == TransactionType.adjustment;
   TransactionType get type;
   DateTime get date;
   double get amount;
   String? get description;
 
   factory TransactionModel.fromJson(JSON json) {
-    final isBalanceTransfer = json['type'] == TransactionType.transfer.name;
-
-    return isBalanceTransfer
-        ? BalanceTransferModel.fromJson(json)
-        : IncomeExpenseModel.fromJson(json);
+    if (json['type'] == TransactionType.transfer) {
+      return BalanceTransferModel.fromJson(json);
+    } else if (json['type'] == TransactionType.adjustment) {
+      return BalanceAdjustmentModel.fromJson(json);
+    } else {
+      return IncomeExpenseModel.fromJson(json);
+    }
   }
 }

@@ -16,6 +16,8 @@ part 'wallet_model.codegen.g.dart';
 
 @freezed
 class WalletModel with _$WalletModel {
+  static const String balanceField = 'balance';
+  
   const factory WalletModel({
     @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
     required String name,
@@ -23,7 +25,9 @@ class WalletModel with _$WalletModel {
         required Color color,
     required double balance,
     String? description,
+    @Default(true) bool isEnabled,
   }) = _WalletModel;
+  const WalletModel._();
 
   factory WalletModel.fromJson(JSON json) => _$WalletModelFromJson(json);
 }

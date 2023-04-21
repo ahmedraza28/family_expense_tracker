@@ -11,6 +11,7 @@ import '../models/transaction_model.dart';
 import 'income_expense_list_item.dart';
 
 // Features
+import '../../balance_adjustment/balance_adjustment.dart';
 import '../../balance_transfer/balance_transfer.dart';
 
 class DayTransactionsList extends StatelessWidget {
@@ -41,9 +42,13 @@ class DayTransactionsList extends StatelessWidget {
             ? BalanceTransferListItem(
                 balanceTransfer: trans as BalanceTransferModel,
               )
-            : IncomeExpenseListItem(
-                transaction: trans as IncomeExpenseModel,
-              );
+            : trans.isAdjustment
+                ? BalanceAdjustmentListItem(
+                    balanceAdjustment: trans as BalanceAdjustmentModel,
+                  )
+                : IncomeExpenseListItem(
+                    transaction: trans as IncomeExpenseModel,
+                  );
       },
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Features
 import '../../features/auth/auth.dart';
+import '../../features/balance_adjustment/balance_adjustment.dart';
 import '../../features/balance_transfer/balance_transfer.dart';
 import '../../features/books/books.dart';
 import '../../features/budgets/budgets.dart';
@@ -54,12 +55,16 @@ class Routes {
 
   /// The name of the route for selectable categories screen.
   static const String SelectCategoriesScreenRoute = '/select-categories-screen';
-  
+
   /// The name of the route for selectable budgets screen.
   static const String SelectBudgetsScreenRoute = '/select-budgets-screen';
 
   /// The name of the route for wallets screen.
   static const String WalletsScreenRoute = '/wallets-screen';
+
+  /// The name of the route for add/edit wallet balance screen.
+  static const String AddEditBalanceAdjustmentScreenRoute =
+      '/add-edit-balance-adjustment-screen';
 
   /// The name of the route for calculator screen.
   static const String CalculatorScreenRoute = '/calculator-screen';
@@ -102,6 +107,8 @@ class Routes {
     BudgetsScreenRoute: (_) => const BudgetsScreen(),
     SelectBudgetsScreenRoute: (_) => const SelectBudgetsScreen(),
     AddEditBudgetScreenRoute: (_) => const AddEditBudgetScreen(),
+    AddEditBalanceAdjustmentScreenRoute: (_) =>
+        const AddEditBalanceAdjustmentScreen(),
     // ManageBookAccessScreenRoute: (_) => const SizedBox.shrink(),
     // AboutScreenRoute: (_) => const SizedBox.shrink(),
     // InsightsScreenRoute: (_) => const SizedBox.shrink(),

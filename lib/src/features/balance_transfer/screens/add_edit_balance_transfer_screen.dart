@@ -85,13 +85,16 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
         ),
         actions: [
           // Delete Button
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
+          if (balanceTransfer != null)
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                ref
+                    .read(balanceTransferProvider.notifier)
+                    .deleteTransaction(balanceTransfer!);
+                AppRouter.pop();
+              },
             ),
-          ),
         ],
       ),
       body: GestureDetector(

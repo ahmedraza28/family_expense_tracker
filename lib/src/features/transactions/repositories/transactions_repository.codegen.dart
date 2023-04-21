@@ -6,6 +6,9 @@ import '../../../core/core.dart';
 // Helpers
 import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/typedefs.dart';
+import '../../balance_adjustment/balance_adjustment.dart';
+import '../../balance_transfer/balance_transfer.dart';
+import '../../wallets/wallets.dart';
 import '../enums/transaction_type_enum.dart';
 
 // Models
@@ -91,6 +94,73 @@ class TransactionsRepository {
       data: changes,
       merge: true,
     );
+  }
+
+  Future<void> deleteTransaction({
+    required String bookId,
+    required IncomeExpenseModel transaction,
+    required WalletModel wallet,
+  }) {
+    return _firestoreService.batchBuilder((batch, db) {
+      final transactionId = transaction.id!;
+      final month = transaction.date.month;
+      final year = transaction.date.year;
+      final transactionPath =
+          'books/$bookId/transactions-$month-$year/$transactionId';
+      batch.delete(db.doc(transactionPath));
+
+      final walletId = wallet.id;
+      final walletPath = 'books/$bookId/wallets/$walletId';
+      final newBalance = transaction.isIncome
+          ? wallet.balance - transaction.amount
+          : wallet.balance + transaction.amount;
+      batch.update(db.doc(walletPath), <String, Object?>{
+        WalletModel.balanceField: newBalance,
+      });
+    });
+  }
+
+  Future<void> deleteTransfer({
+    required String bookId,
+    required BalanceTransferModel transaction,
+    required WalletModel srcWallet,
+    required WalletModel destWallet,
+  }) {
+    return _firestoreService.batchBuilder((batch, db) {
+      final transactionId = transaction.id!;
+      final month = transaction.date.month;
+      final year = transaction.date.year;
+      final transactionPath =
+          'books/$bookId/transactions-$month-$year/$transactionId';
+      final walletsPath = 'books/$bookId/wallets';
+      batch
+        ..delete(db.doc(transactionPath))
+        ..update(db.doc('$walletsPath/${srcWallet.id}'), <String, Object?>{
+          WalletModel.balanceField: srcWallet.balance + transaction.amount,
+        })
+        ..update(db.doc('$walletsPath/${destWallet.id}'), <String, Object?>{
+          WalletModel.balanceField: destWallet.balance - transaction.amount,
+        });
+    });
+  }
+
+  Future<void> deleteAdjustment({
+    required String bookId,
+    required BalanceAdjustmentModel transaction,
+  }) {
+    return _firestoreService.batchBuilder((batch, db) {
+      final transactionId = transaction.id!;
+      final month = transaction.date.month;
+      final year = transaction.date.year;
+      final transactionPath =
+          'books/$bookId/transactions-$month-$year/$transactionId';
+      final walletPath = 'books/$bookId/wallets/${transaction.walletId}';
+      batch
+        ..delete(db.doc(transactionPath))
+        ..update(db.doc(walletPath), <String, Object?>{
+          WalletModel.balanceField: transaction.previousAmount,
+        });
+    });
   }
 }
 
@@ -284,4 +354,34 @@ class MockTransactionsRepository implements TransactionsRepository {
 
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();
+
+  @override
+  Future<void> deleteAdjustment({
+    required String bookId,
+    required BalanceAdjustmentModel transaction,
+  }) {
+    // TODO(arafaysaleem): implement deleteAdjustment
+    throw CustomException.unimplemented();
+  }
+
+  @override
+  Future<void> deleteTransaction({
+    required String bookId,
+    required IncomeExpenseModel transaction,
+    required WalletModel wallet,
+  }) {
+    // TODO(arafaysaleem): implement deleteTransaction
+    throw CustomException.unimplemented();
+  }
+
+  @override
+  Future<void> deleteTransfer({
+    required String bookId,
+    required BalanceTransferModel transaction,
+    required WalletModel srcWallet,
+    required WalletModel destWallet,
+  }) {
+    // TODO(arafaysaleem): implement deleteTransfer
+    throw CustomException.unimplemented();
+  }
 }
