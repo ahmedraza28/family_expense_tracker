@@ -40,21 +40,7 @@ class AuthController extends _$AuthController {
     state = await state.makeGuardedRequest(() async {
       final credential = await authRepository.createGoogleCredentials();
       if (credential != null) {
-        final userCred = await authRepository.login(authCredential: credential);
-
-        // TODO(arafaysaleem): Move this to cloud function triggers
-        final usersRepository = ref.read(usersRepositoryProvider);
-        final user = userCred.user!;
-        final userExists = await usersRepository.userExists(user.uid);
-
-        if (!userExists) {
-          await usersRepository.addUser(
-            uid: user.uid,
-            body: UserModel.fromFirebaseUser(user).toJson(),
-          );
-        }
-
-        return userCred;
+        return authRepository.login(authCredential: credential);
       }
       return null;
     });

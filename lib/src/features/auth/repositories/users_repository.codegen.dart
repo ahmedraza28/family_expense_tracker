@@ -4,10 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 // Core
 import '../../../core/core.dart';
 
-// Helpers
-import '../../../helpers/extensions/extensions.dart';
-import '../../../helpers/typedefs.dart';
-
 // Models
 import '../models/user_model.codegen.dart';
 
@@ -45,22 +41,6 @@ class UsersRepository {
       builder: (json, docId) => json == null ? null : UserModel.fromJson(json),
     );
   }
-
-  /// Method to check if a user exists
-  Future<bool> userExists(String uid) {
-    return _firestoreService.existsDocument(path: 'users/$uid');
-  }
-
-  /// Method to create a user in the database
-  Future<void> addUser({
-    required String uid,
-    required JSON body,
-  }) {
-    return _firestoreService.setData(
-      path: 'users/$uid',
-      data: body,
-    );
-  }
 }
 
 class MockUsersRepository implements UsersRepository {
@@ -90,17 +70,5 @@ class MockUsersRepository implements UsersRepository {
         sharedBookIds: ['2'],
       ),
     );
-  }
-
-  @override
-  Future<void> addUser({
-    required String uid,
-    required JSON body,
-  }) async =>
-      Future.delayed(2.seconds);
-
-  @override
-  Future<bool> userExists(String uid) {
-    return Future.value(true);
   }
 }
