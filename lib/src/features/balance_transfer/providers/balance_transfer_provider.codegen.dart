@@ -43,15 +43,11 @@ class BalanceTransfer extends _$BalanceTransfer {
           description: description,
         );
         final bookId = ref.read(selectedBookProvider)!.id!;
-        return ref.read(balanceTransferRepositoryProvider).addBalanceTransfer(
+        return ref.read(transactionsRepositoryProvider).addTransaction(
               bookId: bookId,
-              transaction: transaction,
-              srcWallet: ref.read(
-                walletByIdProvider(srcWalletId),
-              )!,
-              destWallet: ref.read(
-                walletByIdProvider(destWalletId),
-              )!,
+              month: date.month,
+              year: date.year,
+              body: transaction.toJson(),
             );
       },
       errorMessage: 'Failed to transfer balance',

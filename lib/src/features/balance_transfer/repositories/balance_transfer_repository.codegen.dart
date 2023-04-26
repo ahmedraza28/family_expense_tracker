@@ -29,37 +29,6 @@ class BalanceTransferRepository {
 
   BalanceTransferRepository(this._firestoreService);
 
-  Future<void> addBalanceTransfer({
-    required String bookId,
-    required BalanceTransferModel transaction,
-    required WalletModel srcWallet,
-    required WalletModel destWallet,
-  }) {
-    // TODO(arafaysaleem): Convert to cloud functions
-    return _firestoreService.batchBuilder((batch, db) {
-      final transactionId = transaction.id!;
-      final month = transaction.date.month;
-      final year = transaction.date.year;
-      final transactionPath =
-          'books/$bookId/transactions-$month-$year/$transactionId';
-      final walletPath = 'books/$bookId/wallets';
-      batch
-        ..set(db.doc(transactionPath), transaction.toJson())
-        ..update(
-          db.doc('$walletPath/${transaction.srcWalletId}'),
-          <String, Object?>{
-            WalletModel.balanceField: srcWallet.balance - transaction.amount,
-          },
-        )
-        ..update(
-          db.doc('$walletPath/${transaction.destWalletId}'),
-          <String, Object?>{
-            WalletModel.balanceField: destWallet.balance + transaction.amount,
-          },
-        );
-    });
-  }
-
   Future<void> updateBalanceTransferAmount({
     required String bookId,
     required BalanceTransferModel transaction,
@@ -123,15 +92,6 @@ class BalanceTransferRepository {
 }
 
 class MockBalanceTransferRepository implements BalanceTransferRepository {
-  @override
-  Future<void> addBalanceTransfer({
-    required String bookId,
-    required BalanceTransferModel transaction,
-    required WalletModel srcWallet,
-    required WalletModel destWallet,
-  }) async =>
-      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
-
   @override
   Future<void> deleteTransfer({
     required String bookId,

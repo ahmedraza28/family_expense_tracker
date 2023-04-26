@@ -78,7 +78,9 @@ class IncomeExpense extends _$IncomeExpense {
         final wallet = ref.read(walletByIdProvider(transaction.walletId))!;
         return ref.read(transactionsRepositoryProvider).deleteTransaction(
               bookId: bookId,
-              transaction: transaction,
+              month: transaction.date.month,
+              year: transaction.date.year,
+              transactionId: transaction.id!,
               wallet: wallet,
             );
       },

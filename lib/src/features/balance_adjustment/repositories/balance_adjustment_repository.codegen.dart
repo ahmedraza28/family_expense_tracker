@@ -29,29 +29,6 @@ class BalanceAdjustmentRepository {
 
   BalanceAdjustmentRepository(this._firestoreService);
 
-  Future<void> addBalanceAdjustment({
-    required String bookId,
-    required BalanceAdjustmentModel transaction,
-  }) {
-    // TODO(arafaysaleem): Convert to cloud functions
-    return _firestoreService.batchBuilder((batch, db) {
-      final transactionId = transaction.id!;
-      final month = transaction.date.month;
-      final year = transaction.date.year;
-      final transactionPath =
-          'books/$bookId/transactions-$month-$year/$transactionId';
-      final walletPath = 'books/$bookId/wallets/${transaction.walletId}';
-      batch
-        ..set(db.doc(transactionPath), transaction.toJson())
-        ..update(
-          db.doc(walletPath),
-          <String, Object?>{
-            WalletModel.balanceField: transaction.amount,
-          },
-        );
-    });
-  }
-
   Future<void> deleteAdjustment({
     required String bookId,
     required BalanceAdjustmentModel transaction,
@@ -74,13 +51,6 @@ class BalanceAdjustmentRepository {
 }
 
 class MockBalanceAdjustmentRepository implements BalanceAdjustmentRepository {
-  @override
-  Future<void> addBalanceAdjustment({
-    required String bookId,
-    required BalanceAdjustmentModel transaction,
-  }) async =>
-      Future.delayed(2.seconds, throw CustomException.unimplemented());
-
   @override
   Future<void> deleteAdjustment({
     required String bookId,

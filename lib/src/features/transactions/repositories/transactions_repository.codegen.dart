@@ -77,7 +77,6 @@ class TransactionsRepository {
     required int year,
     required JSON body,
   }) {
-    // TODO(arafaysaleem): Add wallet balance update using cloud functions
     return _firestoreService.insertData(
       path: 'books/$bookId/transactions-$month-$year',
       data: body,
@@ -91,7 +90,6 @@ class TransactionsRepository {
     required int transactionId,
     required JSON changes,
   }) {
-    // TODO(arafaysaleem): Add wallet balance update using cloud functions
     return _firestoreService.setData(
       path: 'books/$bookId/transactions-$month-$year/$transactionId',
       data: changes,
@@ -99,56 +97,16 @@ class TransactionsRepository {
     );
   }
 
-  Future<void> updateTransactionAmount({
-    required String bookId,
-    required IncomeExpenseModel transaction,
-    required WalletModel wallet,
-    bool isIncreased = true,
-  }) {
-    // TODO(arafaysaleem): Remove after adding cloud functions
-    return _firestoreService.batchBuilder((batch, db) {
-      final transactionId = transaction.id!;
-      final month = transaction.date.month;
-      final year = transaction.date.year;
-      final transactionPath =
-          'books/$bookId/transactions-$month-$year/$transactionId';
-      batch.update(db.doc(transactionPath), transaction.toJson());
-
-      final walletId = wallet.id;
-      final walletPath = 'books/$bookId/wallets/$walletId';
-      final increase = (transaction.isIncome && isIncreased) ||
-          (transaction.isExpense && !isIncreased);
-      batch.update(db.doc(walletPath), <String, Object?>{
-        WalletModel.balanceField: increase
-            ? wallet.balance + transaction.amount
-            : wallet.balance - transaction.amount,
-      });
-    });
-  }
-
   Future<void> deleteTransaction({
     required String bookId,
-    required IncomeExpenseModel transaction,
+    required int month,
+    required int year,
+    required int transactionId,
     required WalletModel wallet,
   }) {
-    // TODO(arafaysaleem): Add wallet balance update using cloud functions
-    return _firestoreService.batchBuilder((batch, db) {
-      final transactionId = transaction.id!;
-      final month = transaction.date.month;
-      final year = transaction.date.year;
-      final transactionPath =
-          'books/$bookId/transactions-$month-$year/$transactionId';
-      batch.delete(db.doc(transactionPath));
-
-      final walletId = wallet.id;
-      final walletPath = 'books/$bookId/wallets/$walletId';
-      final newBalance = transaction.isIncome
-          ? wallet.balance - transaction.amount
-          : wallet.balance + transaction.amount;
-      batch.update(db.doc(walletPath), <String, Object?>{
-        WalletModel.balanceField: newBalance,
-      });
-    });
+    return _firestoreService.deleteData(
+      path: 'books/$bookId/transactions-$month-$year/$transactionId',
+    );
   }
 }
 
@@ -346,17 +304,10 @@ class MockTransactionsRepository implements TransactionsRepository {
   @override
   Future<void> deleteTransaction({
     required String bookId,
-    required IncomeExpenseModel transaction,
+    required int month,
+    required int year,
+    required int transactionId,
     required WalletModel wallet,
-  }) async =>
-      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
-
-  @override
-  Future<void> updateTransactionAmount({
-    required String bookId,
-    required IncomeExpenseModel transaction,
-    required WalletModel wallet,
-    bool isIncreased = true,
   }) async =>
       Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 }

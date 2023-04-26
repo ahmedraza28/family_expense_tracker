@@ -10,6 +10,7 @@ import '../models/balance_adjustment_model.codegen.dart';
 import '../repositories/balance_adjustment_repository.codegen.dart';
 
 // Features
+import '../../transactions/transactions.dart';
 import '../../books/books.dart';
 
 part 'balance_adjustment_provider.codegen.g.dart';
@@ -37,9 +38,11 @@ class BalanceAdjustment extends _$BalanceAdjustment {
         date: date,
       );
       final bookId = ref.read(selectedBookProvider)!.id!;
-      return ref.read(balanceAdjustmentRepositoryProvider).addBalanceAdjustment(
+      return ref.read(transactionsRepositoryProvider).addTransaction(
             bookId: bookId,
-            transaction: transaction,
+            month: date.month,
+            year: date.year,
+            body: transaction.toJson(),
           );
     });
   }
