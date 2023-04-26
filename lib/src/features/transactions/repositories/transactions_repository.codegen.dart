@@ -13,9 +13,6 @@ import '../enums/transaction_type_enum.dart';
 import '../models/income_expense_model.codegen.dart';
 import '../models/transaction_model.dart';
 
-// Features
-import '../../wallets/wallets.dart';
-
 part 'transactions_repository.codegen.g.dart';
 
 /// A provider used to access instance of this service
@@ -102,7 +99,6 @@ class TransactionsRepository {
     required int month,
     required int year,
     required int transactionId,
-    required WalletModel wallet,
   }) {
     return _firestoreService.deleteData(
       path: 'books/$bookId/transactions-$month-$year/$transactionId',
@@ -307,7 +303,6 @@ class MockTransactionsRepository implements TransactionsRepository {
     required int month,
     required int year,
     required int transactionId,
-    required WalletModel wallet,
   }) async =>
       Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 }

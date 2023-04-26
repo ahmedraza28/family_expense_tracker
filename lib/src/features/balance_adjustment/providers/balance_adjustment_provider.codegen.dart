@@ -6,9 +6,6 @@ import '../../../helpers/extensions/extensions.dart';
 // Models
 import '../models/balance_adjustment_model.codegen.dart';
 
-// Repositories
-import '../repositories/balance_adjustment_repository.codegen.dart';
-
 // Features
 import '../../transactions/transactions.dart';
 import '../../books/books.dart';
@@ -52,9 +49,11 @@ class BalanceAdjustment extends _$BalanceAdjustment {
 
     state = await state.makeGuardedRequest(() {
       final bookId = ref.read(selectedBookProvider)!.id!;
-      return ref.read(balanceAdjustmentRepositoryProvider).deleteAdjustment(
+      return ref.read(transactionsRepositoryProvider).deleteTransaction(
             bookId: bookId,
-            transaction: transaction,
+            month: transaction.date.month,
+            year: transaction.date.year,
+            transactionId: transaction.id!,
           );
     });
   }

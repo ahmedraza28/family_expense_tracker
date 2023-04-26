@@ -11,7 +11,6 @@ import '../models/income_expense_model.codegen.dart';
 import '../repositories/transactions_repository.codegen.dart';
 
 // Features
-import '../../wallets/wallets.dart';
 import '../../books/books.dart';
 
 part 'income_expense_provider.codegen.g.dart';
@@ -75,13 +74,11 @@ class IncomeExpense extends _$IncomeExpense {
     state = await state.makeGuardedRequest(
       () {
         final bookId = ref.read(selectedBookProvider)!.id!;
-        final wallet = ref.read(walletByIdProvider(transaction.walletId))!;
         return ref.read(transactionsRepositoryProvider).deleteTransaction(
               bookId: bookId,
               month: transaction.date.month,
               year: transaction.date.year,
               transactionId: transaction.id!,
-              wallet: wallet,
             );
       },
       errorMessage: 'Failed to delete transaction',
