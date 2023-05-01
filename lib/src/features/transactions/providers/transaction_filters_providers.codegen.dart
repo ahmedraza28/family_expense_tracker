@@ -22,28 +22,28 @@ class TransactionFilters extends _$TransactionFilters {
   @override
   TransactionFiltersModel? build() => null;
 
-  TransactionFiltersModel get filters =>
+  TransactionFiltersModel get _filters =>
       state ?? const TransactionFiltersModel();
 
   void setMonth(int? month) {
-    state = filters.copyWith(month: month, allowNull: true);
+    state = _filters.copyWith(month: month, allowNull: true);
   }
 
   void setYear(int? year) {
-    state = filters.copyWith(year: year, allowNull: true);
+    state = _filters.copyWith(year: year, allowNull: true);
   }
 
   void setCategory(CategoryModel? category) {
-    state = filters.copyWith(categoryId: category?.id, allowNull: true);
+    state = _filters.copyWith(categoryId: category?.id, allowNull: true);
   }
 
   TransactionFiltersModel _addType(TransactionType type) {
-    return filters.copyWith(types: [...?filters.types, type]);
+    return _filters.copyWith(types: [...?_filters.types, type]);
   }
 
   TransactionFiltersModel _removeType(TransactionType type) {
-    filters.types?.remove(type);
-    return filters.copyWith(types: [...?filters.types]);
+    _filters.types?.remove(type);
+    return _filters.copyWith(types: [...?_filters.types]);
   }
 
   void toggleType(TransactionType type, bool isChecked) {

@@ -13,17 +13,17 @@ class BudgetFilters extends _$BudgetFilters {
   @override
   BudgetFiltersModel? build() => null;
 
-  BudgetFiltersModel get filters => state ?? const BudgetFiltersModel();
+  BudgetFiltersModel get _filters => state ?? const BudgetFiltersModel();
 
   void setMonth(int? month) {
-    state = filters.copyWith(month: month, allowNull: true);
+    state = _filters.copyWith(month: month, allowNull: true);
   }
 
   void setYear(int? year) {
-    state = filters.copyWith(year: year, allowNull: true);
+    state = _filters.copyWith(year: year, allowNull: true);
   }
 
   void setCategory(CategoryModel? category) {
-    state = filters.copyWith(categoryId: category?.id, allowNull: true);
+    state = _filters.copyWith(categoryId: category?.id, allowNull: true);
   }
 }

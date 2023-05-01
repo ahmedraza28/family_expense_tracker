@@ -116,8 +116,6 @@ class AddEditBookScreen extends HookConsumerWidget {
 
               Insets.gapH20,
 
-              // TODO(arafaysaleem): Add color picker
-
               // Currency Dropdown
               Consumer(
                 builder: (_, ref, __) {

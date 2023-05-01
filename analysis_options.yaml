@@ -20,7 +20,7 @@ analyzer:
 custom_lint:
   rules:
     # Explicitly disable one lint rule
-    - avoid_manual_providers_as_generated_provider_depenency: false
+    - avoid_manual_providers_as_generated_provider_dependency: false
 
 linter:
   rules:
