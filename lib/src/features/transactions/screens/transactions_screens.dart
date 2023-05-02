@@ -10,6 +10,7 @@ import '../widgets/add_income_expense_fab.dart';
 import '../widgets/filters/search_and_filters_bar.dart';
 import '../widgets/grouped_transactions_list.dart';
 import '../../../global/widgets/widgets.dart';
+import '../widgets/transactions_summary.dart';
 
 // Screens
 import 'add_edit_transaction_screen.dart';
@@ -34,40 +35,20 @@ class TransactionsScreen extends ConsumerWidget {
           selectedBook.name,
           fontSize: 20,
         ),
-        toolbarHeight: kToolbarHeight + 30,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(0),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Income
-                CustomText.body(
-                  'Income: \$${selectedBook.totalIncome}',
-                  color: AppColors.textGreyColor,
-                ),
-
-                // Expense
-                CustomText.body(
-                  'Expense: \$${selectedBook.totalExpense}',
-                  color: AppColors.textGreyColor,
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
       drawer: const AppDrawer(),
       body: Column(
         children: const [
+          // Transactions summary
+          TransactionsSummary(),
+
           // Filters
           Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
             child: SearchAndFiltersBar(),
           ),
 
-          // Events List
+          // Transactions List
           Expanded(
             child: TransactionsList(),
           ),

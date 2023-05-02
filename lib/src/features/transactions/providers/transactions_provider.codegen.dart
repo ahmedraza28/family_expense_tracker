@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Models
 import '../models/daily_transactions_model.dart';
+import '../models/grouped_transactions_model.dart';
 import '../models/transaction_filters_model.dart';
 import '../models/transaction_model.dart';
 
@@ -47,25 +48,41 @@ Future<List<TransactionModel>> _searchedTransactions(
 
 /// A provider used to access group transactions by day
 @riverpod
-Future<Map<int, DailyTransactionsModel>> groupedTransactions(
+Future<GroupedTransactionsModel> groupedTransactions(
   GroupedTransactionsRef ref,
 ) async {
   final transactions = await ref.watch(
     _searchedTransactionsProvider.future,
   );
 
-  final groupedTransactions = <int, List<TransactionModel>>{};
+  final groupedTransactions = <int, DailyTransactionsModel>{};
+  var totalIncome = 0.0;
+  var totalExpenses = 0.0;
+  var totalArrears = 0.0;
 
   for (final transaction in transactions) {
     final day = transaction.date.day;
-    groupedTransactions[day] ??= [];
-    groupedTransactions[day]!.add(transaction);
+    groupedTransactions[day] ??= DailyTransactionsModel(
+      transactions: [],
+      date: transaction.date,
+      netTotal: 0,
+    );
+    groupedTransactions[day]!.addTransaction(transaction);
+    if (transaction.isExpense) {
+      totalExpenses += transaction.amount;
+    } else if (transaction.isIncome) {
+      totalIncome += transaction.amount;
+    } else if (transaction.isAdjustment) {
+      totalArrears += transaction.amount;
+    }
   }
 
-  return {
-    for (final entry in groupedTransactions.entries)
-      entry.key: DailyTransactionsModel.fromList(entry.value),
-  };
+  return GroupedTransactionsModel(
+    transactions: groupedTransactions,
+    totalIncome: totalIncome,
+    totalExpenses: totalExpenses,
+    totalArrears: totalArrears,
+  );
 }
 
 /// A provider used to access instance of this service

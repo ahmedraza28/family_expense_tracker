@@ -62,7 +62,6 @@ class MockCategoriesRepository implements CategoriesRepository {
   final category3 = <String, dynamic>{
     'id': '3',
     'name': 'Salary',
-    'image_url': 'https://i.imgur.com/1J8ZQYt.png',
     'type': 'income',
   };
   @override
@@ -71,19 +70,16 @@ class MockCategoriesRepository implements CategoriesRepository {
       CategoryModel(
         id: '1',
         name: 'Food',
-        imageUrl: 'https://picsum.photos/200/300',
         color: Colors.amber,
       ),
       CategoryModel(
         id: '2',
         name: 'Petrol And Maintainance',
-        imageUrl: 'https://picsum.photos/200/300',
         color: Colors.blue,
       ),
       CategoryModel(
         id: '3',
         name: 'Salary',
-        imageUrl: 'https://picsum.photos/200/300',
         color: Colors.green,
       ),
     ];

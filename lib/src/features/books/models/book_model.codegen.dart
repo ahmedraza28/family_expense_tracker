@@ -28,8 +28,6 @@ class BookModel with _$BookModel {
     required String description,
     required String currencyName,
     @Default(<String, BookMemberModel>{}) Map<String, BookMemberModel> members,
-    @Default(0) double totalIncome,
-    @Default(0) double totalExpense,
   }) = _BookModel;
 
   factory BookModel.fromJson(JSON json) => _$BookModelFromJson(json);

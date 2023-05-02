@@ -8,6 +8,8 @@ import '../../../config/routing/routing.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
+import '../../../helpers/extensions/object_extensions.dart';
+import '../../../helpers/form_validator.dart';
 
 // Providers
 import '../providers/balance_transfer_provider.codegen.dart';
@@ -52,7 +54,12 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
     );
 
     void onSave() {
-      if (!formKey.currentState!.validate()) return;
+      if (!formKey.currentState!.validate() ||
+          destWalletController.value.isNull ||
+          srcWalletController.value.isNull ||
+          dateController.value.isNull) {
+        return;
+      }
       formKey.currentState!.save();
       if (balanceTransfer == null) {
         ref.read(balanceTransferProvider.notifier).addTransaction(
@@ -130,6 +137,7 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
                   enabled: false,
                   hintText: 'Tap to calculate',
                   floatingText: 'Amount',
+                  validator: FormValidator.nonEmptyValidator,
                 ),
               ),
 

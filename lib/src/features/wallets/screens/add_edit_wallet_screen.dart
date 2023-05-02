@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+// Helpers
+import '../../../helpers/extensions/object_extensions.dart';
+import '../../../helpers/form_validator.dart';
+
 // Providers
 import '../../balance_adjustment/balance_adjustment.dart';
 import '../providers/currencies_provider.codegen.dart';
@@ -64,7 +68,9 @@ class AddEditWalletScreen extends HookConsumerWidget {
     );
 
     void onSave() {
-      if (!formKey.currentState!.validate()) return;
+      if (!formKey.currentState!.validate() || colorController.value.isNull) {
+        return;
+      }
       formKey.currentState!.save();
       if (wallet == null) {
         ref.read(walletsProvider.notifier).addWallet(
@@ -133,6 +139,7 @@ class AddEditWalletScreen extends HookConsumerWidget {
                       hintText: 'Enter wallet name',
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
+                      validator: FormValidator.nonEmptyValidator,
                     ),
                   ),
 
@@ -206,6 +213,7 @@ class AddEditWalletScreen extends HookConsumerWidget {
                             );
                           },
                         ),
+                  validator: FormValidator.nonEmptyValidator,
                 ),
               ),
 

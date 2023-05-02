@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+// Helpers
+import '../../../helpers/constants/constants.dart';
+import '../../../helpers/form_validator.dart';
+import '../../../helpers/extensions/object_extensions.dart';
+
 // Providers
-import '../../shared/shared.dart';
 import '../providers/books_provider.codegen.dart';
 
 // Routing
@@ -12,11 +16,8 @@ import '../../../config/routing/routing.dart';
 // Models
 import '../models/book_model.codegen.dart';
 
-// Helpers
-import '../../../helpers/constants/constants.dart';
-import '../../../helpers/form_validator.dart';
-
 // Features
+import '../../shared/shared.dart';
 import '../../wallets/wallets.dart';
 
 // Widgets
@@ -44,7 +45,9 @@ class AddEditBookScreen extends HookConsumerWidget {
     );
 
     void saveBook() {
-      if (!formKey.currentState!.validate()) return;
+      if (!formKey.currentState!.validate() || currencyController.value.isNull) {
+        return;
+      }
       formKey.currentState!.save();
       if (book == null) {
         ref.read(booksProvider.notifier).addBook(

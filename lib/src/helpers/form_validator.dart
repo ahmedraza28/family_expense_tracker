@@ -25,6 +25,9 @@ class FormValidator {
   /// The error message for invalid identification input.
   static const _invalidIdError = 'Please enter a valid identification';
 
+  /// The error message for empty input.
+  static const _emptyInputError = 'Please enter a value';
+
   /// A method containing validation logic for email input.
   static String? emailValidator(String? email) {
     if (email == null || email.isEmpty) {
@@ -52,6 +55,12 @@ class FormValidator {
   static String? idValidator(String? id) {
     if (id != null && id.isValidIdentification) return null;
     return _invalidIdError;
+  }
+
+  /// A method containing validation logic for non-empty inputs.
+  static String? nonEmptyValidator(String? value) {
+    if (value != null && value.isNotEmpty) return null;
+    return _emptyInputError;
   }
 
   /// A method containing validation logic for credit card number input.

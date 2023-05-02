@@ -16,7 +16,6 @@ class CategoryModel with _$CategoryModel {
   const factory CategoryModel({
     required String id,
     required String name,
-    required String imageUrl,
     @JsonKey(toJson: AppUtils.toColorHex, fromJson: AppUtils.fromColorHex)
         required Color color,
     @Default(true) bool isEnabled,

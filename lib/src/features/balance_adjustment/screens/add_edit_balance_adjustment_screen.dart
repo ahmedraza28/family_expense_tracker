@@ -8,6 +8,7 @@ import '../../../config/routing/routing.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
+import '../../../helpers/extensions/object_extensions.dart';
 
 // Providers
 import '../providers/balance_adjustment_provider.codegen.dart';
@@ -44,7 +45,11 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
     );
 
     void onSave() {
-      if (!formKey.currentState!.validate()) return;
+      if (!formKey.currentState!.validate() ||
+          dateController.value.isNull ||
+          walletController.value.isNull) {
+        return;
+      }
       formKey.currentState!.save();
       ref.read(balanceAdjustmentProvider.notifier).addTransaction(
             amount: double.parse(amountController.text),

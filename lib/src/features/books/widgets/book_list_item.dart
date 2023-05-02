@@ -21,7 +21,6 @@ import '../screens/add_edit_book_screen.dart';
 // Features
 import '../../shared/shared.dart';
 import '../../auth/auth.dart';
-import '../../wallets/wallets.dart';
 
 class BookListItem extends ConsumerWidget {
   final BookModel book;
@@ -74,8 +73,6 @@ class BookListItem extends ConsumerWidget {
               isViewer: isViewer,
               currencyName: book.currencyName,
               membersMap: book.members,
-              totalExpense: book.totalExpense,
-              totalIncome: book.totalIncome,
               description: book.description,
             ),
           ],
@@ -91,8 +88,6 @@ class BookDetails extends StatelessWidget {
     required this.isViewer,
     required this.description,
     required this.myId,
-    required this.totalExpense,
-    required this.totalIncome,
     required this.currencyName,
     required this.membersMap,
     super.key,
@@ -104,8 +99,6 @@ class BookDetails extends StatelessWidget {
   final Map<String, BookMemberModel> membersMap;
   final bool isOwner;
   final bool isViewer;
-  final double totalExpense;
-  final double totalIncome;
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +110,7 @@ class BookDetails extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(15, 12, 15, 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Description
           if (description.isNotEmpty) ...[
@@ -124,27 +118,10 @@ class BookDetails extends StatelessWidget {
             Insets.gapH10,
           ],
 
-          // Balance Amount
-          LabeledWidget(
-            label: 'Balance',
-            child: Consumer(
-              builder: (context, ref, child) {
-                final currency = ref.watch(
-                  currencyByNameProvider(currencyName),
-                );
-                return CustomText.body(
-                  '${currency.symbol} ${totalIncome - totalExpense}',
-                  fontWeight: FontWeight.bold,
-                );
-              },
-            ),
-          ),
-
-          Insets.gapH10,
-
           // Members Row
           LabeledWidget(
             label: 'Members',
+            labelGap: 10,
             child: MemberAvatars(
               isOwner: isOwner,
               isViewer: isViewer,
@@ -235,6 +212,16 @@ class MemberAvatars extends StatelessWidget {
             width: 113,
             child: Stack(
               children: [
+                if (members.isEmpty)
+                  const Positioned(
+                    left: 0,
+                    child: CustomText(
+                      'No members yet',
+                      fontSize: 14,
+                      color: AppColors.textGreyColor,
+                    ),
+                  ),
+
                 for (int i = 0; i < members.length.clamp(0, 3); i++)
                   if (i < 3)
                     Positioned(
@@ -289,7 +276,7 @@ class MemberAvatars extends StatelessWidget {
               ),
               child: const CustomText(
                 'Manage Access',
-                fontSize: 13,
+                fontSize: 14,
                 color: AppColors.primaryColor,
               ),
             ),
@@ -302,7 +289,7 @@ class MemberAvatars extends StatelessWidget {
               borderColor: Colors.transparent,
               labelStyle: const TextStyle(
                 color: AppColors.primaryColor,
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),

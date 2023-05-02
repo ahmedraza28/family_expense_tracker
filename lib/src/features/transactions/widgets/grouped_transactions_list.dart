@@ -40,7 +40,8 @@ class TransactionsList extends ConsumerWidget {
         title: 'No transactions recorded yet',
         subtitle: 'Check back later',
       ),
-      data: (transactions) {
+      data: (groupedTransactions) {
+        final transactions = groupedTransactions.transactions;
         final days = [...transactions.keys];
         return ListView.separated(
           itemCount: days.length,

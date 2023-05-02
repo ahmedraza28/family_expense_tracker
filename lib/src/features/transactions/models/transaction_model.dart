@@ -28,9 +28,10 @@ abstract class TransactionModel {
   String? get description;
 
   factory TransactionModel.fromJson(JSON json) {
-    if (json['type'] == TransactionType.transfer) {
+    final type = TransactionType.values.byName(json['type']! as String);
+    if (type == TransactionType.transfer) {
       return BalanceTransferModel.fromJson(json);
-    } else if (json['type'] == TransactionType.adjustment) {
+    } else if (type == TransactionType.adjustment) {
       return BalanceAdjustmentModel.fromJson(json);
     } else {
       return IncomeExpenseModel.fromJson(json);

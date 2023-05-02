@@ -36,7 +36,7 @@ class BooksList extends ConsumerWidget {
         height: 395,
         width: double.infinity,
         margin: EdgeInsets.only(top: 20),
-        title: 'No transactions recorded yet',
+        title: 'No books founds',
         subtitle: 'Check back later',
       ),
       data: (books) {

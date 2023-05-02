@@ -48,7 +48,6 @@ class Categories extends _$Categories {
 
   Future<void> addCategory({
     required String name,
-    required String imageUrl,
     required Color color,
   }) async {
     state = const AsyncValue.loading();
@@ -56,7 +55,6 @@ class Categories extends _$Categories {
     final category = CategoryModel(
       id: AppUtils.generateUuid(),
       name: name,
-      imageUrl: imageUrl,
       color: color,
     );
 

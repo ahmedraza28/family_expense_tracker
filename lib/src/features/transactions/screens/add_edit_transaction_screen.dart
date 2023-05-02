@@ -8,9 +8,11 @@ import '../../../config/routing/routing.dart';
 
 // Models
 import '../models/income_expense_model.codegen.dart';
+import '../enums/transaction_type_enum.dart';
 
 // Helpers
-import '../enums/transaction_type_enum.dart';
+import '../../../helpers/extensions/object_extensions.dart';
+import '../../../helpers/form_validator.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Providers
@@ -65,7 +67,11 @@ class AddEditTransactionScreen extends HookConsumerWidget {
     );
 
     void onSave() {
-      if (!formKey.currentState!.validate()) return;
+      if (!formKey.currentState!.validate() ||
+          walletController.value.isNull ||
+          categoryController.value.isNull ||
+          typeController.value.isNull ||
+          dateController.value.isNull) return;
       formKey.currentState!.save();
       if (transaction == null) {
         ref.read(incomeExpenseProvider.notifier).addTransaction(
@@ -159,6 +165,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
                   enabled: false,
                   hintText: 'Tap to calculate',
                   floatingText: 'Amount',
+                  validator: FormValidator.nonEmptyValidator,
                 ),
               ),
 

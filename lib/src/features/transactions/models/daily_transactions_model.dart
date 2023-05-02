@@ -4,13 +4,20 @@ import 'transaction_model.dart';
 class DailyTransactionsModel {
   final List<TransactionModel> transactions;
   final DateTime date;
-  final double netTotal;
+  double netTotal;
 
-  const DailyTransactionsModel({
+  DailyTransactionsModel({
     required this.transactions,
     required this.date,
     required this.netTotal,
   });
+
+  void addTransaction(TransactionModel transaction) {
+    transactions.add(transaction);
+    netTotal = transaction.isExpense
+        ? netTotal - transaction.amount
+        : netTotal + transaction.amount;
+  }
 
   factory DailyTransactionsModel.fromList(
     List<TransactionModel> transactions,

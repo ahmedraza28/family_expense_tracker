@@ -48,13 +48,11 @@ class AddEditCategoryScreen extends HookConsumerWidget {
         ref.read(categoriesProvider.notifier).addCategory(
               name: categoryNameController.text,
               color: colorController.value,
-              imageUrl: '',
             );
       } else {
         final newCategory = category!.copyWith(
           name: categoryNameController.text,
           color: colorController.value,
-          imageUrl: '',
         );
         ref.read(categoriesProvider.notifier).updateCategory(
               newCategory,

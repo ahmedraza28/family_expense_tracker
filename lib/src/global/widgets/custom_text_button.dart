@@ -73,7 +73,12 @@ class CustomTextButton extends StatelessWidget {
         style: textButtonTheme.style!.copyWith(
           padding: MaterialStateProperty.all(padding),
           overlayColor: MaterialStateProperty.all(
-            (color ?? colorScheme.primary).withOpacity(disabled ? 0.15 : 1),
+            (colorScheme.primary).withOpacity(disabled ? 0.15 : 1),
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+            ),
           ),
         ),
         onPressed: disabled ? null : onPressed,
