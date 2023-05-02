@@ -12,8 +12,8 @@ part 'currencies_repository.codegen.g.dart';
 @Riverpod(keepAlive: true)
 CurrenciesRepository currenciesRepository(CurrenciesRepositoryRef ref) {
   final firestoreService = ref.read(firestoreServiceProvider);
-  // return CurrenciesRepository(firestoreService);
-  return MockCurrenciesRepository();
+  return CurrenciesRepository(firestoreService);
+  // return MockCurrenciesRepository();
 }
 
 class CurrenciesRepository {

@@ -17,8 +17,8 @@ part 'categories_repository.codegen.g.dart';
 @Riverpod(keepAlive: true)
 CategoriesRepository categoriesRepository(CategoriesRepositoryRef ref) {
   final firestoreService = ref.read(firestoreServiceProvider);
-  // return CategoriesRepository(firestoreService);
-  return MockCategoriesRepository();
+  return CategoriesRepository(firestoreService);
+  // return MockCategoriesRepository();
 }
 
 class CategoriesRepository {
@@ -62,7 +62,7 @@ class MockCategoriesRepository implements CategoriesRepository {
   final category3 = <String, dynamic>{
     'id': '3',
     'name': 'Salary',
-    'type': 'income',
+    'color': '#FF000000',
   };
   @override
   Stream<List<CategoryModel>> fetchAll({required String bookId}) {

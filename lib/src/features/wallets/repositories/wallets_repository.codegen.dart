@@ -17,8 +17,8 @@ part 'wallets_repository.codegen.g.dart';
 @Riverpod(keepAlive: true)
 WalletsRepository walletsRepository(WalletsRepositoryRef ref) {
   final firestoreService = ref.read(firestoreServiceProvider);
-  // return WalletsRepository(firestoreService);
-  return MockWalletsRepository();
+  return WalletsRepository(firestoreService);
+  // return MockWalletsRepository();
 }
 
 class WalletsRepository {

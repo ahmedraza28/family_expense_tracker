@@ -2,13 +2,13 @@
 
 // Helpers
 import '../../../helpers/typedefs.dart';
-import '../../balance_adjustment/balance_adjustment.dart';
 import '../enums/transaction_type_enum.dart';
 
 // Models
 import 'income_expense_model.codegen.dart';
 
 // Features
+import '../../balance_adjustment/balance_adjustment.dart';
 import '../../balance_transfer/balance_transfer.dart';
 
 abstract class TransactionModel {
