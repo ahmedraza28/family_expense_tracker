@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
+import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
 import '../enums/transaction_type_enum.dart';
 
@@ -22,16 +23,16 @@ class IncomeExpense extends _$IncomeExpense {
 
   Future<void> addTransaction({
     required double amount,
-    required int walletId,
+    required String walletId,
     required DateTime date,
-    required int categoryId,
+    required String categoryId,
     required TransactionType type,
     String? description,
   }) async {
     state = const AsyncValue.loading();
 
     final transaction = IncomeExpenseModel(
-      id: null,
+      id: AppUtils.generateUuid(),
       amount: amount,
       walletId: walletId,
       categoryId: categoryId,
@@ -40,11 +41,12 @@ class IncomeExpense extends _$IncomeExpense {
       description: description,
     );
 
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     state = await state.makeGuardedRequest(
       () => ref.read(transactionsRepositoryProvider).addTransaction(
             bookId: bookId,
             month: transaction.date.month,
+            transactionId: transaction.id,
             year: transaction.date.year,
             body: transaction.toJson(),
           ),
@@ -55,13 +57,13 @@ class IncomeExpense extends _$IncomeExpense {
   Future<void> updateTransaction(IncomeExpenseModel transaction) async {
     state = const AsyncValue.loading();
 
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     state = await state.makeGuardedRequest(
       () => ref.read(transactionsRepositoryProvider).updateTransaction(
             bookId: bookId,
             month: transaction.date.month,
             year: transaction.date.year,
-            transactionId: transaction.id!,
+            transactionId: transaction.id,
             changes: transaction.toJson(),
           ),
       errorMessage: 'Failed to update transaction',
@@ -73,12 +75,12 @@ class IncomeExpense extends _$IncomeExpense {
 
     state = await state.makeGuardedRequest(
       () {
-        final bookId = ref.read(selectedBookProvider)!.id!;
+        final bookId = ref.read(selectedBookProvider)!.id;
         return ref.read(transactionsRepositoryProvider).deleteTransaction(
               bookId: bookId,
               month: transaction.date.month,
               year: transaction.date.year,
-              transactionId: transaction.id!,
+              transactionId: transaction.id,
             );
       },
       errorMessage: 'Failed to delete transaction',

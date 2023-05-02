@@ -64,8 +64,7 @@ class AddEditBudgetScreen extends HookConsumerWidget {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       final categoryIds = [
-        for (final category in categoriesController.value) category.id!
-      ];
+        for (final category in categoriesController.value) category.id];
       if (budget == null) {
         ref.read(budgetsProvider.notifier).addBudget(
               year: yearController.value,

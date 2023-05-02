@@ -3,7 +3,7 @@ import '../enums/transaction_type_enum.dart';
 class TransactionFiltersModel {
   final int? year;
   final int? month;
-  final int? categoryId;
+  final String? categoryId;
   final List<TransactionType>? types;
 
   bool get hasTransfer => types?.contains(TransactionType.transfer) ?? false;
@@ -20,7 +20,7 @@ class TransactionFiltersModel {
   TransactionFiltersModel copyWith({
     int? year,
     int? month,
-    int? categoryId,
+    String? categoryId,
     List<TransactionType>? types,
     bool allowNull = false,
   }) {

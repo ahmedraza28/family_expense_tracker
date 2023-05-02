@@ -70,10 +70,10 @@ class AddEditTransactionScreen extends HookConsumerWidget {
       if (transaction == null) {
         ref.read(incomeExpenseProvider.notifier).addTransaction(
               amount: double.parse(amountController.text),
-              walletId: walletController.value!.id!,
+              walletId: walletController.value!.id,
               date: dateController.value,
               type: typeController.value!,
-              categoryId: categoryController.value!.id!,
+              categoryId: categoryController.value!.id,
               description: descriptionController.text,
             );
         ref
@@ -90,10 +90,10 @@ class AddEditTransactionScreen extends HookConsumerWidget {
       } else {
         final newTransaction = transaction!.copyWith(
           amount: double.parse(amountController.text),
-          walletId: walletController.value!.id!,
+          walletId: walletController.value!.id,
           date: dateController.value,
           type: typeController.value!,
-          categoryId: categoryController.value!.id!,
+          categoryId: categoryController.value!.id,
           description: descriptionController.text,
         );
         ref

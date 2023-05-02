@@ -27,13 +27,13 @@ class FirestoreService {
   Future<void> insertData({
     required String path,
     required Map<String, dynamic> data,
+    required String? id,
   }) async {
-    final reference = _firestoreDb.collection(path).doc();
+    final reference = _firestoreDb.collection(path).doc(id);
 
     debugPrint(path);
 
-    // TODO(arafaysaleem): Remove this once the UUid is implemented
-    data['id'] = reference.id;
+    if (id == null) data['id'] = reference.id;
     await reference.set(data);
   }
 
@@ -125,12 +125,13 @@ class FirestoreService {
   Future<void> batchAdd({
     required String path,
     required List<JSON> data,
+    String Function(JSON)? docIdFinder,
   }) async {
     final batchUpdate = _firestoreDb.batch();
     debugPrint(path);
 
     for (final doc in data) {
-      final docRef = _firestoreDb.collection(path).doc();
+      final docRef = _firestoreDb.collection(path).doc(docIdFinder?.call(doc));
       batchUpdate.update(docRef, doc);
     }
     await batchUpdate.commit();

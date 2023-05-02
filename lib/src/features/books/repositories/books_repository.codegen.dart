@@ -47,10 +47,12 @@ class BooksRepository {
   }
 
   Future<void> addBook({
+    required String bookId,
     required JSON body,
   }) {
     return _firestoreService.insertData(
       path: 'books',
+      id: bookId,
       data: body,
     );
   }
@@ -176,7 +178,7 @@ class MockBooksRepository implements BooksRepository {
   FirestoreService get _firestoreService => throw UnimplementedError();
 
   @override
-  Future<void> addBook({required JSON body}) {
+  Future<void> addBook({required JSON body, required String bookId}) {
     throw CustomException.unimplemented();
   }
 

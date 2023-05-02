@@ -1,13 +1,13 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final selectedWalletIdProvider = StateProvider<int?>(
+final selectedWalletIdProvider = StateProvider<String?>(
   name: 'selectedWalletIdProvider',
   (ref) {
     return null;
   },
 );
 
-final selectedCategoryIdProvider = StateProvider<int?>(
+final selectedCategoryIdProvider = StateProvider<String?>(
   name: 'selectedCategoryIdProvider',
   (ref) {
     return null;

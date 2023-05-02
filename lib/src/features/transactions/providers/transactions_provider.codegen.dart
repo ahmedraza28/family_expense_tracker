@@ -71,7 +71,7 @@ Future<Map<int, DailyTransactionsModel>> groupedTransactions(
 /// A provider used to access instance of this service
 @riverpod
 TransactionsProvider transactions(TransactionsRef ref) {
-  final bookId = ref.watch(selectedBookProvider)!.id!;
+  final bookId = ref.watch(selectedBookProvider)!.id;
   return TransactionsProvider(ref, bookId: bookId);
 }
 

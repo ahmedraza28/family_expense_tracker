@@ -19,7 +19,7 @@ class WalletModel with _$WalletModel {
   static const String balanceField = 'balance';
   
   const factory WalletModel({
-    @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
+    required String id,
     required String name,
     @JsonKey(toJson: AppUtils.toColorHex, fromJson: AppUtils.fromColorHex)
         required Color color,

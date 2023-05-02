@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
+import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
 
 // Models
@@ -21,24 +22,25 @@ class BalanceAdjustment extends _$BalanceAdjustment {
   Future<void> addTransaction({
     required double amount,
     required double prevAmount,
-    required int walletId,
+    required String walletId,
     required DateTime date,
   }) async {
     state = const AsyncValue.loading();
 
     state = await state.makeGuardedRequest(() {
       final transaction = BalanceAdjustmentModel(
-        id: null,
+        id: AppUtils.generateUuid(),
         amount: amount,
         previousAmount: prevAmount,
         walletId: walletId,
         date: date,
       );
-      final bookId = ref.read(selectedBookProvider)!.id!;
+      final bookId = ref.read(selectedBookProvider)!.id;
       return ref.read(transactionsRepositoryProvider).addTransaction(
             bookId: bookId,
             month: date.month,
             year: date.year,
+            transactionId: transaction.id,
             body: transaction.toJson(),
           );
     });
@@ -48,12 +50,12 @@ class BalanceAdjustment extends _$BalanceAdjustment {
     state = const AsyncValue.loading();
 
     state = await state.makeGuardedRequest(() {
-      final bookId = ref.read(selectedBookProvider)!.id!;
+      final bookId = ref.read(selectedBookProvider)!.id;
       return ref.read(transactionsRepositoryProvider).deleteTransaction(
             bookId: bookId,
             month: transaction.date.month,
             year: transaction.date.year,
-            transactionId: transaction.id!,
+            transactionId: transaction.id,
           );
     });
   }

@@ -35,17 +35,19 @@ class WalletsRepository {
 
   Future<void> addWallet({
     required String bookId,
+    required String walletId,
     required JSON body,
   }) {
-    return _firestoreService.setData(
+    return _firestoreService.insertData(
       path: 'books/$bookId/wallets',
+      id: walletId,
       data: body,
     );
   }
 
   Future<void> updateWallet({
     required String bookId,
-    required int walletId,
+    required String walletId,
     required JSON changes,
   }) {
     return _firestoreService.setData(
@@ -61,25 +63,25 @@ class MockWalletsRepository implements WalletsRepository {
   Stream<List<WalletModel>> getBookWallets({required String bookId}) {
     return Stream.value([
       WalletModel(
-        id: 1,
+        id: '1',
         name: 'Wallet 1',
         color: AppColors.primaries[0],
         balance: 200000,
       ),
       WalletModel(
-        id: 2,
+        id: '2',
         name: 'Wallet 2',
         color: AppColors.primaries[1],
         balance: 200000,
       ),
       WalletModel(
-        id: 3,
+        id: '3',
         name: 'Wallet 3',
         color: AppColors.primaries[2],
         balance: 200000,
       ),
       WalletModel(
-        id: 4,
+        id: '4',
         name: 'Wallet 4',
         color: AppColors.primaries[3],
         balance: 200000,
@@ -90,15 +92,16 @@ class MockWalletsRepository implements WalletsRepository {
   @override
   Future<void> addWallet({
     required String bookId,
+    required String walletId,
     required JSON body,
-  }) async => Future.delayed(2.seconds);
+  }) async => Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 
   @override
   Future<void> updateWallet({
     required String bookId,
-    required int walletId,
+    required String walletId,
     required JSON changes,
-  }) async => Future.delayed(2.seconds);
+  }) async => Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();

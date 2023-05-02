@@ -33,16 +33,21 @@ class CategoriesRepository {
     );
   }
 
-  Future<void> create({required String bookId, required JSON body}) {
-    return _firestoreService.setData(
+  Future<void> create({
+    required String bookId,
+    required String categoryId,
+    required JSON body,
+  }) {
+    return _firestoreService.insertData(
       path: 'books/$bookId/categories',
+      id: categoryId,
       data: body,
     );
   }
 
   Future<void> update({
     required String bookId,
-    required int categoryId,
+    required String categoryId,
     required JSON changes,
   }) {
     return _firestoreService.setData(
@@ -54,29 +59,29 @@ class CategoriesRepository {
 }
 
 class MockCategoriesRepository implements CategoriesRepository {
-    final category3 = <String, dynamic>{
-      'id': 3,
-      'name': 'Salary',
-      'image_url': 'https://i.imgur.com/1J8ZQYt.png',
-      'type': 'income',
-    };
+  final category3 = <String, dynamic>{
+    'id': '3',
+    'name': 'Salary',
+    'image_url': 'https://i.imgur.com/1J8ZQYt.png',
+    'type': 'income',
+  };
   @override
   Stream<List<CategoryModel>> fetchAll({required String bookId}) {
     const list = [
       CategoryModel(
-        id: 1,
+        id: '1',
         name: 'Food',
         imageUrl: 'https://picsum.photos/200/300',
         color: Colors.amber,
       ),
       CategoryModel(
-        id: 2,
+        id: '2',
         name: 'Petrol And Maintainance',
         imageUrl: 'https://picsum.photos/200/300',
         color: Colors.blue,
       ),
       CategoryModel(
-        id: 3,
+        id: '3',
         name: 'Salary',
         imageUrl: 'https://picsum.photos/200/300',
         color: Colors.green,
@@ -86,14 +91,20 @@ class MockCategoriesRepository implements CategoriesRepository {
   }
 
   @override
-  Future<void> create({required String bookId, required JSON body}) async => Future.delayed(2.seconds);
+  Future<void> create({
+    required String bookId,
+    required String categoryId,
+    required JSON body,
+  }) async =>
+      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 
   @override
   Future<void> update({
     required String bookId,
-    required int categoryId,
+    required String categoryId,
     required JSON changes,
-  }) async => Future.delayed(2.seconds);
+  }) async =>
+      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();

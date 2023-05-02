@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 // Helpers
 import '../extensions/datetime_extension.dart';
@@ -19,6 +20,11 @@ class AppUtils {
 
   /// A random value generator
   static Random randomizer([int? seed]) => Random(seed);
+
+  static const Uuid _uUid = Uuid();
+
+  /// A utility method to return unique uuid v4
+  static String generateUuid() => _uUid.v4();
 
   /// A utility method to map an integer to a color code
   /// Useful for color coding class erps

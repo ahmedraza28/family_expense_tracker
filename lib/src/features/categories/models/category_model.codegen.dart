@@ -11,12 +11,10 @@ import '../../../helpers/typedefs.dart';
 part 'category_model.codegen.freezed.dart';
 part 'category_model.codegen.g.dart';
 
-int toCategoryId(CategoryModel category) => category.id!;
-
 @freezed
 class CategoryModel with _$CategoryModel {
   const factory CategoryModel({
-    @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
+    required String id,
     required String name,
     required String imageUrl,
     @JsonKey(toJson: AppUtils.toColorHex, fromJson: AppUtils.fromColorHex)

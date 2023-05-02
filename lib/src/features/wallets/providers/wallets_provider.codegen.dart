@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
+import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/typedefs.dart';
 
@@ -23,26 +24,25 @@ Stream<List<WalletModel>> walletsStream(WalletsStreamRef ref) {
 }
 
 @Riverpod(keepAlive: true)
-Future<Map<int, WalletModel>> walletsMap(WalletsMapRef ref) async {
+Future<Map<String, WalletModel>> walletsMap(WalletsMapRef ref) async {
   final wallets = await ref.watch(walletsStreamProvider.future);
-  return {for (var e in wallets) e.id!: e};
+  return {for (var e in wallets) e.id: e};
 }
 
 @Riverpod(keepAlive: true)
-WalletModel? walletById(WalletByIdRef ref, int? id) {
+WalletModel? walletById(WalletByIdRef ref, String? id) {
   return ref.watch(walletsMapProvider).value?[id];
 }
 
 /// A provider used to access instance of this service
 @Riverpod(keepAlive: true)
 class Wallets extends _$Wallets {
-
   @override
   FutureOr<void> build() => null;
 
   Stream<List<WalletModel>> getAllWallets([JSON? queryParams]) {
     final walletsRepository = ref.read(walletsRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     return walletsRepository.getBookWallets(bookId: bookId);
   }
 
@@ -55,7 +55,7 @@ class Wallets extends _$Wallets {
     state = const AsyncValue.loading();
 
     final wallet = WalletModel(
-      id: null,
+      id: AppUtils.generateUuid(),
       name: name,
       color: color,
       balance: balance,
@@ -63,10 +63,11 @@ class Wallets extends _$Wallets {
     );
 
     final walletsRepository = ref.read(walletsRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     state = await state.makeGuardedRequest(
       () => walletsRepository.addWallet(
         bookId: bookId,
+        walletId: wallet.id,
         body: wallet.toJson(),
       ),
       errorMessage: 'Failed to add wallet',
@@ -77,11 +78,11 @@ class Wallets extends _$Wallets {
     state = const AsyncValue.loading();
 
     final walletsRepository = ref.read(walletsRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     state = await state.makeGuardedRequest(
       () => walletsRepository.updateWallet(
         bookId: bookId,
-        walletId: wallet.id!,
+        walletId: wallet.id,
         changes: wallet.toJson(),
       ),
       errorMessage: 'Failed to update wallet',

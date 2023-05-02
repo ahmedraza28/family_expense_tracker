@@ -57,17 +57,17 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
       if (balanceTransfer == null) {
         ref.read(balanceTransferProvider.notifier).addTransaction(
               amount: double.parse(amountController.text),
-              srcWalletId: srcWalletController.value!.id!,
+              srcWalletId: srcWalletController.value!.id,
               date: dateController.value!,
-              destWalletId: destWalletController.value!.id!,
+              destWalletId: destWalletController.value!.id,
               description: descriptionController.text,
             );
       } else {
         final newTransfer = balanceTransfer!.copyWith(
           amount: double.parse(amountController.text),
-          srcWalletId: srcWalletController.value!.id!,
+          srcWalletId: srcWalletController.value!.id,
           date: dateController.value!,
-          destWalletId: destWalletController.value!.id!,
+          destWalletId: destWalletController.value!.id,
           description: descriptionController.text,
         );
         ref

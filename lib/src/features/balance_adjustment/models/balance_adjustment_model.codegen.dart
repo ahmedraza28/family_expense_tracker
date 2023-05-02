@@ -18,11 +18,11 @@ part 'balance_adjustment_model.codegen.g.dart';
 class BalanceAdjustmentModel extends TransactionModel
     with _$BalanceAdjustmentModel {
   const factory BalanceAdjustmentModel({
-    @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
+    required String id,
     required double amount,
     required double previousAmount,
     required DateTime date,
-    required int walletId,
+    required String walletId,
     @Default(TransactionType.adjustment) TransactionType type,
   }) = _BalanceAdjustmentModel;
 

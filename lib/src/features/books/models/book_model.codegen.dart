@@ -21,7 +21,7 @@ part 'book_model.codegen.g.dart';
 @freezed
 class BookModel with _$BookModel {
   const factory BookModel({
-    @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required String? id,
+    required String id,
     required String name,
     @JsonKey(toJson: AppUtils.toColorHex, fromJson: AppUtils.fromColorHex)
         required Color color,

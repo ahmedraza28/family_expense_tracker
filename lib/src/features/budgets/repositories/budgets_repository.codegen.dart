@@ -29,7 +29,7 @@ class BudgetsRepository {
     required String bookId,
     required int year,
     required int month,
-    int? categoryId,
+    String? categoryId,
   }) {
     return _firestoreService.collectionStream<BudgetModel>(
       path: 'books/$bookId/budgets/$month-$year',
@@ -49,12 +49,14 @@ class BudgetsRepository {
 
   Future<void> addBudget({
     required String bookId,
+    required String budgetId,
     required int year,
     required int month,
     required JSON body,
   }) {
-    return _firestoreService.setData(
+    return _firestoreService.insertData(
       path: 'books/$bookId/budgets/$month-$year',
+      id: budgetId,
       data: body,
     );
   }
@@ -67,6 +69,7 @@ class BudgetsRepository {
   }) {
     return _firestoreService.batchAdd(
       path: 'books/$bookId/budgets/$month-$year',
+      docIdFinder: (body) => body['id']! as String,
       data: body,
     );
   }
@@ -75,7 +78,7 @@ class BudgetsRepository {
     required String bookId,
     required int year,
     required int month,
-    required int budgetId,
+    required String budgetId,
     required JSON changes,
   }) {
     return _firestoreService.setData(
@@ -92,33 +95,33 @@ class MockBudgetsRepository implements BudgetsRepository {
     required String bookId,
     required int year,
     required int month,
-    int? categoryId,
+    String? categoryId,
   }) {
     final date = DateTime.now();
     final lastMonth = DateTime(date.year, date.month - 1);
     final list = [
       BudgetModel(
-        id: 1,
+        id: '1',
         name: 'Food and snacks',
-        categoryIds: [1, 2],
+        categoryIds: ['1', '2'],
         amount: 20000,
         used: 11204,
         year: date.year,
         month: date.month,
       ),
       BudgetModel(
-        id: 2,
+        id: '2',
         name: 'Vehicle and transport',
-        categoryIds: [2],
+        categoryIds: ['2'],
         amount: 55000,
         used: 44897,
         year: date.year,
         month: date.month,
       ),
       BudgetModel(
-        id: 3,
+        id: '3',
         name: 'Salary',
-        categoryIds: [3],
+        categoryIds: ['3'],
         amount: 100000,
         used: 100000,
         year: date.year,
@@ -126,27 +129,27 @@ class MockBudgetsRepository implements BudgetsRepository {
         month: date.month,
       ),
       BudgetModel(
-        id: 4,
+        id: '4',
         name: 'Food and snacks',
-        categoryIds: [1],
+        categoryIds: ['1'],
         amount: 10000,
         used: 3000,
         year: lastMonth.year,
         month: lastMonth.month,
       ),
       BudgetModel(
-        id: 5,
+        id: '5',
         name: 'Vehicle and transport',
-        categoryIds: [2],
+        categoryIds: ['2'],
         amount: 39000,
         used: 55000,
         year: lastMonth.year,
         month: lastMonth.month,
       ),
       BudgetModel(
-        id: 6,
+        id: '6',
         name: 'Salary',
-        categoryIds: [3],
+        categoryIds: ['3'],
         amount: 90000,
         isExpense: false,
         used: 90000,
@@ -173,21 +176,22 @@ class MockBudgetsRepository implements BudgetsRepository {
   @override
   Future<void> addBudget({
     required String bookId,
+    required String budgetId,
     required int year,
     required int month,
     required JSON body,
   }) async =>
-      Future.delayed(2.seconds);
+      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 
   @override
   Future<void> updateBudget({
     required String bookId,
     required int year,
     required int month,
-    required int budgetId,
+    required String budgetId,
     required JSON changes,
   }) async =>
-      Future.delayed(2.seconds);
+      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 
   @override
   FirestoreService get _firestoreService => throw UnimplementedError();
@@ -199,5 +203,5 @@ class MockBudgetsRepository implements BudgetsRepository {
     required int month,
     required List<JSON> body,
   }) async =>
-      Future.delayed(2.seconds);
+      Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 }

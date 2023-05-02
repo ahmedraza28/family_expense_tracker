@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
+import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
 
 // Models
@@ -20,8 +21,8 @@ class BalanceTransfer extends _$BalanceTransfer {
 
   Future<void> addTransaction({
     required double amount,
-    required int srcWalletId,
-    required int destWalletId,
+    required String srcWalletId,
+    required String destWalletId,
     required DateTime date,
     String? description,
   }) async {
@@ -30,18 +31,19 @@ class BalanceTransfer extends _$BalanceTransfer {
     state = await state.makeGuardedRequest(
       () {
         final transaction = BalanceTransferModel(
-          id: null,
+          id: AppUtils.generateUuid(),
           amount: amount,
           srcWalletId: srcWalletId,
           destWalletId: destWalletId,
           date: date,
           description: description,
         );
-        final bookId = ref.read(selectedBookProvider)!.id!;
+        final bookId = ref.read(selectedBookProvider)!.id;
         return ref.read(transactionsRepositoryProvider).addTransaction(
               bookId: bookId,
               month: date.month,
               year: date.year,
+              transactionId: transaction.id,
               body: transaction.toJson(),
             );
       },
@@ -54,12 +56,12 @@ class BalanceTransfer extends _$BalanceTransfer {
 
     state = await state.makeGuardedRequest(
       () {
-        final bookId = ref.read(selectedBookProvider)!.id!;
+        final bookId = ref.read(selectedBookProvider)!.id;
         return ref.read(transactionsRepositoryProvider).updateTransaction(
               bookId: bookId,
               month: transaction.date.month,
               year: transaction.date.year,
-              transactionId: transaction.id!,
+              transactionId: transaction.id,
               changes: transaction.toJson(),
             );
       },
@@ -72,12 +74,12 @@ class BalanceTransfer extends _$BalanceTransfer {
 
     state = await state.makeGuardedRequest(
       () {
-        final bookId = ref.read(selectedBookProvider)!.id!;
+        final bookId = ref.read(selectedBookProvider)!.id;
         return ref.read(transactionsRepositoryProvider).deleteTransaction(
               bookId: bookId,
               month: transaction.date.month,
               year: transaction.date.year,
-              transactionId: transaction.id!,
+              transactionId: transaction.id,
             );
       },
       errorMessage: 'Failed to delete balance transfer',

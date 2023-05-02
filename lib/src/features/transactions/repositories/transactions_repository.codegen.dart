@@ -32,7 +32,7 @@ class TransactionsRepository {
     required String bookId,
     required int month,
     required int year,
-    int? categoryId,
+    String? categoryId,
     int? day,
     List<String>? transactionTypes,
   }) async* {
@@ -70,12 +70,14 @@ class TransactionsRepository {
 
   Future<void> addTransaction({
     required String bookId,
+    required String transactionId,
     required int month,
     required int year,
     required JSON body,
   }) {
     return _firestoreService.insertData(
       path: 'books/$bookId/transactions-$month-$year',
+      id: transactionId,
       data: body,
     );
   }
@@ -84,7 +86,7 @@ class TransactionsRepository {
     required String bookId,
     required int month,
     required int year,
-    required int transactionId,
+    required String transactionId,
     required JSON changes,
   }) {
     return _firestoreService.setData(
@@ -98,7 +100,7 @@ class TransactionsRepository {
     required String bookId,
     required int month,
     required int year,
-    required int transactionId,
+    required String transactionId,
   }) {
     return _firestoreService.deleteData(
       path: 'books/$bookId/transactions-$month-$year/$transactionId',
@@ -112,11 +114,11 @@ class MockTransactionsRepository implements TransactionsRepository {
     required String bookId,
     required int month,
     required int year,
-    int? categoryId,
+    String? categoryId,
     int? day,
     List<String>? transactionTypes,
   }) {
-    const walletId = 1;
+    const walletId = '1';
     final nowDate = DateTime.now();
     final todayDate = nowDate.toDateString('yyyy-MM-dd');
     final yesterDate =
@@ -127,15 +129,15 @@ class MockTransactionsRepository implements TransactionsRepository {
         nowDate.subtract(const Duration(days: 30)).toDateString('yyyy-MM-dd');
     final list = <TransactionModel>[
       IncomeExpenseModel(
-        id: 1,
+        id: '1',
         amount: 100,
         type: TransactionType.income,
         walletId: walletId,
-        categoryId: 1,
+        categoryId: '1',
         date: nowDate,
       ),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 3,
+        'id': '3',
         'amount': 300,
         'date': todayDate,
         'type': TransactionType.transfer.name,
@@ -144,43 +146,43 @@ class MockTransactionsRepository implements TransactionsRepository {
         'dest_wallet_id': walletId,
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 4,
+        'id': '4',
         'amount': 400,
         'type': TransactionType.expense.name,
         'description': 'Ek wagon fuel',
         'date': yesterDate,
         'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 2,
+        IncomeExpenseModel.categoryIdField: '2',
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 5,
+        'id': '5',
         'amount': 500,
         'description': 'Civic service',
         'type': TransactionType.expense.name,
         'date': yesterDate,
         'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 2,
+        IncomeExpenseModel.categoryIdField: '2',
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 1,
+        'id': '1',
         'amount': 100,
         'description': '10Pearls',
         'type': TransactionType.income.name,
         'date': yesterDate,
         'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 3,
+        IncomeExpenseModel.categoryIdField: '3',
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 2,
+        'id': '2',
         'amount': 200,
         'description': 'Food',
         'date': yesterDate,
         'type': TransactionType.expense.name,
         'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 1,
+        IncomeExpenseModel.categoryIdField: '1',
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 3,
+        'id': '3',
         'amount': 300,
         'date': lastMonthDate,
         'type': TransactionType.transfer.name,
@@ -189,43 +191,43 @@ class MockTransactionsRepository implements TransactionsRepository {
         'dest_wallet_id': walletId,
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 4,
+        'id': '4',
         'amount': 400,
         'description': 'Shopping',
         'date': yesterDate,
         'type': TransactionType.expense.name,
         'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 1,
+        IncomeExpenseModel.categoryIdField: '1',
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 5,
+        'id': '5',
         'amount': 500,
         'description': 'Entertainment',
         'date': lastMonthDate,
         'type': TransactionType.expense.name,
         'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 1,
+        IncomeExpenseModel.categoryIdField: '1',
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 1,
+        'id': '1',
         'amount': 100,
         'description': 'Drinks',
         'date': lastMonthDate,
         'type': TransactionType.expense.name,
         'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 1,
+        IncomeExpenseModel.categoryIdField: '1',
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 2,
+        'id': '2',
         'amount': 200,
         'description': 'Food',
         'date': lastMonthDate,
         'type': TransactionType.expense.name,
         'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 1,
+        IncomeExpenseModel.categoryIdField: '1',
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 3,
+        'id': '3',
         'amount': 300,
         'date': twoDaysAgoDate,
         'description': 'Ghar kharcha',
@@ -234,22 +236,22 @@ class MockTransactionsRepository implements TransactionsRepository {
         'dest_wallet_id': walletId,
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 4,
+        'id': '4',
         'amount': 400,
         'description': 'Shopping',
         'date': twoDaysAgoDate,
         'type': TransactionType.expense.name,
         'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 1,
+        IncomeExpenseModel.categoryIdField: '1',
       }),
       TransactionModel.fromJson(<String, dynamic>{
-        'id': 5,
+        'id': '5',
         'amount': 500,
         'description': 'Entertainment',
         'date': twoDaysAgoDate,
         'type': TransactionType.expense.name,
         'wallet_id': walletId,
-        IncomeExpenseModel.categoryIdField: 1,
+        IncomeExpenseModel.categoryIdField: '1',
       }),
     ];
     return Stream.value(
@@ -278,6 +280,7 @@ class MockTransactionsRepository implements TransactionsRepository {
   @override
   Future<void> addTransaction({
     required String bookId,
+    required String transactionId,
     required int month,
     required int year,
     required JSON body,
@@ -289,7 +292,7 @@ class MockTransactionsRepository implements TransactionsRepository {
     required String bookId,
     required int month,
     required int year,
-    required int transactionId,
+    required String transactionId,
     required JSON changes,
   }) async =>
       Future.delayed(2.seconds, () => throw CustomException.unimplemented());
@@ -302,7 +305,7 @@ class MockTransactionsRepository implements TransactionsRepository {
     required String bookId,
     required int month,
     required int year,
-    required int transactionId,
+    required String transactionId,
   }) async =>
       Future.delayed(2.seconds, () => throw CustomException.unimplemented());
 }

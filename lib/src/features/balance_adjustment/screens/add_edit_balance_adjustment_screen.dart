@@ -49,7 +49,7 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
       ref.read(balanceAdjustmentProvider.notifier).addTransaction(
             amount: double.parse(amountController.text),
             prevAmount: walletController.value!.balance,
-            walletId: walletController.value!.id!,
+            walletId: walletController.value!.id,
             date: dateController.value!,
           );
       AppRouter.pop();

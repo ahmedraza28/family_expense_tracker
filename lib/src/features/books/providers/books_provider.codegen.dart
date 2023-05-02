@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
+import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
 import '../enums/member_role_enum.dart';
 
@@ -64,7 +65,7 @@ class Books extends _$Books {
     state = const AsyncValue.loading();
     final currentUser = ref.read(currentUserProvider).value!;
     final book = BookModel(
-      id: null,
+      id: AppUtils.generateUuid(),
       name: name,
       color: color,
       currencyName: currencyName,
@@ -79,7 +80,10 @@ class Books extends _$Books {
 
     final booksRepository = ref.read(booksRepositoryProvider);
     state = await state.makeGuardedRequest(
-      () => booksRepository.addBook(body: book.toJson()),
+      () => booksRepository.addBook(
+        body: book.toJson(),
+        bookId: book.id,
+      ),
       errorMessage: 'Failed to add book',
     );
   }
@@ -90,7 +94,7 @@ class Books extends _$Books {
     final booksRepository = ref.read(booksRepositoryProvider);
     state = await state.makeGuardedRequest(
       () => booksRepository.updateBook(
-        bookId: book.id!,
+        bookId: book.id,
         changes: book.toJson(),
       ),
     );

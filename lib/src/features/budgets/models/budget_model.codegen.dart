@@ -15,8 +15,8 @@ class BudgetModel with _$BudgetModel {
   static const categoryIdsField = 'category_ids';
 
   const factory BudgetModel({
-    @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
-    required List<int> categoryIds,
+    required String id,
+    required List<String> categoryIds,
     required String name,
     required double amount,
     required int year,

@@ -1,5 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+// Helpers
+import '../../../helpers/constants/constants.dart';
+
 // Models
 import '../models/budget_filters_model.dart';
 import '../models/budget_model.codegen.dart';
@@ -32,7 +35,7 @@ class Budgets extends _$Budgets {
   FutureOr<void> build() => null;
 
   Stream<List<BudgetModel>> getAllBudgets([BudgetFiltersModel? filters]) {
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     final budgetsRepository = ref.read(budgetsRepositoryProvider);
     return budgetsRepository.getBookBudgets(
       bookId: bookId,
@@ -45,7 +48,7 @@ class Budgets extends _$Budgets {
   /// Copies the given [List<BudgetModels>] to the current month
   void copyBudgets(List<BudgetModel> budgets) {
     final budgetsRepository = ref.read(budgetsRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     budgetsRepository.addAllBudgets(
       bookId: bookId,
       year: _currentDate.year,
@@ -58,12 +61,12 @@ class Budgets extends _$Budgets {
     required int year,
     required String name,
     required int month,
-    required List<int> categoryIds,
+    required List<String> categoryIds,
     required double amount,
     String? description,
   }) {
     final budget = BudgetModel(
-      id: null,
+      id: AppUtils.generateUuid(),
       year: year,
       name: name,
       month: month,
@@ -72,23 +75,24 @@ class Budgets extends _$Budgets {
       description: description,
     );
     final budgetsRepository = ref.read(budgetsRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     budgetsRepository.addBudget(
       bookId: bookId,
       year: year,
       month: month,
+      budgetId: budget.id,
       body: budget.toJson(),
     );
   }
 
   void updateBudget(BudgetModel budget) {
     final budgetsRepository = ref.read(budgetsRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     budgetsRepository.updateBudget(
       bookId: bookId,
       year: budget.year,
       month: budget.month,
-      budgetId: budget.id!,
+      budgetId: budget.id,
       changes: budget.toJson(),
     );
   }

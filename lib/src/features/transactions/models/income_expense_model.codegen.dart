@@ -24,11 +24,11 @@ class IncomeExpenseModel extends TransactionModel with _$IncomeExpenseModel {
   static const categoryIdField = 'category_id';
 
   const factory IncomeExpenseModel({
-    @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
+    required String id,
     required double amount,
     required TransactionType type,
-    required int walletId,
-    required int categoryId,
+    required String walletId,
+    required String categoryId,
     @JsonKey(toJson: AppUtils.dateToJson) required DateTime date,
     String? description,
   }) = _IncomeExpenseModel;

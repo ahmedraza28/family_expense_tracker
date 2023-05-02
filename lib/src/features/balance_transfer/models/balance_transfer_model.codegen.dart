@@ -18,11 +18,11 @@ part 'balance_transfer_model.codegen.g.dart';
 class BalanceTransferModel extends TransactionModel
     with _$BalanceTransferModel {
   const factory BalanceTransferModel({
-    @JsonKey(toJson: AppUtils.toNull, includeIfNull: false) required int? id,
+    required String id,
     required double amount,
     required DateTime date,
-    required int srcWalletId,
-    required int destWalletId,
+    required String srcWalletId,
+    required String destWalletId,
     @Default(TransactionType.transfer) TransactionType type,
     String? description,
   }) = _BalanceTransferModel;

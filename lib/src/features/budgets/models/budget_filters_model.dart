@@ -1,7 +1,7 @@
 class BudgetFiltersModel {
   final int? year;
   final int? month;
-  final int? categoryId;
+  final String? categoryId;
 
   const BudgetFiltersModel({
     this.year,
@@ -12,7 +12,7 @@ class BudgetFiltersModel {
   BudgetFiltersModel copyWith({
     int? year,
     int? month,
-    int? categoryId,
+    String? categoryId,
     bool allowNull = false,
   }) {
     return BudgetFiltersModel(

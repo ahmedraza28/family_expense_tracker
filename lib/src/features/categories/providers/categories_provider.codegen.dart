@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
+import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
 
 // Models
@@ -23,14 +24,14 @@ Stream<List<CategoryModel>> categoriesStream(CategoriesStreamRef ref) {
 }
 
 @Riverpod(keepAlive: true)
-Future<Map<int, CategoryModel>> categoriesMap(CategoriesMapRef ref) async {
+Future<Map<String, CategoryModel>> categoriesMap(CategoriesMapRef ref) async {
   final categories = await ref.watch(categoriesStreamProvider.future);
-  return {for (var e in categories) e.id!: e};
+  return {for (var e in categories) e.id: e};
 }
 
 @Riverpod(keepAlive: true)
-CategoryModel? categoryById(CategoryByIdRef ref, int? id) {
-  return ref.watch(categoriesMapProvider).asData!.value[id];
+CategoryModel? categoryById(CategoryByIdRef ref, String? id) {
+  return ref.watch(categoriesMapProvider).value?[id];
 }
 
 /// A provider used to access instance of this service
@@ -41,7 +42,7 @@ class Categories extends _$Categories {
 
   Stream<List<CategoryModel>> getAllCategories() {
     final categoriesRepository = ref.read(categoriesRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     return categoriesRepository.fetchAll(bookId: bookId);
   }
 
@@ -53,17 +54,18 @@ class Categories extends _$Categories {
     state = const AsyncValue.loading();
 
     final category = CategoryModel(
-      id: null,
+      id: AppUtils.generateUuid(),
       name: name,
       imageUrl: imageUrl,
       color: color,
     );
 
     final categoriesRepository = ref.read(categoriesRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     state = await state.makeGuardedRequest(
       () => categoriesRepository.create(
         bookId: bookId,
+        categoryId: category.id,
         body: category.toJson(),
       ),
       errorMessage: 'Failed to add category',
@@ -74,11 +76,11 @@ class Categories extends _$Categories {
     state = const AsyncValue.loading();
 
     final categoriesRepository = ref.read(categoriesRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id!;
+    final bookId = ref.read(selectedBookProvider)!.id;
     state = await state.makeGuardedRequest(
       () => categoriesRepository.update(
         bookId: bookId,
-        categoryId: category.id!,
+        categoryId: category.id,
         changes: category.toJson(),
       ),
       errorMessage: 'Failed to update category',
