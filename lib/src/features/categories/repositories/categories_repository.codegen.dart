@@ -68,12 +68,12 @@ class MockCategoriesRepository implements CategoriesRepository {
   Stream<List<CategoryModel>> fetchAll({required String bookId}) {
     const list = [
       CategoryModel(
-        id: '1',
-        name: 'Food',
+        id: '3748e610-d6e9-4f02-a500-15bbecf724b0',
+        name: 'Groceries',
         color: Colors.amber,
       ),
       CategoryModel(
-        id: '2',
+        id: '041b2bd9-d783-43bb-99ff-c2dd8078d8f9',
         name: 'Petrol And Maintainance',
         color: Colors.blue,
       ),

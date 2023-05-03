@@ -75,7 +75,7 @@ class IncomeExpenseListItem extends ConsumerWidget {
                   // Title
                   if (transaction.description != null) ...[
                     CustomText.body(
-                      transaction.description ?? '',
+                      transaction.description!,
                     ),
                     Insets.gapH5,
                   ],

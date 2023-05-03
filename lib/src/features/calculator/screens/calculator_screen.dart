@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
+import '../../../helpers/extensions/context_extensions.dart';
 
 // Enums
 import '../enums/calc_button_enum.dart';
@@ -63,16 +64,16 @@ class CalculatorScreen extends StatelessWidget {
         ],
       ),
       body: Column(
-        children: const [
+        children: [
           // Output Section
-          Expanded(
+          const Expanded(
             child: NumberResult(),
           ),
 
           // Input Section
-          FractionallySizedBox(
-            heightFactor: 0.70,
-            child: InputButtons(),
+          SizedBox(
+            height: context.screenHeight * 0.51,
+            child: const InputButtons(),
           ),
         ],
       ),

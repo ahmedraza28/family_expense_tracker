@@ -37,7 +37,7 @@ class TransactionsRepository {
     List<String>? transactionTypes,
   }) async* {
     final path = 'books/$bookId/transactions-$month-$year';
-    if (await _firestoreService.existsCollection(path: path)) {
+    if (!(await _firestoreService.existsCollection(path: path))) {
       yield const [];
       return;
     }

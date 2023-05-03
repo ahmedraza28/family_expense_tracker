@@ -48,6 +48,7 @@ class AuthController extends _$AuthController {
 
   void logout() {
     ref.read(authRepositoryProvider).signOut();
+    ref.invalidate(currentUserProvider);
     state = const AsyncValue.data(null);
   }
 }

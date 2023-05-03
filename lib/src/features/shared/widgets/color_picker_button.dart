@@ -68,7 +68,8 @@ class ColorPickerButton extends StatelessWidget {
         valueListenable: controller,
         builder: (_, color, __) => ShadedIcon(
           color: color,
-          padding: const EdgeInsets.all(14),
+          height: 54,
+          width: 54,
           iconData: iconData,
         ),
       ),

@@ -114,9 +114,12 @@ class AddEditCategoryScreen extends HookConsumerWidget {
                   Insets.gapW10,
 
                   // Category Color
-                  ColorPickerButton(
-                    controller: colorController,
-                    iconData: Icons.category_rounded,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 23),
+                    child: ColorPickerButton(
+                      controller: colorController,
+                      iconData: Icons.category_rounded,
+                    ),
                   )
                 ],
               ),

@@ -103,7 +103,7 @@ class MockBudgetsRepository implements BudgetsRepository {
       BudgetModel(
         id: '1',
         name: 'Food and snacks',
-        categoryIds: ['1', '2'],
+        categoryIds: ['3748e610-d6e9-4f02-a500-15bbecf724b0', '5e5e566b-032b-48f6-8f9d-c4dbb855b735'],
         amount: 20000,
         used: 11204,
         year: date.year,
@@ -112,7 +112,7 @@ class MockBudgetsRepository implements BudgetsRepository {
       BudgetModel(
         id: '2',
         name: 'Vehicle and transport',
-        categoryIds: ['2'],
+        categoryIds: ['041b2bd9-d783-43bb-99ff-c2dd8078d8f9'],
         amount: 55000,
         used: 44897,
         year: date.year,
@@ -121,7 +121,7 @@ class MockBudgetsRepository implements BudgetsRepository {
       BudgetModel(
         id: '3',
         name: 'Salary',
-        categoryIds: ['3'],
+        categoryIds: ['b62bb0d3-68ad-4d6a-bd08-0a1adb57bbf9'],
         amount: 100000,
         used: 100000,
         year: date.year,
@@ -131,7 +131,7 @@ class MockBudgetsRepository implements BudgetsRepository {
       BudgetModel(
         id: '4',
         name: 'Food and snacks',
-        categoryIds: ['1'],
+        categoryIds: ['3748e610-d6e9-4f02-a500-15bbecf724b0', '5e5e566b-032b-48f6-8f9d-c4dbb855b735'],
         amount: 10000,
         used: 3000,
         year: lastMonth.year,
@@ -140,7 +140,7 @@ class MockBudgetsRepository implements BudgetsRepository {
       BudgetModel(
         id: '5',
         name: 'Vehicle and transport',
-        categoryIds: ['2'],
+        categoryIds: ['041b2bd9-d783-43bb-99ff-c2dd8078d8f9'],
         amount: 39000,
         used: 55000,
         year: lastMonth.year,
@@ -149,7 +149,7 @@ class MockBudgetsRepository implements BudgetsRepository {
       BudgetModel(
         id: '6',
         name: 'Salary',
-        categoryIds: ['3'],
+        categoryIds: ['b62bb0d3-68ad-4d6a-bd08-0a1adb57bbf9'],
         amount: 90000,
         isExpense: false,
         used: 90000,

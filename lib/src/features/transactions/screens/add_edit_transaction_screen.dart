@@ -45,7 +45,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
       text: transaction?.amount.toString() ?? '',
     );
     final descriptionController = useTextEditingController(
-      text: transaction?.description ?? '',
+      text: transaction?.description,
     );
     final dateController = useValueNotifier<DateTime>(
       transaction?.date ?? ref.watch(selectedDateProvider) ?? DateTime.now(),
@@ -80,7 +80,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               date: dateController.value,
               type: typeController.value!,
               categoryId: categoryController.value!.id,
-              description: descriptionController.text,
+              description: descriptionController.text.isEmpty ? null : descriptionController.text,
             );
         ref
             .read(selectedDateProvider.notifier)
@@ -100,7 +100,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
           date: dateController.value,
           type: typeController.value!,
           categoryId: categoryController.value!.id,
-          description: descriptionController.text,
+          description: descriptionController.text.isEmpty ? null : descriptionController.text,
         );
         ref
             .read(incomeExpenseProvider.notifier)
