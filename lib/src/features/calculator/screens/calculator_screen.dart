@@ -70,8 +70,8 @@ class CalculatorScreen extends StatelessWidget {
           ),
 
           // Input Section
-          SizedBox(
-            height: 382,
+          FractionallySizedBox(
+            heightFactor: 0.70,
             child: InputButtons(),
           ),
         ],

@@ -33,18 +33,19 @@ class WalletsScreen extends StatelessWidget {
           preferredSize: const Size.fromHeight(50),
           child: Padding(
             padding: const EdgeInsets.only(bottom: 20),
-            child: CustomTextButton.outlined(
+            child: CustomTextButton(
               height: 35,
               width: 200,
               borderRadius: 10,
+              color: Colors.white,
+              border: Border.all(
+                color: AppColors.primaryColor,
+              ),
               onPressed: () {
                 AppRouter.pushNamed(
                   Routes.AddEditBalanceTransferScreenRoute,
                 );
               },
-              border: Border.all(
-                color: AppColors.primaryColor,
-              ),
               child: const Center(
                 child: CustomText(
                   'Transfer Balance',

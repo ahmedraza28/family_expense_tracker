@@ -146,12 +146,9 @@ class AddEditWalletScreen extends HookConsumerWidget {
                   Insets.gapW10,
 
                   // Wallet Color
-                  Padding(
-                    padding: const EdgeInsets.only(top: 23),
-                    child: ColorPickerButton(
-                      controller: colorController,
-                      iconData: Icons.wallet_rounded,
-                    ),
+                  ColorPickerButton(
+                    controller: colorController,
+                    iconData: Icons.wallet_rounded,
                   )
                 ],
               ),
