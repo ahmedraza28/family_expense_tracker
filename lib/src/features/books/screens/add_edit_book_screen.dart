@@ -136,27 +136,13 @@ class AddEditBookScreen extends HookConsumerWidget {
                 },
               ),
 
-              Insets.expand,
-
-              // Confirm Details Button
-              CustomTextButton.gradient(
-                width: double.infinity,
-                onPressed: saveBook,
-                gradient: AppColors.buttonGradientPrimary,
-                child: const Center(
-                  child: CustomText(
-                    'Save',
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-
-              Insets.bottomInsetsLow,
+              Insets.gapH(110),
             ],
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingSaveButton(onSave: saveBook),
     );
   }
 }

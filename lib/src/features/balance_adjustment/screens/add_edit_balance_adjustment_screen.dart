@@ -18,6 +18,7 @@ import '../models/balance_adjustment_model.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import '../../shared/widgets/floating_save_button.dart';
 
 // Features
 import '../../calculator/calculator.dart';
@@ -153,27 +154,12 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
               ),
             ),
 
-            Insets.expand,
-
-            // Confirm Details Button
-            if (balanceAdjustment == null)
-              CustomTextButton.gradient(
-                width: double.infinity,
-                onPressed: onSave,
-                gradient: AppColors.buttonGradientPrimary,
-                child: const Center(
-                  child: CustomText(
-                    'Save',
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-
-            Insets.bottomInsetsLow,
+            Insets.gapH(110),
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: balanceAdjustment == null ? FloatingSaveButton(onSave: onSave) : null,
     );
   }
 }

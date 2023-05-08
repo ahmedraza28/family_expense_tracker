@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+// Models
+import '../models/budget_model.codegen.dart';
+
 // Providers
-import '../budgets.dart';
+import '../providers/budgets_provider.codegen.dart';
 
 // Routing
 import '../../../config/routing/routing.dart';
@@ -15,8 +18,10 @@ import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import '../widgets/budget_type_selection_cards.dart';
 
 // Features
+import '../../shared/shared.dart';
 import '../../categories/categories.dart';
 
 class AddEditBudgetScreen extends HookConsumerWidget {
@@ -64,7 +69,8 @@ class AddEditBudgetScreen extends HookConsumerWidget {
       if (!formKey.currentState!.validate()) return;
       formKey.currentState!.save();
       final categoryIds = [
-        for (final category in categoriesController.value) category.id];
+        for (final category in categoriesController.value) category.id
+      ];
       if (budget == null) {
         ref.read(budgetsProvider.notifier).addBudget(
               year: yearController.value,
@@ -228,46 +234,7 @@ class AddEditBudgetScreen extends HookConsumerWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: SaveButton(onSave: onSave),
-    );
-  }
-}
-
-class SaveButton extends StatelessWidget {
-  const SaveButton({
-    required this.onSave,
-    super.key,
-  });
-
-  final VoidCallback onSave;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 55,
-      margin: const EdgeInsets.symmetric(horizontal: 15),
-      child: FloatingActionButton(
-        onPressed: onSave,
-        elevation: 5,
-        backgroundColor: Colors.transparent,
-        shape: const RoundedRectangleBorder(
-          borderRadius: Corners.rounded7,
-        ),
-        child: const DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: Corners.rounded7,
-            gradient: AppColors.buttonGradientPrimary,
-          ),
-          child: Center(
-            child: CustomText(
-              'Save',
-              color: Colors.white,
-              fontSize: 16,
-            ),
-          ),
-        ),
-      ),
+      floatingActionButton: FloatingSaveButton(onSave: onSave),
     );
   }
 }

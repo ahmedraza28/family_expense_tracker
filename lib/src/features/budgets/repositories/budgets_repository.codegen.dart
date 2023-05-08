@@ -16,8 +16,8 @@ part 'budgets_repository.codegen.g.dart';
 @Riverpod(keepAlive: true)
 BudgetsRepository budgetsRepository(BudgetsRepositoryRef ref) {
   final firestoreService = ref.read(firestoreServiceProvider);
-  // return BudgetsRepository(firestoreService);
-  return MockBudgetsRepository();
+  return BudgetsRepository(firestoreService);
+  // return MockBudgetsRepository();
 }
 
 class BudgetsRepository {
@@ -32,7 +32,7 @@ class BudgetsRepository {
     String? categoryId,
   }) {
     return _firestoreService.collectionStream<BudgetModel>(
-      path: 'books/$bookId/budgets/$month-$year',
+      path: 'books/$bookId/budgets-$month-$year',
       queryBuilder: (query) {
         if (categoryId != null) {
           query = query.where(
@@ -55,7 +55,7 @@ class BudgetsRepository {
     required JSON body,
   }) {
     return _firestoreService.insertData(
-      path: 'books/$bookId/budgets/$month-$year',
+      path: 'books/$bookId/budgets-$month-$year',
       id: budgetId,
       data: body,
     );
@@ -68,7 +68,7 @@ class BudgetsRepository {
     required List<JSON> body,
   }) {
     return _firestoreService.batchAdd(
-      path: 'books/$bookId/budgets/$month-$year',
+      path: 'books/$bookId/budgets-$month-$year',
       docIdFinder: (body) => body['id']! as String,
       data: body,
     );
@@ -82,7 +82,7 @@ class BudgetsRepository {
     required JSON changes,
   }) {
     return _firestoreService.setData(
-      path: 'books/$bookId/budgets/$month-$year/$budgetId',
+      path: 'books/$bookId/budgets-$month-$year/$budgetId',
       data: changes,
       merge: true,
     );

@@ -18,6 +18,7 @@ import '../providers/balance_transfer_provider.codegen.dart';
 import '../models/balance_transfer_model.codegen.dart';
 
 // Widgets
+import '../../shared/widgets/floating_save_button.dart';
 import '../../../global/widgets/widgets.dart';
 
 // Features
@@ -189,27 +190,13 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
                 textInputAction: TextInputAction.done,
               ),
 
-              Insets.expand,
-
-              // Confirm Details Button
-              CustomTextButton.gradient(
-                width: double.infinity,
-                onPressed: onSave,
-                gradient: AppColors.buttonGradientPrimary,
-                child: const Center(
-                  child: CustomText(
-                    'Save',
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-
-              Insets.bottomInsetsLow,
+              Insets.gapH(114),
             ],
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingSaveButton(onSave: onSave),
     );
   }
 }

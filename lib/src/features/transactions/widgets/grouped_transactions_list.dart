@@ -24,6 +24,7 @@ class TransactionsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
       value: ref.watch(groupedTransactionsProvider),
+      valueMapFinder: (groupedTransactions) => groupedTransactions.transactions,
       loading: () => const Padding(
         padding: EdgeInsets.only(top: 70),
         child: CustomCircularLoader(),

@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
-import '../models/wallet_model.codegen.dart';
+import '../../../helpers/constants/app_colors.dart';
+import '../../../helpers/constants/app_styles.dart';
 
 // Providers
 import '../providers/wallets_provider.codegen.dart';
+
+// Models
+import '../models/wallet_model.codegen.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
@@ -32,7 +36,22 @@ class WalletDropdownField extends ConsumerWidget {
         items: wallets,
         onItemSelect: onSelected,
         itemBuilder: (_, wallet) => DropdownSheetItem(
-          label: wallet.name,
+          child: Row(
+            children: [
+              // Wallet name
+              CustomText.body(
+                wallet.name,
+              ),
+
+              Insets.expand,
+
+              // Wallet balance
+              CustomText.body(
+                wallet.balance.toStringAsFixed(2),
+                color: AppColors.textGreyColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

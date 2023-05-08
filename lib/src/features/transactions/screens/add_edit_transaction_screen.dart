@@ -24,6 +24,7 @@ import '../../../global/widgets/widgets.dart';
 import '../widgets/transaction_type_selection_cards.dart';
 
 // Features
+import '../../shared/shared.dart';
 import '../../calculator/calculator.dart';
 import '../../categories/categories.dart';
 import '../../wallets/wallets.dart';
@@ -80,7 +81,9 @@ class AddEditTransactionScreen extends HookConsumerWidget {
               date: dateController.value,
               type: typeController.value!,
               categoryId: categoryController.value!.id,
-              description: descriptionController.text.isEmpty ? null : descriptionController.text,
+              description: descriptionController.text.isEmpty
+                  ? null
+                  : descriptionController.text,
             );
         ref
             .read(selectedDateProvider.notifier)
@@ -100,7 +103,9 @@ class AddEditTransactionScreen extends HookConsumerWidget {
           date: dateController.value,
           type: typeController.value!,
           categoryId: categoryController.value!.id,
-          description: descriptionController.text.isEmpty ? null : descriptionController.text,
+          description: descriptionController.text.isEmpty
+              ? null
+              : descriptionController.text,
         );
         ref
             .read(incomeExpenseProvider.notifier)
@@ -234,46 +239,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: SaveButton(onSave: onSave),
-    );
-  }
-}
-
-class SaveButton extends StatelessWidget {
-  const SaveButton({
-    required this.onSave,
-    super.key,
-  });
-
-  final VoidCallback onSave;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 55,
-      margin: const EdgeInsets.symmetric(horizontal: 15),
-      child: FloatingActionButton(
-        onPressed: onSave,
-        elevation: 5,
-        backgroundColor: Colors.transparent,
-        shape: const RoundedRectangleBorder(
-          borderRadius: Corners.rounded7,
-        ),
-        child: const DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: Corners.rounded7,
-            gradient: AppColors.buttonGradientPrimary,
-          ),
-          child: Center(
-            child: CustomText(
-              'Save',
-              color: Colors.white,
-              fontSize: 16,
-            ),
-          ),
-        ),
-      ),
+      floatingActionButton: FloatingSaveButton(onSave: onSave),
     );
   }
 }
