@@ -65,6 +65,7 @@ class TransactionsRepository {
               return query;
             },
       builder: (json, docId) => TransactionModel.fromJson(json!),
+      sort: (lhs, rhs) => rhs.date.compareTo(lhs.date),
     );
   }
 
