@@ -23,9 +23,9 @@ class AddIncomeExpenseFab extends ConsumerWidget {
     ref.listen(
       incomeExpenseProvider,
       (_, next) => next.whenOrNull(
-        data: (event) => AppUtils.showFlushBar(
+        data: (message) => AppUtils.showFlushBar(
           context: context,
-          message: event?.message ?? '',
+          message: message ?? 'Transaction operation completed',
           icon: Icons.check_circle_rounded,
           iconColor: Colors.green,
         ),

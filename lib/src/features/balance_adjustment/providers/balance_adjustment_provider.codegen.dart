@@ -17,7 +17,7 @@ part 'balance_adjustment_provider.codegen.g.dart';
 @riverpod
 class BalanceAdjustment extends _$BalanceAdjustment {
   @override
-  FutureOr<void> build() => null;
+  FutureOr<String?> build() => null;
 
   Future<void> addTransaction({
     required double amount,
@@ -27,7 +27,7 @@ class BalanceAdjustment extends _$BalanceAdjustment {
   }) async {
     state = const AsyncValue.loading();
 
-    state = await state.makeGuardedRequest(() {
+    state = await state.makeGuardedRequest(() async {
       final transaction = BalanceAdjustmentModel(
         id: AppUtils.generateUuid(),
         amount: amount,
@@ -36,27 +36,29 @@ class BalanceAdjustment extends _$BalanceAdjustment {
         date: date,
       );
       final bookId = ref.read(selectedBookProvider)!.id;
-      return ref.read(transactionsRepositoryProvider).addTransaction(
+      await ref.read(transactionsRepositoryProvider).addTransaction(
             bookId: bookId,
             month: date.month,
             year: date.year,
             transactionId: transaction.id,
             body: transaction.toJson(),
           );
+          return 'Balance adjusted successully';
     });
   }
 
   Future<void> deleteTransaction(BalanceAdjustmentModel transaction) async {
     state = const AsyncValue.loading();
 
-    state = await state.makeGuardedRequest(() {
+    state = await state.makeGuardedRequest(() async {
       final bookId = ref.read(selectedBookProvider)!.id;
-      return ref.read(transactionsRepositoryProvider).deleteTransaction(
+      await ref.read(transactionsRepositoryProvider).deleteTransaction(
             bookId: bookId,
             month: transaction.date.month,
             year: transaction.date.year,
             transactionId: transaction.id,
           );
+          return 'Balance adjustment removed successfully';
     });
   }
 }

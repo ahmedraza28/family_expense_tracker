@@ -38,7 +38,7 @@ WalletModel? walletById(WalletByIdRef ref, String? id) {
 @Riverpod(keepAlive: true)
 class Wallets extends _$Wallets {
   @override
-  FutureOr<void> build() => null;
+  FutureOr<String?> build() => null;
 
   Stream<List<WalletModel>> getAllWallets([JSON? queryParams]) {
     final walletsRepository = ref.read(walletsRepositoryProvider);
@@ -65,11 +65,14 @@ class Wallets extends _$Wallets {
     final walletsRepository = ref.read(walletsRepositoryProvider);
     final bookId = ref.read(selectedBookProvider)!.id;
     state = await state.makeGuardedRequest(
-      () => walletsRepository.addWallet(
-        bookId: bookId,
-        walletId: wallet.id,
-        body: wallet.toJson(),
-      ),
+      () async {
+        await walletsRepository.addWallet(
+          bookId: bookId,
+          walletId: wallet.id,
+          body: wallet.toJson(),
+        );
+        return 'Wallet created successfully';
+      },
       errorMessage: 'Failed to add wallet',
     );
   }
@@ -80,11 +83,14 @@ class Wallets extends _$Wallets {
     final walletsRepository = ref.read(walletsRepositoryProvider);
     final bookId = ref.read(selectedBookProvider)!.id;
     state = await state.makeGuardedRequest(
-      () => walletsRepository.updateWallet(
-        bookId: bookId,
-        walletId: wallet.id,
-        changes: wallet.toJson(),
-      ),
+      () async {
+        await walletsRepository.updateWallet(
+          bookId: bookId,
+          walletId: wallet.id,
+          changes: wallet.toJson(),
+        );
+        return 'Wallet updated successfully';
+      },
       errorMessage: 'Failed to update wallet',
     );
   }

@@ -38,7 +38,7 @@ CategoryModel? categoryById(CategoryByIdRef ref, String? id) {
 @Riverpod(keepAlive: true)
 class Categories extends _$Categories {
   @override
-  FutureOr<void> build() => null;
+  FutureOr<String?> build() => null;
 
   Stream<List<CategoryModel>> getAllCategories() {
     final categoriesRepository = ref.read(categoriesRepositoryProvider);
@@ -61,11 +61,15 @@ class Categories extends _$Categories {
     final categoriesRepository = ref.read(categoriesRepositoryProvider);
     final bookId = ref.read(selectedBookProvider)!.id;
     state = await state.makeGuardedRequest(
-      () => categoriesRepository.create(
-        bookId: bookId,
-        categoryId: category.id,
-        body: category.toJson(),
-      ),
+      () async {
+        await categoriesRepository.create(
+          bookId: bookId,
+          categoryId: category.id,
+          body: category.toJson(),
+        );
+
+        return 'Category added successfully';
+      },
       errorMessage: 'Failed to add category',
     );
   }
@@ -76,11 +80,15 @@ class Categories extends _$Categories {
     final categoriesRepository = ref.read(categoriesRepositoryProvider);
     final bookId = ref.read(selectedBookProvider)!.id;
     state = await state.makeGuardedRequest(
-      () => categoriesRepository.update(
-        bookId: bookId,
-        categoryId: category.id,
-        changes: category.toJson(),
-      ),
+      () async {
+        await categoriesRepository.update(
+          bookId: bookId,
+          categoryId: category.id,
+          changes: category.toJson(),
+        );
+
+        return 'Category updated successfully';
+      },
       errorMessage: 'Failed to update category',
     );
   }

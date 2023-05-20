@@ -23,9 +23,9 @@ class AddBookFab extends ConsumerWidget {
     ref.listen(
       booksProvider,
       (_, next) => next.whenOrNull(
-        data: (_) => AppUtils.showFlushBar(
+        data: (message) => AppUtils.showFlushBar(
           context: context,
-          message: 'Book saved successfully',
+          message: message ?? 'Book operation completed',
           icon: Icons.check_circle_rounded,
           iconColor: Colors.green,
         ),

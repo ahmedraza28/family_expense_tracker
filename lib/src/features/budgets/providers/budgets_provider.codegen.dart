@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
+import '../../../helpers/extensions/extensions.dart';
 
 // Models
 import '../models/budget_filters_model.dart';
@@ -32,7 +33,7 @@ class Budgets extends _$Budgets {
   static final _currentDate = DateTime.now();
 
   @override
-  FutureOr<void> build() => null;
+  FutureOr<String?> build() => null;
 
   Stream<List<BudgetModel>> getAllBudgets([BudgetFiltersModel? filters]) {
     final bookId = ref.read(selectedBookProvider)!.id;
@@ -46,54 +47,71 @@ class Budgets extends _$Budgets {
   }
 
   /// Copies the given [List<BudgetModels>] to the current month
-  void copyBudgets(List<BudgetModel> budgets) {
-    final budgetsRepository = ref.read(budgetsRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id;
-    budgetsRepository.addAllBudgets(
-      bookId: bookId,
-      year: _currentDate.year,
-      month: _currentDate.month,
-      body: budgets.map((budget) => budget.toJson()).toList(),
-    );
+  Future<void> copyBudgets(List<BudgetModel> budgets) async {
+    state = const AsyncValue.loading();
+
+    state = await state.makeGuardedRequest(() async {
+      final budgetsRepository = ref.read(budgetsRepositoryProvider);
+      final bookId = ref.read(selectedBookProvider)!.id;
+      await budgetsRepository.addAllBudgets(
+        bookId: bookId,
+        year: _currentDate.year,
+        month: _currentDate.month,
+        body: budgets.map((budget) => budget.toJson()).toList(),
+      );
+      return 'Budgets copied successfully';
+    });
   }
 
-  void addBudget({
+  Future<void> addBudget({
     required int year,
     required String name,
     required int month,
     required List<String> categoryIds,
     required double amount,
     String? description,
-  }) {
-    final budget = BudgetModel(
-      id: AppUtils.generateUuid(),
-      year: year,
-      name: name,
-      month: month,
-      categoryIds: categoryIds,
-      amount: amount,
-      description: description,
-    );
-    final budgetsRepository = ref.read(budgetsRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id;
-    budgetsRepository.addBudget(
-      bookId: bookId,
-      year: year,
-      month: month,
-      budgetId: budget.id,
-      body: budget.toJson(),
-    );
+  }) async {
+    state = const AsyncValue.loading();
+
+    state = await state.makeGuardedRequest(() async {
+      final budget = BudgetModel(
+        id: AppUtils.generateUuid(),
+        year: year,
+        name: name,
+        month: month,
+        categoryIds: categoryIds,
+        amount: amount,
+        description: description,
+      );
+      final budgetsRepository = ref.read(budgetsRepositoryProvider);
+      final bookId = ref.read(selectedBookProvider)!.id;
+      await budgetsRepository.addBudget(
+        bookId: bookId,
+        year: year,
+        month: month,
+        budgetId: budget.id,
+        body: budget.toJson(),
+      );
+
+      return 'Budget created successfully';
+    });
   }
 
-  void updateBudget(BudgetModel budget) {
-    final budgetsRepository = ref.read(budgetsRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id;
-    budgetsRepository.updateBudget(
-      bookId: bookId,
-      year: budget.year,
-      month: budget.month,
-      budgetId: budget.id,
-      changes: budget.toJson(),
-    );
+  Future<void> updateBudget(BudgetModel budget) async {
+    state = const AsyncValue.loading();
+
+    state = await state.makeGuardedRequest(() async {
+      final budgetsRepository = ref.read(budgetsRepositoryProvider);
+      final bookId = ref.read(selectedBookProvider)!.id;
+      await budgetsRepository.updateBudget(
+        bookId: bookId,
+        year: budget.year,
+        month: budget.month,
+        budgetId: budget.id,
+        changes: budget.toJson(),
+      );
+
+      return 'Budget updated successfully';
+    });
   }
 }

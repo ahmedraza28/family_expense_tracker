@@ -17,7 +17,7 @@ part 'balance_transfer_provider.codegen.g.dart';
 @riverpod
 class BalanceTransfer extends _$BalanceTransfer {
   @override
-  FutureOr<void> build() => null;
+  FutureOr<String?> build() => null;
 
   Future<void> addTransaction({
     required double amount,
@@ -29,7 +29,7 @@ class BalanceTransfer extends _$BalanceTransfer {
     state = const AsyncValue.loading();
 
     state = await state.makeGuardedRequest(
-      () {
+      () async {
         final transaction = BalanceTransferModel(
           id: AppUtils.generateUuid(),
           amount: amount,
@@ -39,13 +39,14 @@ class BalanceTransfer extends _$BalanceTransfer {
           description: description,
         );
         final bookId = ref.read(selectedBookProvider)!.id;
-        return ref.read(transactionsRepositoryProvider).addTransaction(
+        await ref.read(transactionsRepositoryProvider).addTransaction(
               bookId: bookId,
               month: date.month,
               year: date.year,
               transactionId: transaction.id,
               body: transaction.toJson(),
             );
+            return 'Balance transferred successfully';
       },
       errorMessage: 'Failed to transfer balance',
     );
@@ -55,15 +56,17 @@ class BalanceTransfer extends _$BalanceTransfer {
     state = const AsyncValue.loading();
 
     state = await state.makeGuardedRequest(
-      () {
+      () async {
         final bookId = ref.read(selectedBookProvider)!.id;
-        return ref.read(transactionsRepositoryProvider).updateTransaction(
+        await ref.read(transactionsRepositoryProvider).updateTransaction(
               bookId: bookId,
               month: transaction.date.month,
               year: transaction.date.year,
               transactionId: transaction.id,
               changes: transaction.toJson(),
             );
+
+            return 'Balance updated successfully';
       },
       errorMessage: 'Failed to update balance transfer',
     );
@@ -73,14 +76,16 @@ class BalanceTransfer extends _$BalanceTransfer {
     state = const AsyncValue.loading();
 
     state = await state.makeGuardedRequest(
-      () {
+      () async {
         final bookId = ref.read(selectedBookProvider)!.id;
-        return ref.read(transactionsRepositoryProvider).deleteTransaction(
+        await ref.read(transactionsRepositoryProvider).deleteTransaction(
               bookId: bookId,
               month: transaction.date.month,
               year: transaction.date.year,
               transactionId: transaction.id,
             );
+
+            return 'Balance deleted successfully';
       },
       errorMessage: 'Failed to delete balance transfer',
     );

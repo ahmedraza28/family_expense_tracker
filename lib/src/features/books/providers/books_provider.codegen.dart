@@ -49,7 +49,7 @@ Stream<List<BookModel>> booksStream(
 @riverpod
 class Books extends _$Books {
   @override
-  FutureOr<void> build() => null;
+  FutureOr<String?> build() => null;
 
   Stream<List<BookModel>> getUserBooks(List<String> bookIds) {
     final booksRepository = ref.read(booksRepositoryProvider);
@@ -80,10 +80,13 @@ class Books extends _$Books {
 
     final booksRepository = ref.read(booksRepositoryProvider);
     state = await state.makeGuardedRequest(
-      () => booksRepository.addBook(
-        body: book.toJson(),
-        bookId: book.id,
-      ),
+      () async {
+        await booksRepository.addBook(
+          body: book.toJson(),
+          bookId: book.id,
+        );
+        return 'Book added successfully';
+      },
       errorMessage: 'Failed to add book',
     );
   }
@@ -93,10 +96,13 @@ class Books extends _$Books {
 
     final booksRepository = ref.read(booksRepositoryProvider);
     state = await state.makeGuardedRequest(
-      () => booksRepository.updateBook(
-        bookId: book.id,
-        changes: book.toJson(),
-      ),
+      () async {
+        await booksRepository.updateBook(
+          bookId: book.id,
+          changes: book.toJson(),
+        );
+        return 'Book updated successfully';
+      },
     );
   }
 }

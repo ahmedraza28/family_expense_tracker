@@ -3,7 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
-import '../enums/transaction_event_enum.dart';
 import '../enums/transaction_type_enum.dart';
 
 // Models
@@ -20,7 +19,7 @@ part 'income_expense_provider.codegen.g.dart';
 @riverpod
 class IncomeExpense extends _$IncomeExpense {
   @override
-  FutureOr<TransactionEvent?> build() => null;
+  FutureOr<String?> build() => null;
 
   Future<void> addTransaction({
     required double amount,
@@ -52,7 +51,7 @@ class IncomeExpense extends _$IncomeExpense {
               year: transaction.date.year,
               body: transaction.toJson(),
             );
-        return TransactionEvent.added;
+        return 'Transaction added successfully';
       },
       errorMessage: 'Failed to add transaction',
     );
@@ -72,7 +71,7 @@ class IncomeExpense extends _$IncomeExpense {
               changes: transaction.toJson(),
             );
 
-        return TransactionEvent.updated;
+        return 'Transaction updated successfully';
       },
       errorMessage: 'Failed to update transaction',
     );
@@ -91,7 +90,7 @@ class IncomeExpense extends _$IncomeExpense {
               transactionId: transaction.id,
             );
 
-        return TransactionEvent.deleted;
+        return 'Transaction deleted successfully';
       },
       errorMessage: 'Failed to delete transaction',
     );

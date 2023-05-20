@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -28,9 +30,9 @@ class AddBudgetFab extends ConsumerWidget {
     ref.listen(
       budgetsProvider,
       (_, next) => next.whenOrNull(
-        data: (_) => AppUtils.showFlushBar(
+        data: (message) => AppUtils.showFlushBar(
           context: context,
-          message: 'Budget saved successfully',
+          message: message ?? 'Budget operation completed',
           icon: Icons.check_circle_rounded,
           iconColor: Colors.green,
         ),
@@ -85,7 +87,7 @@ class AddBudgetFab extends ConsumerWidget {
                 final budgets = await AppRouter.pushNamed(
                   Routes.SelectBudgetsScreenRoute,
                 ) as List<BudgetModel>;
-                ref.read(budgetsProvider.notifier).copyBudgets(budgets);
+                unawaited(ref.read(budgetsProvider.notifier).copyBudgets(budgets));
               },
             ),
           ],
