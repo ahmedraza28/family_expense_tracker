@@ -43,7 +43,7 @@ class AddEditTransactionScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final amountController = useTextEditingController(
-      text: transaction?.amount.toString() ?? '',
+      text: transaction?.amount.toString() ?? '0',
     );
     final descriptionController = useTextEditingController(
       text: transaction?.description,
@@ -160,6 +160,11 @@ class AddEditTransactionScreen extends HookConsumerWidget {
                   borderRadius: Corners.rounded7,
                 ),
                 onTap: () async {
+                  if (transaction != null) {
+                    ref
+                        .read(numberInputProvider.notifier)
+                        .replace(amountController.text);
+                  }
                   await AppRouter.pushNamed(
                     Routes.CalculatorScreenRoute,
                   );

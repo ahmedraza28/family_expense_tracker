@@ -36,7 +36,7 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final amountController = useTextEditingController(
-      text: balanceAdjustment?.amount.toString() ?? '',
+      text: balanceAdjustment?.amount.toString() ?? '0',
     );
     final dateController = useValueNotifier<DateTime?>(
       balanceAdjustment?.date,
@@ -115,6 +115,11 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
                 borderRadius: Corners.rounded7,
               ),
               onTap: () async {
+                if (balanceAdjustment != null) {
+                  ref
+                      .read(numberInputProvider.notifier)
+                      .replace(amountController.text);
+                }
                 await AppRouter.pushNamed(
                   Routes.CalculatorScreenRoute,
                 );
@@ -159,7 +164,8 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: balanceAdjustment == null ? FloatingSaveButton(onSave: onSave) : null,
+      floatingActionButton:
+          balanceAdjustment == null ? FloatingSaveButton(onSave: onSave) : null,
     );
   }
 }
