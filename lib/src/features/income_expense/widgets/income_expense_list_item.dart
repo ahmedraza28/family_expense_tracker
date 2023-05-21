@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
-import '../enums/transaction_type_enum.dart';
 import '../models/income_expense_model.codegen.dart';
 
 // Routing
@@ -14,13 +13,11 @@ import '../../../helpers/constants/constants.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-// Screens
-import '../screens/add_edit_transaction_screen.dart';
-
 // Features
 import '../../auth/auth.dart';
 import '../../books/books.dart';
 import '../../shared/shared.dart';
+import '../../transactions/transactions.dart';
 import '../../wallets/wallets.dart';
 import '../../categories/categories.dart';
 

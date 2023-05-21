@@ -6,14 +6,11 @@ import 'package:flutter/foundation.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/typedefs.dart';
-import '../enums/transaction_type_enum.dart';
-
-// Models
-import 'transaction_model.dart';
 
 // Features
 import '../../balance_transfer/balance_transfer.dart';
 import '../../categories/categories.dart';
+import '../../transactions/transactions.dart';
 import '../../wallets/wallets.dart';
 
 part 'income_expense_model.codegen.freezed.dart';

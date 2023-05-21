@@ -10,8 +10,10 @@ import '../../../helpers/typedefs.dart';
 import '../enums/transaction_type_enum.dart';
 
 // Models
-import '../models/income_expense_model.codegen.dart';
 import '../models/transaction_model.dart';
+
+// Features
+import '../../income_expense/income_expense.dart';
 
 part 'transactions_repository.codegen.g.dart';
 

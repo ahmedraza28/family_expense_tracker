@@ -3,15 +3,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 // Helpers
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
-import '../enums/transaction_type_enum.dart';
 
 // Models
 import '../models/income_expense_model.codegen.dart';
 
-// Repositories
-import '../repositories/transactions_repository.codegen.dart';
-
 // Features
+import '../../transactions/transactions.dart';
 import '../../books/books.dart';
 
 part 'income_expense_provider.codegen.g.dart';

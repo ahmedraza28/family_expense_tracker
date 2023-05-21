@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Models
-import '../models/income_expense_model.codegen.dart';
 import '../models/transaction_model.dart';
 
-// Widgets
-import 'income_expense_list_item.dart';
-
 // Features
+import '../../income_expense/income_expense.dart';
 import '../../balance_adjustment/balance_adjustment.dart';
 import '../../balance_transfer/balance_transfer.dart';
 

@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
-import '../widgets/add_income_expense_fab.dart';
 import '../widgets/filters/search_and_filters_bar.dart';
 import '../widgets/grouped_transactions_list.dart';
 import '../widgets/transactions_summary.dart';
@@ -16,6 +15,7 @@ import '../../../global/widgets/widgets.dart';
 import 'add_edit_transaction_screen.dart';
 
 // Features
+import '../../income_expense/income_expense.dart';
 import '../../balance_transfer/balance_transfer.dart';
 import '../../balance_adjustment/balance_adjustment.dart';
 import '../../auth/auth.dart';

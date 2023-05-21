@@ -13,6 +13,7 @@ export 'widgets/budget_type_selection_cards.dart';
 export 'widgets/budgets_list.dart';
 export 'widgets/budgets_view.dart';
 export 'widgets/filters/filters_bottom_sheet.dart';
+export 'widgets/filters/filters_button.dart';
 export 'widgets/filters/filters_list_view.dart';
 export 'widgets/selectable/selectable_budget_list_item.dart';
 export 'widgets/selectable/selectable_budgets_list.dart';

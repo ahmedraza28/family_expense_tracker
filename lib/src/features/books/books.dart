@@ -1,9 +1,12 @@
+export 'enums/member_role_enum.dart';
+export 'models/book_member_model.codegen.dart';
 export 'models/book_model.codegen.dart';
 export 'providers/books_provider.codegen.dart';
 export 'repositories/books_repository.codegen.dart';
 export 'screens/add_edit_book_screen.dart';
 export 'screens/book_config_loader_screen.dart';
 export 'screens/books_screens.dart';
+export 'screens/books_view.dart';
 export 'widgets/add_book_fab.dart';
 export 'widgets/book_list_item.dart';
 export 'widgets/books_list.dart';

@@ -6,28 +6,21 @@ import 'package:intl/intl.dart';
 // Routing
 import '../../../config/routing/routing.dart';
 
-// Models
-import '../models/income_expense_model.codegen.dart';
-import '../enums/transaction_type_enum.dart';
-
 // Helpers
 import '../../../helpers/extensions/object_extensions.dart';
 import '../../../helpers/form_validator.dart';
 import '../../../helpers/constants/constants.dart';
 
-// Providers
-import '../providers/add_edit_transaction_provider.codegen.dart';
-import '../providers/income_expense_provider.codegen.dart';
-
 // Widgets
 import '../../../global/widgets/widgets.dart';
-import '../widgets/transaction_type_selection_cards.dart';
 
 // Features
 import '../../shared/shared.dart';
+import '../transactions.dart';
 import '../../calculator/calculator.dart';
 import '../../categories/categories.dart';
 import '../../wallets/wallets.dart';
+import '../../income_expense/income_expense.dart';
 
 class AddEditTransactionScreen extends HookConsumerWidget {
   final IncomeExpenseModel? transaction;
