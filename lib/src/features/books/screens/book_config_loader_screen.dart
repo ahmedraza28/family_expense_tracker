@@ -23,23 +23,39 @@ final _cacheLoaderFutureProvider = FutureProvider.autoDispose<void>(
   ]),
 );
 
+final isBookPreLoadedProvider = StateProvider<bool>(
+  name: 'isBookPreLoadedProvider',
+  (ref) => false,
+);
+
 class BookConfigLoaderScreen extends ConsumerWidget {
   const BookConfigLoaderScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cacheLoaderFuture = ref.watch(_cacheLoaderFutureProvider);
-    return cacheLoaderFuture.when(
-      data: (_) => const TransactionsScreen(),
-      loading: () => const LottieAnimationLoader(),
-      error: (error, st) => Scaffold(
-        body: ErrorResponseHandler(
-          error: error,
-          retryCallback: () => ref.refresh(_cacheLoaderFutureProvider),
-          stackTrace: st,
-        ),
+    ref.listen(
+      _cacheLoaderFutureProvider,
+      (_, next) => next.whenOrNull(
+        data: (_) {
+          ref.read(isBookPreLoadedProvider.notifier).update((_) => true);
+        },
       ),
     );
+    final cacheLoaderFuture = ref.watch(_cacheLoaderFutureProvider);
+    final isBookPreLoaded = ref.read(isBookPreLoadedProvider);
+    return isBookPreLoaded
+        ? const TransactionsScreen()
+        : cacheLoaderFuture.when(
+            data: (_) => const TransactionsScreen(),
+            loading: () => const LottieAnimationLoader(),
+            error: (error, st) => Scaffold(
+              body: ErrorResponseHandler(
+                error: error,
+                retryCallback: () => ref.refresh(_cacheLoaderFutureProvider),
+                stackTrace: st,
+              ),
+            ),
+          );
   }
 }
 
