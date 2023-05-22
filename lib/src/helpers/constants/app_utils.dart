@@ -3,12 +3,15 @@
 import 'dart:math';
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 // Helpers
 import '../extensions/datetime_extension.dart';
+import '../typedefs.dart';
 import 'app_colors.dart';
 import 'app_styles.dart';
 
@@ -49,6 +52,30 @@ class AppUtils {
     } else {
       return Colors.black;
     }
+  }
+
+  /// A utility method to generate a JWT token
+  static String generateJWTToken(String inviteCode) {
+    const expiresIn = Duration(hours: 1);
+
+    final payload = <String, dynamic>{'inviteCode': inviteCode};
+
+    final jwt = JWT(
+      payload,
+      issuer: 'https://github.com/jonasroussel/dart_jsonwebtoken',
+    );
+
+    return jwt.sign(
+      SecretKey('secret passphrase'),
+      expiresIn: expiresIn,
+    );
+  }
+
+  /// A utility method to convert a JWT token to a map
+  static JSON decodeJWTToken(String token) {
+    final jwt = JWT.tryVerify(token, SecretKey('secret passphrase'));
+    if (jwt == null) throw Exception('Invalid JWT token');
+    return jwt.payload as JSON;
   }
 
   /// A utility method to convert 0/1 to false/true
