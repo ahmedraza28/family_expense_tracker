@@ -11,6 +11,9 @@ import '../../wallets/wallets.dart';
 import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
 
+// Providers
+import '../providers/books_provider.codegen.dart';
+
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
@@ -21,11 +24,6 @@ final _cacheLoaderFutureProvider = FutureProvider.autoDispose<void>(
     ref.watch(walletsMapProvider.future),
     ref.watch(currenciesMapProvider.future),
   ]),
-);
-
-final isBookPreLoadedProvider = StateProvider<bool>(
-  name: 'isBookPreLoadedProvider',
-  (ref) => false,
 );
 
 class BookConfigLoaderScreen extends ConsumerWidget {

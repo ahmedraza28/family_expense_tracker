@@ -45,3 +45,8 @@ extension StringExt on String {
   /// An extension for getting file extension
   String get ext => p.extension(this);
 }
+
+extension NullableStringExt on String? {
+  /// An extension for checking null or empty
+  bool get isNullOrEmpty => this == null || this!.isEmpty;
+}

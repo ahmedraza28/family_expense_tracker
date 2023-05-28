@@ -68,10 +68,16 @@ class AddEditTransactionScreen extends HookConsumerWidget {
           dateController.value.isNull) return;
       formKey.currentState!.save();
       if (transaction == null) {
+        final nowDate = DateTime.now();
+        final date = dateController.value.copyWith(
+          hour: nowDate.hour,
+          minute: nowDate.minute,
+          second: nowDate.second,
+        );
         ref.read(incomeExpenseProvider.notifier).addTransaction(
               amount: double.parse(amountController.text),
               walletId: walletController.value!.id,
-              date: dateController.value,
+              date: date,
               type: typeController.value!,
               categoryId: categoryController.value!.id,
               description: descriptionController.text.isEmpty

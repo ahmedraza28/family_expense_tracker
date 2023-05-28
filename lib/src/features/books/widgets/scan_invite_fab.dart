@@ -10,10 +10,10 @@ import '../providers/books_provider.codegen.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 
-class AddBookFab extends ConsumerWidget {
+class ScanInviteFab extends ConsumerWidget {
   final VoidCallback onPressed;
 
-  const AddBookFab({
+  const ScanInviteFab({
     required this.onPressed,
     super.key,
   });
@@ -25,21 +25,22 @@ class AddBookFab extends ConsumerWidget {
       (_, next) => next.whenOrNull(
         data: (message) => AppUtils.showFlushBar(
           context: context,
-          message: message ?? 'Book operation completed',
+          message: message ?? 'Book saved successfully',
           icon: Icons.check_circle_rounded,
           iconColor: Colors.green,
         ),
-        error: (reason, st) => AppUtils.showFlushBar(
+        error: (error, stack) => AppUtils.showFlushBar(
           context: context,
-          message: reason as String,
+          message: error.toString(),
+          iconColor: Colors.red,
         ),
       ),
     );
-    final booksFuture = ref.watch(booksProvider);
+    final stateFuture = ref.watch(booksProvider);
     return SizedBox(
       height: 55,
       width: 149,
-      child: booksFuture.maybeWhen(
+      child: stateFuture.maybeWhen(
         loading: () => const CustomCircularLoader(
           size: 25,
           color: Colors.white,
@@ -49,11 +50,11 @@ class AddBookFab extends ConsumerWidget {
           hoverElevation: 0,
           hoverColor: Colors.black12,
           backgroundColor: AppColors.primaryColor,
-          heroTag: 'addBook',
+          heroTag: 'scanInvite',
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(50),
-              bottomRight: Radius.circular(50),
+              topLeft: Radius.circular(50),
+              bottomLeft: Radius.circular(50),
             ),
           ),
           onPressed: onPressed,
@@ -62,7 +63,7 @@ class AddBookFab extends ConsumerWidget {
             children: [
               // Add icon
               Icon(
-                Icons.add,
+                Icons.qr_code_scanner_rounded,
                 color: Colors.white,
               ),
 
@@ -70,7 +71,7 @@ class AddBookFab extends ConsumerWidget {
 
               // Label
               Text(
-                'Create New',
+                'Scan Invite',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.white,

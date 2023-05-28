@@ -21,6 +21,7 @@ class DayTransactionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    transactions.sort((a, b) => b.date.compareTo(a.date));
     return ListView.separated(
       itemCount: transactions.length,
       physics: const NeverScrollableScrollPhysics(),

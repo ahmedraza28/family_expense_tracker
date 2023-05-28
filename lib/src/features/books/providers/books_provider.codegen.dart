@@ -45,6 +45,11 @@ Stream<List<BookModel>> booksStream(
   return ref.watch(booksProvider.notifier).getUserBooks(bookIds);
 }
 
+final isBookPreLoadedProvider = StateProvider<bool>(
+  name: 'isBookPreLoadedProvider',
+  (ref) => false,
+);
+
 /// A provider used to access instance of this service
 @riverpod
 class Books extends _$Books {
@@ -131,5 +136,11 @@ class Books extends _$Books {
         return 'Invite accepted successfully';
       },
     );
+  }
+
+  void resetSelectedBook() {
+    ref
+      ..invalidate(selectedBookProvider)
+      ..invalidate(isBookPreLoadedProvider);
   }
 }

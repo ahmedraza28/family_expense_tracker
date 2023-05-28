@@ -24,7 +24,8 @@ Stream<List<TransactionModel>> filteredTransactionsStream(
   FilteredTransactionsStreamRef ref,
 ) {
   final filters = ref.read(transactionFiltersProvider);
-  return ref.watch(transactionsProvider).getAllTransactions(filters);
+  final bookId = ref.watch(selectedBookProvider.select((value) => value?.id));
+  return ref.watch(transactionsProvider).getAllTransactions(bookId, filters);
 }
 
 /// A provider used to access list of searched transactions
@@ -88,30 +89,28 @@ Future<GroupedTransactionsModel> groupedTransactions(
 /// A provider used to access instance of this service
 @riverpod
 TransactionsProvider transactions(TransactionsRef ref) {
-  final bookId = ref.watch(selectedBookProvider)!.id;
-  return TransactionsProvider(ref, bookId: bookId);
+  return TransactionsProvider(ref);
 }
 
 class TransactionsProvider {
   final Ref _ref;
-  final String bookId;
 
   static final _currentDate = DateTime.now();
 
-  TransactionsProvider(
-    this._ref, {
-    required this.bookId,
-  });
+  TransactionsProvider(this._ref);
 
-  Stream<List<TransactionModel>> getAllTransactions([
+  Stream<List<TransactionModel>> getAllTransactions(
+    String? bookId, [
     TransactionFiltersModel? filters,
   ]) {
-    return _ref.read(transactionsRepositoryProvider).getBookTransactions(
-          bookId: bookId,
-          categoryId: filters?.categoryId,
-          year: filters?.year ?? _currentDate.year,
-          month: filters?.month ?? _currentDate.month,
-          transactionTypes: filters?.types?.map((e) => e.name).toList(),
-        );
+    return bookId == null
+        ? Stream.value([])
+        : _ref.read(transactionsRepositoryProvider).getBookTransactions(
+              bookId: bookId,
+              categoryId: filters?.categoryId,
+              year: filters?.year ?? _currentDate.year,
+              month: filters?.month ?? _currentDate.month,
+              transactionTypes: filters?.types?.map((e) => e.name).toList(),
+            );
   }
 }

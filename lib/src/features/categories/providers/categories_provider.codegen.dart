@@ -20,7 +20,8 @@ part 'categories_provider.codegen.g.dart';
 @Riverpod(keepAlive: true)
 Stream<List<CategoryModel>> categoriesStream(CategoriesStreamRef ref) {
   final categoriesProv = ref.watch(categoriesProvider.notifier);
-  return categoriesProv.getAllCategories();
+  final bookId = ref.watch(selectedBookProvider.select((value) => value?.id));
+  return categoriesProv.getAllCategories(bookId);
 }
 
 @Riverpod(keepAlive: true)
@@ -40,10 +41,11 @@ class Categories extends _$Categories {
   @override
   FutureOr<String?> build() => null;
 
-  Stream<List<CategoryModel>> getAllCategories() {
+  Stream<List<CategoryModel>> getAllCategories(String? bookId) {
     final categoriesRepository = ref.read(categoriesRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id;
-    return categoriesRepository.fetchAll(bookId: bookId);
+    return bookId == null
+        ? Stream.value([])
+        : categoriesRepository.fetchAll(bookId: bookId);
   }
 
   Future<void> addCategory({

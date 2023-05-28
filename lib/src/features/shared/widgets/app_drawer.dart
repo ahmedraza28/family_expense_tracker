@@ -90,7 +90,10 @@ class AppDrawer extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: ListTile(
-                  onTap: AppRouter.popUntilRoot,
+                  onTap: () {
+                    AppRouter.popUntilRoot();
+                    ref.read(booksProvider.notifier).resetSelectedBook();
+                  },
                   minVerticalPadding: 0,
                   title: Row(
                     children: [

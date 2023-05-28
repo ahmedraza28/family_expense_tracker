@@ -20,7 +20,8 @@ part 'wallets_provider.codegen.g.dart';
 @Riverpod(keepAlive: true)
 Stream<List<WalletModel>> walletsStream(WalletsStreamRef ref) {
   final wallets = ref.watch(walletsProvider.notifier);
-  return wallets.getAllWallets();
+  final bookId = ref.watch(selectedBookProvider.select((value) => value?.id));
+  return wallets.getAllWallets(bookId);
 }
 
 @Riverpod(keepAlive: true)
@@ -40,10 +41,11 @@ class Wallets extends _$Wallets {
   @override
   FutureOr<String?> build() => null;
 
-  Stream<List<WalletModel>> getAllWallets([JSON? queryParams]) {
+  Stream<List<WalletModel>> getAllWallets(String? bookId, [JSON? queryParams]) {
     final walletsRepository = ref.read(walletsRepositoryProvider);
-    final bookId = ref.read(selectedBookProvider)!.id;
-    return walletsRepository.getBookWallets(bookId: bookId);
+    return bookId == null
+        ? Stream.value([])
+        : walletsRepository.getBookWallets(bookId: bookId);
   }
 
   Future<void> addWallet({

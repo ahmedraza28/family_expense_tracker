@@ -11,6 +11,7 @@ import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/object_extensions.dart';
 
 // Providers
+import '../../transactions/transactions.dart';
 import '../providers/balance_adjustment_provider.codegen.dart';
 
 // Models
@@ -38,8 +39,10 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
     final amountController = useTextEditingController(
       text: balanceAdjustment?.amount.toString() ?? '0',
     );
-    final dateController = useValueNotifier<DateTime?>(
-      balanceAdjustment?.date,
+    final dateController = useValueNotifier<DateTime>(
+      balanceAdjustment?.date ??
+          ref.watch(selectedDateProvider) ??
+          DateTime.now(),
     );
     final walletController = useValueNotifier<WalletModel?>(
       ref.watch(walletByIdProvider(balanceAdjustment?.walletId)),
@@ -52,11 +55,17 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
         return;
       }
       formKey.currentState!.save();
+      final nowDate = DateTime.now();
+      final date = dateController.value.copyWith(
+        hour: nowDate.hour,
+        minute: nowDate.minute,
+        second: nowDate.second,
+      );
       ref.read(balanceAdjustmentProvider.notifier).addTransaction(
             amount: double.parse(amountController.text),
             prevAmount: walletController.value!.balance,
             walletId: walletController.value!.id,
-            date: dateController.value!,
+            date: date,
           );
       AppRouter.pop();
     }

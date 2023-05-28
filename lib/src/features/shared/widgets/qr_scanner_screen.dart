@@ -11,11 +11,19 @@ import '../../../helpers/constants/constants.dart';
 // Models
 import '../models/access_code_model.dart';
 
+// Widgets
+import '../../../global/widgets/widgets.dart';
+
 // Features
 import '../../books/books.dart';
 
 class QrScannerScreen extends StatefulWidget {
-  const QrScannerScreen({super.key});
+  final VoidCallback? onPressed;
+
+  const QrScannerScreen({
+    super.key,
+    this.onPressed,
+  });
 
   @override
   State<QrScannerScreen> createState() => _QrScannerScreenState();
@@ -41,7 +49,10 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     return Scaffold(
       backgroundColor: AppColors.lightBackgroundColor,
       appBar: AppBar(
-        title: const Text('QR Scanner'),
+        title: const CustomText(
+          'QR Scanner',
+          fontSize: 20,
+        ),
         actions: [
           // Rotate Camera
           IconButton(
@@ -79,21 +90,22 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
         ],
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Insets.gapH(40),
+
           // Instructions
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
-            child: Text(
+            child: CustomText(
               'Please scan the invite QR code shared by the owner.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.textLightGreyColor,
-              ),
+              fontSize: 16,
+              maxLines: 2,
+              color: AppColors.textGreyColor,
             ),
           ),
 
-          Insets.gapH30,
+          Insets.gapH(40),
 
           // Scanner
           SizedBox(
@@ -111,7 +123,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                           bookId: accessCode.inviteCode,
                           role: accessCode.role,
                         );
-                    AppRouter.pop();
+                    (widget.onPressed ?? AppRouter.pop).call();
                   },
                 );
               },

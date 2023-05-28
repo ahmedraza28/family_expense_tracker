@@ -7,7 +7,9 @@ import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import '../../shared/shared.dart';
 import '../widgets/add_book_fab.dart';
+import '../widgets/scan_invite_fab.dart';
 import 'books_view.dart';
 import 'add_edit_book_screen.dart';
 
@@ -40,22 +42,66 @@ class BooksScreen extends ConsumerWidget {
         ),
       ),
       body: const BooksView(),
-      floatingActionButton: OpenContainer(
-        openElevation: 0,
-        closedElevation: 5,
-        transitionType: ContainerTransitionType.fadeThrough,
-        closedColor: AppColors.primaryColor,
-        middleColor: AppColors.lightPrimaryColor,
-        closedShape: RoundedRectangleBorder(
-          borderRadius: Corners.rounded(50),
-        ),
-        tappable: false,
-        transitionDuration: Durations.medium,
-        closedBuilder: (ctx, openFunction) => AddBookFab(
-          onPressed: openFunction,
-        ),
-        openBuilder: (ctx, closeFunction) => AddEditBookScreen(
-          onPressed: closeFunction,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SizedBox(
+        height: 55,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Scan Code fab
+            OpenContainer(
+              openElevation: 0,
+              closedElevation: 5,
+              transitionType: ContainerTransitionType.fadeThrough,
+              closedColor: AppColors.primaryColor,
+              middleColor: AppColors.lightPrimaryColor,
+              closedShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  bottomLeft: Radius.circular(50),
+                ),
+              ),
+              tappable: false,
+              transitionDuration: Durations.medium,
+              closedBuilder: (ctx, openFunction) => SizedBox(
+                height: 55,
+                child: ScanInviteFab(onPressed: openFunction),
+              ),
+              openBuilder: (ctx, closeFunction) => QrScannerScreen(
+                onPressed: closeFunction,
+              ),
+            ),
+
+            // Divider
+            const VerticalDivider(
+              color: Colors.white,
+              thickness: 1,
+              width: 1,
+            ),
+
+            // Add book fab
+            OpenContainer(
+              openElevation: 0,
+              closedElevation: 5,
+              transitionType: ContainerTransitionType.fadeThrough,
+              closedColor: AppColors.primaryColor,
+              middleColor: AppColors.lightPrimaryColor,
+              closedShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
+                ),
+              ),
+              tappable: false,
+              transitionDuration: Durations.medium,
+              closedBuilder: (ctx, openFunction) => AddBookFab(
+                onPressed: openFunction,
+              ),
+              openBuilder: (ctx, closeFunction) => AddEditBookScreen(
+                onPressed: closeFunction,
+              ),
+            ),
+          ],
         ),
       ),
     );

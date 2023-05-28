@@ -8,6 +8,7 @@ import '../models/balance_transfer_model.codegen.dart';
 import '../../../config/routing/routing.dart';
 
 // Helpers
+import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
@@ -102,7 +103,7 @@ class BalanceTransferListItem extends ConsumerWidget {
                   ),
 
                   // Description
-                  if (balanceTransfer.description != null) ...[
+                  if (!balanceTransfer.description.isNullOrEmpty) ...[
                     Insets.gapH5,
                     CustomText.subtitle(
                       balanceTransfer.description!,

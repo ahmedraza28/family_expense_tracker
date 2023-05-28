@@ -12,6 +12,7 @@ import '../../../helpers/extensions/object_extensions.dart';
 import '../../../helpers/form_validator.dart';
 
 // Providers
+import '../../transactions/transactions.dart';
 import '../providers/balance_transfer_provider.codegen.dart';
 
 // Models
@@ -42,10 +43,12 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
       text: balanceTransfer?.amount.toString() ?? '0',
     );
     final descriptionController = useTextEditingController(
-      text: balanceTransfer?.description ?? '',
+      text: balanceTransfer?.description,
     );
-    final dateController = useValueNotifier<DateTime?>(
-      balanceTransfer?.date,
+    final dateController = useValueNotifier<DateTime>(
+      balanceTransfer?.date ??
+          ref.watch(selectedDateProvider) ??
+          DateTime.now(),
     );
     final srcWalletController = useValueNotifier<WalletModel?>(
       ref.watch(walletByIdProvider(balanceTransfer?.srcWalletId)),
@@ -63,10 +66,16 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
       }
       formKey.currentState!.save();
       if (balanceTransfer == null) {
+        final nowDate = DateTime.now();
+        final date = dateController.value.copyWith(
+          hour: nowDate.hour,
+          minute: nowDate.minute,
+          second: nowDate.second,
+        );
         ref.read(balanceTransferProvider.notifier).addTransaction(
               amount: double.parse(amountController.text),
               srcWalletId: srcWalletController.value!.id,
-              date: dateController.value!,
+              date: date,
               destWalletId: destWalletController.value!.id,
               description: descriptionController.text,
             );
@@ -74,7 +83,7 @@ class AddEditBalanceTransferScreen extends HookConsumerWidget {
         final newTransfer = balanceTransfer!.copyWith(
           amount: double.parse(amountController.text),
           srcWalletId: srcWalletController.value!.id,
-          date: dateController.value!,
+          date: dateController.value,
           destWalletId: destWalletController.value!.id,
           description: descriptionController.text,
         );

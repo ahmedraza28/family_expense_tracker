@@ -8,6 +8,7 @@ import '../models/income_expense_model.codegen.dart';
 import '../../../config/routing/routing.dart';
 
 // Helpers
+import '../../../helpers/extensions/extensions.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Widgets
@@ -70,7 +71,7 @@ class IncomeExpenseListItem extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Title
-                  if (transaction.description != null) ...[
+                  if (!transaction.description.isNullOrEmpty) ...[
                     CustomText.body(
                       transaction.description!,
                     ),
