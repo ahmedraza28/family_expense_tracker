@@ -6,7 +6,6 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 // Helpers
@@ -55,10 +54,8 @@ class AppUtils {
   }
 
   /// A utility method to generate a JWT token
-  static String generateJWTToken(String inviteCode) {
+  static String generateJWTToken(JSON payload) {
     const expiresIn = Duration(hours: 1);
-
-    final payload = <String, dynamic>{'inviteCode': inviteCode};
 
     final jwt = JWT(
       payload,

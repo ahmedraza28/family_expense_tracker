@@ -6,6 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../global/widgets/widgets.dart';
 import '../../../helpers/constants/constants.dart';
 
+// Routing
+import '../../../config/routing/routing.dart';
+
 // Features
 import '../../auth/auth.dart';
 
@@ -46,6 +49,40 @@ class BooksViewState extends ConsumerState<BooksView> {
         ),
         data: (currentUser) => Column(
           children: [
+            // Scan Invite Code Button
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: CustomTextButton(
+                  height: 36,
+                  width: 176,
+                  borderRadius: 100,
+                  onPressed: () {
+                    AppRouter.pushNamed(Routes.QrScannerScreenRoute);
+                  },
+                  color: AppColors.textBlueGreyColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomText.subtitle(
+                        'Scan access code',
+                        color: AppColors.textBlackColor,
+                      ),
+                      Insets.gapW5,
+                      const Icon(
+                        Icons.qr_code_scanner_rounded,
+                        size: 18,
+                        color: AppColors.textBlackColor,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            Insets.gapH15,
+
             // Filters
             CupertinoSlidingSegmentedControl(
               children: {

@@ -18,12 +18,12 @@ class CalculationHistoryDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: SizedBox(
         height: 400,
         width: 250,
         child: Column(
-          children: const [
+          children: [
             // Grey Container
             Expanded(
               child: Material(

@@ -47,9 +47,9 @@ class AddWalletFab extends ConsumerWidget {
           elevation: 0,
           backgroundColor: AppColors.primaryColor,
           onPressed: onPressed,
-          label: Row(
+          label: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               // Add icon
               Icon(
                 Icons.add,

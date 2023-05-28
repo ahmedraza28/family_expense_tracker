@@ -9,6 +9,7 @@ import '../../../config/routing/routing.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
+import 'share_access_qr_button.dart';
 import 'shaded_icon.dart';
 
 // Features
@@ -76,31 +77,7 @@ class AppDrawer extends StatelessWidget {
                   ),
 
                   // Share access code button
-                  CustomTextButton(
-                    height: 36,
-                    width: 176,
-                    borderRadius: 100,
-                    onPressed: () {},
-                    color: Colors.white,
-                    border: Border.all(
-                      color: AppColors.primaryColor,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.share_rounded,
-                          size: 18,
-                          color: AppColors.primaryColor,
-                        ),
-                        Insets.gapW5,
-                        CustomText.subtitle(
-                          'Share access code',
-                          color: AppColors.primaryColor,
-                        ),
-                      ],
-                    ),
-                  ),
+                  const ShareAccessQRButton(),
                 ],
               ),
             ),

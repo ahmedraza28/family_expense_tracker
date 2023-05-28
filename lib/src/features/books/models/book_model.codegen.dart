@@ -20,6 +20,8 @@ part 'book_model.codegen.g.dart';
 
 @freezed
 class BookModel with _$BookModel {
+  static const String membersKey = 'members';
+
   const factory BookModel({
     required String id,
     required String name,

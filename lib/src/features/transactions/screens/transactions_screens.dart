@@ -54,8 +54,8 @@ class TransactionsScreen extends ConsumerWidget {
         ),
       ),
       drawer: const AppDrawer(),
-      body: Column(
-        children: const [
+      body: const Column(
+        children: [
           // Transactions summary
           TransactionsSummary(),
 

@@ -9,6 +9,7 @@ import '../../features/books/books.dart';
 import '../../features/budgets/budgets.dart';
 import '../../features/calculator/calculator.dart';
 import '../../features/categories/categories.dart';
+import '../../features/shared/shared.dart';
 import '../../features/transactions/transactions.dart';
 import '../../features/wallets/wallets.dart';
 
@@ -112,7 +113,7 @@ class Routes {
     // ManageBookAccessScreenRoute: (_) => const SizedBox.shrink(),
     // AboutScreenRoute: (_) => const SizedBox.shrink(),
     // InsightsScreenRoute: (_) => const SizedBox.shrink(),
-    // QrScannerScreenRoute: (_) => const SizedBox.shrink(),
+    QrScannerScreenRoute: (_) => const QrScannerScreen(),
   };
 
   static RouteBuilder getRoute(String? routeName) {

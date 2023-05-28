@@ -58,9 +58,9 @@ class AddBalanceTransferFab extends ConsumerWidget {
             ),
           ),
           onPressed: onPressed,
-          label: Row(
+          label: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               // Add icon
               Icon(
                 Icons.swap_horiz_rounded,

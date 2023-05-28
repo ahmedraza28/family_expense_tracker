@@ -13,9 +13,9 @@ analyzer:
     missing_return: error
     todo: ignore
     invalid_annotation_target: ignore
-  strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
+  language:
+    strict-casts: false
+    strict-raw-types: false
 
 custom_lint:
   rules:

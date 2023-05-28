@@ -105,4 +105,31 @@ class Books extends _$Books {
       },
     );
   }
+
+  Future<void> addMemberToBook({
+    required String bookId,
+    required MemberRole role,
+  }) async {
+    state = const AsyncValue.loading();
+
+    final booksRepository = ref.read(booksRepositoryProvider);
+    state = await state.makeGuardedRequest(
+      () async {
+        final currentUser = ref.read(currentUserProvider).value!;
+
+        await booksRepository.updateBook(
+          bookId: bookId,
+          changes: <String, Object?>{
+            BookModel.membersKey: {
+              currentUser.uid: BookMemberModel(
+                imageUrl: currentUser.imageUrl,
+                role: role,
+              )
+            },
+          },
+        );
+        return 'Invite accepted successfully';
+      },
+    );
+  }
 }
