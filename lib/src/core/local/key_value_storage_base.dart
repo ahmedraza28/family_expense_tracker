@@ -31,20 +31,14 @@ class KeyValueStorageBase {
   /// Reads the value for the key from common preferences storage
   T? getCommon<T>(String key) {
     try {
-      switch (T) {
-        case String:
-          return _sharedPrefs!.getString(key) as T?;
-        case List<String>:
-          return _sharedPrefs!.getStringList(key) as T?;
-        case int:
-          return _sharedPrefs!.getInt(key) as T?;
-        case bool:
-          return _sharedPrefs!.getBool(key) as T?;
-        case double:
-          return _sharedPrefs!.getDouble(key) as T?;
-        default:
-          return _sharedPrefs!.get(key) as T?;
-      }
+      return switch (T) {
+        String => _sharedPrefs!.getString(key) as T?,
+        const (List<String>) => _sharedPrefs!.getStringList(key) as T?,
+        int => _sharedPrefs!.getInt(key) as T?,
+        bool => _sharedPrefs!.getBool(key) as T?,
+        double => _sharedPrefs!.getDouble(key) as T?,
+        _ => _sharedPrefs!.get(key) as T?
+      };
     } on Exception catch (ex) {
       debugPrint('$ex');
       return null;
@@ -53,20 +47,14 @@ class KeyValueStorageBase {
 
   /// Sets the value for the key to common preferences storage
   Future<bool> setCommon<T>(String key, T value) {
-    switch (T) {
-      case String:
-        return _sharedPrefs!.setString(key, value as String);
-      case List<String>:
-        return _sharedPrefs!.setStringList(key, value as List<String>);
-      case int:
-        return _sharedPrefs!.setInt(key, value as int);
-      case bool:
-        return _sharedPrefs!.setBool(key, value as bool);
-      case double:
-        return _sharedPrefs!.setDouble(key, value as double);
-      default:
-        return _sharedPrefs!.setString(key, value as String);
-    }
+    return switch (T) {
+      String => _sharedPrefs!.setString(key, value as String),
+      const (List<String>) => _sharedPrefs!.setStringList(key, value as List<String>),
+      int => _sharedPrefs!.setInt(key, value as int),
+      bool => _sharedPrefs!.setBool(key, value as bool),
+      double => _sharedPrefs!.setDouble(key, value as double),
+      _ => _sharedPrefs!.setString(key, value as String)
+    };
   }
 
   /// Erases common preferences keys

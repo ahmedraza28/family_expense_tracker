@@ -77,12 +77,14 @@ class ShareAccessQRButton extends ConsumerWidget {
                             ),
                           ),
                           child: Center(
-                            child: QrImage(
+                            child: QrImageView(
                               data: AppUtils.generateJWTToken(
                                 accessCode.toJson(),
                               ),
+                              dataModuleStyle: const QrDataModuleStyle(
+                                color: Color(0xFF8194FE),
+                              ),
                               size: 180,
-                              foregroundColor: const Color(0xFF8194FE),
                             ),
                           ),
                         ),
