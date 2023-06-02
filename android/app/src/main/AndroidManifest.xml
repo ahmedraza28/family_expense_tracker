@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.inceptrafay.family_expense_tracker">
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Family Expense Tracker"
         android:name="${applicationName}"
@@ -30,23 +31,5 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-
-        <receiver android:name="HomeScreenWidgetProvider" >
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/home_widget_info" />
-        </receiver>
-
-        <receiver android:name="es.antonborri.home_widget.HomeWidgetBackgroundReceiver">
-           <intent-filter>
-               <action android:name="es.antonborri.home_widget.action.BACKGROUND" />
-           </intent-filter>
-       </receiver>
-
-       <service android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
-           android:permission="android.permission.BIND_JOB_SERVICE" android:exported="true"/>
-           
     </application>
 </manifest>
