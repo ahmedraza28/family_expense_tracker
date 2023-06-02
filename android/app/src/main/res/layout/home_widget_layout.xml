@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/amount_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter amount" />
+
+    <Spinner
+        android:id="@+id/wallet_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/wallet_spinner_item"
+        android:dropDownLayout="@layout/wallet_spinner_dropdown_item" />
+
+    <Spinner
+        android:id="@+id/category_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout="@layout/category_spinner_item"
+        android:dropDownLayout="@layout/category_spinner_dropdown_item" />
+
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Save" />
+
+</LinearLayout>
