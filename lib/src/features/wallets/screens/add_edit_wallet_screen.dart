@@ -99,13 +99,18 @@ class AddEditWalletScreen extends HookConsumerWidget {
           fontSize: 20,
         ),
         actions: [
-          // Delete Button
+          // Enable Button
           if (wallet != null)
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.red,
+            Consumer(
+              builder: (context, ref, child) => Switch.adaptive(
+                activeColor: AppColors.primaryColor,
+                value: wallet!.isEnabled,
+                onChanged: (value) {
+                  final updatedWallet = wallet!.copyWith(isEnabled: value);
+                  ref
+                      .read(walletsProvider.notifier)
+                      .updateWallet(updatedWallet);
+                },
               ),
             ),
         ],

@@ -21,12 +21,12 @@ class FiltersBottomSheet extends ConsumerWidget {
   void _onResetTap(WidgetRef ref) {
     ref
       ..invalidate(budgetFiltersProvider)
-      ..invalidate(filteredBudgetsStreamProvider);
+      ..invalidate(computedBudgetsFutureProvider);
     AppRouter.pop();
   }
 
   void _onSaveTap(WidgetRef ref) {
-    ref.invalidate(filteredBudgetsStreamProvider);
+    ref.invalidate(computedBudgetsFutureProvider);
     AppRouter.pop();
   }
 

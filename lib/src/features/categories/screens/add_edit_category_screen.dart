@@ -68,14 +68,17 @@ class AddEditCategoryScreen extends HookConsumerWidget {
           fontSize: 20,
         ),
         actions: [
-          // Delete Button
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
+          // Enable Button
+          Consumer(
+            builder: (context, ref, child) => Switch.adaptive(
+              activeColor: AppColors.primaryColor,
+              value: category!.isEnabled,
+              onChanged: (value) {
+                final updatedCategory = category!.copyWith(isEnabled: value);
+                ref.read(categoriesProvider.notifier).updateCategory(updatedCategory);
+              },
             ),
-          ),
+          )
         ],
       ),
       body: GestureDetector(

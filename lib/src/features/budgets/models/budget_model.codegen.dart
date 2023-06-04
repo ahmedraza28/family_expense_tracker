@@ -10,6 +10,13 @@ import '../../../helpers/typedefs.dart';
 part 'budget_model.codegen.freezed.dart';
 part 'budget_model.codegen.g.dart';
 
+Map<String, double> _categoriesUsedFromJson(JSON json) {
+  return {
+    for (final categoryId in json[BudgetModel.categoryIdsField]! as List<String>)
+      categoryId: 0.0,
+  };
+}
+
 @freezed
 class BudgetModel with _$BudgetModel {
   static const categoryIdsField = 'category_ids';
@@ -21,7 +28,8 @@ class BudgetModel with _$BudgetModel {
     required double amount,
     required int year,
     required int month,
-    @Default(0.0) double used,
+    @Default({}) @JsonKey(includeToJson: null, fromJson: _categoriesUsedFromJson) Map<String, double> categoriesUsed,
+    @Default(0.0) @JsonKey(includeToJson: false) double used,
     @Default(true) bool isExpense,
     String? description,
   }) = _BudgetModel;

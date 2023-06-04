@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
+import '../../shared/shared.dart';
 import '../models/budget_model.codegen.dart';
 
 // Routing
@@ -77,6 +78,43 @@ class BudgetListItem extends StatelessWidget {
               ),
             ],
           ),
+
+          const Divider(),
+
+          // Categories Usage
+          Column(
+            children: [
+              for (final entry in budget.categoriesUsed.entries)
+                Consumer(
+                  builder: (context, ref, _) {
+                    final category = ref.watch(
+                      categoryByIdProvider(entry.key),
+                    )!;
+                    return Row(
+                      children: [
+                        // Category icon
+                        ShadedIcon(
+                          width: 40,
+                          height: 40,
+                          iconData: Icons.category_rounded,
+                          color: category.color,
+                        ),
+
+                        Insets.gapW15,
+
+                        // Category name
+                        CustomText.body(category.name),
+
+                        Insets.expand,
+
+                        // Category usage
+                        CustomText.subtitle('\$${entry.value}'),
+                      ],
+                    );
+                  },
+                ),
+            ],
+          )
         ],
       ),
     );

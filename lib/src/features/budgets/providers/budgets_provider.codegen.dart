@@ -5,6 +5,7 @@ import '../../../helpers/constants/constants.dart';
 import '../../../helpers/extensions/extensions.dart';
 
 // Models
+import '../../income_expense/income_expense.dart';
 import '../models/budget_filters_model.dart';
 import '../models/budget_model.codegen.dart';
 
@@ -15,16 +16,59 @@ import 'budget_filters_providers.codegen.dart';
 import '../repositories/budgets_repository.codegen.dart';
 
 // Features
+import '../../transactions/transactions.dart';
 import '../../books/books.dart';
 
 part 'budgets_provider.codegen.g.dart';
 
 @riverpod
-Stream<List<BudgetModel>> filteredBudgetsStream(
-  FilteredBudgetsStreamRef ref,
+Stream<List<BudgetModel>> _filteredBudgetsStream(
+  _FilteredBudgetsStreamRef ref,
 ) {
-  final filters = ref.read(budgetFiltersProvider);
+  final filters = ref.watch(budgetFiltersProvider);
   return ref.watch(budgetsProvider.notifier).getAllBudgets(filters);
+}
+
+typedef CategoryType = ({String categoryId, bool isExpense});
+
+@riverpod
+Future<List<BudgetModel>> computedBudgetsFuture(
+  ComputedBudgetsFutureRef ref,
+) async {
+  final budgets = await ref.watch(_filteredBudgetsStreamProvider.future);
+  final categoryTypeAmounts = <CategoryType, double>{
+    for (final budget in budgets)
+      for (var entry in budget.categoriesUsed.entries)
+        (categoryId: entry.key, isExpense: budget.isExpense): entry.value
+  };
+  final transactions =
+      await ref.watch(filteredTransactionsStreamProvider.future);
+  for (final transaction in transactions as List<IncomeExpenseModel>) {
+    if (transaction.isAdjustment || transaction.isBalanceTransfer) continue;
+
+    final key = (
+      categoryId: transaction.categoryId,
+      isExpense: transaction.isExpense
+    ); // combo of categoryId and type
+
+    if (categoryTypeAmounts.containsKey(key)) {
+      categoryTypeAmounts.update(key, (total) => total + transaction.amount);
+    }
+  }
+
+  
+  for (var i = 0; i < budgets.length; i++) {
+    final budget = budgets[i];
+    var used = budget.used;
+    for (final entry in budget.categoriesUsed.entries) {
+      final key = (categoryId: entry.key, isExpense: budget.isExpense);
+      budget.categoriesUsed[entry.key] = categoryTypeAmounts[key]!;
+      used += categoryTypeAmounts[key]!;
+    }
+    budgets[i] = budget.copyWith(used: used);
+  }
+
+  return budgets;
 }
 
 /// A provider used to access instance of this service

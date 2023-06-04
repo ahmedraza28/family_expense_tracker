@@ -30,7 +30,7 @@ class SelectableBudgetsViewState extends ConsumerState<SelectableBudgetsView> {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: AsyncValueWidget(
-        value: ref.watch(filteredBudgetsStreamProvider),
+        value: ref.watch(computedBudgetsFutureProvider),
         loading: () => const Padding(
           padding: EdgeInsets.only(top: 70),
           child: CustomCircularLoader(),

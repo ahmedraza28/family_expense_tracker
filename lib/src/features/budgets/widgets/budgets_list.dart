@@ -63,7 +63,7 @@ class BudgetsList extends ConsumerWidget {
                     ),
                   ),
 
-                  // Transaction
+                  // Budget
                   child
                 ],
               )
