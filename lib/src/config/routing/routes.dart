@@ -109,7 +109,7 @@ class Routes {
     SelectBudgetsScreenRoute: (_) => const SelectBudgetsScreen(),
     AddEditBudgetScreenRoute: (_) => const AddEditBudgetScreen(),
     AddEditBalanceAdjustmentScreenRoute: (_) =>
-        const AddEditBalanceAdjustmentScreen(),
+        AddEditBalanceAdjustmentScreen(),
     // ManageBookAccessScreenRoute: (_) => const SizedBox.shrink(),
     // AboutScreenRoute: (_) => const SizedBox.shrink(),
     // InsightsScreenRoute: (_) => const SizedBox.shrink(),

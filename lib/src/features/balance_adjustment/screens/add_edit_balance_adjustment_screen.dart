@@ -27,17 +27,22 @@ import '../../wallets/wallets.dart';
 
 class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
   final BalanceAdjustmentModel? balanceAdjustment;
+  final WalletModel? wallet;
 
   const AddEditBalanceAdjustmentScreen({
     super.key,
     this.balanceAdjustment,
-  });
+    this.wallet,
+  }) : assert(
+          balanceAdjustment != null || wallet != null,
+          'Either balanceAdjustment or wallet must be provided',
+        );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final amountController = useTextEditingController(
-      text: balanceAdjustment?.amount.toString() ?? '0',
+      text: balanceAdjustment?.amount.toString() ?? wallet?.balance.toString() ?? '0',
     );
     final dateController = useValueNotifier<DateTime>(
       balanceAdjustment?.date ??
@@ -45,7 +50,7 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
           DateTime.now(),
     );
     final walletController = useValueNotifier<WalletModel?>(
-      ref.watch(walletByIdProvider(balanceAdjustment?.walletId)),
+      ref.watch(walletByIdProvider(balanceAdjustment?.walletId)) ?? wallet,
     );
 
     void onSave() {
@@ -67,7 +72,7 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
             walletId: walletController.value!.id,
             date: date,
           );
-      AppRouter.pop();
+      AppRouter.pop(double.parse(amountController.text));
     }
 
     return Scaffold(
@@ -110,9 +115,8 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
 
             // Previous Amount
             CustomTextField(
-              controller: amountController,
               enabled: false,
-              initialValue: walletController.value!.balance.toString(),
+              initialValue: walletController.value?.balance.toString() ?? '0',
               floatingText: 'Previous Amount',
             ),
 
@@ -124,11 +128,9 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
                 borderRadius: Corners.rounded7,
               ),
               onTap: () async {
-                if (balanceAdjustment != null) {
-                  ref
-                      .read(numberInputProvider.notifier)
-                      .replace(amountController.text);
-                }
+                ref
+                    .read(numberInputProvider.notifier)
+                    .replace(amountController.text);
                 await AppRouter.pushNamed(
                   Routes.CalculatorScreenRoute,
                 );

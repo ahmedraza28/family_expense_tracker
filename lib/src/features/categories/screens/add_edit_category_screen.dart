@@ -40,6 +40,9 @@ class AddEditCategoryScreen extends HookConsumerWidget {
     final colorController = useValueNotifier<Color>(
       category?.color ?? AppColors.primaryColor,
     );
+    final isEnabledController = useValueNotifier<bool>(
+      category?.isEnabled ?? true,
+    );
 
     void onSave() {
       if (!formKey.currentState!.validate()) return;
@@ -48,15 +51,15 @@ class AddEditCategoryScreen extends HookConsumerWidget {
         ref.read(categoriesProvider.notifier).addCategory(
               name: categoryNameController.text,
               color: colorController.value,
+              isEnabled: isEnabledController.value,
             );
       } else {
         final newCategory = category!.copyWith(
           name: categoryNameController.text,
           color: colorController.value,
+          isEnabled: isEnabledController.value,
         );
-        ref.read(categoriesProvider.notifier).updateCategory(
-              newCategory,
-            );
+        ref.read(categoriesProvider.notifier).updateCategory(newCategory);
       }
       (onPressed ?? AppRouter.pop).call();
     }
@@ -69,16 +72,10 @@ class AddEditCategoryScreen extends HookConsumerWidget {
         ),
         actions: [
           // Enable Button
-          Consumer(
-            builder: (context, ref, child) => Switch.adaptive(
-              activeColor: AppColors.primaryColor,
-              value: category!.isEnabled,
-              onChanged: (value) {
-                final updatedCategory = category!.copyWith(isEnabled: value);
-                ref.read(categoriesProvider.notifier).updateCategory(updatedCategory);
-              },
+          if (category != null)
+            EnableDisableSwitch(
+              controller: isEnabledController,
             ),
-          )
         ],
       ),
       body: GestureDetector(

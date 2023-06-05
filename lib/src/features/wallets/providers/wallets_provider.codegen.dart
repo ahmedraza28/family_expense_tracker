@@ -52,6 +52,7 @@ class Wallets extends _$Wallets {
     required String name,
     required Color color,
     required double balance,
+    required bool isEnabled,
     String? description,
   }) async {
     state = const AsyncValue.loading();
@@ -61,6 +62,7 @@ class Wallets extends _$Wallets {
       name: name,
       color: color,
       balance: balance,
+      isEnabled: isEnabled,
       description: description,
     );
 

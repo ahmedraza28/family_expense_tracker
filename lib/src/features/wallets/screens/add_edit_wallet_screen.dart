@@ -7,7 +7,6 @@ import '../../../helpers/extensions/object_extensions.dart';
 import '../../../helpers/form_validator.dart';
 
 // Providers
-import '../../balance_adjustment/balance_adjustment.dart';
 import '../providers/currencies_provider.codegen.dart';
 import '../providers/wallets_provider.codegen.dart';
 
@@ -24,6 +23,7 @@ import '../models/wallet_model.codegen.dart';
 import '../../../global/widgets/widgets.dart';
 
 // Features
+import '../../balance_adjustment/balance_adjustment.dart';
 import '../../shared/shared.dart';
 import '../../calculator/calculator.dart';
 
@@ -66,6 +66,9 @@ class AddEditWalletScreen extends HookConsumerWidget {
     final colorController = useValueNotifier<Color>(
       wallet?.color ?? AppColors.primaryColor,
     );
+    final isEnabledController = useValueNotifier<bool>(
+      wallet?.isEnabled ?? true,
+    );
 
     void onSave() {
       if (!formKey.currentState!.validate() || colorController.value.isNull) {
@@ -76,20 +79,18 @@ class AddEditWalletScreen extends HookConsumerWidget {
         ref.read(walletsProvider.notifier).addWallet(
               name: walletNameController.text,
               color: colorController.value,
+              isEnabled: isEnabledController.value,
               balance: double.parse(walletBalanceController.text),
             );
       } else {
         final newWallet = wallet!.copyWith(
           name: walletNameController.text,
           color: colorController.value,
+          isEnabled: isEnabledController.value,
         );
         ref.read(walletsProvider.notifier).updateWallet(newWallet);
       }
       (onPressed ?? AppRouter.pop).call();
-    }
-
-    void editBalance() {
-      AppRouter.pushNamed(Routes.AddEditBalanceAdjustmentScreenRoute);
     }
 
     return Scaffold(
@@ -101,17 +102,8 @@ class AddEditWalletScreen extends HookConsumerWidget {
         actions: [
           // Enable Button
           if (wallet != null)
-            Consumer(
-              builder: (context, ref, child) => Switch.adaptive(
-                activeColor: AppColors.primaryColor,
-                value: wallet!.isEnabled,
-                onChanged: (value) {
-                  final updatedWallet = wallet!.copyWith(isEnabled: value);
-                  ref
-                      .read(walletsProvider.notifier)
-                      .updateWallet(updatedWallet);
-                },
-              ),
+            EnableDisableSwitch(
+              controller: isEnabledController,
             ),
         ],
       ),
@@ -169,7 +161,15 @@ class AddEditWalletScreen extends HookConsumerWidget {
                   borderRadius: Corners.rounded7,
                 ),
                 onTap: wallet != null
-                    ? null
+                    ? () async {
+                        if (ref.read(balanceAdjustmentProvider).isLoading) {
+                          return;
+                        }
+                        final balance = await AppRouter.push(
+                          AddEditBalanceAdjustmentScreen(wallet: wallet),
+                        );
+                        walletBalanceController.text = balance;
+                      }
                     : () async {
                         await AppRouter.pushNamed(
                           Routes.CalculatorScreenRoute,
@@ -204,16 +204,10 @@ class AddEditWalletScreen extends HookConsumerWidget {
                               loading: () => const CustomCircularLoader(
                                 color: AppColors.textGreyColor,
                               ),
-                              orElse: () => InkWell(
-                                onTap: editBalance,
-                                customBorder: const RoundedRectangleBorder(
-                                  borderRadius: Corners.rounded7,
-                                ),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: AppColors.textGreyColor,
-                                  size: 20,
-                                ),
+                              orElse: () => const Icon(
+                                Icons.edit,
+                                color: AppColors.textGreyColor,
+                                size: 20,
                               ),
                             );
                           },
