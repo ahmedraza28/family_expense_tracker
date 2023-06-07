@@ -8,7 +8,7 @@ import '../../../helpers/constants/constants.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import '../widgets/add_category_fab.dart';
-import '../widgets/categories_list.dart';
+import '../widgets/categories_view.dart';
 
 // Screens
 import 'add_edit_category_screen.dart';
@@ -30,7 +30,7 @@ class CategoriesScreen extends StatelessWidget {
         ),
       ),
       drawer: const AppDrawer(),
-      body: const CategoriesList(),
+      body: const CategoriesView(),
       floatingActionButton: Consumer(
         builder: (context, ref, child) {
           final isOwner = ref.watch(isOwnerSelectedBookProvider);

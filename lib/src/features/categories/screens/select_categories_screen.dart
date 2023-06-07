@@ -9,7 +9,7 @@ import '../../../config/routing/routing.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
-import '../widgets/selectable/selectable_categories_list.dart';
+import '../widgets/selectable/selectable_categories_view.dart';
 
 class SelectCategoriesScreen extends ConsumerWidget {
   const SelectCategoriesScreen({super.key});
@@ -42,7 +42,7 @@ class SelectCategoriesScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: const SelectableCategoriesList(),
+      body: const SelectableCategoriesView(),
     );
   }
 }
