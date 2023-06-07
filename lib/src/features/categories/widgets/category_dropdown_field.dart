@@ -22,7 +22,7 @@ class CategoryDropdownField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categories = ref.watch(categoriesStreamProvider).valueOrNull ?? [];
+    final categories = ref.watch(enabledCategoriesStreamProvider).valueOrNull ?? [];
     return CustomDropdownField<CategoryModel>.sheet(
       controller: controller,
       selectedItemBuilder: (item) => CustomText.body(item.name),

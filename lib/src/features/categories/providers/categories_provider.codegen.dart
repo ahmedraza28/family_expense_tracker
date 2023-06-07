@@ -24,6 +24,12 @@ Stream<List<CategoryModel>> categoriesStream(CategoriesStreamRef ref) {
   return categoriesProv.getAllCategories(bookId);
 }
 
+@riverpod
+Future<List<CategoryModel>> enabledCategoriesStream(EnabledCategoriesStreamRef ref) async {
+  final categories = await ref.watch(categoriesStreamProvider.future);
+  return categories.where((e) => e.isEnabled).toList();
+}
+
 @Riverpod(keepAlive: true)
 Future<Map<String, CategoryModel>> categoriesMap(CategoriesMapRef ref) async {
   final categories = await ref.watch(categoriesStreamProvider.future);
