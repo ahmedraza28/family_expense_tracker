@@ -9,7 +9,7 @@ import '../../../helpers/constants/constants.dart';
 // Widgets
 import '../../../global/widgets/widgets.dart';
 import '../widgets/add_wallet_fab.dart';
-import '../widgets/wallets_list.dart';
+import '../widgets/wallets_view.dart';
 
 // Screens
 import 'add_edit_wallet_screen.dart';
@@ -57,7 +57,7 @@ class WalletsScreen extends StatelessWidget {
         ),
       ),
       drawer: const AppDrawer(),
-      body: const WalletsList(),
+      body: const WalletsView(),
       floatingActionButton: Consumer(
         builder: (context, ref, child) {
           final isOwner = ref.watch(isOwnerSelectedBookProvider);

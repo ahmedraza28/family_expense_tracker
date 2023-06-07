@@ -26,7 +26,7 @@ class WalletDropdownField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final wallets = ref.watch(walletsStreamProvider).valueOrNull ?? [];
+    final wallets = ref.watch(enabledWalletsStreamProvider).valueOrNull ?? [];
     return CustomDropdownField<WalletModel>.sheet(
       controller: controller,
       selectedItemBuilder: (item) => CustomText.body(item.name),

@@ -24,6 +24,12 @@ Stream<List<WalletModel>> walletsStream(WalletsStreamRef ref) {
   return wallets.getAllWallets(bookId);
 }
 
+@riverpod
+Future<List<WalletModel>> enabledWalletsStream(EnabledWalletsStreamRef ref) async {
+  final wallets = await ref.watch(walletsStreamProvider.future);
+  return wallets.where((e) => e.isEnabled).toList();
+}
+
 @Riverpod(keepAlive: true)
 Future<Map<String, WalletModel>> walletsMap(WalletsMapRef ref) async {
   final wallets = await ref.watch(walletsStreamProvider.future);
