@@ -177,30 +177,31 @@ class AddEditWalletScreen extends HookConsumerWidget {
                         walletBalanceController.text =
                             ref.read(numberResultProvider);
                       },
-                child: CustomTextField(
-                  controller: walletBalanceController,
-                  enabled: false,
-                  floatingText: 'Balance',
-                  hintText: '0.0',
-                  prefix: Consumer(
-                    builder: (context, ref, child) {
-                      final currency = ref.watch(selectedBookCurrencyProvider);
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 9, 0, 0),
-                        child: CustomText.body(
-                          currency.symbol,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textGreyColor,
-                        ),
-                      );
-                    },
-                  ),
-                  suffix: wallet == null
-                      ? null
-                      : Consumer(
-                          builder: (context, ref, child) {
-                            final state = ref.watch(balanceAdjustmentProvider);
-                            return state.maybeWhen(
+                child: Consumer(
+                  builder: (_, ref, child) {
+                    final state = ref.watch(balanceAdjustmentProvider);
+                    return CustomTextField(
+                      controller: walletBalanceController,
+                      enabled: false,
+                      floatingText: 'Balance',
+                      hintText: '0.0',
+                      prefix: Consumer(
+                        builder: (_, ref, __) {
+                          final currency =
+                              ref.watch(selectedBookCurrencyProvider);
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(15, 9, 0, 0),
+                            child: CustomText.body(
+                              currency.symbol,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textGreyColor,
+                            ),
+                          );
+                        },
+                      ),
+                      suffix: wallet == null
+                          ? null
+                          : state.maybeWhen(
                               loading: () => const CustomCircularLoader(
                                 color: AppColors.textGreyColor,
                               ),
@@ -209,10 +210,10 @@ class AddEditWalletScreen extends HookConsumerWidget {
                                 color: AppColors.textGreyColor,
                                 size: 20,
                               ),
-                            );
-                          },
-                        ),
-                  validator: FormValidator.nonEmptyValidator,
+                            ),
+                      validator: FormValidator.nonEmptyValidator,
+                    );
+                  },
                 ),
               ),
 
