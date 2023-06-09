@@ -7,13 +7,15 @@ import '../../../helpers/constants/constants.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
-import '../../shared/shared.dart';
 import '../widgets/add_book_fab.dart';
 import '../widgets/scan_invite_fab.dart';
 import 'books_view.dart';
+
+// Screens
 import 'add_edit_book_screen.dart';
 
 // Features
+import '../../shared/shared.dart';
 import '../../auth/auth.dart';
 
 class BooksScreen extends ConsumerWidget {
