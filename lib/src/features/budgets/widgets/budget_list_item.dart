@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Models
+import '../../../helpers/extensions/extensions.dart';
 import '../../shared/shared.dart';
 import '../models/budget_model.codegen.dart';
 
@@ -34,7 +35,7 @@ class BudgetListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final fraction = budget.used / budget.amount;
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: Corners.rounded9,
@@ -79,52 +80,63 @@ class BudgetListItem extends StatelessWidget {
             ],
           ),
 
-          const Divider(height: 28),
+          Insets.gapH15,
+
+          const Divider(height: 0),
 
           // Categories Usage
-          Column(
-            children: [
-              for (final entry in budget.categoriesUsed.entries) ...[
-                Consumer(
-                  builder: (context, ref, _) {
-                    final category = ref.watch(
-                      categoryByIdProvider(entry.key),
-                    )!;
-                    return Row(
-                      children: [
-                        // Category icon
-                        ShadedIcon(
-                          width: 33,
-                          height: 33,
-                          iconSize: 16,
-                          padding: const EdgeInsets.all(4),
-                          iconData: Icons.category_rounded,
-                          color: category.color,
-                        ),
+          Theme(
+            data: context.theme.copyWith(
+              dividerColor: Colors.transparent,
+              listTileTheme: ListTileTheme.of(context).copyWith(dense: true),
+            ),
+            child: ExpansionTile(
+              title: CustomText.subtitle('Categories Usage'),
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: const EdgeInsets.only(bottom: 10),
+              children: [
+                for (final entry in budget.categoriesUsed.entries) ...[
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final category = ref.watch(
+                        categoryByIdProvider(entry.key),
+                      )!;
+                      return Row(
+                        children: [
+                          // Category icon
+                          ShadedIcon(
+                            width: 33,
+                            height: 33,
+                            iconSize: 16,
+                            padding: const EdgeInsets.all(4),
+                            iconData: Icons.category_rounded,
+                            color: category.color,
+                          ),
 
-                        Insets.gapW15,
+                          Insets.gapW15,
 
-                        // Category name
-                        CustomText.subtitle(category.name),
+                          // Category name
+                          CustomText.subtitle(category.name),
 
-                        Insets.expand,
+                          Insets.expand,
 
-                        // Category usage
-                        CustomText.subtitle(
-                          '\$${entry.value}',
-                          color: AppColors.textLightGreyColor,
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                          // Category usage
+                          CustomText.subtitle(
+                            '\$${entry.value}',
+                            color: AppColors.textLightGreyColor,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
 
-                // Gap between categories
-                if (entry.key != budget.categoriesUsed.entries.last.key)
-                  Insets.gapH10,
+                  // Gap between categories
+                  if (entry.key != budget.categoriesUsed.entries.last.key)
+                    Insets.gapH10,
+                ],
               ],
-            ],
-          )
+            ),
+          ),
         ],
       ),
     );
