@@ -10,11 +10,13 @@ class ShadedIcon extends StatelessWidget {
   final BorderRadius borderRadius;
   final double? width;
   final double? height;
+  final double iconSize;
 
   const ShadedIcon({
     required this.color,
     required this.iconData,
     this.padding = const EdgeInsets.all(12),
+    this.iconSize = 20,
     this.borderRadius = Corners.rounded9,
     this.width,
     this.height,
@@ -34,7 +36,7 @@ class ShadedIcon extends StatelessWidget {
       child: Center(
         child: Icon(
           iconData,
-          size: 20,
+          size: iconSize,
           color: color,
         ),
       ),

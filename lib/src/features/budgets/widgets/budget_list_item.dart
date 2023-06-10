@@ -34,7 +34,7 @@ class BudgetListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final fraction = budget.used / budget.amount;
     return Container(
-      padding: const EdgeInsets.fromLTRB(15, 15, 15, 12),
+      padding: const EdgeInsets.all(15),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: Corners.rounded9,
@@ -47,7 +47,7 @@ class BudgetListItem extends StatelessWidget {
             isOwner: isOwner,
           ),
 
-          Insets.gapH10,
+          Insets.gapH15,
 
           // Icon and Budget Usage
           Row(
@@ -79,12 +79,12 @@ class BudgetListItem extends StatelessWidget {
             ],
           ),
 
-          const Divider(),
+          const Divider(height: 28),
 
           // Categories Usage
           Column(
             children: [
-              for (final entry in budget.categoriesUsed.entries)
+              for (final entry in budget.categoriesUsed.entries) ...[
                 Consumer(
                   builder: (context, ref, _) {
                     final category = ref.watch(
@@ -94,8 +94,10 @@ class BudgetListItem extends StatelessWidget {
                       children: [
                         // Category icon
                         ShadedIcon(
-                          width: 40,
-                          height: 40,
+                          width: 33,
+                          height: 33,
+                          iconSize: 16,
+                          padding: const EdgeInsets.all(4),
                           iconData: Icons.category_rounded,
                           color: category.color,
                         ),
@@ -103,16 +105,24 @@ class BudgetListItem extends StatelessWidget {
                         Insets.gapW15,
 
                         // Category name
-                        CustomText.body(category.name),
+                        CustomText.subtitle(category.name),
 
                         Insets.expand,
 
                         // Category usage
-                        CustomText.subtitle('\$${entry.value}'),
+                        CustomText.subtitle(
+                          '\$${entry.value}',
+                          color: AppColors.textLightGreyColor,
+                        ),
                       ],
                     );
                   },
                 ),
+
+                // Gap between categories
+                if (entry.key != budget.categoriesUsed.entries.last.key)
+                  Insets.gapH10,
+              ],
             ],
           )
         ],
@@ -140,6 +150,7 @@ class _NameAndEditRow extends StatelessWidget {
         Expanded(
           child: CustomText.body(
             budget.name,
+            fontWeight: FontWeight.bold,
           ),
         ),
 
@@ -258,7 +269,6 @@ class _DetailsColumn extends StatelessWidget {
             // Used Label
             CustomText.subtitle(
               'Used',
-              color: AppColors.textBlackColor,
             ),
 
             // Used value
@@ -278,7 +288,6 @@ class _DetailsColumn extends StatelessWidget {
             // Remaining Label
             CustomText.subtitle(
               'Remaining',
-              color: AppColors.textBlackColor,
             ),
 
             // Remaining value

@@ -209,7 +209,7 @@ class MemberAvatars extends StatelessWidget {
         children: [
           // Members Avatars
           SizedBox(
-            width: 113,
+            width: 130,
             child: Stack(
               children: [
                 if (members.isEmpty)

@@ -43,29 +43,30 @@ Future<List<BudgetModel>> computedBudgetsFuture(
   };
   final transactions =
       await ref.watch(filteredTransactionsStreamProvider.future);
-  for (final transaction in transactions as List<IncomeExpenseModel>) {
+  for (final transaction in transactions) {
     if (transaction.isAdjustment || transaction.isBalanceTransfer) continue;
 
+    final t = transaction as IncomeExpenseModel;
     final key = (
-      categoryId: transaction.categoryId,
-      isExpense: transaction.isExpense
+      categoryId: t.categoryId,
+      isExpense: t.isExpense
     ); // combo of categoryId and type
 
     if (categoryTypeAmounts.containsKey(key)) {
-      categoryTypeAmounts.update(key, (total) => total + transaction.amount);
+      categoryTypeAmounts.update(key, (total) => total + t.amount);
     }
   }
 
-  
   for (var i = 0; i < budgets.length; i++) {
     final budget = budgets[i];
     var used = budget.used;
+    final categoriesUsed = {...budget.categoriesUsed};
     for (final entry in budget.categoriesUsed.entries) {
       final key = (categoryId: entry.key, isExpense: budget.isExpense);
-      budget.categoriesUsed[entry.key] = categoryTypeAmounts[key]!;
+      categoriesUsed[entry.key] = categoryTypeAmounts[key]!;
       used += categoryTypeAmounts[key]!;
     }
-    budgets[i] = budget.copyWith(used: used);
+    budgets[i] = budget.copyWith(used: used, categoriesUsed: categoriesUsed);
   }
 
   return budgets;

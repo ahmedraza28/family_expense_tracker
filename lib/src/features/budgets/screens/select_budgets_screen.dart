@@ -37,30 +37,39 @@ class SelectBudgetsScreen extends ConsumerWidget {
         width: double.infinity,
         height: 55,
         margin: const EdgeInsets.symmetric(horizontal: 15),
-        child: FloatingActionButton(
-          onPressed: () {
-            final budgets = ref.read(selectedBudgetsProvider);
-            AppRouter.pop(budgets);
-            ref.invalidate(selectedBudgetsProvider);
-          },
-          elevation: 5,
-          backgroundColor: Colors.transparent,
-          shape: const RoundedRectangleBorder(
-            borderRadius: Corners.rounded7,
-          ),
-          child: const DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: Corners.rounded7,
-              gradient: AppColors.buttonGradientPrimary,
-            ),
-            child: Center(
-              child: CustomText(
-                'Done',
-                color: Colors.white,
-                fontSize: 16,
+        child: Consumer(
+          builder: (_, ref, __) {
+            final state = ref.watch(selectedBudgetsProvider);
+            return FloatingActionButton(
+              onPressed: state.isEmpty
+                  ? null
+                  : () {
+                      final budgets = ref.read(selectedBudgetsProvider);
+                      AppRouter.pop(budgets);
+                      ref.invalidate(selectedBudgetsProvider);
+                    },
+              elevation: 5,
+              backgroundColor: Colors.transparent,
+              shape: const RoundedRectangleBorder(
+                borderRadius: Corners.rounded7,
               ),
-            ),
-          ),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: Corners.rounded7,
+                  gradient: state.isEmpty
+                      ? AppColors.buttonGradientGrey
+                      : AppColors.buttonGradientPrimary,
+                ),
+                child: const Center(
+                  child: CustomText(
+                    'Done',
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

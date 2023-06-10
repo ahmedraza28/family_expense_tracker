@@ -40,12 +40,14 @@ class BudgetsViewState extends ConsumerState<BudgetsView> {
           retryCallback: () {},
           stackTrace: st,
         ),
-        emptyOrNull: () => const EmptyStateWidget(
-          height: 395,
-          width: double.infinity,
-          margin: EdgeInsets.only(top: 20),
-          title: 'No budgets built yet',
-          subtitle: 'Check back later',
+        emptyOrNull: () => const Center(
+          child: EmptyStateWidget(
+            height: 395,
+            width: double.infinity,
+            margin: EdgeInsets.only(top: 20),
+            title: 'No budgets built yet',
+            subtitle: 'Check back later',
+          ),
         ),
         data: (budgets) {
           final expenseBudgets = <BudgetModel>[];

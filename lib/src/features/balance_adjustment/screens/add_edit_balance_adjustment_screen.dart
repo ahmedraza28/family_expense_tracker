@@ -52,6 +52,9 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
     final walletController = useValueNotifier<WalletModel?>(
       ref.watch(walletByIdProvider(balanceAdjustment?.walletId)) ?? wallet,
     );
+    final previousBalance = useMemoized(
+      () => (balanceAdjustment?.previousAmount ?? wallet?.balance ?? 0.0).toString(),
+    );
 
     void onSave() {
       if (!formKey.currentState!.validate() ||
@@ -116,7 +119,7 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
             // Previous Amount
             CustomTextField(
               enabled: false,
-              initialValue: walletController.value?.balance.toString() ?? '0',
+              initialValue: previousBalance,
               floatingText: 'Previous Amount',
             ),
 
