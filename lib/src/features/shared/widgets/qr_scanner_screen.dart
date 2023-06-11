@@ -5,6 +5,9 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 // Routing
 import '../../../config/routing/routing.dart';
 
+// Services
+import '../../../core/core.dart';
+
 // Helpers
 import '../../../helpers/constants/constants.dart';
 
@@ -35,7 +38,9 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   @override
   void initState() {
     super.initState();
-    _qrController = MobileScannerController();
+    _qrController = MobileScannerController(
+      detectionSpeed: DetectionSpeed.noDuplicates,
+    );
   }
 
   @override
@@ -115,15 +120,26 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
               builder: (_, ref, __) {
                 return MobileScanner(
                   controller: _qrController,
-                  onDetect: (barcode) {
-                    final code = barcode.raw;
-                    final args = AppUtils.decodeJWTToken(code as String);
-                    final accessCode = AccessCodeModel.fromJson(args);
-                    ref.read(booksProvider.notifier).addMemberToBook(
-                          bookId: accessCode.inviteCode,
-                          role: accessCode.role,
-                        );
-                    (widget.onPressed ?? AppRouter.pop).call();
+                  onDetect: (capture) {
+                    try {
+                      final code = capture.barcodes.firstOrNull?.rawValue;
+                      if (code == null) {
+                        throw CustomException.qr(message: 'No QR code found');
+                      }
+                      final args = AppUtils.decodeJWTToken(code);
+                      final accessCode = AccessCodeModel.fromJson(args);
+                      ref.read(booksProvider.notifier).addMemberToBook(
+                            bookId: accessCode.inviteCode,
+                            role: accessCode.role,
+                          );
+                      (widget.onPressed ?? AppRouter.pop).call();
+                    } on CustomException catch (e) {
+                      CustomDialog.showAlertDialog(
+                        context: context,
+                        reason: e.message,
+                        dialogTitle: 'Scan Failed',
+                      );
+                    }
                   },
                 );
               },

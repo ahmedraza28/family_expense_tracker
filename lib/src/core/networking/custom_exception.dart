@@ -19,6 +19,12 @@ enum _ExceptionType {
 
   /// Unimplemented exception
   UnimplementedException,
+
+  /// The exception for an invalid JWT token
+  JWTException,
+
+  /// The exception for an invalid QR code
+  QrException,
 }
 
 class CustomException implements Exception {
@@ -33,12 +39,25 @@ class CustomException implements Exception {
     this.exceptionType = _ExceptionType.UnrecognizedException,
   }) : name = exceptionType.name;
 
+  CustomException.jwt({
+    required this.message,
+    this.code,
+    this.exceptionType = _ExceptionType.JWTException,
+  }) : name = exceptionType.name;
+
+  CustomException.qr({
+    required this.message,
+    this.code,
+    this.exceptionType = _ExceptionType.QrException,
+  }) : name = exceptionType.name;
+
   factory CustomException.unimplemented() {
     return CustomException(
       message: 'This feature is not implemented yet',
       exceptionType: _ExceptionType.UnimplementedException,
     );
   }
+
 
   factory CustomException.fromOtherException(Exception error) {
     try {

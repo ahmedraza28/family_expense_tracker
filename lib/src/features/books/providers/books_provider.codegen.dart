@@ -122,6 +122,10 @@ class Books extends _$Books {
       () async {
         final currentUser = ref.read(currentUserProvider).value!;
 
+        if (currentUser.ownedBookIds.contains(bookId)) {
+          throw Exception('You are already an owner of this book');
+        }
+
         await booksRepository.updateBook(
           bookId: bookId,
           changes: <String, Object?>{

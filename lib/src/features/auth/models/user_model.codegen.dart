@@ -10,6 +10,7 @@ part 'user_model.codegen.g.dart';
 class UserModel with _$UserModel {
   const factory UserModel({
     required String uid,
+    @JsonKey(name: 'displayName')
     required String displayName,
     required String email,
     String? imageUrl,

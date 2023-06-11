@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
+// Services
+import '../../core/core.dart';
+
 // Helpers
 import '../extensions/datetime_extension.dart';
 import '../typedefs.dart';
@@ -70,9 +73,13 @@ class AppUtils {
 
   /// A utility method to convert a JWT token to a map
   static JSON decodeJWTToken(String token) {
-    final jwt = JWT.tryVerify(token, SecretKey('secret passphrase'));
-    if (jwt == null) throw Exception('Invalid JWT token');
-    return jwt.payload as JSON;
+    try {
+      final jwt = JWT.verify(token, SecretKey('secret passphrase'));
+      return jwt.payload as JSON;
+      // ignore: avoid_catching_errors
+    } on JWTError catch (e) {
+      throw CustomException.jwt(message: e.message);
+    }
   }
 
   /// A utility method to convert 0/1 to false/true
