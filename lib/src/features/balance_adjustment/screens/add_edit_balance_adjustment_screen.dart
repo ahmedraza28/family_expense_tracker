@@ -75,7 +75,7 @@ class AddEditBalanceAdjustmentScreen extends HookConsumerWidget {
             walletId: walletController.value!.id,
             date: date,
           );
-      AppRouter.pop(double.parse(amountController.text));
+      AppRouter.pop(amountController.text);
     }
 
     return Scaffold(

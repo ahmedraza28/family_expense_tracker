@@ -10,9 +10,11 @@ class FloatingSaveButton extends StatelessWidget {
   const FloatingSaveButton({
     required this.onSave,
     super.key,
+    this.isDisabled = false,
   });
 
   final VoidCallback onSave;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +23,20 @@ class FloatingSaveButton extends StatelessWidget {
       height: 55,
       margin: const EdgeInsets.symmetric(horizontal: 15),
       child: FloatingActionButton(
-        onPressed: onSave,
+        onPressed: isDisabled ? null : onSave,
         elevation: 5,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
           borderRadius: Corners.rounded7,
         ),
-        child: const DecoratedBox(
+        child: DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: Corners.rounded7,
-            gradient: AppColors.buttonGradientPrimary,
+            gradient: isDisabled
+                ? AppColors.buttonGradientGrey
+                : AppColors.buttonGradientPrimary,
           ),
-          child: Center(
+          child: const Center(
             child: CustomText(
               'Save',
               color: Colors.white,

@@ -62,7 +62,7 @@ class BalanceAdjustmentListItem extends ConsumerWidget {
             const ShadedIcon(
               color: color,
               padding: EdgeInsets.all(15),
-              iconData: Icons.swap_horiz_rounded,
+              iconData: Icons.auto_fix_high_rounded,
             ),
 
             Insets.gapW15,
@@ -73,10 +73,7 @@ class BalanceAdjustmentListItem extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Title
-                  CustomText.body(
-                    wallet!.name,
-                    color: AppColors.redColor,
-                  ),
+                  CustomText.body(wallet!.name),
 
                   Insets.gapH5,
 

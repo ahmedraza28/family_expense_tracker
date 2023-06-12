@@ -167,7 +167,7 @@ class AddEditWalletScreen extends HookConsumerWidget {
                         }
                         final balance = await AppRouter.push(
                           AddEditBalanceAdjustmentScreen(wallet: wallet),
-                        );
+                        ) as String;
                         walletBalanceController.text = balance;
                       }
                     : () async {
@@ -223,7 +223,16 @@ class AddEditWalletScreen extends HookConsumerWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingSaveButton(onSave: onSave),
+      floatingActionButton: Consumer(
+        builder: (_, ref, child) {
+          final isDisabled = ref.watch(
+              balanceAdjustmentProvider.select((value) => value.isLoading));
+          return FloatingSaveButton(
+            onSave: onSave,
+            isDisabled: isDisabled,
+          );
+        },
+      ),
     );
   }
 }
