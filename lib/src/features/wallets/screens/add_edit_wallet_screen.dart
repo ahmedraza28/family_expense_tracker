@@ -226,7 +226,8 @@ class AddEditWalletScreen extends HookConsumerWidget {
       floatingActionButton: Consumer(
         builder: (_, ref, child) {
           final isDisabled = ref.watch(
-              balanceAdjustmentProvider.select((value) => value.isLoading));
+            balanceAdjustmentProvider.select((value) => value.isLoading),
+          );
           return FloatingSaveButton(
             onSave: onSave,
             isDisabled: isDisabled,
