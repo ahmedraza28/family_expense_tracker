@@ -142,6 +142,29 @@ class Books extends _$Books {
     );
   }
 
+  Future<void> updateMemberAccess({
+    required String bookId,
+    required String memberId,
+    required BookMemberModel member,
+  }) async {
+    state = const AsyncValue.loading();
+
+    final booksRepository = ref.read(booksRepositoryProvider);
+    state = await state.makeGuardedRequest(
+      () async {
+        await booksRepository.updateBook(
+          bookId: bookId,
+          changes: <String, Object?>{
+            BookModel.membersKey: {
+              memberId: member
+            },
+          },
+        );
+        return 'Access updated successfully';
+      },
+    );
+  }
+
   void resetSelectedBook() {
     ref
       ..invalidate(selectedBookProvider)

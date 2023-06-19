@@ -21,6 +21,7 @@ import '../screens/add_edit_book_screen.dart';
 // Features
 import '../../shared/shared.dart';
 import '../../auth/auth.dart';
+import 'member_access_dialog.dart';
 
 class BookListItem extends ConsumerWidget {
   final BookModel book;
@@ -71,6 +72,7 @@ class BookListItem extends ConsumerWidget {
               myId: myId,
               isOwner: isOwner,
               isViewer: isViewer,
+              bookId: book.id,
               currencyName: book.currencyName,
               membersMap: book.members,
               description: book.description,
@@ -88,12 +90,14 @@ class BookDetails extends StatelessWidget {
     required this.isViewer,
     required this.description,
     required this.myId,
+    required this.bookId,
     required this.currencyName,
     required this.membersMap,
     super.key,
   });
 
   final String myId;
+  final String bookId;
   final String description;
   final String currencyName;
   final Map<String, BookMemberModel> membersMap;
@@ -102,10 +106,6 @@ class BookDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final members = <BookMemberModel>[
-      for (final m in membersMap.entries)
-        if (m.key != myId) m.value,
-    ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 12, 15, 15),
       child: Column(
@@ -125,7 +125,9 @@ class BookDetails extends StatelessWidget {
             child: MemberAvatars(
               isOwner: isOwner,
               isViewer: isViewer,
-              members: members,
+              myId: myId,
+              bookId: bookId,
+              membersMap: membersMap,
             ),
           ),
         ],
@@ -191,18 +193,48 @@ class _TitleAndEditRow extends StatelessWidget {
 
 class MemberAvatars extends StatelessWidget {
   const MemberAvatars({
-    required this.members,
+    required this.membersMap,
     required this.isOwner,
+    required this.myId,
+    required this.bookId,
     required this.isViewer,
     super.key,
   });
 
-  final List<BookMemberModel> members;
+  final Map<String, BookMemberModel> membersMap;
+  final String myId;
+  final String bookId;
   final bool isViewer;
   final bool isOwner;
 
+  void showAccessDialog(BuildContext context) {
+    showGeneralDialog(
+      barrierColor: AppColors.barrierColorLight,
+      transitionDuration: const Duration(milliseconds: 400),
+      barrierDismissible: true,
+      barrierLabel: '',
+      context: context,
+      transitionBuilder: (context, a1, a2, dialog) {
+        final curveValue =
+            (1 - Curves.linearToEaseOut.transform(a1.value)) * 200;
+        return Transform(
+          transform: Matrix4.translationValues(curveValue, 0, 0),
+          child: Opacity(opacity: a1.value, child: dialog),
+        );
+      },
+      pageBuilder: (_, __, ___) => MemberAccessDialog(
+        membersMap: membersMap,
+        bookId: bookId,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final members = <BookMemberModel>[
+      for (final m in membersMap.entries)
+        if (m.key != myId) m.value,
+    ];
     return SizedBox(
       height: 36,
       child: Row(
@@ -212,7 +244,7 @@ class MemberAvatars extends StatelessWidget {
             width: 130,
             child: Stack(
               children: [
-                if (members.isEmpty)
+                if (membersMap.isEmpty)
                   const Positioned(
                     left: 0,
                     child: CustomText(
@@ -247,7 +279,7 @@ class MemberAvatars extends StatelessWidget {
                     ),
 
                 // More members
-                if (members.length > 3)
+                if (membersMap.length > 3)
                   Positioned(
                     left: 78,
                     child: CircleAvatar(
@@ -257,7 +289,7 @@ class MemberAvatars extends StatelessWidget {
                         radius: 16,
                         backgroundColor: AppColors.surfaceColor,
                         child: CustomText.subtitle(
-                          '+${members.length - 3}',
+                          '+${membersMap.length - 3}',
                           color: AppColors.textBlueGreyColor,
                         ),
                       ),
@@ -271,9 +303,7 @@ class MemberAvatars extends StatelessWidget {
           if (isOwner) ...[
             Insets.expand,
             InkWell(
-              onTap: () => AppRouter.pushNamed(
-                Routes.ManageBookAccessScreenRoute,
-              ),
+              onTap: () => showAccessDialog(context),
               child: const CustomText(
                 'Manage Access',
                 fontSize: 14,
