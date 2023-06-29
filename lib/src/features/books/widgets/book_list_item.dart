@@ -209,7 +209,7 @@ class MemberAvatars extends StatelessWidget {
 
   void showAccessDialog(BuildContext context) {
     showGeneralDialog(
-      barrierColor: AppColors.barrierColorLight,
+      barrierColor: AppColors.barrierColor,
       transitionDuration: const Duration(milliseconds: 400),
       barrierDismissible: true,
       barrierLabel: '',

@@ -3,19 +3,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
-import '../../../helpers/extensions/extensions.dart';
 
 // Routing
 import '../../../config/routing/routing.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
-import 'hangout_request_status_popup_menu.dart';
 
 // Features
+import '../../../helpers/extensions/extensions.dart';
 import '../../auth/auth.dart';
 import '../../shared/shared.dart';
 import '../books.dart';
+import 'hangout_request_status_popup_menu.dart';
 
 class MemberAccessDialog extends StatelessWidget {
   final Map<String, BookMemberModel> membersMap;
@@ -32,28 +32,32 @@ class MemberAccessDialog extends StatelessWidget {
     return Center(
       child: SizedBox(
         height: 400,
-        width: 250,
-        child: Column(
-          children: [
-            // Grey Container
-            Expanded(
-              child: Material(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: Corners.rounded20,
+        width: 370,
+        child: Material(
+          shape: const RoundedRectangleBorder(
+            borderRadius: Corners.rounded15,
+          ),
+          color: AppColors.surfaceColor,
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: [
+                // Grey Container
+                Expanded(
+                  child: MemberList(
+                    members: membersMap,
+                    bookId: bookId,
+                  ),
                 ),
-                color: AppColors.surfaceColor,
-                child: MemberList(
-                  members: membersMap,
-                  bookId: bookId,
-                ),
-              ),
-            ),
 
-            // Save Button
-            const FloatingSaveButton(
-              onSave: AppRouter.pop,
-            )
-          ],
+                // Save Button
+                const FloatingSaveButton(
+                  margin: 0,
+                  onSave: AppRouter.pop,
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -72,11 +76,12 @@ class MemberList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(usersProvider(members.keys.toList()));
+    final params = UserProviderParams(members.keys.toList());
+    final state = ref.watch(usersProvider(params));
     return state.maybeWhen(
       data: (data) => ListView.separated(
         itemCount: members.length,
-        padding: const EdgeInsets.fromLTRB(15, 12, 15, 0),
+        padding: EdgeInsets.zero,
         separatorBuilder: (ctx, i) => const SizedBox(height: 20),
         itemBuilder: (ctx, i) => _MemberListItem(
           uid: data[i].uid,
@@ -105,55 +110,85 @@ class _MemberListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-      dense: true,
-      horizontalTitleGap: 0,
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 5,
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: Corners.rounded10,
       ),
-      tileColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: Corners.rounded15,
-      ),
-      trailing: LabeledWidget(
-        labelDirection: Axis.horizontal,
-        mainAxisAlignment: MainAxisAlignment.center,
-        label: member.role.name.removeUnderScore,
-        child: MemberRolePopupMenu(
-          initialValue: member.role,
-          onCanceled: () {},
-          onSelected: (status) {
-            if (member.role != status) {
-              ref.read(booksProvider.notifier).updateMemberAccess(
-                    bookId: bookId,
-                    memberId: uid,
-                    member: member,
-                  );
-            }
-          },
-        ),
-      ),
-      leading: CustomNetworkImage(
-        imageUrl: member.imageUrl ?? '',
-        width: 40,
-        height: 40,
-        shape: BoxShape.circle,
-        errorWidget: DecoratedBox(
-          decoration: const BoxDecoration(
-            color: AppColors.primaryColor,
+      child: Row(
+        children: [
+          // Image
+          CustomNetworkImage(
+            imageUrl: member.imageUrl ?? '',
+            width: 30,
+            height: 30,
             shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: CustomText.title(
-              name[0],
-              fontSize: 18,
-              color: AppColors.textWhite80Color,
+            errorWidget: DecoratedBox(
+              decoration: const BoxDecoration(
+                color: AppColors.primaryColor,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: CustomText.title(
+                  name[0],
+                  fontSize: 17,
+                  color: AppColors.textWhite80Color,
+                ),
+              ),
             ),
           ),
-        ),
+
+          Insets.gapW10,
+
+          // Name
+          Expanded(
+            flex: 9,
+            child: CustomText(
+              name,
+              fontSize: 14,
+              maxLines: 1,
+            ),
+          ),
+
+          Insets.expand,
+
+          // Role
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: Corners.rounded7,
+              color: member.isOwner
+                  ? AppColors.surfaceColor
+                  : AppColors.lightPrimaryColor.withOpacity(0.15),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            child: LabeledWidget(
+              labelDirection: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.end,
+              label: member.role.name.removeUnderScore.capitalize,
+              labelStyle: TextStyle(
+                color: member.isOwner
+                    ? AppColors.textBlueGreyColor
+                    : AppColors.lightPrimaryColor,
+              ),
+              child: MemberRolePopupMenu(
+                initialValue: member.role,
+                enabled: !member.isOwner,
+                onCanceled: () {},
+                onSelected: (status) {
+                  if (member.role != status) {
+                    ref.read(booksProvider.notifier).updateMemberAccess(
+                          bookId: bookId,
+                          memberId: uid,
+                          member: member,
+                        );
+                  }
+                },
+              ),
+            ),
+          )
+        ],
       ),
-      title: CustomText.subtitle(name),
     );
   }
 }

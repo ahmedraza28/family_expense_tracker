@@ -155,9 +155,7 @@ class Books extends _$Books {
         await booksRepository.updateBook(
           bookId: bookId,
           changes: <String, Object?>{
-            BookModel.membersKey: {
-              memberId: member
-            },
+            BookModel.membersKey: {memberId: member},
           },
         );
         return 'Access updated successfully';

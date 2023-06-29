@@ -10,9 +10,11 @@ class FloatingSaveButton extends StatelessWidget {
   const FloatingSaveButton({
     required this.onSave,
     super.key,
+    this.margin = 15,
     this.isDisabled = false,
   });
 
+  final double margin;
   final VoidCallback onSave;
   final bool isDisabled;
 
@@ -21,7 +23,7 @@ class FloatingSaveButton extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 55,
-      margin: const EdgeInsets.symmetric(horizontal: 15),
+      margin: EdgeInsets.symmetric(horizontal: margin),
       child: FloatingActionButton(
         onPressed: isDisabled ? null : onSave,
         elevation: 5,

@@ -14,11 +14,13 @@ class MemberRolePopupMenu extends StatelessWidget {
   final void Function(MemberRole?) onSelected;
   final VoidCallback onCanceled;
   final MemberRole? initialValue;
+  final bool enabled;
 
   const MemberRolePopupMenu({
     required this.onSelected,
     required this.onCanceled,
     required this.initialValue,
+    this.enabled = true,
     super.key,
   });
 
@@ -26,11 +28,12 @@ class MemberRolePopupMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<MemberRole?>(
       elevation: 2,
+      enabled: enabled,
       initialValue: initialValue,
       padding: EdgeInsets.zero,
       color: AppColors.surfaceColor,
       shape: const RoundedRectangleBorder(
-        borderRadius: Corners.rounded20,
+        borderRadius: Corners.rounded15,
       ),
       itemBuilder: (_) => [
         for (var status in MemberRole.values)
@@ -38,16 +41,18 @@ class MemberRolePopupMenu extends StatelessWidget {
             value: status,
             height: 38,
             child: CustomText(
-              status.name.removeUnderScore,
+              status.name.removeUnderScore.capitalize,
               maxLines: 1,
+              fontSize: 14,
             ),
           ),
       ],
       onSelected: onSelected,
       onCanceled: onCanceled,
-      child: const Icon(
+      child: Icon(
         Icons.arrow_drop_down,
-        color: Colors.black,
+        color:
+            enabled ? AppColors.lightPrimaryColor : AppColors.textBlueGreyColor,
         size: 22,
       ),
     );
