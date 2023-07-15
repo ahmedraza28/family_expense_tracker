@@ -77,7 +77,7 @@ class AppUtils {
       final jwt = JWT.verify(token, SecretKey('secret passphrase'));
       return jwt.payload as JSON;
       // ignore: avoid_catching_errors
-    } on JWTError catch (e) {
+    } on JWTInvalidException catch (e) {
       throw CustomException.jwt(message: e.message);
     }
   }
