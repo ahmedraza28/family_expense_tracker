@@ -18,7 +18,7 @@ part 'auth_controller.codegen.g.dart';
 
 @Riverpod(keepAlive: true)
 Stream<UserModel?> currentUser(CurrentUserRef ref) {
-  final usersRepository = ref.read(usersRepositoryProvider);
+  final usersRepository = ref.watch(usersRepositoryProvider);
   return ref
       .watch(firebaseAuthProvider)
       .authStateChanges()
@@ -48,7 +48,9 @@ class AuthController extends _$AuthController {
 
   void logout() {
     ref.read(authRepositoryProvider).signOut();
-    ref.invalidate(currentUserProvider);
-    state = const AsyncValue.data(null);
+    ref
+      ..invalidateSelf()
+      ..invalidate(currentUserProvider);
+    // state = const AsyncValue.data(null);
   }
 }

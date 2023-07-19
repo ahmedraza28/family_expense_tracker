@@ -84,6 +84,9 @@ class ShareAccessQRButton extends ConsumerWidget {
                               dataModuleStyle: const QrDataModuleStyle(
                                 color: Color(0xFF8194FE),
                               ),
+                              eyeStyle: const QrEyeStyle(
+                                color: Color(0xFF8194FE),
+                              ),
                               size: 180,
                             ),
                           ),

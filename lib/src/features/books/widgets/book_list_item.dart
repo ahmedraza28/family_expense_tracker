@@ -120,7 +120,7 @@ class BookDetails extends StatelessWidget {
 
           // Members Row
           LabeledWidget(
-            label: 'Members',
+            label: 'Other Members',
             labelGap: 10,
             child: MemberAvatars(
               isOwner: isOwner,
@@ -244,7 +244,7 @@ class MemberAvatars extends StatelessWidget {
             width: 130,
             child: Stack(
               children: [
-                if (membersMap.isEmpty)
+                if (members.isEmpty)
                   const Positioned(
                     left: 0,
                     child: CustomText(

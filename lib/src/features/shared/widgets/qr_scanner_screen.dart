@@ -20,7 +20,7 @@ import '../../../global/widgets/widgets.dart';
 // Features
 import '../../books/books.dart';
 
-class QrScannerScreen extends StatefulWidget {
+class QrScannerScreen extends ConsumerStatefulWidget {
   final VoidCallback? onPressed;
 
   const QrScannerScreen({
@@ -29,11 +29,12 @@ class QrScannerScreen extends StatefulWidget {
   });
 
   @override
-  State<QrScannerScreen> createState() => _QrScannerScreenState();
+  ConsumerState<QrScannerScreen> createState() => _QrScannerScreenState();
 }
 
-class _QrScannerScreenState extends State<QrScannerScreen> {
+class _QrScannerScreenState extends ConsumerState<QrScannerScreen> {
   late final MobileScannerController _qrController;
+  String? rawValue;
 
   @override
   void initState() {
@@ -47,6 +48,32 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
   void dispose() {
     _qrController.dispose();
     super.dispose();
+  }
+
+  void onDetect(BarcodeCapture capture) {
+    if (rawValue != null) return;
+    try {
+      final code = capture.barcodes.firstOrNull?.rawValue;
+      if (code == null) {
+        throw CustomException.qr(message: 'No QR code found');
+      }
+      setState(() {
+        rawValue = code;
+      });
+      final args = AppUtils.decodeJWTToken(code);
+      final accessCode = AccessCodeModel.fromJson(args);
+      ref.read(booksProvider.notifier).addMemberToBook(
+            bookId: accessCode.inviteCode,
+            role: accessCode.role,
+          );
+      (widget.onPressed ?? AppRouter.pop).call();
+    } on CustomException catch (e) {
+      CustomDialog.showAlertDialog(
+        context: context,
+        reason: e.message,
+        dialogTitle: 'Scan Failed',
+      );
+    }
   }
 
   @override
@@ -120,27 +147,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
               builder: (_, ref, __) {
                 return MobileScanner(
                   controller: _qrController,
-                  onDetect: (capture) {
-                    try {
-                      final code = capture.barcodes.firstOrNull?.rawValue;
-                      if (code == null) {
-                        throw CustomException.qr(message: 'No QR code found');
-                      }
-                      final args = AppUtils.decodeJWTToken(code);
-                      final accessCode = AccessCodeModel.fromJson(args);
-                      ref.read(booksProvider.notifier).addMemberToBook(
-                            bookId: accessCode.inviteCode,
-                            role: accessCode.role,
-                          );
-                      (widget.onPressed ?? AppRouter.pop).call();
-                    } on CustomException catch (e) {
-                      CustomDialog.showAlertDialog(
-                        context: context,
-                        reason: e.message,
-                        dialogTitle: 'Scan Failed',
-                      );
-                    }
-                  },
+                  onDetect: onDetect,
                 );
               },
             ),
