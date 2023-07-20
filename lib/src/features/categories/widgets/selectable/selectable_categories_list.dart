@@ -17,7 +17,10 @@ class SelectableCategoriesList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoriesStream = ref.watch(enabledCategoriesStreamProvider);
-    return categoriesStream.maybeWhen(
+    return AsyncValueWidget(
+      value: categoriesStream,
+      loading: () => const CustomCircularLoader(),
+      error: (_, __) => const CustomCircularLoader(),
       data: (categories) => ListView.separated(
         itemCount: categories.length,
         physics: const BouncingScrollPhysics(
@@ -29,7 +32,6 @@ class SelectableCategoriesList extends ConsumerWidget {
           category: categories[i],
         ),
       ),
-      orElse: () => const CustomCircularLoader(),
     );
   }
 }

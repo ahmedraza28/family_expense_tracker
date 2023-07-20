@@ -78,7 +78,10 @@ class MemberList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final params = UserProviderParams(members.keys.toList());
     final state = ref.watch(usersProvider(params));
-    return state.maybeWhen(
+    return AsyncValueWidget(
+      value: state,
+      loading: () => const CustomCircularLoader(),
+      error: (_, __) => const CustomCircularLoader(),
       data: (data) => ListView.separated(
         itemCount: members.length,
         padding: EdgeInsets.zero,
@@ -90,7 +93,6 @@ class MemberList extends ConsumerWidget {
           member: members[data[i].uid]!,
         ),
       ),
-      orElse: () => const CustomCircularLoader(),
     );
   }
 }

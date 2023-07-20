@@ -43,7 +43,8 @@ class BookConfigLoaderScreen extends ConsumerWidget {
     final isBookPreLoaded = ref.read(isBookPreLoadedProvider);
     return isBookPreLoaded
         ? const TransactionsScreen()
-        : cacheLoaderFuture.when(
+        : AsyncValueWidget(
+            value: cacheLoaderFuture,
             data: (_) => const TransactionsScreen(),
             loading: () => const LottieAnimationLoader(),
             error: (error, st) => Scaffold(
