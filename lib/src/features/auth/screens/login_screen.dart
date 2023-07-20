@@ -38,15 +38,15 @@ class LoginScreen extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Insets.gapH30,
-      
+
               SvgPicture.asset(
                 AppAssets.savingsPoster,
                 height: 300,
                 fit: BoxFit.fitWidth,
               ),
-      
+
               Insets.gapH20,
-      
+
               // Logo
               const CustomText(
                 'Family Expense Tracker',
@@ -54,9 +54,9 @@ class LoginScreen extends HookConsumerWidget {
                 fontSize: 45,
                 fontWeight: FontWeight.bold,
               ),
-      
+
               Insets.gapH20,
-      
+
               const Align(
                 alignment: Alignment.centerLeft,
                 child: CustomText(
@@ -64,9 +64,9 @@ class LoginScreen extends HookConsumerWidget {
                   fontSize: 22,
                 ),
               ),
-      
+
               Insets.expand,
-      
+
               // Login Button
               CustomTextButton.gradient(
                 width: double.infinity,
@@ -76,13 +76,16 @@ class LoginScreen extends HookConsumerWidget {
                 },
                 child: Consumer(
                   builder: (context, ref, child) {
-                    final state = ref.watch(authControllerProvider);
-                    return state.maybeWhen(
-                      loading: () => const CustomCircularLoader(
-                        color: Colors.white,
-                      ),
-                      orElse: () => child!,
+                    final authState = ref.watch(authControllerProvider);
+                    final userLoading = ref.watch(
+                      currentUserProvider.select((value) => value.isLoading),
                     );
+                    return authState.isLoading ||
+                            (authState.hasValue && userLoading)
+                        ? const CustomCircularLoader(
+                            color: Colors.white,
+                          )
+                        : child!;
                   },
                   child: const Center(
                     child: CustomText(
@@ -92,7 +95,7 @@ class LoginScreen extends HookConsumerWidget {
                   ),
                 ),
               ),
-      
+
               Insets.bottomInsetsLow,
             ],
           ),

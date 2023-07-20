@@ -133,7 +133,7 @@ class Books extends _$Books {
               currentUser.uid: BookMemberModel(
                 imageUrl: currentUser.imageUrl,
                 role: role,
-              )
+              ).toJson(),
             },
           },
         );
@@ -155,7 +155,9 @@ class Books extends _$Books {
         await booksRepository.updateBook(
           bookId: bookId,
           changes: <String, Object?>{
-            BookModel.membersKey: {memberId: member},
+            BookModel.membersKey: {
+              memberId: member.toJson(),
+            },
           },
         );
         return 'Access updated successfully';

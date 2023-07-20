@@ -33,15 +33,16 @@ class QrScannerScreen extends ConsumerStatefulWidget {
 }
 
 class _QrScannerScreenState extends ConsumerState<QrScannerScreen> {
-  late final MobileScannerController _qrController;
+  final _qrController = MobileScannerController(
+    detectionSpeed: DetectionSpeed.noDuplicates,
+    // autoStart: false,
+  );
   String? rawValue;
 
   @override
   void initState() {
+    _qrController.stop();
     super.initState();
-    _qrController = MobileScannerController(
-      detectionSpeed: DetectionSpeed.noDuplicates,
-    );
   }
 
   @override
@@ -51,7 +52,10 @@ class _QrScannerScreenState extends ConsumerState<QrScannerScreen> {
   }
 
   void onDetect(BarcodeCapture capture) {
-    if (rawValue != null) return;
+    if (rawValue != null) {
+      debugPrint('QR code already detected');
+      return;
+    }
     try {
       final code = capture.barcodes.firstOrNull?.rawValue;
       if (code == null) {

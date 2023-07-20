@@ -86,6 +86,7 @@ class ShareAccessQRButton extends ConsumerWidget {
                               ),
                               eyeStyle: const QrEyeStyle(
                                 color: Color(0xFF8194FE),
+                                eyeShape: QrEyeShape.square,
                               ),
                               size: 180,
                             ),
