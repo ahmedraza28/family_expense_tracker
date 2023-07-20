@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Controllers
+import '../../../global/widgets/widgets.dart';
 import '../controllers/auth_controller.codegen.dart';
 
 // Screens
@@ -15,10 +16,11 @@ class AuthWidgetBuilder extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(currentUserProvider);
-    return authState.maybeWhen(
+    return AsyncValueWidget(
+      value: ref.watch(currentUserProvider),
+      loading: () => const LoginScreen(),
+      error: (_, __) => const LoginScreen(),
       data: (user) => user != null ? const BooksScreen() : const LoginScreen(),
-      orElse: () => const LoginScreen(),
     );
   }
 }
