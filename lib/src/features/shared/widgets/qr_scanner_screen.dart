@@ -12,6 +12,7 @@ import '../../../core/core.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Models
+import '../../../helpers/extensions/object_extensions.dart';
 import '../models/access_code_model.dart';
 
 // Widgets
@@ -33,10 +34,7 @@ class QrScannerScreen extends ConsumerStatefulWidget {
 }
 
 class _QrScannerScreenState extends ConsumerState<QrScannerScreen> {
-  final _qrController = MobileScannerController(
-    detectionSpeed: DetectionSpeed.noDuplicates,
-    // autoStart: false,
-  );
+  var _qrController = MobileScannerController();
   String? rawValue;
 
   @override
@@ -76,6 +74,11 @@ class _QrScannerScreenState extends ConsumerState<QrScannerScreen> {
         context: context,
         reason: e.message,
         dialogTitle: 'Scan Failed',
+        onButtonPressed: () => setState(() {
+          rawValue = null;
+          _qrController.dispose();
+          _qrController = MobileScannerController();
+        }),
       );
     }
   }
@@ -149,10 +152,14 @@ class _QrScannerScreenState extends ConsumerState<QrScannerScreen> {
             width: 300,
             child: Consumer(
               builder: (_, ref, __) {
-                return MobileScanner(
-                  controller: _qrController,
-                  onDetect: onDetect,
-                );
+                return rawValue.isNull
+                    ? MobileScanner(
+                        controller: _qrController,
+                        onDetect: onDetect,
+                      )
+                    : const Center(
+                        child: CustomText('Scan Completed!'),
+                      );
               },
             ),
           )

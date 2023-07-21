@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Controllers
+import '../../../helpers/extensions/object_extensions.dart';
 import '../controllers/auth_controller.codegen.dart';
 
 // Helpers
@@ -68,30 +69,34 @@ class LoginScreen extends HookConsumerWidget {
               Insets.expand,
 
               // Login Button
-              CustomTextButton.gradient(
-                width: double.infinity,
-                gradient: AppColors.buttonGradientPrimary,
-                onPressed: () {
-                  ref.read(authControllerProvider.notifier).loginWithGoogle();
-                },
-                child: Consumer(
-                  builder: (context, ref, child) {
-                    final authState = ref.watch(authControllerProvider);
-                    final userLoading = ref.watch(
-                      currentUserProvider.select((value) => value.isLoading),
-                    );
-                    return authState.isLoading ||
-                            (authState.hasValue && userLoading)
+              Consumer(
+                builder: (context, ref, child) {
+                  final authState = ref.watch(authControllerProvider);
+                  final userLoading = ref.watch(
+                    currentUserProvider.select((value) => value.isLoading),
+                  );
+                  final isLoading = authState.isLoading ||
+                      (authState.value.isNotNull && userLoading);
+                  return CustomTextButton.gradient(
+                    width: double.infinity,
+                    gradient: AppColors.buttonGradientPrimary,
+                    onPressed: () {
+                      if (isLoading) return;
+                      ref
+                          .read(authControllerProvider.notifier)
+                          .loginWithGoogle();
+                    },
+                    child: isLoading
                         ? const CustomCircularLoader(
                             color: Colors.white,
                           )
-                        : child!;
-                  },
-                  child: const Center(
-                    child: CustomText(
-                      'GOOGLE SIGN IN',
-                      color: Colors.white,
-                    ),
+                        : child!,
+                  );
+                },
+                child: const Center(
+                  child: CustomText(
+                    'GOOGLE SIGN IN',
+                    color: Colors.white,
                   ),
                 ),
               ),

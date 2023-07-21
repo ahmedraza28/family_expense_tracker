@@ -3,9 +3,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Helpers
 import '../../../helpers/constants/constants.dart';
+import '../../../helpers/extensions/extensions.dart';
 
 // Providers
 import '../providers/books_provider.codegen.dart';
+
+// Screens
+import '../screens/books_view.dart';
 
 // Widgets
 import '../../../global/widgets/widgets.dart';
@@ -23,12 +27,18 @@ class ScanInviteFab extends ConsumerWidget {
     ref.listen(
       booksProvider,
       (_, next) => next.whenOrNull(
-        data: (message) => AppUtils.showFlushBar(
-          context: context,
-          message: message ?? 'Book saved successfully',
-          icon: Icons.check_circle_rounded,
-          iconColor: Colors.green,
-        ),
+        data: (message) {
+          ref
+              .read(currentBooksViewTabProvider.notifier)
+              .update((_) => BooksViewTabs.shared);
+          AppUtils.showFlushBar(
+            context: context,
+            message: message ?? 'Book saved successfully',
+            visibleDuration: 3.seconds,
+            icon: Icons.check_circle_rounded,
+            iconColor: Colors.green,
+          );
+        },
         error: (error, stack) => AppUtils.showFlushBar(
           context: context,
           message: error.toString(),

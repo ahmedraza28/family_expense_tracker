@@ -76,8 +76,15 @@ class AppUtils {
     try {
       final jwt = JWT.verify(token, SecretKey('secret passphrase'));
       return jwt.payload as JSON;
-      // ignore: avoid_catching_errors
-    } on JWTInvalidException catch (e) {
+    } on JWTExpiredException {
+      throw CustomException.jwt(
+        message: 'Access code expired. Request a new one',
+      );
+    } on JWTInvalidException {
+      throw CustomException.jwt(
+        message: 'Access code invalid. Please scan the correct code',
+      );
+    } on JWTException catch (e) {
       throw CustomException.jwt(message: e.message);
     }
   }
@@ -142,6 +149,7 @@ class AppUtils {
     required String message,
     IconData? icon = Icons.error_rounded,
     double? iconSize = 26,
+    Duration? visibleDuration,
     Color? iconColor = Colors.redAccent,
   }) {
     Flushbar<void>(
@@ -161,7 +169,7 @@ class AppUtils {
       ),
       shouldIconPulse: false,
       dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-      duration: const Duration(milliseconds: 1300),
+      duration: visibleDuration ?? const Duration(milliseconds: 1300),
     ).show(context);
   }
 }

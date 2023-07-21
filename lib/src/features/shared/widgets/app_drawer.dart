@@ -30,93 +30,103 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           // User Info and Share access code button
-          SizedBox(
-            height: 163,
-            child: DrawerHeader(
-              margin: EdgeInsets.zero,
-              padding: const EdgeInsets.fromLTRB(15, 5, 15, 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // User Info
-                  Consumer(
-                    builder: (context, ref, child) {
-                      final currentUser = ref.watch(currentUserProvider).value!;
-                      return ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: CustomNetworkImage(
-                          imageUrl: currentUser.imageUrl ?? '',
-                          width: 40,
-                          height: 40,
-                          shape: BoxShape.circle,
-                          errorWidget: DecoratedBox(
-                            decoration: const BoxDecoration(
-                              color: AppColors.primaryColor,
+          Consumer(
+            builder: (context, ref, child) {
+              final isOwner = ref.watch(isOwnerSelectedBookProvider);
+              const qrButtonHeight = 36.0;
+              return SizedBox(
+                height: isOwner ? 163 : 163 - qrButtonHeight,
+                child: DrawerHeader(
+                  margin: EdgeInsets.zero,
+                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // User Info
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final currentUser =
+                              ref.watch(currentUserProvider).value!;
+                          return ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: CustomNetworkImage(
+                              imageUrl: currentUser.imageUrl ?? '',
+                              width: 40,
+                              height: 40,
                               shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: CustomText.title(
-                                currentUser.displayName[0],
-                                fontSize: 18,
-                                color: AppColors.textWhite80Color,
+                              errorWidget: DecoratedBox(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.primaryColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: CustomText.title(
+                                    currentUser.displayName[0],
+                                    fontSize: 18,
+                                    color: AppColors.textWhite80Color,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        title: CustomText.body(
-                          currentUser.displayName.toUpperCase(),
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        subtitle: CustomText.subtitle(
-                          currentUser.email,
-                        ),
-                      );
-                    },
-                  ),
+                            title: CustomText.body(
+                              currentUser.displayName.toUpperCase(),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            subtitle: CustomText.subtitle(
+                              currentUser.email,
+                            ),
+                          );
+                        },
+                      ),
 
-                  // Share access code button
-                  const ShareAccessQRButton(),
-                ],
-              ),
-            ),
+                      // Share access code button
+                      if (isOwner)
+                        const ShareAccessQRButton(height: qrButtonHeight),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
 
           // Book Details
           Consumer(
             builder: (context, ref, child) {
-              final book = ref.watch(selectedBookProvider)!;
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: ListTile(
-                  onTap: () {
-                    AppRouter.popUntilRoot();
-                    ref.read(booksProvider.notifier).resetSelectedBook();
-                  },
-                  minVerticalPadding: 0,
-                  title: Row(
-                    children: [
-                      // Book Icon
-                      ShadedIcon(
-                        color: book.color,
-                        iconData: Icons.menu_book_rounded,
-                      ),
+              final book = ref.watch(selectedBookProvider);
+              return book == null
+                  ? Insets.shrink
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: ListTile(
+                        onTap: () {
+                          AppRouter.popUntilRoot();
+                          ref.read(booksProvider.notifier).resetSelectedBook();
+                        },
+                        minVerticalPadding: 0,
+                        title: Row(
+                          children: [
+                            // Book Icon
+                            ShadedIcon(
+                              color: book.color,
+                              iconData: Icons.menu_book_rounded,
+                            ),
 
-                      Insets.gapW15,
+                            Insets.gapW15,
 
-                      // Book Name
-                      CustomText.body(
-                        book.name,
+                            // Book Name
+                            CustomText.body(
+                              book.name,
+                            ),
+                          ],
+                        ),
+                        trailing: Icon(
+                          Icons.menu_rounded,
+                          color: book.color,
+                        ),
                       ),
-                    ],
-                  ),
-                  trailing: Icon(
-                    Icons.menu_rounded,
-                    color: book.color,
-                  ),
-                ),
-              );
+                    );
             },
           ),
 

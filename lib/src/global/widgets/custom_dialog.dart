@@ -9,6 +9,7 @@ import '../../helpers/constants/constants.dart';
 import '../../config/routing/routing.dart';
 
 // Widgets
+import '../../helpers/extensions/extensions.dart';
 import 'custom_text_button.dart';
 
 // ignore: constant_identifier_names
@@ -115,6 +116,7 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = context.theme.colorScheme;
     return AlertDialog(
       shape: const RoundedRectangleBorder(
         borderRadius: Corners.rounded15,
@@ -123,14 +125,17 @@ class CustomDialog extends StatelessWidget {
       titlePadding: const EdgeInsets.fromLTRB(19, 14, 19, 0),
       contentPadding: const EdgeInsets.fromLTRB(19, 9, 19, 9),
       actionsPadding: const EdgeInsets.fromLTRB(0, 0, 19, 19),
-      backgroundColor: AppColors.surfaceColor,
+      backgroundColor: colorScheme.surface,
       title: Text(title),
-      content: child ?? Text(body),
-      contentTextStyle: const TextStyle(
-        fontSize: 14,
-        color: AppColors.textLightGreyColor,
+      titleTextStyle: TextStyle(
+        fontSize: 18,
+        color: colorScheme.onSurface,
       ),
-      titleTextStyle: const TextStyle(fontSize: 18),
+      content: child ?? Text(body),
+      contentTextStyle: TextStyle(
+        fontSize: 14,
+        color: colorScheme.onTertiary,
+      ),
       actions: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.end,

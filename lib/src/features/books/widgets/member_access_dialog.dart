@@ -15,7 +15,7 @@ import '../../../helpers/extensions/extensions.dart';
 import '../../auth/auth.dart';
 import '../../shared/shared.dart';
 import '../books.dart';
-import 'hangout_request_status_popup_menu.dart';
+import 'member_role_status_popup_menu.dart';
 
 class MemberAccessDialog extends StatelessWidget {
   final Map<String, BookMemberModel> membersMap;
@@ -167,7 +167,7 @@ class _MemberListItem extends ConsumerWidget {
             child: LabeledWidget(
               labelDirection: Axis.horizontal,
               mainAxisAlignment: MainAxisAlignment.end,
-              label: member.role.name.removeUnderScore.capitalize,
+              label: member.role.sanitizedName,
               labelStyle: TextStyle(
                 color: member.isOwner
                     ? AppColors.textBlueGreyColor

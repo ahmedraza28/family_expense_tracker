@@ -41,7 +41,7 @@ class MemberRolePopupMenu extends StatelessWidget {
             value: status,
             height: 38,
             child: CustomText(
-              status.name.removeUnderScore.capitalize,
+              status.sanitizedName,
               maxLines: 1,
               fontSize: 14,
             ),

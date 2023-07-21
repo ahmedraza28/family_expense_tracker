@@ -124,6 +124,8 @@ class Books extends _$Books {
 
         if (currentUser.ownedBookIds.contains(bookId)) {
           throw Exception('You are already an owner of this book');
+        } else if (currentUser.sharedBookIds.contains(bookId)) {
+          throw Exception('You are already a member of this book');
         }
 
         await booksRepository.updateBook(
@@ -137,7 +139,7 @@ class Books extends _$Books {
             },
           },
         );
-        return 'Invite accepted successfully';
+        return 'Invite accepted successfully. The book may take upto 5 mins to appear in your list';
       },
     );
   }

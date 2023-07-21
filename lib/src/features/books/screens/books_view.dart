@@ -7,23 +7,23 @@ import '../../../global/widgets/widgets.dart';
 import '../../../helpers/constants/constants.dart';
 
 // Features
+import '../../../helpers/extensions/extensions.dart';
 import '../../auth/auth.dart';
 
 // Widgets
 import '../widgets/books_list.dart';
 
-class BooksView extends ConsumerStatefulWidget {
+final currentBooksViewTabProvider =
+    StateProvider.autoDispose<BooksViewTabs>((_) => BooksViewTabs.owned);
+
+enum BooksViewTabs { owned, shared }
+
+class BooksView extends ConsumerWidget {
   const BooksView({super.key});
 
   @override
-  ConsumerState<BooksView> createState() => BooksViewState();
-}
-
-class BooksViewState extends ConsumerState<BooksView> {
-  int _selectedSegmentValue = 0;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentTabView = ref.watch(currentBooksViewTabProvider);
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: AsyncValueWidget(
@@ -47,27 +47,27 @@ class BooksViewState extends ConsumerState<BooksView> {
         data: (currentUser) => Column(
           children: [
             // Filters
-            CupertinoSlidingSegmentedControl(
+            CupertinoSlidingSegmentedControl<BooksViewTabs>(
               children: {
-                0: Padding(
+                BooksViewTabs.owned: Padding(
                   padding: const EdgeInsets.all(5),
                   child: Text(
-                    'Owned',
+                    BooksViewTabs.owned.sanitizedName,
                     style: TextStyle(
                       fontSize: 13,
-                      color: _selectedSegmentValue == 0
+                      color: currentTabView == BooksViewTabs.owned
                           ? AppColors.textWhite80Color
                           : AppColors.primaryColor,
                     ),
                   ),
                 ),
-                1: Padding(
+                BooksViewTabs.shared: Padding(
                   padding: const EdgeInsets.all(5),
                   child: Text(
-                    'Shared',
+                    BooksViewTabs.shared.sanitizedName,
                     style: TextStyle(
                       fontSize: 13,
-                      color: _selectedSegmentValue == 1
+                      color: currentTabView == BooksViewTabs.shared
                           ? AppColors.textWhite80Color
                           : AppColors.primaryColor,
                     ),
@@ -77,12 +77,12 @@ class BooksViewState extends ConsumerState<BooksView> {
               padding: const EdgeInsets.all(5),
               thumbColor: AppColors.primaryColor,
               backgroundColor: Colors.white,
-              groupValue: _selectedSegmentValue,
-              onValueChanged: (int? newValue) {
+              groupValue: currentTabView,
+              onValueChanged: (BooksViewTabs? newValue) {
                 if (newValue != null) {
-                  setState(() {
-                    _selectedSegmentValue = newValue;
-                  });
+                  ref
+                      .read(currentBooksViewTabProvider.notifier)
+                      .update((state) => newValue);
                 }
               },
             ),
@@ -94,7 +94,7 @@ class BooksViewState extends ConsumerState<BooksView> {
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 500),
                 switchInCurve: Curves.easeIn,
-                child: _selectedSegmentValue == 0
+                child: currentTabView == BooksViewTabs.owned
                     ? BooksList(
                         bookIds: currentUser!.ownedBookIds,
                       )
